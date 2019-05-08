@@ -1,8 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+    pageEncoding="UTF-8"%>    
+<%
+String root = request.getContextPath();
+%>
 <!DOCTYPE html>
 <html lang="UTF-8">
-
 <head>
 
 <meta charset="utf-8">
@@ -14,7 +16,7 @@
 <title>Resume - Start Bootstrap Theme</title>
 
 <!-- Bootstrap core CSS -->
-<link href="/plzdaengs/template/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+<link href="<%=root%>/template/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 
 <!-- Custom fonts for this template -->
 <link
@@ -23,36 +25,31 @@
 <link
 	href="https://fonts.googleapis.com/css?family=Muli:400,400i,800,800i"
 	rel="stylesheet">
-<link href="/plzdaengs/template/vendor/fontawesome-free/css/all.min.css" rel="stylesheet">
+<link href="<%=root%>/template/vendor/fontawesome-free/css/all.min.css" rel="stylesheet">
 
 <!-- Custom styles for this template -->
-<link href="/plzdaengs/template/css/resume.min.css" rel="stylesheet">
+<link href="<%=root%>/template/css/resume.min.css" rel="stylesheet">
 
 <!-- font -->
-<link href="/plzdaengs/template/font/font.css" rel="stylesheet" type="text/css">
+<link href="<%=root%>/template/font/font.css" rel="stylesheet" type="text/css">
 
 <style type="text/css">
 body {
 	font-family: BMJUA;
 	box-sizing: border-box;
 }
-
 section.resume-section {
 	padding-top: 1rem !important;
 	padding-bottom: 2rem !important;
 	max-width: 80rem;
 }
 #about{
-	background-image: url("/plzdaengs/template/img/logo.png");
+	background-image: url("<%=root%>/template/img/logo.png");
 	background-size: contain;
 	width:100%;
 	height:100%;
 	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 	max-width: 85rem;
-}
-
-#experience a{
-	color: black;
 }
 </style>
 
@@ -66,7 +63,7 @@ section.resume-section {
 			class="d-block d-lg-none">Clarence Taylor</span> <span
 			class="d-none d-lg-block"> <img
 				class="img-fluid img-profile rounded-circle mx-auto mb-2"
-				src="img/profile.jpg" alt="">
+				src="<%=root%>/template/img/profile.jpg" alt="">
 		</span>
 		</a>
 		<button class="navbar-toggler" type="button" data-toggle="collapse"
