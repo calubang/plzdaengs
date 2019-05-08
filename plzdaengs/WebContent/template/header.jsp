@@ -43,7 +43,7 @@ body {
 section.resume-section {
 	padding-top: 1rem !important;
 	padding-bottom: 2rem !important;
-	max-width: 80rem;
+	max-width: 85rem;
 }
 #about{
 	background-image: url("<%=root%>/template/img/logo.png");
@@ -53,8 +53,31 @@ section.resume-section {
 	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 	max-width: 85rem;
 }
+.nav-item-list{
+	border: 1px solid;
+	display: none;
+	width: 70%;
+    margin-left: auto;
+}
 </style>
-
+<script type="text/javascript">
+window.onload = function () {	
+	var items = document.getElementsByClassName("nav-item");
+	for(var i=0 ; i<items.length ; i++){
+		items[i].addEventListener("click", function(e) {
+			var menuListDisplay= document.getElementById("diaryMenuList").style.display;
+			var menuName = items.getAttribute("id");
+			if(menuListDisplay == "none"){
+				document.getElementById("diaryMenuList").style.display = "block";
+			} else if(menuListDisplay == ""){
+				document.getElementById("diaryMenuList").style.display = "block";
+			} else{
+				document.getElementById("diaryMenuList").style.display = "none";
+			}
+		}, "false")
+	}
+}
+</script>
 </head>
 
 <body id="page-top">
@@ -77,7 +100,13 @@ section.resume-section {
 		<div class="collapse navbar-collapse" id="navbarSupportedContent">
 			<ul class="navbar-nav">
 				<li class="nav-item"><a class="nav-link js-scroll-trigger"
-					href="#about">다이어리</a></li>
+					href="#about" id="diaryMenu">다이어리</a>
+				</li>
+				<li class="nav-item-list" id="diaryMenuList">
+						<a class="nav-link js-scroll-trigger" href="#about">다이어리1</a>
+						<a class="nav-link js-scroll-trigger" href="#about">다이어리2</a>
+						<a class="nav-link js-scroll-trigger" href="#about">다이어리3</a>
+				</li>	
 				<li class="nav-item"><a class="nav-link js-scroll-trigger"
 					href="#experience">소모임</a></li>
 				<li class="nav-item"><a class="nav-link js-scroll-trigger"
