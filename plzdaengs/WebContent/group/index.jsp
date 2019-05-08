@@ -1,26 +1,17 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ include file="/template/header.jsp"%>
-<section class="resume-section p-3 p-lg-5 d-flex align-items-center"
-	id="about">
+<section class="resume-section p-3 p-lg-5 d-flex align-items-center" id="about">
 	<div class="w-100">
 		<h1 class="mb-0">
-			Clarence <span class="text-primary">Taylor</span>
+			댕댕이를 <span class="text-primary">부탁해~</span>
 		</h1>
 		<div class="subheading mb-5">
-			3542 Berry Street · Cheyenne Wells, CO 80810 · (317) 585-8468 · <a
-				href="mailto:name@email.com">name@email.com</a>
+			kitri 2nd Project <a href="mailto:name@email.com">4조</a>
 		</div>
-		<p class="lead mb-5">I am experienced in leveraging agile
-			frameworks to provide a robust synopsis for high level overviews.
-			Iterative approaches to corporate strategy foster collaborative
-			thinking to further the overall value proposition.</p>
-		<div class="social-icons">
-			<a href="#"> <i class="fab fa-linkedin-in"></i>
-			</a> <a href="#"> <i class="fab fa-github"></i>
-			</a> <a href="#"> <i class="fab fa-twitter"></i>
-			</a> <a href="#"> <i class="fab fa-facebook-f"></i>
-			</a>
+		<p class="lead mb-5"></p>
+		<div class="login-icons">
+			<label>로그인</label> <label>회원가입</label>
 		</div>
 	</div>
 </section>
@@ -176,6 +167,22 @@
 	id="interests">
 	<div class="w-100">
 		<h2 class="mb-5">Interests</h2>
+		<p>Apart from being a web developer, I enjoy most of my time being
+			outdoors. In the winter, I am an avid skier and novice ice climber.
+			During the warmer months here in Colorado, I enjoy mountain biking,
+			free climbing, and kayaking.</p>
+		<p class="mb-0">When forced indoors, I follow a number of sci-fi
+			and fantasy genre movies and television shows, I am an aspiring chef,
+			and I spend a large amount of my free time exploring the latest
+			technology advancements in the front-end web development world.</p>
+		<p>Apart from being a web developer, I enjoy most of my time being
+			outdoors. In the winter, I am an avid skier and novice ice climber.
+			During the warmer months here in Colorado, I enjoy mountain biking,
+			free climbing, and kayaking.</p>
+		<p class="mb-0">When forced indoors, I follow a number of sci-fi
+			and fantasy genre movies and television shows, I am an aspiring chef,
+			and I spend a large amount of my free time exploring the latest
+			technology advancements in the front-end web development world.</p>
 		<p>Apart from being a web developer, I enjoy most of my time being
 			outdoors. In the winter, I am an avid skier and novice ice climber.
 			During the warmer months here in Colorado, I enjoy mountain biking,
