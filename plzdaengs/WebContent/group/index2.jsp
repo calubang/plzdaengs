@@ -1,15 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ include file="/template/header.jsp"%>
-<style>
-.
-</style>
 <section class="resume-section p-3 p-lg-5 d-flex align-items-center" id="about">
 	<div class="w-100">
 		<h1 class="mb-0">
 			댕댕이를 <span class="text-primary">부탁해~</span>
 		</h1>
-		<div class="subheading mb-5" >
+		<div class="subheading mb-5">
 			kitri 2nd Project <a href="mailto:name@email.com">4조</a>
 		</div>
 		<p class="lead mb-5"></p>
@@ -24,13 +21,12 @@
 <section class="resume-section p-3 p-lg-5 d-flex justify-content-center"
 	id="experience">
 	<div class="w-100">
-		<h2 class="mb-5">소모임</h2>
+		<h2 class="mb-5">Experience</h2>
 
 		<div
 			class="resume-item d-flex flex-column flex-md-row justify-content-between mb-5">
 			<div class="resume-content">
-				<span>image</span>
-				<h3 class="mb-0">펫과 함께하는 한강산책</h3>
+				<h3 class="mb-0">Senior Web Developer</h3>
 				<div class="subheading mb-3">Intelitec Solutions</div>
 				<p>Bring to the table win-win survival strategies to ensure
 					proactive domination. At the end of the day, going forward, a new
