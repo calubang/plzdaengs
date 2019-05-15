@@ -72,17 +72,17 @@
 				<a href="login.html" class="dropdown-item">로그아웃</a>
 			</div></li>
 
-		<li class="sidebar-list-item"><a href="index.html"
+		<li class="sidebar-list-item"><a href="/plzdaengs/index.jsp"
 			class="sidebar-link text-muted active"> <i
 				class="o-home-1 mr-3 text-gray"></i> <span>홈으로</span>
 		</a></li>
-		<li class="sidebar-list-item"><a href="charts.html"
+		<li class="sidebar-list-item"><a href="/plzdaengs/charts.html"
 			class="sidebar-link text-muted"><i
 				class="o-sales-up-1 mr-3 text-gray"></i><span>다이어리</span></a></li>
-		<li class="sidebar-list-item"><a href="tables.html"
+		<li class="sidebar-list-item"><a href="/plzdaengs/tables.html"
 			class="sidebar-link text-muted"><i
 				class="o-table-content-1 mr-3 text-gray"></i><span>소모임</span></a></li>
-		<li class="sidebar-list-item"><a href="forms.html"
+		<li class="sidebar-list-item"><a href="/plzdaengs/forms.html"
 			class="sidebar-link text-muted"><i
 				class="o-survey-1 mr-3 text-gray"></i><span>유기견</span></a></li>
 		<li class="sidebar-list-item"><a href="#" data-toggle="collapse"
@@ -102,7 +102,7 @@
 						class="sidebar-link pl-lg-5">Page four</a></li>
 				</ul>
 			</div></li>
-		<li class="sidebar-list-item"><a href="login.html"
+		<li class="sidebar-list-item"><a href="/plzdaengs/template/login.html"
 			class="sidebar-link text-muted"><i
 				class="o-exit-1 mr-3 text-gray"></i><span>Login</span></a></li>
 	</ul>
