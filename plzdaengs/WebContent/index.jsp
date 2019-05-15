@@ -1,224 +1,288 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
-<%@ include file="/template/header.jsp"%>
-<section class="resume-section p-3 p-lg-5 d-flex align-items-center" id="about">
-	<div class="w-100">
-		<h1 class="mb-0">
-			댕댕이를 <span class="text-primary">부탁해~</span>
-		</h1>
-		<div class="subheading mb-5">
-			kitri 2nd Project <a href="mailto:name@email.com">4조</a>
-		</div>
-		<p class="lead mb-5"></p>
-		<div class="login-icons">
-			<label>로그인</label> <label>회원가입</label>
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<%@ include file="/template/default_link.jsp" %>
+<script type="text/javascript">
+$(document).ready(function() {
+	$(window).resize(function() {
+		resize();
+	});
+	resize();
+});
+
+function resize() {
+	//var sidebarWidth = $("#sidebar").width();
+	//var marginLeftSideBar = $("#sidebar").css("margin-left");
+	//console.log("sidebarWidth : " + sidebarWidth + "  ///  " + "marginLeftSideBar : " + marginLeftSideBar);
+	
+	var className = $('#sidebar').attr("class");
+    //var sidebarWidth = parseInt($("#sidebar").css("width"));
+	//var marginLeftSideBar = parseInt($("#sidebar").css("margin-left"));
+	//var length = sidebarWidth + marginLeftSideBar;
+	//var contentsWidth = parseInt($("#contents").css("width"));
+	var contentsWidth = $(document).width();
+	
+	if(contentsWidth > 1200){
+		$("#toggle").show();
+		$(".header").hide();
+		$("#sidebar").css("margin-top", 0);
+	}else{
+		$("#toggle").hide();
+		$(".header").show();
+		$("#sidebar").css("margin-top", "72px");
+	}
+	
+	if(className.indexOf("show")>0 && contentsWidth > 1200){
+		//큰화면에서 메뉴바 줄이기
+		$("#contents").css("margin-left", "6rem");
+	} else if(className.indexOf("show")>0 && contentsWidth < 1200){
+		//작은화면에서 메뉴바없애기
+		$("#contents").css("margin-left", "6rem");
+	} else if(className.indexOf("show")<0 && contentsWidth > 1200){
+		//큰화면에서 메뉴바 늘리기
+		$("#contents").css("margin-left", "20rem");
+	} else if(className.indexOf("show")<0 && contentsWidth < 1200){
+		//작은화면에서 메뉴바 보이기	
+		$("#contents").css("margin-left", 0);
+	} 
+	//$("#contents").css("margin-left", parseInt(sidebarWidth) + parseInt(marginLeftSideBar));
+}
+</script>
+</head>
+<body>
+<!-- navbar-->	
+	<header class="header">
+		<nav class="navbar navbar-expand-lg px-4 py-2 bg-white shadow">
+			<a href="#" class="sidebar-toggler text-gray-500 mr-4 mr-lg-5 lead"><i
+				class="fas fa-align-left"></i></a><a href="index.html"
+				class="navbar-brand font-weight-bold text-uppercase"></a>
+			<ul class="ml-auto d-flex align-items-center list-unstyled mb-0">
+				<li class="nav-item">
+					<form id="searchForm" class="ml-auto d-none d-lg-block">
+						<div class="form-group position-relative mb-0">
+							<button type="submit" style="top: -3px; left: 0;"
+								class="position-absolute bg-white border-0 p-0">
+								<i class="o-search-magnify-1 text-gray text-lg"></i>
+							</button>
+							<input type="search" placeholder="Search ..."
+								class="form-control form-control-sm border-0 no-shadow pl-4">
+						</div>
+					</form>
+				</li>
+				<li class="nav-item dropdown mr-3"><a id="notifications"
+					href="http://example.com" data-toggle="dropdown"
+					aria-haspopup="true" aria-expanded="false"
+					class="nav-link dropdown-toggle text-gray-400 px-1"><i
+						class="fa fa-bell"></i><span class="notification-icon"></span></a>
+					<div aria-labelledby="notifications" class="dropdown-menu">
+						<a href="#" class="dropdown-item">
+							<div class="d-flex align-items-center">
+								<div class="icon icon-sm bg-violet text-white">
+									<i class="fab fa-twitter"></i>
+								</div>
+								<div class="text ml-2">
+									<p class="mb-0">You have 2 followers</p>
+								</div>
+							</div>
+						</a><a href="#" class="dropdown-item">
+							<div class="d-flex align-items-center">
+								<div class="icon icon-sm bg-green text-white">
+									<i class="fas fa-envelope"></i>
+								</div>
+								<div class="text ml-2">
+									<p class="mb-0">You have 6 new messages</p>
+								</div>
+							</div>
+						</a><a href="#" class="dropdown-item">
+							<div class="d-flex align-items-center">
+								<div class="icon icon-sm bg-blue text-white">
+									<i class="fas fa-upload"></i>
+								</div>
+								<div class="text ml-2">
+									<p class="mb-0">Server rebooted</p>
+								</div>
+							</div>
+						</a><a href="#" class="dropdown-item">
+							<div class="d-flex align-items-center">
+								<div class="icon icon-sm bg-violet text-white">
+									<i class="fab fa-twitter"></i>
+								</div>
+								<div class="text ml-2">
+									<p class="mb-0">You have 2 followers</p>
+								</div>
+							</div>
+						</a>
+						<div class="dropdown-divider"></div>
+						<a href="#" class="dropdown-item text-center"><small
+							class="font-weight-bold headings-font-family text-uppercase">View
+								all notifications</small></a>
+					</div></li>
+				<li class="nav-item dropdown ml-auto"><a id="userInfo"
+					href="http://example.com" data-toggle="dropdown"
+					aria-haspopup="true" aria-expanded="false"
+					class="nav-link dropdown-toggle"><img src="/plzdaengs/template/img/avatar-6.jpg"
+						alt="Jason Doe" style="max-width: 2.5rem;"
+						class="img-fluid rounded-circle shadow"></a>
+					<div aria-labelledby="userInfo" class="dropdown-menu">
+						<a href="#" class="dropdown-item"><strong
+							class="d-block text-uppercase headings-font-family">Mark
+								Stephen</strong><small>Web Developer</small></a>
+						<div class="dropdown-divider"></div>
+						<a href="#" class="dropdown-item">Settings</a><a href="#"
+							class="dropdown-item">Activity log </a>
+						<div class="dropdown-divider"></div>
+						<a href="login.html" class="dropdown-item">Logout</a>
+					</div></li>
+			</ul>
+		</nav>
+	</header>
+
+	<div class="d-flex align-items-stretch" id ="document">
+		<!-- 사이드 sidebar -->
+		<%@ include file="/template/sidebar.jsp" %>
+		<!-- 사이드 sidebar -->
+		
+		<div class="page-holder w-100 d-flex flex-wrap">
+			<div class="container-fluid">
+				<!-- section 1 -->
+				<section class="py-5" id="mainSection">
+					<div class="w-100">
+						<h1 class="text-main">댕댕이를 <span class="text-primary">부탁해~</span></h1>
+						<div class="subheading">
+							kitri 2nd Project 4조
+						</div>
+						<div class="login-icons">
+							<button class="btn btn-primary">로그인</button>
+							<button class="btn btn-primary">회원가입</button>
+						</div>
+					</div>
+				</section>
+				
+				<!-- section 2 -->
+				<section>
+					<div class="row mb-4">
+						<div class="col-lg-7 mb-4 mb-lg-0">
+							<div class="card">
+								<div class="card-header">
+									<h2 class="h6 text-uppercase mb-0">Current server uptime</h2>
+								</div>
+								<div class="card-body">
+									<p class="text-gray">Lorem ipsum dolor sit amet,
+										consectetur adipisicing elit.</p>
+									<div class="chart-holder">
+										<canvas id="lineChart1" style="max-height: 14rem !important;"
+											class="w-100"></canvas>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="col-lg-5 mb-4 mb-lg-0 pl-lg-0">
+							<div class="card mb-3">
+								<div class="card-body">
+									<div class="row align-items-center flex-row">
+										<div class="col-lg-5">
+											<h2 class="mb-0 d-flex align-items-center">
+												<span>86.4</span><span
+													class="dot bg-green d-inline-block ml-3"></span>
+											</h2>
+											<span class="text-muted text-uppercase small">Work
+												hours</span>
+											<hr>
+											<small class="text-muted">Lorem ipsum dolor sit</small>
+										</div>
+										<div class="col-lg-7">
+											<canvas id="pieChartHome1"></canvas>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="card">
+								<div class="card-body">
+									<div class="row align-items-center flex-row">
+										<div class="col-lg-5">
+											<h2 class="mb-0 d-flex align-items-center">
+												<span>1.724</span><span
+													class="dot bg-violet d-inline-block ml-3"></span>
+											</h2>
+											<span class="text-muted text-uppercase small">Server
+												time</span>
+											<hr>
+											<small class="text-muted">Lorem ipsum dolor sit</small>
+										</div>
+										<div class="col-lg-7">
+											<canvas id="pieChartHome2"></canvas>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-lg-5 mb-4 mb-lg-0">
+							<div class="card mb-3">
+								<div class="card-body">
+									<div class="row align-items-center mb-3 flex-row">
+										<div class="col-lg-5">
+											<h2 class="mb-0 d-flex align-items-center">
+												<span>86%</span><span
+													class="dot bg-violet d-inline-block ml-3"></span>
+											</h2>
+											<span class="text-muted text-uppercase small">Monthly
+												Usage</span>
+											<hr>
+											<small class="text-muted">Lorem ipsum dolor sit</small>
+										</div>
+										<div class="col-lg-7">
+											<canvas id="pieChartHome3"></canvas>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="card">
+								<div class="card-body">
+									<div class="row align-items-center flex-row">
+										<div class="col-lg-5">
+											<h2 class="mb-0 d-flex align-items-center">
+												<span>$126,41</span><span
+													class="dot bg-green d-inline-block ml-3"></span>
+											</h2>
+											<span class="text-muted text-uppercase small">All
+												Income</span>
+											<hr>
+											<small class="text-muted">Lorem ipsum dolor sit</small>
+										</div>
+										<div class="col-lg-7">
+											<canvas id="pieChartHome4"></canvas>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="col-lg-7">
+							<div class="card">
+								<div class="card-header">
+									<h2 class="h6 text-uppercase mb-0">Total Overdue</h2>
+								</div>
+								<div class="card-body">
+									<p class="text-gray">Lorem ipsum dolor sit amet,
+										consectetur adipisicing elit.</p>
+									<div class="chart-holder">
+										<canvas id="lineChart2" style="max-height: 14rem !important;"
+											class="w-100"></canvas>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</section>
+			</div>
+			<%@ include file="/template/footer.jsp" %>
 		</div>
 	</div>
-</section>
-
-<hr class="m-0">
-
-<section class="resume-section p-3 p-lg-5 d-flex justify-content-center"
-	id="experience">
-	<div class="w-100">
-		<h2 class="mb-5">Experience</h2>
-
-		<div
-			class="resume-item d-flex flex-column flex-md-row justify-content-between mb-5">
-			<div class="resume-content">
-				<h3 class="mb-0">Senior Web Developer</h3>
-				<div class="subheading mb-3">Intelitec Solutions</div>
-				<p>Bring to the table win-win survival strategies to ensure
-					proactive domination. At the end of the day, going forward, a new
-					normal that has evolved from generation X is on the runway heading
-					towards a streamlined cloud solution. User generated content in
-					real-time will have multiple touchpoints for offshoring.</p>
-			</div>
-			<div class="resume-date text-md-right">
-				<span class="text-primary">March 2013 - Present</span>
-			</div>
-		</div>
-
-		<div
-			class="resume-item d-flex flex-column flex-md-row justify-content-between mb-5">
-			<div class="resume-content">
-				<h3 class="mb-0">Web Developer</h3>
-				<div class="subheading mb-3">Intelitec Solutions</div>
-				<p>Capitalize on low hanging fruit to identify a ballpark value
-					added activity to beta test. Override the digital divide with
-					additional clickthroughs from DevOps. Nanotechnology immersion
-					along the information highway will close the loop on focusing
-					solely on the bottom line.</p>
-			</div>
-			<div class="resume-date text-md-right">
-				<span class="text-primary">December 2011 - March 2013</span>
-			</div>
-		</div>
-
-		<div
-			class="resume-item d-flex flex-column flex-md-row justify-content-between mb-5">
-			<div class="resume-content">
-				<h3 class="mb-0">Junior Web Designer</h3>
-				<div class="subheading mb-3">Shout! Media Productions</div>
-				<p>Podcasting operational change management inside of workflows
-					to establish a framework. Taking seamless key performance
-					indicators offline to maximise the long tail. Keeping your eye on
-					the ball while performing a deep dive on the start-up mentality to
-					derive convergence on cross-platform integration.</p>
-			</div>
-			<div class="resume-date text-md-right">
-				<span class="text-primary">July 2010 - December 2011</span>
-			</div>
-		</div>
-
-		<div
-			class="resume-item d-flex flex-column flex-md-row justify-content-between">
-			<div class="resume-content">
-				<h3 class="mb-0">Web Design Intern</h3>
-				<div class="subheading mb-3">Shout! Media Productions</div>
-				<p>Collaboratively administrate empowered markets via
-					plug-and-play networks. Dynamically procrastinate B2C users after
-					installed base benefits. Dramatically visualize customer directed
-					convergence without revolutionary ROI.</p>
-			</div>
-			<div class="resume-date text-md-right">
-				<span class="text-primary">September 2008 - June 2010</span>
-			</div>
-		</div>
-
-	</div>
-
-</section>
-
-<hr class="m-0">
-
-<section class="resume-section p-3 p-lg-5 d-flex align-items-center"
-	id="education">
-	<div class="w-100">
-		<h2 class="mb-5">Education</h2>
-
-		<div
-			class="resume-item d-flex flex-column flex-md-row justify-content-between mb-5">
-			<div class="resume-content">
-				<h3 class="mb-0">University of Colorado Boulder</h3>
-				<div class="subheading mb-3">Bachelor of Science</div>
-				<div>Computer Science - Web Development Track</div>
-				<p>GPA: 3.23</p>
-			</div>
-			<div class="resume-date text-md-right">
-				<span class="text-primary">August 2006 - May 2010</span>
-			</div>
-		</div>
-
-		<div
-			class="resume-item d-flex flex-column flex-md-row justify-content-between">
-			<div class="resume-content">
-				<h3 class="mb-0">James Buchanan High School</h3>
-				<div class="subheading mb-3">Technology Magnet Program</div>
-				<p>GPA: 3.56</p>
-			</div>
-			<div class="resume-date text-md-right">
-				<span class="text-primary">August 2002 - May 2006</span>
-			</div>
-		</div>
-
-	</div>
-</section>
-
-<hr class="m-0">
-
-<section class="resume-section p-3 p-lg-5 d-flex align-items-center"
-	id="skills">
-	<div class="w-100">
-		<h2 class="mb-5">Skills</h2>
-
-		<div class="subheading mb-3">Programming Languages &amp; Tools</div>
-		<ul class="list-inline dev-icons">
-			<li class="list-inline-item"><i class="fab fa-html5"></i></li>
-			<li class="list-inline-item"><i class="fab fa-css3-alt"></i></li>
-			<li class="list-inline-item"><i class="fab fa-js-square"></i></li>
-			<li class="list-inline-item"><i class="fab fa-angular"></i></li>
-			<li class="list-inline-item"><i class="fab fa-react"></i></li>
-			<li class="list-inline-item"><i class="fab fa-node-js"></i></li>
-			<li class="list-inline-item"><i class="fab fa-sass"></i></li>
-			<li class="list-inline-item"><i class="fab fa-less"></i></li>
-			<li class="list-inline-item"><i class="fab fa-wordpress"></i></li>
-			<li class="list-inline-item"><i class="fab fa-gulp"></i></li>
-			<li class="list-inline-item"><i class="fab fa-grunt"></i></li>
-			<li class="list-inline-item"><i class="fab fa-npm"></i></li>
-		</ul>
-
-		<div class="subheading mb-3">Workflow</div>
-		<ul class="fa-ul mb-0">
-			<li><i class="fa-li fa fa-check"></i> Mobile-First, Responsive
-				Design</li>
-			<li><i class="fa-li fa fa-check"></i> Cross Browser Testing
-				&amp; Debugging</li>
-			<li><i class="fa-li fa fa-check"></i> Cross Functional Teams</li>
-			<li><i class="fa-li fa fa-check"></i> Agile Development &amp;
-				Scrum</li>
-		</ul>
-	</div>
-</section>
-
-<hr class="m-0">
-
-<section class="resume-section p-3 p-lg-5 d-flex align-items-center"
-	id="interests">
-	<div class="w-100">
-		<h2 class="mb-5">Interests</h2>
-		<p>Apart from being a web developer, I enjoy most of my time being
-			outdoors. In the winter, I am an avid skier and novice ice climber.
-			During the warmer months here in Colorado, I enjoy mountain biking,
-			free climbing, and kayaking.</p>
-		<p class="mb-0">When forced indoors, I follow a number of sci-fi
-			and fantasy genre movies and television shows, I am an aspiring chef,
-			and I spend a large amount of my free time exploring the latest
-			technology advancements in the front-end web development world.</p>
-		<p>Apart from being a web developer, I enjoy most of my time being
-			outdoors. In the winter, I am an avid skier and novice ice climber.
-			During the warmer months here in Colorado, I enjoy mountain biking,
-			free climbing, and kayaking.</p>
-		<p class="mb-0">When forced indoors, I follow a number of sci-fi
-			and fantasy genre movies and television shows, I am an aspiring chef,
-			and I spend a large amount of my free time exploring the latest
-			technology advancements in the front-end web development world.</p>
-		<p>Apart from being a web developer, I enjoy most of my time being
-			outdoors. In the winter, I am an avid skier and novice ice climber.
-			During the warmer months here in Colorado, I enjoy mountain biking,
-			free climbing, and kayaking.</p>
-		<p class="mb-0">When forced indoors, I follow a number of sci-fi
-			and fantasy genre movies and television shows, I am an aspiring chef,
-			and I spend a large amount of my free time exploring the latest
-			technology advancements in the front-end web development world.</p>
-	</div>
-</section>
-
-<hr class="m-0">
-
-<section class="resume-section p-3 p-lg-5 d-flex align-items-center"
-	id="awards">
-	<div class="w-100">
-		<h2 class="mb-5">Awards &amp; Certifications</h2>
-		<ul class="fa-ul mb-0">
-			<li><i class="fa-li fa fa-trophy text-warning"></i> Google
-				Analytics Certified Developer</li>
-			<li><i class="fa-li fa fa-trophy text-warning"></i> Mobile Web
-				Specialist - Google Certification</li>
-			<li><i class="fa-li fa fa-trophy text-warning"></i> 1<sup>st</sup>
-				Place - University of Colorado Boulder - Emerging Tech Competition
-				2009</li>
-			<li><i class="fa-li fa fa-trophy text-warning"></i> 1<sup>st</sup>
-				Place - University of Colorado Boulder - Adobe Creative Jam 2008 (UI
-				Design Category)</li>
-			<li><i class="fa-li fa fa-trophy text-warning"></i> 2<sup>nd</sup>
-				Place - University of Colorado Boulder - Emerging Tech Competition
-				2008</li>
-			<li><i class="fa-li fa fa-trophy text-warning"></i> 1<sup>st</sup>
-				Place - James Buchanan High School - Hackathon 2006</li>
-			<li><i class="fa-li fa fa-trophy text-warning"></i> 3<sup>rd</sup>
-				Place - James Buchanan High School - Hackathon 2005</li>
-		</ul>
-	</div>
-</section>
-<%@ include file="/template/footer.jsp"%>
+	<%@ include file="/template/default_js_link.jsp" %>
+</body>
+</html>
