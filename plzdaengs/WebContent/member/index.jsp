@@ -6,22 +6,73 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <%@ include file="/template/default_link.jsp" %>
+<% 
+String user = (String)request.getSession().getAttribute("userInfo");
+%>
+
 <script type="text/javascript">
 $(function() {
-	$("#loginbtn").click(loginClick);
+	$("#loginbtn").click(loginModalShow);
+	$("#loginmodal .modal-success").click(login);
+	
 	$(".modal-cancel").click(function() {
 		var name = $(this).attr("name");
 		$("#"+name).modal("hide");
 	});
+	
+	$("#loginalert button").click(loginAlertBtnClick);
+	
+	/* $("#myBtn3").click(function(){
+	    $("#myModal3").modal({backdrop: "static"});
+	  }); */
+	<%
+	if(user != null ){
+		//프로필 변경
+		//메인페이지 변경
+	%>
+	loginProcess();
+	<%
+	}
+	%>
 });
-//
-function loginClick() {
+function loginAlertBtnClick() {
+	$("#loginalert").modal("hide");
+	return false;
+}
+
+function loginProcess() {
+	$("#profile").css("background-image", "url('/plzdaengs/template/img/profile.jpg')");
+}
+function loginModalShow() {
 	$("#loginmodal").modal("show");
+}
+
+function login(){
+	var id = $("#loginmodal input[name=id]").val();
+	var password = $("#loginmodal input[name=password]").val();
+	
+	var idPattern = /^[A-Za-z]{1}[A-Za-z0-9]{3,10}$/;
+	
+	//로그인 실패를 위해 ajax
+	$.ajax({
+		url : "/plzdaengs/member"
+		, method : "post"
+		, data : $("#loginmodal form").serialize()
+		, success : function(result){
+			if(result.trim() != "success"){
+				$("#loginalert p").html(result);
+				$("#loginalert").modal({backdrop: "static"});
+			}
+			
+			location.href = "/plzdaengs/member/index.jsp";
+		}
+	});
+	//
 	
 }
 </script>
 <style type="text/css">
-.modal-lg{
+#loginmodal .modal-lg{
 	width: 50%;
 }
 #loginmodal .modal-content{
@@ -31,12 +82,15 @@ function loginClick() {
 	font-size: 1.2rem;
 }
 
-.form-group input{
+#loginmodal .form-group input{
 	height: 3rem;
 	font-size: 1.2rem;
 }
-.btn-group button{
+#loginmodal .btn-group button{
 	height: 3rem
+}
+#loginmodal h5{
+	font-size: 1.7rem;	
 }
 
 </style>
@@ -55,25 +109,45 @@ function loginClick() {
 					</button>
 				</div>
 				<div class="modal-body">
-					<form action="">
+					<form>
+						<input type="hidden" name="act" value="login">
 	            		<div class="form-group" align="right">
 							<label for="">
 							<input type="checkbox" class="form-control" name="idsave" value="idsave" >아이디저장</label>
 						</div>
 						<div class="form-group">
-	                        <label class="form-control-label text-uppercase">아이디</label>
-	                        <input type="email" placeholder="아이디를 입력하세요" class="form-control">
+	                        <label class="form-control-label text-uppercase" >아이디</label>
+	                        <input type="text" placeholder="아이디를 입력하세요" class="form-control" required="required" name="id">
 	                      </div>
 	                      <div class="form-group">       
 	                        <label class="form-control-label text-uppercase">비밀번호</label>
-	                        <input type="password" placeholder="Password" class="form-control">
+	                        <input type="password" placeholder="" class="form-control" name="password" required>
 	                      </div>
-	            		<div class="">
-	            			<button class="btn btn-primary modal-success" name="loginmodal">로그인</button>
-	            			<button class="btn btn-primary modal-cancel" name="loginmodal">취소</button>
-	            		</div>
             		</form>
+            		<div class="">
+	            		<button class="btn btn-primary modal-success" name="loginmodal">로그인</button>
+	            		<button class="btn btn-primary modal-cancel" name="loginmodal">취소</button>
+	            	</div>
 				</div>
+			</div>
+		</div>
+		<!-- 로그인 시 뜨는 경고창 -->
+		<div class="modal fade" id="loginalert" role="dialog">
+			<div class="modal-dialog">
+				<!-- Modal content-->
+				<div class="modal-content">
+					<div class="modal-header">
+						<h4 class="modal-title">로그인 경고</h4>
+						<button type="button" class="close" data-dismiss="modal">&times;</button>
+					</div>
+					<div class="modal-body">
+						<p></p>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-danger" data-dismiss="modal">확인</button>
+					</div>
+				</div>
+
 			</div>
 		</div>
 	</div>

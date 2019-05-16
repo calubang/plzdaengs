@@ -4212,7 +4212,9 @@ code {
 }
 #profile{
 	margin-top: 10%;
-	background: url("/plzdaengs/template/img/profile.jpg") no-repeat center top;
+	background-image: url("/plzdaengs/template/img/basic_user_profile.png");
+	background-repeat: no-repeat;
+	background-position: center;
 	width: 10rem;
 	height: 10rem;
 	background-size: cover;
@@ -4269,4 +4271,8 @@ body {
 #mainSection{
 	background-image: url("img/logo.png");
 	background-size: contain;
+}
+
+input[type=password]{
+	font-family: fantasy !important;
 }

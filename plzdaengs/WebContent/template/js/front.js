@@ -12,7 +12,7 @@ $(function () {
 
     	if(className.indexOf("show")>0 && contentsWidth > 1200){
     		//큰화면에서 메뉴바 줄이기
-    		alert("//큰화면에서 메뉴바 줄이기");
+    		//alert("//큰화면에서 메뉴바 줄이기");
     		$("#contents").css("margin-left", "6rem");
     	} else if(className.indexOf("show")>0 && contentsWidth < 1200){
     		//작은화면에서 메뉴바없애기
