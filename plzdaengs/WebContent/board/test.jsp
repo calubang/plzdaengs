@@ -4,6 +4,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<<<<<<< HEAD
 <meta name="viewport" content="width=device-width">
 <link
 	href="https://stackpath.bootstrapcdn.com/bootswatch/4.3.1/sketchy/bootstrap.min.css"
@@ -103,6 +104,11 @@
   </div>
 </div>
 </div>
+=======
+<title>Insert title here</title>
+</head>
+<body>
+>>>>>>> branch 'master' of https://github.com/calubang/plzdaengs.git
 
 </body>
 </html>

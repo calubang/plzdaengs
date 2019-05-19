@@ -1,124 +1,87 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>    
-<%
-String root = request.getContextPath();
-%>
-<!DOCTYPE html>
-<html lang="UTF-8">
-<head>
-
-<meta charset="utf-8">
-<meta name="viewport"
-	content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<meta name="description" content="">
-<meta name="author" content="">
-
-<title>Resume - Start Bootstrap Theme</title>
-
-<!-- Bootstrap core CSS -->
-<link href="<%=root%>/template/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-
-<!-- Custom fonts for this template -->
-<link
-	href="https://fonts.googleapis.com/css?family=Saira+Extra+Condensed:500,700"
-	rel="stylesheet">
-<link
-	href="https://fonts.googleapis.com/css?family=Muli:400,400i,800,800i"
-	rel="stylesheet">
-<link href="<%=root%>/template/vendor/fontawesome-free/css/all.min.css" rel="stylesheet">
-
-<!-- Custom styles for this template -->
-<link href="<%=root%>/template/css/resume.min.css" rel="stylesheet">
-
-<!-- font -->
-<link href="<%=root%>/template/font/font.css" rel="stylesheet" type="text/css">
-
-
-
-<style type="text/css">
-body {
-	font-family: BMJUA;
-	box-sizing: border-box;
-}
-section.resume-section {
-	padding-top: 1rem !important;
-	padding-bottom: 2rem !important;
-	max-width: 85rem;
-}
-#about{
-	background-image: url("<%=root%>/template/img/logo.png");
-	background-size: contain;
-	width:100%;
-	height:100%;
-	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-	max-width: 85rem;
-}
-.nav-item-list{
-	border: 1px solid;
-	display: none;
-	width: 70%;
-    margin-left: auto;
-}
-</style>
-<script type="text/javascript">
-window.onload = function () {	
-	var items = document.getElementsByClassName("nav-item");
-	for(var i=0 ; i<items.length ; i++){
-		items[i].addEventListener("click", function(e) {
-			var menuListDisplay= document.getElementById("diaryMenuList").style.display;
-			var menuName = items.getAttribute("id");
-			if(menuListDisplay == "none"){
-				document.getElementById("diaryMenuList").style.display = "block";
-			} else if(menuListDisplay == ""){
-				document.getElementById("diaryMenuList").style.display = "block";
-			} else{
-				document.getElementById("diaryMenuList").style.display = "none";
-			}
-		}, "false")
-	}
-}
-</script>
-</head>
-
-<body id="page-top">
-
-	<nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top"
-		id="sideNav">
-		<a class="navbar-brand js-scroll-trigger" href="#page-top"> <span
-			class="d-block d-lg-none">Clarence Taylor</span> <span
-			class="d-none d-lg-block"> <img
-				class="img-fluid img-profile rounded-circle mx-auto mb-2"
-				src="<%=root%>/template/img/profile.jpg" alt="">
-		</span>
-		</a>
-		<button class="navbar-toggler" type="button" data-toggle="collapse"
-			data-target="#navbarSupportedContent"
-			aria-controls="navbarSupportedContent" aria-expanded="false"
-			aria-label="Toggle navigation">
-			<span class="navbar-toggler-icon"></span>
-		</button>
-		<div class="collapse navbar-collapse" id="navbarSupportedContent">
-			<ul class="navbar-nav">
-				<li class="nav-item"><a class="nav-link js-scroll-trigger"
-					href="#about" id="diaryMenu">다이어리</a>
-				</li>
-				<li class="nav-item-list" id="diaryMenuList">
-						<a class="nav-link js-scroll-trigger" href="#about">다이어리1</a>
-						<a class="nav-link js-scroll-trigger" href="#about">다이어리2</a>
-						<a class="nav-link js-scroll-trigger" href="#about">다이어리3</a>
-				</li>	
-				<li class="nav-item"><a class="nav-link js-scroll-trigger"
-					href="#experience">소모임</a></li>
-				<li class="nav-item"><a class="nav-link js-scroll-trigger"
-					href="#education">유기견</a></li>
-				<li class="nav-item"><a class="nav-link js-scroll-trigger"
-					href="#skills">게시판</a></li>
-				<li class="nav-item"><a class="nav-link js-scroll-trigger"
-					href="#interests">강아지 정보</a></li>
-				<li class="nav-item"><a class="nav-link js-scroll-trigger"
-					href="#awards">통계</a></li>
-			</ul>
-		</div>
+	pageEncoding="UTF-8"%>
+<header class="header">
+	<nav class="navbar navbar-expand-lg px-4 py-2 bg-white shadow">
+		<a href="#" class="sidebar-toggler text-gray-500 mr-4 mr-lg-5 lead"><i
+			class="fas fa-align-left"></i></a><a href="index.html"
+			class="navbar-brand font-weight-bold text-uppercase"></a>
+		<ul class="ml-auto d-flex align-items-center list-unstyled mb-0">
+			<li class="nav-item">
+				<form id="searchForm" class="ml-auto d-none d-lg-block">
+					<div class="form-group position-relative mb-0">
+						<button type="submit" style="top: -3px; left: 0;"
+							class="position-absolute bg-white border-0 p-0">
+							<i class="o-search-magnify-1 text-gray text-lg"></i>
+						</button>
+						<input type="search" placeholder="Search ..."
+							class="form-control form-control-sm border-0 no-shadow pl-4">
+					</div>
+				</form>
+			</li>
+			<li class="nav-item dropdown mr-3"><a id="notifications"
+				href="http://example.com" data-toggle="dropdown"
+				aria-haspopup="true" aria-expanded="false"
+				class="nav-link dropdown-toggle text-gray-400 px-1"><i
+					class="fa fa-bell"></i><span class="notification-icon"></span></a>
+				<div aria-labelledby="notifications" class="dropdown-menu">
+					<a href="#" class="dropdown-item">
+						<div class="d-flex align-items-center">
+							<div class="icon icon-sm bg-violet text-white">
+								<i class="fab fa-twitter"></i>
+							</div>
+							<div class="text ml-2">
+								<p class="mb-0">You have 2 followers</p>
+							</div>
+						</div>
+					</a><a href="#" class="dropdown-item">
+						<div class="d-flex align-items-center">
+							<div class="icon icon-sm bg-green text-white">
+								<i class="fas fa-envelope"></i>
+							</div>
+							<div class="text ml-2">
+								<p class="mb-0">You have 6 new messages</p>
+							</div>
+						</div>
+					</a><a href="#" class="dropdown-item">
+						<div class="d-flex align-items-center">
+							<div class="icon icon-sm bg-blue text-white">
+								<i class="fas fa-upload"></i>
+							</div>
+							<div class="text ml-2">
+								<p class="mb-0">Server rebooted</p>
+							</div>
+						</div>
+					</a><a href="#" class="dropdown-item">
+						<div class="d-flex align-items-center">
+							<div class="icon icon-sm bg-violet text-white">
+								<i class="fab fa-twitter"></i>
+							</div>
+							<div class="text ml-2">
+								<p class="mb-0">You have 2 followers</p>
+							</div>
+						</div>
+					</a>
+					<div class="dropdown-divider"></div>
+					<a href="#" class="dropdown-item text-center"><small
+						class="font-weight-bold headings-font-family text-uppercase">View
+							all notifications</small></a>
+				</div></li>
+			<li class="nav-item dropdown ml-auto"><a id="userInfo"
+				href="http://example.com" data-toggle="dropdown"
+				aria-haspopup="true" aria-expanded="false"
+				class="nav-link dropdown-toggle"><img src="img/avatar-6.jpg"
+					alt="Jason Doe" style="max-width: 2.5rem;"
+					class="img-fluid rounded-circle shadow"></a>
+				<div aria-labelledby="userInfo" class="dropdown-menu">
+					<a href="#" class="dropdown-item"><strong
+						class="d-block text-uppercase headings-font-family">Mark
+							Stephen</strong><small>Web Developer</small></a>
+					<div class="dropdown-divider"></div>
+					<a href="#" class="dropdown-item">Settings</a><a href="#"
+						class="dropdown-item">Activity log </a>
+					<div class="dropdown-divider"></div>
+					<a href="login.html" class="dropdown-item">Logout</a>
+				</div></li>
+		</ul>
 	</nav>
-
-	<div class="container-fluid p-0">
+</header>
