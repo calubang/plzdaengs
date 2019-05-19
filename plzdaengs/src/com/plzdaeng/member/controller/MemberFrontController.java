@@ -1,6 +1,12 @@
 package com.plzdaeng.member.controller;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.URL;
+import java.net.URLConnection;
+import java.net.URLEncoder;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -25,12 +31,15 @@ public class MemberFrontController extends HttpServlet {
 		switch (act) {
 		case "login":
 			HttpSession session = request.getSession();
-			session.setAttribute("userInfo", "login");
-			//path = "/member/loginfail.jsp";
-			path = "/member/loginsuccess.jsp";
+			session.setAttribute("userInfo", "userInfo 테스트중..");
+			path = "/member/loginfail.jsp";
+			//path = "/member/loginsuccess.jsp";
 			MoveUrl.forward(request, response, path);
 			break;
-
+		case "kakaologin":
+			String authorization = request.getParameter("Authorization");
+			System.out.println(authorization);
+			
 		default:
 			break;
 		}

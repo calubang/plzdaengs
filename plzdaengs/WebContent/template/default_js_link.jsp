@@ -9,7 +9,7 @@
 <script src="/plzdaengs/template/vendor/jquery.cookie/jquery.cookie.js">
 	
 </script>
-<script src="/plzdaengs/template/vendor/chart.js/Chart.min.js"></script>
+<script src="/plzdaengs/template/vendor/chart.js/Chart.min2.js"></script>
 <script
 	src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script>
 <script src="/plzdaengs/template/js/charts-home.js"></script>

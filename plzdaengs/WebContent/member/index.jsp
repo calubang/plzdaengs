@@ -8,20 +8,29 @@
 <%@ include file="/template/default_link.jsp" %>
 <% 
 String user = (String)request.getSession().getAttribute("userInfo");
+System.out.println("로그인 페이지 시작..");
+System.out.println(user);
 %>
 
 <script type="text/javascript">
 $(function() {
+/* 	$('#modal-content').on('shown.bs.modal', function() {
+	       $("body.modal-open").removeAttr("style");
+	 }); */
+	
 	$("#loginbtn").click(loginModalShow);
 	$("#loginmodal .modal-success").click(login);
+	$("#loginmodal .kakao-login").click(loginWithKakao);
 	
 	$(".modal-cancel").click(function() {
 		var name = $(this).attr("name");
 		$("#"+name).modal("hide");
+		return false;
 	});
 	
 	$("#loginalert button").click(loginAlertBtnClick);
 	
+	kakaologout();
 	/* $("#myBtn3").click(function(){
 	    $("#myModal3").modal({backdrop: "static"});
 	  }); */
@@ -30,13 +39,28 @@ $(function() {
 		//프로필 변경
 		//메인페이지 변경
 	%>
-	loginProcess();
+		//loginProcess();
 	<%
 	}
 	%>
 });
+
+function kakaologout() {
+	//var accessToken = authObject.access_token;
+	//alert(authObject);
+	/* $.ajax({
+		url : "https://kapi.kakao.com/v1/user/logout"
+		,data: {
+			Authorization : "aa"
+		}
+	}); */
+	//https://kapi.kakao.com/v1/user/logout
+
+}
+
 function loginAlertBtnClick() {
 	$("#loginalert").modal("hide");
+	$("body").prop("class", "modal-open");
 	return false;
 }
 
@@ -62,23 +86,54 @@ function login(){
 			if(result.trim() != "success"){
 				$("#loginalert p").html(result);
 				$("#loginalert").modal({backdrop: "static"});
+			}else{
+				location.href = "/plzdaengs/member/index.jsp";
 			}
-			
-			location.href = "/plzdaengs/member/index.jsp";
 		}
 	});
-	//
-	
 }
+
+
+//카카오 로그인
+var authObject;
+
+Kakao.init('ae62f166e56328952bdb327fa784bba6');
+function loginWithKakao() {
+	//카카오 api key
+	
+	// 로그인 창을 띄웁니다.
+	Kakao.Auth.login({
+		success : function(authObj) {
+			//authObject = JSON.parse(authObj);
+			alert(JSON.stringify(authObj));
+			//authObject = JSON.parse(authObj);
+			//alert(authObj.access_token);
+			authObject = authObj;
+			Kakao.API.request({
+				url : "/v2/user/me"
+				, success: function(res) {
+					alert(res.id);
+					alert(JSON.stringify(res));
+				}
+			});
+		},
+		fail : function(err) {
+			alert(JSON.stringify(err));
+		}
+	});
+};
 </script>
 <style type="text/css">
+body.modal-open {
+  padding-right: 0 !important;
+}
 #loginmodal .modal-lg{
 	width: 50%;
 }
 #loginmodal .modal-content{
 	border-radius: 5%;
 }
-#loginmodal .form-cotrol-label{
+#loginmodal .form-control-label{
 	font-size: 1.2rem;
 }
 
@@ -92,6 +147,10 @@ function login(){
 #loginmodal h5{
 	font-size: 1.7rem;	
 }
+#loginalert .modal-dialog{
+	margin-top: 15%;
+}
+
 
 </style>
 </head>
@@ -121,33 +180,33 @@ function login(){
 	                      </div>
 	                      <div class="form-group">       
 	                        <label class="form-control-label text-uppercase">비밀번호</label>
-	                        <input type="password" placeholder="" class="form-control" name="password" required>
+	                        <input type="password" placeholder="" class="form-control" name="password" required="required">
 	                      </div>
             		</form>
             		<div class="">
-	            		<button class="btn btn-primary modal-success" name="loginmodal">로그인</button>
-	            		<button class="btn btn-primary modal-cancel" name="loginmodal">취소</button>
+	            		<button class="btn btn-primary btn-login-sm modal-success" name="loginmodal">로그인</button>
+	            		<button class="btn btn-primary btn-login-sm kakao-login" name="loginmodal">카카오 로그인</button>
+	            		<button class="btn btn-primary btn-login-sm modal-cancel" name="loginmodal">취소</button>
 	            	</div>
 				</div>
 			</div>
 		</div>
-		<!-- 로그인 시 뜨는 경고창 -->
-		<div class="modal fade" id="loginalert" role="dialog">
-			<div class="modal-dialog">
-				<!-- Modal content-->
-				<div class="modal-content">
-					<div class="modal-header">
-						<h4 class="modal-title">로그인 경고</h4>
-						<button type="button" class="close" data-dismiss="modal">&times;</button>
-					</div>
-					<div class="modal-body">
-						<p></p>
-					</div>
-					<div class="modal-footer">
-						<button type="button" class="btn btn-danger" data-dismiss="modal">확인</button>
-					</div>
+	</div>
+	<!-- 로그인 시 뜨는 경고창 -->
+	<div class="modal" id="loginalert" role="dialog">
+		<div class="modal-dialog">
+			<!-- Modal content-->
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title">로그인 경고</h4>
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
 				</div>
-
+				<div class="modal-body">
+					<p></p>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-danger" name="loginalert">확인</button>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -252,8 +311,8 @@ function login(){
 							kitri 2nd Project 4조
 						</div>
 						<div class="login-icons">
-							<button class="btn btn-primary" id="loginbtn">로그인</button>
-							<button class="btn btn-primary" id="registerbtn">회원가입</button>
+							<button class="btn btn-primary btn-login" id="loginbtn">로그인</button>
+							<button class="btn btn-primary btn-login" id="registerbtn">회원가입</button>
 						</div>
 					</div>
 				</section>

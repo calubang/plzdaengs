@@ -1609,12 +1609,21 @@ STYLE SWITCHER FOR DEMO
   color: #fff;
   background-color: #495057;
   border-color: #495057;
-  height: 3.5rem;
-  width: 8rem;
-  text-align: center;
-  font-size: 1.5rem;
-  line-height: 3.5rem;
-  padding: 0;
+}
+.btn-login{
+	height: 3.5rem;
+	width: 8rem;
+	text-align: center;
+	font-size: 1.5rem;
+	line-height: 3.5rem;
+	padding: 0;
+}
+
+.btn-login-sm{
+	height: 3rem;
+	text-align: center;
+	font-size: 1.5rem;
+	line-height: normal;
 }
 
 .btn-primary:hover {
@@ -1630,15 +1639,15 @@ STYLE SWITCHER FOR DEMO
 
 .btn-primary.disabled, .btn-primary:disabled {
   color: #fff;
-  background-color: #4680ff;
-  border-color: #4680ff;
+  background-color: #bd5d38;
+  border-color: #bd5d38;
 }
 
 .btn-primary:not(:disabled):not(.disabled):active, .btn-primary:not(:disabled):not(.disabled).active,
 .show > .btn-primary.dropdown-toggle {
   color: #fff;
-  background-color: #135dff;
-  border-color: #0654ff;
+  background-color: #bd5d38;
+  border-color: #bd5d38;
 }
 
 .btn-primary:not(:disabled):not(.disabled):active:focus, .btn-primary:not(:disabled):not(.disabled).active:focus,
