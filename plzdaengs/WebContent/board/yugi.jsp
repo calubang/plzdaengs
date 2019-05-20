@@ -109,62 +109,120 @@
       <div class="page-holder w-100 d-flex flex-wrap">
         <div class="container-fluid px-xl-5" id="contents">
         <!-- 게시판뷰시작 -->
-          <section class="py-5">
+          <section class="py-5" style="max-height:none;">
             <div class="row">
-              <div class="col-xl-auto col-lg-auto">
+              <div class="col-xl-12 col-lg-auto">
                 <div class="card">
                   <div class="card-header">
-                    <h6 class="text-uppercase mb-0">게시판</h6>
+                    <h6 class="text-uppercase mb-0">유기견 정보 게시판</h6>
+                  </div>
+                  <div class="card-body">
+                  	<form class="form-horizontal">
+                  	<!-- 날짜 -->
+                  	<div class="form-group row">
+                    	<label class="col-md-1 form-control-label">날짜</label>
+                       <div class="col-md-3">
+                       </div>
+                  	</div> 
+                  	<!-- 시도 -->
+                  		<div class="form-group row">
+                        <label class="col-md-1 form-control-label">시도</label>
+                        <div class="col-md-2">
+                        	<select name="account" class="form-control" >
+                        		<option>시도</option>
+	                            <option>option 1</option>
+	                            <option>option 2</option>
+	                            <option>option 3</option>
+	                            <option>option 4</option>
+                          </select>
+                        </div>
+                        
+                        <div class="col-md-2">
+                        	<select name="account" class="form-control" >
+                        		<option>시군구</option>
+	                            <option>option 1</option>
+	                            <option>option 2</option>
+	                            <option>option 3</option>
+	                            <option>option 4</option>
+                          </select>
+                        </div>
+                        
+                      <label class="col-md-2 form-control-label">보호센터</label>
+                        <div class="col-md-3">
+                        	<select name="account" class="form-control" >
+                        		<option>보호센터</option>
+	                            <option>option 1</option>
+	                            <option>option 2</option>
+	                            <option>option 3</option>
+	                            <option>option 4</option>
+                          	</select>
+                        </div>
+                      </div>
+                      
+                      <!-- 날짜 -->
+                  	<div class="form-group row">
+                    	<label class="col-md-1 form-control-label">품종</label>
+                       <div class="col-md-2">
+                        	<select name="account" class="form-control" >
+                        		<option>품종(대)</option>
+	                            <option>option 1</option>
+	                            <option>option 2</option>
+	                            <option>option 3</option>
+	                            <option>option 4</option>
+                          </select>
+                        </div>
+                        
+                        <div class="col-md-2">
+                        	<select name="account" class="form-control" >
+                        		<option>품중(중)</option>
+	                            <option>option 1</option>
+	                            <option>option 2</option>
+	                            <option>option 3</option>
+	                            <option>option 4</option>
+                          </select>
+                        </div>
+                        <div class="col-md-3"></div>
+                       <button type="submit" class="btn btn-primary">검색</button>
+                  		
+                  	</div>
+                      
+                      <div class="line"></div>
+                  	</form>
                   </div>
                   <div class="card-body">
                     <table class="table card-text col-xl-auto">
-                      <thead>
-                        <tr>
-                          <th>#</th>
-                          <th>
-                          	<div class="col-md-1 select mb-2">
-                          <select name="account" class="form-control">
-                            <option>일상</option>
-                            <option>사진</option>
-                            <option>나눔</option>
-                          </select>
-                          </th>
-                          <th>글제목</th>
-                          <th>작성자</th>
-                          <th>작성일</th>
-                          <th>조회수</th>
-                          <th>추천수</th>
-                        </tr>
-                      </thead>
-                      <!-- 여기부터 아마 반복문으로 게시글 보일듯 -->
                       <tbody>
                         <tr>
-                          <th scope="row">1</th>
-                          <td>Mark</td>
-                          <td>Otto</td>
-                          <td>@mdo</td>
-                          <td>@mdo</td>
-                          <td>@mdo</td>
-                          <td>@mdo</td>
+                          <th scope="row">
+                          	<img src="../template/img/basic_pet_profile.jpg" style="widows: 50%; height: 50%; float: left; padding: 10px; ">
+                          	<li> 이름 : 댕댕 </li>
+                          </th>
+                           <th scope="row">
+                          	<img src="../template/img/basic_pet_profile.jpg" style="widows: 50%; height: 50%; float: left; padding: 10px; ">
+                          	<li> 이름 : 댕댕 </li>
+                          </th>
                         </tr>
                         <tr>
-                          <th scope="row">2</th>
-                          <td>Jacob</td>
-                          <td>Thornton</td>
-                          <td>@fat</td>
-                          <td>@fat</td>
-                          <td>@fat</td>
-                          <td>@fat</td>
+                          <th scope="row">
+                          	<img src="../template/img/basic_pet_profile.jpg" style="widows: 50%; height: 50%; float: left; padding: 10px; ">
+                          	<li> 이름 : 댕댕 </li>
+                          </th>
+                           <th scope="row">
+                          	<img src="../template/img/basic_pet_profile.jpg" style="widows: 50%; height: 50%; float: left; padding: 10px; ">
+                          	<li> 이름 : 댕댕 </li>
+                          </th>
                         </tr>
                         <tr>
-                          <th scope="row">3</th>
-                          <td>Larry</td>
-                          <td>the Bird</td>
-                          <td>@twitter</td>
-                          <td>@twitter</td>
-                          <td>@twitter</td>
-                          <td>@twitter</td>
+                          <th scope="row">
+                          	<img src="../template/img/basic_pet_profile.jpg" style="widows: 50%; height: 50%; float: left; padding: 10px; ">
+                          	<li> 이름 : 댕댕 </li>
+                          </th>
+                           <th scope="row">
+                          	<img src="../template/img/basic_pet_profile.jpg" style="widows: 50%; height: 50%; float: left; padding: 10px; ">
+                          	<li> 이름 : 댕댕 </li>
+                          </th>
                         </tr>
+                         
                       </tbody>
                       <!-- 게시글목록끝 -->
                     </table>
