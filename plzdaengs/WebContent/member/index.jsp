@@ -14,10 +14,6 @@ System.out.println(user);
 
 <script type="text/javascript">
 $(function() {
-/* 	$('#modal-content').on('shown.bs.modal', function() {
-	       $("body.modal-open").removeAttr("style");
-	 }); */
-	
 	$("#loginbtn").click(loginModalShow);
 	$("#loginmodal .modal-success").click(login);
 	$("#loginmodal .kakao-login").click(loginWithKakao);
@@ -28,12 +24,11 @@ $(function() {
 		return false;
 	});
 	
-	$("#loginalert button").click(loginAlertBtnClick);
+	//2중모달 처리
+	$("#alert").on('hidden.bs.modal', function(){
+		$("body").prop("class", "modal-open");
+	  });
 	
-	kakaologout();
-	/* $("#myBtn3").click(function(){
-	    $("#myModal3").modal({backdrop: "static"});
-	  }); */
 	<%
 	if(user != null ){
 		//프로필 변경
@@ -45,21 +40,8 @@ $(function() {
 	%>
 });
 
-function kakaologout() {
-	//var accessToken = authObject.access_token;
-	//alert(authObject);
-	/* $.ajax({
-		url : "https://kapi.kakao.com/v1/user/logout"
-		,data: {
-			Authorization : "aa"
-		}
-	}); */
-	//https://kapi.kakao.com/v1/user/logout
-
-}
-
 function loginAlertBtnClick() {
-	$("#loginalert").modal("hide");
+	$("#alert").modal("hide");
 	$("body").prop("class", "modal-open");
 	return false;
 }
@@ -84,8 +66,8 @@ function login(){
 		, data : $("#loginmodal form").serialize()
 		, success : function(result){
 			if(result.trim() != "success"){
-				$("#loginalert p").html(result);
-				$("#loginalert").modal({backdrop: "static"});
+				//$("#loginalert p").html(result);
+				showAlertModal("로그인 경고", result);
 			}else{
 				location.href = "/plzdaengs/member/index.jsp";
 			}
@@ -124,9 +106,6 @@ function loginWithKakao() {
 };
 </script>
 <style type="text/css">
-body.modal-open {
-  padding-right: 0 !important;
-}
 #loginmodal .modal-lg{
 	width: 50%;
 }
@@ -136,7 +115,6 @@ body.modal-open {
 #loginmodal .form-control-label{
 	font-size: 1.2rem;
 }
-
 #loginmodal .form-group input{
 	height: 3rem;
 	font-size: 1.2rem;
@@ -147,11 +125,6 @@ body.modal-open {
 #loginmodal h5{
 	font-size: 1.7rem;	
 }
-#loginalert .modal-dialog{
-	margin-top: 15%;
-}
-
-
 </style>
 </head>
 <body>
@@ -185,7 +158,7 @@ body.modal-open {
             		</form>
             		<div class="">
 	            		<button class="btn btn-primary btn-login-sm modal-success" name="loginmodal">로그인</button>
-	            		<button class="btn btn-primary btn-login-sm kakao-login" name="loginmodal">카카오 로그인</button>
+	            		<!--  <button class="btn btn-primary btn-login-sm kakao-login" name="loginmodal">카카오 로그인</button>-->
 	            		<button class="btn btn-primary btn-login-sm modal-cancel" name="loginmodal">취소</button>
 	            	</div>
 				</div>
@@ -193,23 +166,8 @@ body.modal-open {
 		</div>
 	</div>
 	<!-- 로그인 시 뜨는 경고창 -->
-	<div class="modal" id="loginalert" role="dialog">
-		<div class="modal-dialog">
-			<!-- Modal content-->
-			<div class="modal-content">
-				<div class="modal-header">
-					<h4 class="modal-title">로그인 경고</h4>
-					<button type="button" class="close" data-dismiss="modal">&times;</button>
-				</div>
-				<div class="modal-body">
-					<p></p>
-				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-danger" name="loginalert">확인</button>
-				</div>
-			</div>
-		</div>
-	</div>
+	<%@ include file="/template/alert_danger.jsp" %>
+	
 	<header class="header">
 		<nav class="navbar navbar-expand-lg px-4 py-2 bg-white shadow">
 			<a href="#" class="sidebar-toggler text-gray-500 mr-4 mr-lg-5 lead"><i
@@ -313,124 +271,6 @@ body.modal-open {
 						<div class="login-icons">
 							<button class="btn btn-primary btn-login" id="loginbtn">로그인</button>
 							<button class="btn btn-primary btn-login" id="registerbtn">회원가입</button>
-						</div>
-					</div>
-				</section>
-				
-				<!-- section 2 -->
-				<section>
-					<div class="row mb-4">
-						<div class="col-lg-7 mb-4 mb-lg-0">
-							<div class="card">
-								<div class="card-header">
-									<h2 class="h6 text-uppercase mb-0">Current server uptime</h2>
-								</div>
-								<div class="card-body">
-									<p class="text-gray">Lorem ipsum dolor sit amet,
-										consectetur adipisicing elit.</p>
-									<div class="chart-holder">
-										<canvas id="lineChart1" style="max-height: 14rem !important;"
-											class="w-100"></canvas>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="col-lg-5 mb-4 mb-lg-0 pl-lg-0">
-							<div class="card mb-3">
-								<div class="card-body">
-									<div class="row align-items-center flex-row">
-										<div class="col-lg-5">
-											<h2 class="mb-0 d-flex align-items-center">
-												<span>86.4</span><span
-													class="dot bg-green d-inline-block ml-3"></span>
-											</h2>
-											<span class="text-muted text-uppercase small">Work
-												hours</span>
-											<hr>
-											<small class="text-muted">Lorem ipsum dolor sit</small>
-										</div>
-										<div class="col-lg-7">
-											<canvas id="pieChartHome1"></canvas>
-										</div>
-									</div>
-								</div>
-							</div>
-							<div class="card">
-								<div class="card-body">
-									<div class="row align-items-center flex-row">
-										<div class="col-lg-5">
-											<h2 class="mb-0 d-flex align-items-center">
-												<span>1.724</span><span
-													class="dot bg-violet d-inline-block ml-3"></span>
-											</h2>
-											<span class="text-muted text-uppercase small">Server
-												time</span>
-											<hr>
-											<small class="text-muted">Lorem ipsum dolor sit</small>
-										</div>
-										<div class="col-lg-7">
-											<canvas id="pieChartHome2"></canvas>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-					<div class="row">
-						<div class="col-lg-5 mb-4 mb-lg-0">
-							<div class="card mb-3">
-								<div class="card-body">
-									<div class="row align-items-center mb-3 flex-row">
-										<div class="col-lg-5">
-											<h2 class="mb-0 d-flex align-items-center">
-												<span>86%</span><span
-													class="dot bg-violet d-inline-block ml-3"></span>
-											</h2>
-											<span class="text-muted text-uppercase small">Monthly
-												Usage</span>
-											<hr>
-											<small class="text-muted">Lorem ipsum dolor sit</small>
-										</div>
-										<div class="col-lg-7">
-											<canvas id="pieChartHome3"></canvas>
-										</div>
-									</div>
-								</div>
-							</div>
-							<div class="card">
-								<div class="card-body">
-									<div class="row align-items-center flex-row">
-										<div class="col-lg-5">
-											<h2 class="mb-0 d-flex align-items-center">
-												<span>$126,41</span><span
-													class="dot bg-green d-inline-block ml-3"></span>
-											</h2>
-											<span class="text-muted text-uppercase small">All
-												Income</span>
-											<hr>
-											<small class="text-muted">Lorem ipsum dolor sit</small>
-										</div>
-										<div class="col-lg-7">
-											<canvas id="pieChartHome4"></canvas>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="col-lg-7">
-							<div class="card">
-								<div class="card-header">
-									<h2 class="h6 text-uppercase mb-0">Total Overdue</h2>
-								</div>
-								<div class="card-body">
-									<p class="text-gray">Lorem ipsum dolor sit amet,
-										consectetur adipisicing elit.</p>
-									<div class="chart-holder">
-										<canvas id="lineChart2" style="max-height: 14rem !important;"
-											class="w-100"></canvas>
-									</div>
-								</div>
-							</div>
 						</div>
 					</div>
 				</section>
