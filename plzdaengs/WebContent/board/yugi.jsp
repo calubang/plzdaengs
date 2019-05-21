@@ -9,6 +9,19 @@
 <meta name="description" content="">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="all,follow">
+	<!-- JavaScript files-->
+	<script src="/plzdaengs/template/vendor/jquery/jquery.min.js"></script>
+	<script src="/plzdaengs/template/vendor/popper.js/umd/popper.min.js">
+		
+	</script>
+	<script src="/plzdaengs/board/js/httpRequest.js"></script>
+	<script src="/plzdaengs/template/vendor/bootstrap/js/bootstrap.min.js"></script>
+	<script src="/plzdaengs/template/vendor/jquery.cookie/jquery.cookie.js">
+		
+	</script>
+	<script
+		src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script>
+	<script src="/plzdaengs/template/js/front.js"></script>
 <!-- Bootstrap CSS-->
 <link rel="stylesheet"
 	href="/plzdaengs/template/vendor/bootstrap/css/bootstrap.min.css">
@@ -34,6 +47,33 @@
         <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
         <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script><![endif]-->
 </head>
+<script type="text/javascript">
+$(document).ready(function() {//
+	
+	var params = "cmd=sido";
+	sendRequest("/plzdaengs/yugi",params,sidoResult,"GET");
+	
+});
+
+function sidoResult(){
+	if(httpRequest.readyState == 4){
+		if(httpRequest.status == 200){
+			var result = httpRequest.responseXML;
+			var item = result.getElementsByTagName("item");
+			
+			for(var i = 0; i < item.length; i++) {
+				var option = $("<option>"+item[i].getElementsByTagName("orgdownNm")[0].firstChild.data+"</option>");
+                $('#sido').append(option);
+				
+			}			
+		}
+	}else{
+		
+	}
+	
+}
+
+</script>
 <body>
 	<!-- navbar-->
 	<header class="header">
@@ -198,12 +238,8 @@
 										<div class="form-group row">
 											<label class="col-md-1 form-control-label">시도</label>
 											<div class="col-md-2">
-												<select name="account" class="form-control">
+												<select id="sido" class="form-control">
 													<option>시도</option>
-													<option>option 1</option>
-													<option>option 2</option>
-													<option>option 3</option>
-													<option>option 4</option>
 												</select>
 											</div>
 
@@ -322,18 +358,5 @@
 			</footer>
 		</div>
 	</div>
-	<!-- JavaScript files-->
-	<script src="/plzdaengs/template/vendor/jquery/jquery.min.js"></script>
-	<script src="/plzdaengs/template/vendor/popper.js/umd/popper.min.js">
-		
-	</script>
-	<script src="/plzdaengs/template/vendor/bootstrap/js/bootstrap.min.js"></script>
-	<script src="/plzdaengs/template/vendor/jquery.cookie/jquery.cookie.js">
-		
-	</script>
-	<script src="/plzdaengs/template/vendor/chart.js/Chart.min.js"></script>
-	<script
-		src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script>
-	<script src="/plzdaengs/template/js/front.js"></script>
 </body>
 </html>
