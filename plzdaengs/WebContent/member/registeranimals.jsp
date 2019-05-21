@@ -8,43 +8,109 @@
 <%@ include file="/template/default_link.jsp"%>
 <script type="text/javascript">
 $(function() {
-	$(".dropdown-item").click(function() {
-		var text = $(this).find("span").text();
-		$(this).parent().siblings("button").text(text);
-		return false;
-	});
+	$(".dropdown-item").click(dropdownItemClick);
+	
+	$("input[type=file].file-hidden").change(fileUploadChange);
 });
+
+function dropdownItemClick(){
+	var text = $(this).text();
+	$(this).parent().siblings("button").text(text);
+}
+
+function zipModalPopUp(){
+	$("#doro").val("");
+	$("#zipModal").modal("show");
+}
+
+function fileUploadChange(){
+	var filename = $(this)[0].files[0].name;
+	
+	$(this).siblings("input[type=text]").val(filename);
+	
+	var imgtag = $(this).siblings("img"); 
+	imgtag.prop("src", "/plzdaengs/template/img/basic_user_profile.png");
+	if(window.FileReader){ 
+
+		var reader = new FileReader(); 
+		reader.onload = function(e){ 
+			var src = e.target.result; 
+			imgtag.prop("src", src);
+		} 
+		reader.readAsDataURL($(this)[0].files[0]);
+	} else { 
+		$(this)[0].select(); 
+		$(this)[0].blur(); 
+		var imgSrc = document.selection.createRange().text;
+		alert(imgSrc);
+		imgtag.style.filter = "progid:DXImageTransform.Microsoft.AlphaImageLoader(enable='true',sizingMethod='scale',src=\""
+				+imgSrc+"\")"; 
+	}
+}
+
 </script>
 <style type="text/css">
-.input-group-prepend>button{
+.register .input-group-prepend>button {
 	width: inherit;
 }
-.form-control-label{
+
+.register .form-control-label {
 	font-size: 1.0rem;
 	margin-top: auto;
 	margin-bottom: auto;
 }
-.text-label{
-	wid
-}
-.form-group input{
+
+.register .form-group input {
 	font-size: 1.0rem;
 }
-input[type=file]{
-	position: absolute; 
-	width: 1px; 
-	height: 1px; 
-	padding: 0; 
-	margin: -1px; 
-	overflow: hidden;
-	clip:rect(0,0,0,0); 
-	border: 0;
+
+.register .file-hidden {
+	display: none;
 }
+
+.register label[for=ex_file] {
+	border: 1px solid #4680ff;
+	border-radius: 2rem;
+	height: calc(2.25rem + 2px);
+	line-height: calc(2.25rem + 2px);
+	text-align: center;
+	color: #4680ff;
+}
+
+.register label[for=ex_file]:hover {
+	background-color: #4680ff;
+	color: white;
+}
+
+.register .fileuploadimg {
+	margin-left: 20px;
+	max-width: 100px;
+	max-height: 100px;
+	padding: 0px;
+}
+.register .registerfileupload label, .register .registerfileupload input{
+	margin-top: auto;
+	margin-bottom: auto;
+}
+.register h3{
+	font-size: 1.5rem;
+}
+
+<!-- 펫 css -->
+ input[type=checkbox]{
+ 	-ms-transform: scale(1.5); /* IE */
+  	-moz-transform: scale(1.5); /* FF */
+  	-webkit-transform: scale(1.5); /* Safari and Chrome */
+  	-o-transform: scale(1.5); /* Opera */
+  	
+ }
+
 </style>
 </head>
 <body>
 	<!-- 경고창 모달 -->
 	<%@ include file="/template/alert_danger.jsp"%>
+
 	<!-- navbar-->
 	<header class="header">
 		<nav class="navbar navbar-expand-lg px-4 py-2 bg-white shadow">
@@ -140,41 +206,86 @@ input[type=file]{
 		<div class="page-holder w-100 d-flex flex-wrap">
 			<div class="container-fluid" id="contents">
 				<!-- section 2 -->
-				<section>
+				<section class="register">
 					<div class="col-lg-10 mb-5">
 						<div class="card">
 							<div class="card-header">
-								<h3 class="h6 text-uppercase mb-0">회원 가입</h3>
+								<h3 class="h6 text-uppercase mb-0">반려동물 등록</h3>
 							</div>
 							<div class="card-body">
 								<form class="form-horizontal">
 									<div class="form-group row">
-										<label class="col-md-3 form-control-label">아이디</label>
+										<label class="col-md-3 form-control-label">반려동물 이름(*)</label>
 										<div class="col-md-5">
-											<input type="text" placeholder="아이디를 입력하세요" class="form-control">
+											<input type="text" placeholder="아이디를 입력하세요" class="form-control" required>
 										</div>
-										<label class="col-md-2 form-control-label">아이디중복체크</label>
+										<label class="col-md-2 form-control-label">같은 이름으로 등록된 펫확인</label>
 									</div>
 									<div class="line"></div>
 									<div class="form-group row">
-										<label class="col-md-3 form-control-label">비밀번호</label>
-										<div class="col-md-5">
-											<input type="password" placeholder="비밀번호를 입력하세요" class="form-control">
+										<label class="col-md-3 form-control-label">반려동물 품종</label>
+										<div class="col-md-8">
+											<button type="button" class="btn btn-outline-primary col-md-2">말티즈</button>
+											<button type="button" class="btn btn-outline-primary col-md-2">푸들</button>
+											<button type="button" class="btn btn-outline-primary col-md-2">포메</button>
+											<button type="button" class="btn btn-outline-primary col-md-2">시츄</button>
+											<button type="button" class="btn btn-outline-primary col-md-2">비숑</button>
+											<button type="button" class="btn btn-outline-primary col-md-2">요크셔</button>
+											<button type="button" class="btn btn-outline-primary col-md-2">치와와</button>
+											<button type="button" class="btn btn-outline-primary col-md-2">스피츠</button>
+											<button type="button" class="btn btn-outline-primary col-md-2">믹스</button>
+											<button type="button" class="btn btn-outline-primary col-md-2">기타</button>
 										</div>
 									</div>
 									<div class="line"></div>
 									<div class="form-group row">
-										<label class="col-md-3 form-control-label">비밀번호 다시입력</label>
+										<label class="col-md-3 form-control-label">반려동물 성별</label>
 										<div class="col-md-5">
-											<input type="password" placeholder="비밀번호를 입력하세요" class="form-control">
+											<div class="custom-control custom-radio custom-control-inline">
+												<input id="genderfemaleradio" type="radio" class="custom-control-input" name="gender" value="female">
+												<label for="genderfemaleradio" class="custom-control-label">여아</label>
+											</div>
+											<div class="custom-control custom-radio custom-control-inline">
+												<input id="gendermaleradio" type="radio" class="custom-control-input" name="gender" value="male">
+												<label for="gendermaleradio" class="custom-control-label">남아</label>
+											</div>
 										</div>
-										<label class="col-md-2 form-control-label">비밀번호 확인</label>
 									</div>
 									<div class="line"></div>
 									<div class="form-group row">
-										<label class="col-md-3 form-control-label">이메일</label>
+										<label class="col-md-3 form-control-label">반려동물 생일</label>
+									</div>
+									<div class="line"></div>
+									<div class="form-group row registerfileupload">
+										<label class="col-md-3 form-control-label">프로필등록</label>
+										<div class="col-md-9 input-group-prepend">
+											<label for="ex_file" class="col-md-2">프로필선택</label>
+											<input
+												type="file" class="form-control file-hidden" id="ex_file"
+												accept="image/*"> <input type="text"
+												placeholder="파일을 등록해주세요" class="form-control col-md-5 "
+												readonly> <img alt="" class="col-md-2 fileuploadimg"
+												src="/plzdaengs/template/img/basic_pet_profile.jpg">
+										</div>
+									</div>
+									<div class="line"></div>
+									<div class="form-group row">
+										<label class="col-md-3 form-control-label">대표 반려동물 설정</label>
+										<div class="col-md-8">
+											<div class="custom-control custom-checkbox">
+												<input id="mainpetCheck" type="checkbox" class="custom-control-input"> 
+												<label for="mainpetCheck" class="custom-control-label">대표 펫으로 설정(대표 펫은 좌측의 프로필에 보여집니다.)</label>
+											</div>
+										</div>
+									</div>
+									
+									
+									
+									<div class="line"></div>
+									<div class="form-group row registeremail">
+										<label class="col-md-3 form-control-label">이메일(*)</label>
 										<div class="col-md-3">
-											<input type="text" placeholder="이메일을 입력하세요" class="form-control">
+											<input type="text" placeholder="이메일을 입력하세요" class="form-control" required>
 										</div>
 										<label class="form-control-label text-label">@</label>
 										<div class="input-group-prepend col-md-3">
@@ -182,39 +293,74 @@ input[type=file]{
 												aria-haspopup="true" aria-expanded="false"
 												class="btn btn-outline-primary dropdown-toggle">이메일선택</button>
 											<div class="dropdown-menu">
-												<a href="" class="dropdown-item"><span>gmail.com</span></a>
-												<a href="" class="dropdown-item"><span>naver.com</span></a>
-												<a href="" class="dropdown-item"><span>daum.net</span></a>
+												<span class="dropdown-item">gmail.com</span> <span
+													class="dropdown-item">naver.com</span> <span
+													class="dropdown-item">daum.net</span>
 											</div>
 										</div>
 									</div>
 									<div class="line"></div>
-									<div class="form-group row">
-										<label class="col-md-3 form-control-label">닉네임</label>
+									<div class="form-group row registernickname">
+										<label class="col-md-3 form-control-label">닉네임(*)</label>
 										<div class="col-md-5">
-											<input type="text" placeholder="닉네임을 입력해주세요" class="form-control">
+											<input type="text" placeholder="닉네임을 입력해주세요" class="form-control" required>
+										</div>
+									</div>
+									<div class="line"></div>
+									
+									<div class="line"></div>
+									<div class="form-group row registertel">
+										<label class="col-md-3 form-control-label">전화번호</label>
+										<div class="col-md-5">
+											<input type="tel" placeholder="전화번호를 입력해주세요"
+												class="form-control">
+										</div>
+										<label class="col-md-2 form-control-label">(-)은 생략</label>
+									</div>
+									<div class="line"></div>
+									<div class="form-group row registergender">
+										<label class="col-md-3 form-control-label">성별</label>
+										<div class="col-md-5">
+											<div class="custom-control custom-radio custom-control-inline">
+												<input id="genderfemaleradio" type="radio" class="custom-control-input" name="gender" value="female">
+												<label for="genderfemaleradio" class="custom-control-label">여자</label>
+											</div>
+											<div class="custom-control custom-radio custom-control-inline">
+												<input id="gendermaleradio" type="radio" class="custom-control-input" name="gender" value="male">
+												<label for="gendermaleradio" class="custom-control-label">남자</label>
+											</div>
+										</div>
+									</div>
+									<div class="line"></div>
+									<div class="form-group row registeraddress">
+										<label class="col-md-3 form-control-label">주소</label>
+										<div class="col-md-9">
+											<button type="button" class="btn btn-outline-primary col-md-4">우편번호</button>
+											<input type="text" placeholder="주소를 입력주세요" class="form-control" readonly>
+											<input type="text" placeholder="상세주소를 입력해주세요" class="form-control">
 										</div>
 									</div>
 									<div class="line"></div>
 									<div class="form-group row">
-										<label class="col-md-3 form-control-label">프로필</label>
-										<div class="col-md-9">
-											<div class="form-group">
-												<!--<div class="input-group mb-3">
-													  <div class="input-group-prepend">
-														<button id="button-addon1" type="button" class="btn btn-primary">Button</button>
-													</div>
-												</div>-->
-												<label for="ex_file">업로드</label>
-												<input type="file" placeholder=""
-														aria-label="Example text with button addon"
-														aria-describedby="button-addon1" class="form-control" id="ex_file">
-											</div>
+										<div class="col-md-9 ml-auto">
+											<button type="reset" class="btn btn-primary">취소</button>
+											<button type="submit" class="btn btn-primary">회원가입</button>
 										</div>
 									</div>
-									
-									
-									
+								</form>
+							</div>
+						</div>
+					</div>
+				</section>
+			<!-- section 2 -->
+				<section class="register">
+					<div class="col-lg-10 mb-5">
+						<div class="card">
+							<div class="card-header">
+								<h3 class="h6 text-uppercase mb-0">회원 가입</h3>
+							</div>
+							<div class="card-body">
+								<form class="form-horizontal">						
 									<div class="line"></div>
 									<div class="form-group row">
 										<label class="col-md-3 form-control-label">Password</label>
@@ -256,8 +402,8 @@ input[type=file]{
 									<div class="line"></div>
 									<div class="form-group row">
 										<label class="col-md-3 form-control-label">Checkboxes
-											and radios <br>
-										<small class="text-primary">Standard HTML elements</small>
+											and radios <br> <small class="text-primary">Standard
+												HTML elements</small>
 										</label>
 										<div class="col-md-9">
 											<div>
@@ -299,8 +445,8 @@ input[type=file]{
 									<div class="line"></div>
 									<div class="form-group row">
 										<label class="col-md-3 form-control-label">Checkboxes
-											&amp; radios <br>
-										<small class="text-primary">Bootstrap4 custom controls</small>
+											&amp; radios <br> <small class="text-primary">Bootstrap4
+												custom controls</small>
 										</label>
 										<div class="col-md-9">
 											<div class="custom-control custom-checkbox">
