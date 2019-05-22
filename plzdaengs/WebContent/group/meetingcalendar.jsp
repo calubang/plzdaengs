@@ -144,6 +144,43 @@ table.calendar td {
 						</div>
 					</div>
 					</div>
+					
+					 <div class="col-lg-4">
+                <div class="card">
+                  <div class="card-header">
+                    <h5 class="text-uppercase mb-0">일정리스트</h5>
+                  </div>
+                  <div class="card-body">
+                    <table class="table card-text">
+                      <thead>
+                        <tr>
+                          <th>날짜</th>
+                          <th>시간</th>
+                          <th>일정</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td>Mark</td>
+                          <td>Otto</td>
+                          <td>@mdo</td>
+                        </tr>
+                        <tr>
+                          <td>Jacob</td>
+                          <td>Thornton</td>
+                          <td>@fat</td>
+                        </tr>
+                        <tr>
+                          <td>Larry</td>
+                          <td>the Bird</td>
+                          <td>@twitter</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+					
 					</div>
 
 					<script type="text/javascript">
@@ -269,10 +306,9 @@ table.calendar td {
 							drawDays();
 						}
 					</script>
-					<button type="button" data-toggle="modal" data-target="#myModal" class="btn btn-primary">Form in a simple modal </button>
 				</section>
 			</div>
-		<!-- 	<div id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" class="modal fade text-left">
+		<div id="meeingModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" class="modal fade text-left">
                       <div role="document" class="modal-dialog">
                         <div class="modal-content">
                           <div class="modal-header">
@@ -342,7 +378,7 @@ table.calendar td {
                           </div>
                         </div>
                       </div>
-                    </div> -->
+                    </div>
 			<%@ include file="/template/footer.jsp"%>
 		</div>
 	</div>
