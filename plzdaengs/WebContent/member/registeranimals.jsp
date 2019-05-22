@@ -7,47 +7,134 @@
 <title>Insert title here</title>
 <%@ include file="/template/default_link.jsp"%>
 <script type="text/javascript">
-$(function() {
-	$(".dropdown-item").click(dropdownItemClick);
-	
-	$("input[type=file].file-hidden").change(fileUploadChange);
-});
+	$(function() {
+		//파일 업로드시 관련 이벤트 호출
+		$("input[type=file].file-hidden").change(fileUploadChange);
+		$(".kindother").click(kindotherClick);
+		
+		fileDropDown();
+	});
 
-function dropdownItemClick(){
-	var text = $(this).text();
-	$(this).parent().siblings("button").text(text);
-}
-
-function zipModalPopUp(){
-	$("#doro").val("");
-	$("#zipModal").modal("show");
-}
-
-function fileUploadChange(){
-	var filename = $(this)[0].files[0].name;
-	
-	$(this).siblings("input[type=text]").val(filename);
-	
-	var imgtag = $(this).siblings("img"); 
-	imgtag.prop("src", "/plzdaengs/template/img/basic_user_profile.png");
-	if(window.FileReader){ 
-
-		var reader = new FileReader(); 
-		reader.onload = function(e){ 
-			var src = e.target.result; 
-			imgtag.prop("src", src);
-		} 
-		reader.readAsDataURL($(this)[0].files[0]);
-	} else { 
-		$(this)[0].select(); 
-		$(this)[0].blur(); 
-		var imgSrc = document.selection.createRange().text;
-		alert(imgSrc);
-		imgtag.style.filter = "progid:DXImageTransform.Microsoft.AlphaImageLoader(enable='true',sizingMethod='scale',src=\""
-				+imgSrc+"\")"; 
+	function kindotherClick(){
+		$("#kindothermodal").modal("show");
 	}
-}
+	
+	function dropdownItemClick() {
+		var text = $(this).text();
+		$(this).parent().siblings("button").text(text);
+	}
 
+	function zipModalPopUp() {
+		$("#doro").val("");
+		$("#zipModal").modal("show");
+	}
+
+	function fileUploadChange() {
+		var filename = $(this)[0].files[0].name;
+
+		$(this).siblings("input[type=text]").val(filename);
+
+		var imgtag = $(this).siblings("img");
+		imgtag.prop("src", "/plzdaengs/template/img/basic_user_profile.png");
+		if (window.FileReader) {
+
+			var reader = new FileReader();
+			reader.onload = function(e) {
+				var src = e.target.result;
+				imgtag.prop("src", src);
+			}
+			reader.readAsDataURL($(this)[0].files[0]);
+		} else {
+			$(this)[0].select();
+			$(this)[0].blur();
+			var imgSrc = document.selection.createRange().text;
+			imgtag.style.filter = "progid:DXImageTransform.Microsoft.AlphaImageLoader(enable='true',sizingMethod='scale',src=\""
+					+ imgSrc + "\")";
+		}
+	}
+
+	function fileDropDown() {
+		var fileInputText = $(".registerfileupload input[type=text]");
+		var fileInput = $(".registerfileupload input[type=file]");
+
+		//드래그 한채로 들어오기
+		fileInputText.on("dragenter", function(e) {
+			e.stopPropagation();
+			e.preventDefault();
+			fileInputText.css("border-color", "#c6d8ff");
+			fileInputText.css("box-shadow",
+					"0 0 0 0.2rem rgba(70, 128, 255, 0.25)");
+		});
+
+		//드래그 한채로 나가기
+		fileInputText.on("dragleave", function(e) {
+			e.stopPropagation();
+			e.preventDefault();
+			fileInputText.css("border-color", "#ced4da");
+			fileInputText.css("box-shadow", "");
+		});
+		//??
+		fileInputText.on('dragover', function(e) {
+			e.stopPropagation();
+			e.preventDefault();
+			fileInputText.css("border-color", "#c6d8ff");
+			fileInputText.css("box-shadow",
+					"0 0 0 0.2rem rgba(70, 128, 255, 0.25)");
+		});
+
+		//드래그 객체 놓기
+		fileInputText.on('drop', function(e) {
+			e.preventDefault();
+			fileInputText.css("border-color", "#ced4da");
+			fileInputText.css("box-shadow", "");
+
+			var files = e.originalEvent.dataTransfer.files;
+
+			if (files != null) {
+				if (files.length < 1) {
+					showAlertModal("이미지 업로드 경고", "잘못된 파일입니다.");
+					return;
+				}
+				fileRegisterProcess(files);
+			} else {
+				showAlertModal("이미지 업로드 경고", "프로필 등록을 실패하였습니다.");
+			}
+		});
+	}
+
+	function fileRegisterProcess(files) {
+		var fileInputText = $(".registerfileupload input[type=text]");
+		var fileInput = $(".registerfileupload input[type=file]");
+		var imgtag = $(".registerfileupload img");
+
+		var fileName = files[0].name;
+
+		if (!(files[0].type.startsWith('image/'))) {
+			showAlertModal("이미지 업로드 경고", "올릴수 없는 확장자입니다.");
+			return;
+		}
+
+		fileInput[0].files = files;
+		fileName = fileInput[0].files[0].name;
+		$(fileInputText[0]).val(fileName);
+		//
+
+		imgtag.prop("src", "/plzdaengs/template/img/basic_pet_profile.jpg");
+		if (window.FileReader) {
+			var reader = new FileReader();
+			reader.onload = function(e) {
+				var src = e.target.result;
+				imgtag.prop("src", src);
+			}
+			reader.readAsDataURL(fileInput[0].files[0]);
+		} else {
+			fileInput[0].select();
+			fileInput[0].blur();
+			var imgSrc = document.selection.createRange().text;
+			imgtag.style.filter = "progid:DXImageTransform.Microsoft.AlphaImageLoader(enable='true',sizingMethod='scale',src=\""
+					+ imgSrc + "\")";
+		}
+	}
 </script>
 <style type="text/css">
 .register .input-group-prepend>button {
@@ -88,29 +175,31 @@ function fileUploadChange(){
 	max-height: 100px;
 	padding: 0px;
 }
-.register .registerfileupload label, .register .registerfileupload input{
+
+.register .registerfileupload label, .register .registerfileupload input
+	{
 	margin-top: auto;
 	margin-bottom: auto;
 }
-.register h3{
+
+.register h3 {
 	font-size: 1.5rem;
 }
 
-<!-- 펫 css -->
- input[type=checkbox]{
- 	-ms-transform: scale(1.5); /* IE */
-  	-moz-transform: scale(1.5); /* FF */
-  	-webkit-transform: scale(1.5); /* Safari and Chrome */
-  	-o-transform: scale(1.5); /* Opera */
-  	
- }
-
+<!--
+펫 css -->input[type=checkbox] {
+	-ms-transform: scale(1.5); /* IE */
+	-moz-transform: scale(1.5); /* FF */
+	-webkit-transform: scale(1.5); /* Safari and Chrome */
+	-o-transform: scale(1.5); /* Opera */
+}
 </style>
 </head>
 <body>
 	<!-- 경고창 모달 -->
 	<%@ include file="/template/alert_danger.jsp"%>
-
+	<!-- 강아지 기타 눌렸을 때 모달 -->
+	
 	<!-- navbar-->
 	<header class="header">
 		<nav class="navbar navbar-expand-lg px-4 py-2 bg-white shadow">
@@ -217,36 +306,52 @@ function fileUploadChange(){
 									<div class="form-group row">
 										<label class="col-md-3 form-control-label">반려동물 이름(*)</label>
 										<div class="col-md-5">
-											<input type="text" placeholder="아이디를 입력하세요" class="form-control" required>
+											<input type="text" placeholder="아이디를 입력하세요"
+												class="form-control" required>
 										</div>
-										<label class="col-md-2 form-control-label">같은 이름으로 등록된 펫확인</label>
+										<label class="col-md-2 form-control-label">같은 이름으로 등록된
+											펫확인</label>
 									</div>
 									<div class="line"></div>
 									<div class="form-group row">
 										<label class="col-md-3 form-control-label">반려동물 품종</label>
 										<div class="col-md-8">
-											<button type="button" class="btn btn-outline-primary col-md-2">말티즈</button>
-											<button type="button" class="btn btn-outline-primary col-md-2">푸들</button>
-											<button type="button" class="btn btn-outline-primary col-md-2">포메</button>
-											<button type="button" class="btn btn-outline-primary col-md-2">시츄</button>
-											<button type="button" class="btn btn-outline-primary col-md-2">비숑</button>
-											<button type="button" class="btn btn-outline-primary col-md-2">요크셔</button>
-											<button type="button" class="btn btn-outline-primary col-md-2">치와와</button>
-											<button type="button" class="btn btn-outline-primary col-md-2">스피츠</button>
-											<button type="button" class="btn btn-outline-primary col-md-2">믹스</button>
-											<button type="button" class="btn btn-outline-primary col-md-2">기타</button>
+											<button type="button"
+												class="btn btn-outline-primary col-md-2">말티즈</button>
+											<button type="button"
+												class="btn btn-outline-primary col-md-2">푸들</button>
+											<button type="button"
+												class="btn btn-outline-primary col-md-2">포메</button>
+											<button type="button"
+												class="btn btn-outline-primary col-md-2">시츄</button>
+											<button type="button"
+												class="btn btn-outline-primary col-md-2">비숑</button>
+											<button type="button"
+												class="btn btn-outline-primary col-md-2">요크셔</button>
+											<button type="button"
+												class="btn btn-outline-primary col-md-2">치와와</button>
+											<button type="button"
+												class="btn btn-outline-primary col-md-2">스피츠</button>
+											<button type="button"
+												class="btn btn-outline-primary col-md-2">믹스</button>
+											<button type="button"
+												class="btn btn-outline-primary col-md-2 kindother">기타</button>
 										</div>
 									</div>
 									<div class="line"></div>
 									<div class="form-group row">
 										<label class="col-md-3 form-control-label">반려동물 성별</label>
 										<div class="col-md-5">
-											<div class="custom-control custom-radio custom-control-inline">
-												<input id="genderfemaleradio" type="radio" class="custom-control-input" name="gender" value="female">
+											<div
+												class="custom-control custom-radio custom-control-inline">
+												<input id="genderfemaleradio" type="radio"
+													class="custom-control-input" name="gender" value="female">
 												<label for="genderfemaleradio" class="custom-control-label">여아</label>
 											</div>
-											<div class="custom-control custom-radio custom-control-inline">
-												<input id="gendermaleradio" type="radio" class="custom-control-input" name="gender" value="male">
+											<div
+												class="custom-control custom-radio custom-control-inline">
+												<input id="gendermaleradio" type="radio"
+													class="custom-control-input" name="gender" value="male">
 												<label for="gendermaleradio" class="custom-control-label">남아</label>
 											</div>
 										</div>
@@ -259,8 +364,7 @@ function fileUploadChange(){
 									<div class="form-group row registerfileupload">
 										<label class="col-md-3 form-control-label">프로필등록</label>
 										<div class="col-md-9 input-group-prepend">
-											<label for="ex_file" class="col-md-2">프로필선택</label>
-											<input
+											<label for="ex_file" class="col-md-2">프로필선택</label> <input
 												type="file" class="form-control file-hidden" id="ex_file"
 												accept="image/*"> <input type="text"
 												placeholder="파일을 등록해주세요" class="form-control col-md-5 "
@@ -273,19 +377,22 @@ function fileUploadChange(){
 										<label class="col-md-3 form-control-label">대표 반려동물 설정</label>
 										<div class="col-md-8">
 											<div class="custom-control custom-checkbox">
-												<input id="mainpetCheck" type="checkbox" class="custom-control-input"> 
-												<label for="mainpetCheck" class="custom-control-label">대표 펫으로 설정(대표 펫은 좌측의 프로필에 보여집니다.)</label>
+												<input id="mainpetCheck" type="checkbox"
+													class="custom-control-input"> <label
+													for="mainpetCheck" class="custom-control-label">대표
+													펫으로 설정(대표 펫은 좌측의 프로필에 보여집니다.)</label>
 											</div>
 										</div>
 									</div>
-									
-									
-									
+
+
+
 									<div class="line"></div>
 									<div class="form-group row registeremail">
 										<label class="col-md-3 form-control-label">이메일(*)</label>
 										<div class="col-md-3">
-											<input type="text" placeholder="이메일을 입력하세요" class="form-control" required>
+											<input type="text" placeholder="이메일을 입력하세요"
+												class="form-control" required>
 										</div>
 										<label class="form-control-label text-label">@</label>
 										<div class="input-group-prepend col-md-3">
@@ -303,11 +410,12 @@ function fileUploadChange(){
 									<div class="form-group row registernickname">
 										<label class="col-md-3 form-control-label">닉네임(*)</label>
 										<div class="col-md-5">
-											<input type="text" placeholder="닉네임을 입력해주세요" class="form-control" required>
+											<input type="text" placeholder="닉네임을 입력해주세요"
+												class="form-control" required>
 										</div>
 									</div>
 									<div class="line"></div>
-									
+
 									<div class="line"></div>
 									<div class="form-group row registertel">
 										<label class="col-md-3 form-control-label">전화번호</label>
@@ -318,26 +426,15 @@ function fileUploadChange(){
 										<label class="col-md-2 form-control-label">(-)은 생략</label>
 									</div>
 									<div class="line"></div>
-									<div class="form-group row registergender">
-										<label class="col-md-3 form-control-label">성별</label>
-										<div class="col-md-5">
-											<div class="custom-control custom-radio custom-control-inline">
-												<input id="genderfemaleradio" type="radio" class="custom-control-input" name="gender" value="female">
-												<label for="genderfemaleradio" class="custom-control-label">여자</label>
-											</div>
-											<div class="custom-control custom-radio custom-control-inline">
-												<input id="gendermaleradio" type="radio" class="custom-control-input" name="gender" value="male">
-												<label for="gendermaleradio" class="custom-control-label">남자</label>
-											</div>
-										</div>
-									</div>
 									<div class="line"></div>
 									<div class="form-group row registeraddress">
 										<label class="col-md-3 form-control-label">주소</label>
 										<div class="col-md-9">
-											<button type="button" class="btn btn-outline-primary col-md-4">우편번호</button>
-											<input type="text" placeholder="주소를 입력주세요" class="form-control" readonly>
-											<input type="text" placeholder="상세주소를 입력해주세요" class="form-control">
+											<button type="button"
+												class="btn btn-outline-primary col-md-4">우편번호</button>
+											<input type="text" placeholder="주소를 입력주세요"
+												class="form-control" readonly> <input type="text"
+												placeholder="상세주소를 입력해주세요" class="form-control">
 										</div>
 									</div>
 									<div class="line"></div>
@@ -352,7 +449,7 @@ function fileUploadChange(){
 						</div>
 					</div>
 				</section>
-			<!-- section 2 -->
+				<!-- section 2 -->
 				<section class="register">
 					<div class="col-lg-10 mb-5">
 						<div class="card">
@@ -360,7 +457,7 @@ function fileUploadChange(){
 								<h3 class="h6 text-uppercase mb-0">회원 가입</h3>
 							</div>
 							<div class="card-body">
-								<form class="form-horizontal">						
+								<form class="form-horizontal">
 									<div class="line"></div>
 									<div class="form-group row">
 										<label class="col-md-3 form-control-label">Password</label>
