@@ -126,6 +126,7 @@
 		             	 <input type="text" name="searchword" size="50"><button type="submit" class="btn btn-secondary">검색</button>
 		             	 <button type="button" data-toggle="modal" data-target="#myModal" class="btn btn-primary">소모임생성</button>
 	             	 </form>
+	             	 </div>
 		             	 <!-- creategroup(modal) -->
 		             	 <div id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" class="modal fade text-left">
                       <div role="document" class="modal-dialog">
@@ -201,7 +202,7 @@
                         </div>
                       </div>
                     </div>
-             	 </div>
+             	 
              	 <!-- 가입한소모임 -->
              	 <div><label style="text-align:center">내가 가입한 소모임</label>
              	 </div>
@@ -210,7 +211,7 @@
                   <h2 class="h6 text-uppercase mb-0" style="font-size: large;">펫과 함께하는 한강산책</h2>
                   	</div>
                   	<div class="card-body" style="padding: 10;">
-                  	<img style="display:inline;float:left;" src="plzdaengs/group/img/001.jpg" width="80" height="80" >
+                  	<img style="display:inline;float:left;" src="/plzdaengs/group/img/001.jpg" width="80" height="80" >
                     <p class="mb-5 text-gray" style="display:inline;float:left">매주 목요일 펫들과 함께 즐거운 한강산책, 같이하실분들 모여요!</p>
                     <div style="display:inline;float:right">
                     <div><label>지역 : </label>동대문구</div>

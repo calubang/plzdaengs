@@ -3,17 +3,17 @@ F 게시판 - 한번에 볼수있는 게시글 수 관리 / 게시글 보기방�
 F 그룹첫화면에 미니캘린더를 추가?
 
 
-
+UI파일/UI상세/연결/연결상세/기능/기능상세
 T group page
-T groupmain 
-T creategroupform
-F groupfirstpage 메인에 minical 추가?
-F meeting calendar 달력만 구현
-F nomal board paging and searchbar
+TF groupmain 캘린더? 채팅? 
+TF creategroupform 체크박스 custom css / 이미지기능
+TF groupfirstpage 메인에 minical 추가?
+TT meeting calendar 달력/일정상세 구현
+TF nomal board paging and searchbar
 F	-writting page
 F photo board
 F	-writting page
 T managepage 3
-T -info
-T -member
-F -meeting 달력 출력 및 일정등록창 모달화//모달창일정등록 메소드화 리스트 영역할당 + 일정등록 + 달력 및 리스트(참가자까지표시)에 출력
+TF -info
+TF -member
+TF -meeting 달력 출력 및 일정등록창 모달화//모달창일정등록 메소드화 리스트 영역할당 + 일정등록 + 달력 및 리스트(참가자까지표시)에 출력

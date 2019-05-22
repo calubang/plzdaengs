@@ -128,7 +128,7 @@ table.calendar td {
 
 				<section class="py-5">
 					<div class="row">
-					<div class="col-lg-8 mb-4 mb-lg-0">
+					<div class="col-lg-8 mb-4 mb-lg-0" style="padding-right: 0">
 					<div class="card">
 						<div class="card-header">
 							<h5 class="text-uppercase mb-0">캘린더</h5>
@@ -145,7 +145,7 @@ table.calendar td {
 					</div>
 					</div>
 					
-					 <div class="col-lg-4">
+					<div class="col-lg-4" style="padding-left: 0">
                 <div class="card">
                   <div class="card-header">
                     <h5 class="text-uppercase mb-0">일정리스트</h5>
@@ -178,6 +178,34 @@ table.calendar td {
                       </tbody>
                     </table>
                   </div>
+                </div>
+              
+          
+                <div class="card">
+                  <div class="card-header">
+                    <h5 class="text-uppercase mb-0">일정상세</h5>
+                  </div>
+                  <div class="card-body" id="meetingdetail">
+                   <label id="">2019.05.22</label><label id="">오후 07:00</label><label id="">정기 한강산책</label><br>
+                   <textarea class="form-control" rows="4" cols="3" contenteditable="false">내용상세</textarea>
+                   <div>
+                   <button>참가</button>
+                   <button>불참?</button>
+                   </div>
+                  </div>
+                </div>
+             
+					
+					
+					
+                <div class="card">
+                  <div class="card-header">
+                    <h5 class="text-uppercase mb-0">참가자 명단</h5>
+                  </div>
+                  <div class="card-body">
+                   <textarea class="form-control" rows="4" cols="3" contenteditable="false"></textarea>
+                 
+              </div>
                 </div>
               </div>
 					
@@ -308,7 +336,7 @@ table.calendar td {
 					</script>
 				</section>
 			</div>
-		<div id="meeingModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" class="modal fade text-left">
+	<!-- 	<div id="meeingModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" class="modal fade text-left">
                       <div role="document" class="modal-dialog">
                         <div class="modal-content">
                           <div class="modal-header">
@@ -378,7 +406,7 @@ table.calendar td {
                           </div>
                         </div>
                       </div>
-                    </div>
+                    </div> -->
 			<%@ include file="/template/footer.jsp"%>
 		</div>
 	</div>

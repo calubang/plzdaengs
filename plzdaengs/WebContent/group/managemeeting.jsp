@@ -128,7 +128,7 @@ table.calendar td {
 
 				<section class="py-5">
 					<div class="row">
-					<div class="col-lg-8 mb-4 mb-lg-0">
+					<div class="col-lg-8 mb-4 mb-lg-0" style="padding-right: 0">
 					<div class="card">
 						<div class="card-header">
 							<h5 class="text-uppercase mb-0">캘린더</h5>
@@ -146,7 +146,7 @@ table.calendar td {
 					</div>
 					
 					
-					<div class="col-lg-4">
+					<div class="col-lg-4" style="padding-left: 0">
                 <div class="card">
                   <div class="card-header">
                     <h5 class="text-uppercase mb-0">일정리스트</h5>
@@ -228,6 +228,9 @@ table.calendar td {
 							$("#moveNextMonth").on("click", function() {
 								moveNextMonth();
 							});
+							
+							
+							//클릭시 모달창 생성이벤트
 							var dArr = $(".cals");
 							$(dArr).click(function(){
 								var dayText = $(this).find("div[class=cal-day]").text();
@@ -394,6 +397,13 @@ table.calendar td {
                                 <label><input name="endtime" type="checkbox">해산시간 추가</label>
                                 </div>
                               </div>
+                               <div class="line"></div>
+ 								<div class="form-group">
+                                <label>장소</label>
+		                        <div class="col-md-9">
+                                <input type="text" placeholder="한강고수부지 지도api" class="form-control">
+		                        </div>
+                   			   </div>
                                <div class="line"></div>
                             </form>
                           </div>

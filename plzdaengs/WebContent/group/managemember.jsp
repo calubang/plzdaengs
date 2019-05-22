@@ -102,60 +102,67 @@
 		
 		<div class="page-holder w-100 d-flex flex-wrap">
 			<div class="container-fluid" id="contents">
-<section class="py-5">
+
+				 <section class="py-5">
             <div class="row">
+           
+            
               <div class="col-lg-12 mb-5">
                 <div class="card">
                   <div class="card-header">
-                    <h5 class="text-uppercase mb-0">일반 게시판</h5>
-               <p>자유로운 대화를 나눌수 있는 공간 입니다.</p>
+                    <h6 class="text-uppercase mb-0">소모임원 관리</h6>
                   </div>
-                  <div class="card-body">
-                    <table class="table card-text">
+                  <div class="card-body">                           
+                    <table class="table table-striped table-hover card-text">
                       <thead>
                         <tr>
                           <th>#</th>
-                          <th>제목</th>
-                          <th>작성자</th>
-                          <th>작성일자</th>
-                          <th>조회수</th>
-                          <th>추천수</th>
+                          <th>타입</th>
+                          <th>아이디</th>
+                          <th>닉네임</th>
+                          <th>최근접속</th>
+                          <th>가입일</th>
+                          <th>관리</th>
                         </tr>
                       </thead>
                       <tbody>
                         <tr>
                           <th scope="row">1</th>
-                          <td>우리 댕댕이가 아파요ㅜㅜ</td>
+                          <td>모임장</td>
+                          <td>kitri</td>
                           <td>댕맘</td>
                           <td>2019.05.19</td>
-                          <td>40</td>
-                          <td>20</td>
+                          <td>2019.01.01</td>
+                          <td><button>모임장위임</button></td>
                         </tr>
                         <tr>
                           <th scope="row">2</th>
-                          <td>우리 댕댕이가 아파요ㅜㅜ</td>
-                          <td>댕맘</td>
-                          <td>2019.05.19</td>
-                          <td>40</td>
-                          <td>20</td>
+                        <td>일반</td>
+                          <td>uri</td>
+                          <td>우리</td>
+                          <td>2019.05.18</td>
+                          <td>2019.03.03</td>
+                          <td><button>추방</button></td>
                         </tr>
                         <tr>
                           <th scope="row">3</th>
-                          <td>우리 댕댕이가 아파요ㅜㅜ</td>
-                          <td>댕맘</td>
+                        <td>요청</td>
+                          <td>duri</td>
+                          <td>두리</td>
                           <td>2019.05.19</td>
-                          <td>40</td>
-                          <td>20</td>
+                          <td>2019.05.19</td>
+                          <td><button>승인</button></td>
                         </tr>
+                       
                       </tbody>
                     </table>
-              <div>페이징처리영역</div>
+                     <div>페이징처리영역</div>
                <div class="searchgroupboard">
 	             	 <form>
 		             	 <select name="searchoption">
-		             	 <option>제목</option>
-		             	 <option>작성자</option>
-		             	 <option>제목+내용</option>
+		             	 <option>아이디</option>
+		             	 <option>닉네임</option>
+		             	 <option>타입</option>
 		             	 </select>
 		             	 <input type="text" name="searchword" size="50"><button type="submit" class="btn btn-secondary">검색</button>
 	             	 </form>
@@ -165,7 +172,7 @@
               </div>
             </div>
           </section>
-				</div>
+			</div>
 			<%@ include file="/template/footer.jsp" %>
 		</div>
 	</div>
