@@ -7,132 +7,138 @@
 <title>Insert title here</title>
 <%@ include file="/template/default_link.jsp"%>
 <script type="text/javascript">
-$(function() {
-	$(".dropdown-item").click(dropdownItemClick);
-	
-	zipsearchWebSetting($(".registeraddress button"), $(".address input"));
-	$(".registeraddress button").click(zipModalPopUp);
-	$("input[type=file].file-hidden").change(fileUploadChange);
-	
-	fileDropDown();
-});
+	$(function() {
+		$(".dropdown-item").click(dropdownItemClick);
 
-function fileDropDown() {
-	var fileInputText = $(".registerfileupload input[type=text]");
-	var fileInput = $(".registerfileupload input[type=file]");
-	
-	//드래그 한채로 들어오기
-	fileInputText.on("dragenter", function(e) {
-		e.stopPropagation();
-        e.preventDefault();	
-        fileInputText.css("border-color", "#c6d8ff");
-        fileInputText.css("box-shadow", "0 0 0 0.2rem rgba(70, 128, 255, 0.25)");
+		zipsearchWebSetting($(".registeraddress button"), $(".address input"));
+		$(".registeraddress button").click(zipModalPopUp);
+		$("input[type=file].file-hidden").change(fileUploadChange);
+
+		fileDropDown();
 	});
-	
-	//드래그 한채로 나가기
-	fileInputText.on("dragleave", function(e) {
-		e.stopPropagation();
-        e.preventDefault();	
-        fileInputText.css("border-color", "#ced4da");
-        fileInputText.css("box-shadow", "");
-	});
-	//??
-	fileInputText.on('dragover',function(e){
-		e.stopPropagation();
-        e.preventDefault();	
-        fileInputText.css("border-color", "#c6d8ff");
-        fileInputText.css("box-shadow", "0 0 0 0.2rem rgba(70, 128, 255, 0.25)");
-    });
-	
-	//드래그 객체 놓기
-	fileInputText.on('drop', function(e){
-        e.preventDefault();
-        fileInputText.css("border-color", "#ced4da");
-        fileInputText.css("box-shadow", "");
-        
-        var files = e.originalEvent.dataTransfer.files;
-        
-        if(files != null){
-            if(files.length < 1){
-                alert("폴더 업로드 불가");
-                return;
-            }
-            fileRegisterProcess(files);
-        }else{
-            alert("ERROR");
-        }
-    });
-}
 
-function fileRegisterProcess(files){
-	var fileInputText = $(".registerfileupload input[type=text]");
-	var fileInput = $(".registerfileupload input[type=file]");
-	var imgtag = $(".registerfileupload img");
-	
-	var fileName = files[0].name;
-   
-    if (!(files[0].type.startsWith('image/'))){ 
-    	 alert("등록 불가 확장자입니다");
-    	 return;
-    } 
-    
-    fileInput[0].files = files;
-    fileName = fileInput[0].files[0].name;
-    $(fileInputText[0]).val(fileName);
-    //
-	
-	imgtag.prop("src", "/plzdaengs/template/img/basic_user_profile.png");
-	if(window.FileReader){ 
-		var reader = new FileReader(); 
-		reader.onload = function(e){ 
-			var src = e.target.result; 
-			imgtag.prop("src", src);
-		} 
-		reader.readAsDataURL(fileInput[0].files[0]);
-	} else { 
-		fileInput[0].select(); 
-		fileInput[0].blur(); 
-		var imgSrc = document.selection.createRange().text;
-		imgtag.style.filter = "progid:DXImageTransform.Microsoft.AlphaImageLoader(enable='true',sizingMethod='scale',src=\""
-				+imgSrc+"\")"; 
+	function fileDropDown() {
+		var fileInputText = $(".registerfileupload input[type=text]");
+		var fileInput = $(".registerfileupload input[type=file]");
+
+		//드래그 한채로 들어오기
+		fileInputText.on("dragenter", function(e) {
+			e.stopPropagation();
+			e.preventDefault();
+			fileInputText.css("border-color", "#c6d8ff");
+			fileInputText.css("box-shadow",
+					"0 0 0 0.2rem rgba(70, 128, 255, 0.25)");
+		});
+
+		//드래그 한채로 나가기
+		fileInputText.on("dragleave", function(e) {
+			e.stopPropagation();
+			e.preventDefault();
+			fileInputText.css("border-color", "#ced4da");
+			fileInputText.css("box-shadow", "");
+		});
+		//??
+		fileInputText.on('dragover', function(e) {
+			e.stopPropagation();
+			e.preventDefault();
+			fileInputText.css("border-color", "#c6d8ff");
+			fileInputText.css("box-shadow",
+					"0 0 0 0.2rem rgba(70, 128, 255, 0.25)");
+		});
+
+		//드래그 객체 놓기
+		fileInputText.on('drop', function(e) {
+			e.preventDefault();
+			fileInputText.css("border-color", "#ced4da");
+			fileInputText.css("box-shadow", "");
+
+			var files = e.originalEvent.dataTransfer.files;
+
+			if (files != null) {
+				if (files.length < 1) {
+					showAlertModal("이미지 업로드 경고", "잘못된 파일입니다.");
+					return;
+				}
+				fileRegisterProcess(files);
+			} else {
+				showAlertModal("이미지 업로드 경고", "프로필 등록을 실패하였습니다.");
+			}
+		});
 	}
-}
 
-function dropdownItemClick(){
-	var text = $(this).text();
-	$(this).parent().siblings("button").text(text);
-}
+	function fileRegisterProcess(files) {
+		var fileInputText = $(".registerfileupload input[type=text]");
+		var fileInput = $(".registerfileupload input[type=file]");
+		var imgtag = $(".registerfileupload img");
 
-function zipModalPopUp(){
-	$("#doro").val("");
-	$("#zipModal").modal("show");
-}
+		var fileName = files[0].name;
 
-function fileUploadChange(){
-	var filename = this.files[0].name;
-	
-	$(this).siblings("input[type=text]").val(filename);
-	
-	var imgtag = $(this).siblings("img"); 
-	imgtag.prop("src", "/plzdaengs/template/img/basic_user_profile.png");
-	if(window.FileReader){ 
+		if (!(files[0].type.startsWith('image/'))) {
+			showAlertModal("이미지 업로드 경고", "올릴수 없는 확장자입니다.");
+			return;
+		}
 
-		var reader = new FileReader(); 
-		reader.onload = function(e){ 
-			var src = e.target.result; 
-			imgtag.prop("src", src);
-		} 
-		reader.readAsDataURL($(this)[0].files[0]);
-	} else { 
-		$(this)[0].select(); 
-		$(this)[0].blur(); 
-		var imgSrc = document.selection.createRange().text;
-		alert(imgSrc);
-		imgtag.style.filter = "progid:DXImageTransform.Microsoft.AlphaImageLoader(enable='true',sizingMethod='scale',src=\""
-				+imgSrc+"\")"; 
+		fileInput[0].files = files;
+		fileName = fileInput[0].files[0].name;
+		$(fileInputText[0]).val(fileName);
+		//
+
+		imgtag.prop("src", "/plzdaengs/template/img/basic_user_profile.png");
+		if (window.FileReader) {
+			var reader = new FileReader();
+			reader.onload = function(e) {
+				var src = e.target.result;
+				imgtag.prop("src", src);
+			}
+			reader.readAsDataURL(fileInput[0].files[0]);
+		} else {
+			fileInput[0].select();
+			fileInput[0].blur();
+			var imgSrc = document.selection.createRange().text;
+			imgtag.style.filter = "progid:DXImageTransform.Microsoft.AlphaImageLoader(enable='true',sizingMethod='scale',src=\""
+					+ imgSrc + "\")";
+		}
 	}
-}
 
+	function dropdownItemClick() {
+		var text = $(this).text();
+		$(this).parent().siblings("button").text(text);
+	}
+
+	function zipModalPopUp() {
+		$("#doro").val("");
+		$("#zipModal").modal("show");
+	}
+
+	function fileUploadChange() {
+		var filename = this.files[0].name;
+		var imgtag = $(this).siblings("img");
+		imgtag.prop("src", "/plzdaengs/template/img/basic_user_profile.png");
+		
+		if (!($(this)[0].type.startsWith('image/'))) {
+			$(this)[0].value = "";
+			showAlertModal("이미지 업로드 경고", "올릴수 없는 확장자입니다.");
+			return;
+		}
+		
+		$(this).siblings("input[type=text]").val(filename);
+
+		if (window.FileReader) {
+			var reader = new FileReader();
+			reader.onload = function(e) {
+				var src = e.target.result;
+				imgtag.prop("src", src);
+			}
+			reader.readAsDataURL($(this)[0].files[0]);
+		} else {
+			$(this)[0].select();
+			$(this)[0].blur();
+			var imgSrc = document.selection.createRange().text;
+			//alert(imgSrc);
+			imgtag.style.filter = "progid:DXImageTransform.Microsoft.AlphaImageLoader(enable='true',sizingMethod='scale',src=\""
+					+ imgSrc + "\")";
+		}
+	}
 </script>
 <style type="text/css">
 .register .input-group-prepend>button {
@@ -173,14 +179,16 @@ function fileUploadChange(){
 	max-height: 100px;
 	padding: 0px;
 }
-.register .registerfileupload label, .register .registerfileupload input{
+
+.register .registerfileupload label, .register .registerfileupload input
+	{
 	margin-top: auto;
 	margin-bottom: auto;
 }
-.register h3{
+
+.register h3 {
 	font-size: 1.5rem;
 }
-
 </style>
 </head>
 <body>
@@ -189,7 +197,7 @@ function fileUploadChange(){
 	<!-- 우편번호 검색 모달 -->
 	<%@ include file="/template/zipsearchWeb.jsp"%>
 	<!-- navbar-->
-	
+
 	<header class="header">
 		<nav class="navbar navbar-expand-lg px-4 py-2 bg-white shadow">
 			<a href="#" class="sidebar-toggler text-gray-500 mr-4 mr-lg-5 lead"><i
@@ -295,7 +303,8 @@ function fileUploadChange(){
 									<div class="form-group row registerid">
 										<label class="col-md-3 form-control-label">아이디(*)</label>
 										<div class="col-md-5">
-											<input type="text" placeholder="아이디를 입력하세요" class="form-control" required>
+											<input type="text" placeholder="아이디를 입력하세요"
+												class="form-control" required>
 										</div>
 										<label class="col-md-2 form-control-label">아이디중복체크</label>
 									</div>
@@ -303,14 +312,17 @@ function fileUploadChange(){
 									<div class="form-group row registerpassword">
 										<label class="col-md-3 form-control-label">비밀번호(*)</label>
 										<div class="col-md-5">
-											<input type="password" placeholder="비밀번호를 입력하세요" class="form-control" required>
+											<input type="password" placeholder="비밀번호를 입력하세요"
+												class="form-control" required>
 										</div>
 									</div>
 									<div class="line"></div>
 									<div class="form-group row registerpassword">
-										<label class="col-md-3 form-control-label">비밀번호 다시입력(*)</label>
+										<label class="col-md-3 form-control-label">비밀번호
+											다시입력(*)</label>
 										<div class="col-md-5">
-											<input type="password" placeholder="비밀번호를 입력하세요" class="form-control" required>
+											<input type="password" placeholder="비밀번호를 입력하세요"
+												class="form-control" required>
 										</div>
 										<label class="col-md-2 form-control-label">비밀번호 확인</label>
 									</div>
@@ -318,7 +330,8 @@ function fileUploadChange(){
 									<div class="form-group row registeremail">
 										<label class="col-md-3 form-control-label">이메일(*)</label>
 										<div class="col-md-3">
-											<input type="text" placeholder="이메일을 입력하세요" class="form-control" required>
+											<input type="text" placeholder="이메일을 입력하세요"
+												class="form-control" required>
 										</div>
 										<label class="form-control-label text-label">@</label>
 										<div class="input-group-prepend col-md-3">
@@ -336,15 +349,15 @@ function fileUploadChange(){
 									<div class="form-group row registernickname">
 										<label class="col-md-3 form-control-label">닉네임(*)</label>
 										<div class="col-md-5">
-											<input type="text" placeholder="닉네임을 입력해주세요" class="form-control" required>
+											<input type="text" placeholder="닉네임을 입력해주세요"
+												class="form-control" required>
 										</div>
 									</div>
 									<div class="line"></div>
 									<div class="form-group row registerfileupload">
 										<label class="col-md-3 form-control-label">프로필등록</label>
 										<div class="col-md-9 input-group-prepend">
-											<label for="ex_file" class="col-md-2">프로필선택</label> 
-											<input
+											<label for="ex_file" class="col-md-2">프로필선택</label> <input
 												type="file" class="form-control file-hidden" id="ex_file"
 												accept="image/*"> <input type="text"
 												placeholder="파일을 등록해주세요" class="form-control col-md-5 "
@@ -365,12 +378,16 @@ function fileUploadChange(){
 									<div class="form-group row registergender">
 										<label class="col-md-3 form-control-label">성별</label>
 										<div class="col-md-5">
-											<div class="custom-control custom-radio custom-control-inline">
-												<input id="genderfemaleradio" type="radio" class="custom-control-input" name="gender" value="female">
+											<div
+												class="custom-control custom-radio custom-control-inline">
+												<input id="genderfemaleradio" type="radio"
+													class="custom-control-input" name="gender" value="female">
 												<label for="genderfemaleradio" class="custom-control-label">여자</label>
 											</div>
-											<div class="custom-control custom-radio custom-control-inline">
-												<input id="gendermaleradio" type="radio" class="custom-control-input" name="gender" value="male">
+											<div
+												class="custom-control custom-radio custom-control-inline">
+												<input id="gendermaleradio" type="radio"
+													class="custom-control-input" name="gender" value="male">
 												<label for="gendermaleradio" class="custom-control-label">남자</label>
 											</div>
 										</div>
@@ -379,9 +396,11 @@ function fileUploadChange(){
 									<div class="form-group row registeraddress">
 										<label class="col-md-3 form-control-label">주소</label>
 										<div class="col-md-9">
-											<button type="button" class="btn btn-outline-primary col-md-4">우편번호</button>
-											<input type="text" placeholder="주소를 입력주세요" class="form-control" readonly>
-											<input type="text" placeholder="상세주소를 입력해주세요" class="form-control">
+											<button type="button"
+												class="btn btn-outline-primary col-md-4">우편번호</button>
+											<input type="text" placeholder="주소를 입력주세요"
+												class="form-control" readonly> <input type="text"
+												placeholder="상세주소를 입력해주세요" class="form-control">
 										</div>
 									</div>
 									<div class="line"></div>
@@ -396,7 +415,7 @@ function fileUploadChange(){
 						</div>
 					</div>
 				</section>
-			<!-- section 2 -->
+				<!-- section 2 -->
 				<section class="register">
 					<div class="col-lg-10 mb-5">
 						<div class="card">
@@ -404,7 +423,7 @@ function fileUploadChange(){
 								<h3 class="h6 text-uppercase mb-0">회원 가입</h3>
 							</div>
 							<div class="card-body">
-								<form class="form-horizontal">						
+								<form class="form-horizontal">
 									<div class="line"></div>
 									<div class="form-group row">
 										<label class="col-md-3 form-control-label">Password</label>

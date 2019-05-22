@@ -32,8 +32,8 @@ public class MemberFrontController extends HttpServlet {
 		case "login":
 			HttpSession session = request.getSession();
 			session.setAttribute("userInfo", "userInfo 테스트중..");
-			path = "/member/loginfail.jsp";
-			//path = "/member/loginsuccess.jsp";
+			//path = "/member/loginfail.jsp";
+			path = "/member/loginsuccess.jsp";
 			MoveUrl.forward(request, response, path);
 			break;
 		case "kakaologin":

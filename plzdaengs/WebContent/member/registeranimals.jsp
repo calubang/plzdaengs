@@ -6,6 +6,9 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <%@ include file="/template/default_link.jsp"%>
+<link href="/plzdaengs/template/airdatepicker/css/datepicker.min.css" rel="stylesheet" type="text/css">
+<script src="/plzdaengs/template/airdatepicker/js/datepicker.min.js"></script>
+<script src="/plzdaengs/template/airdatepicker/js/i18n/datepicker.kr.js"></script>
 <script type="text/javascript">
 	$(function() {
 		//파일 업로드시 관련 이벤트 호출
@@ -13,8 +16,35 @@
 		$(".kindother").click(kindotherClick);
 		
 		fileDropDown();
+		
+		// 달력 띄우는 부분
+		//$('.calendar input[class=datepicker-here]').datepicker();
+		// Access instance of plugin
+		$('.calendar input[class=datepicker-here]').data('datepicker');	
+		
+		//품종클릭시 이벤트
+		$(".dogkind").click(dogkindClick);
+		
 	});
-
+	
+	function dogkindClick(){
+		var dogkindclass = $(".dogkind");
+		//모두 기본css 로 통일
+		dogkindclass.css("color", "#4680ff");
+		dogkindclass.css("border-color", "#4680ff");
+		dogkindclass.css("background-color", "white");
+		
+		//클릭한 객체만 css변경
+		$(this).css("border-color", "#c6d8ff");
+		$(this).css("box-shadow", "0 0 0 0.2rem rgba(70, 128, 255, 0.25)");
+		$(this).css("color", "white");
+		$(this).css("background-color", "#4680ff");
+		
+		var text = $(this).text();
+		//클릭한 객체로 hidden input변경
+		$(".dogkinddiv input[type=hidden]").val(text);
+	}
+	
 	function kindotherClick(){
 		$("#kindothermodal").modal("show");
 	}
@@ -31,11 +61,19 @@
 
 	function fileUploadChange() {
 		var filename = $(this)[0].files[0].name;
-
+		var imgtag = $(this).siblings("img");
+		imgtag.prop("src", "/plzdaengs/template/img/basic_pet_profile.jpg");
+		
+		if (!($(this)[0].type.startsWith('image/'))) {
+			$(this)[0].value = "";
+			showAlertModal("이미지 업로드 경고", "올릴수 없는 확장자입니다.");
+			return;
+		}
+		
 		$(this).siblings("input[type=text]").val(filename);
 
-		var imgtag = $(this).siblings("img");
-		imgtag.prop("src", "/plzdaengs/template/img/basic_user_profile.png");
+		
+		
 		if (window.FileReader) {
 
 			var reader = new FileReader();
@@ -186,20 +224,50 @@
 	font-size: 1.5rem;
 }
 
-<!--
-펫 css -->input[type=checkbox] {
+<!--펫 css -->
+input[type=checkbox] {
 	-ms-transform: scale(1.5); /* IE */
 	-moz-transform: scale(1.5); /* FF */
 	-webkit-transform: scale(1.5); /* Safari and Chrome */
 	-o-transform: scale(1.5); /* Opera */
 }
+
+#zipModal, #zipModal .form-control{
+		font-size: 1rem;
+	}
 </style>
 </head>
 <body>
 	<!-- 경고창 모달 -->
 	<%@ include file="/template/alert_danger.jsp"%>
 	<!-- 강아지 기타 눌렸을 때 모달 -->
-	
+	<div id="kindothermodal" class="modal fade" role="dialog">
+		<h5 class="modal-title" id="myModalLabel">강아지 품종 검색</h5>
+		<div class="modal-dialog modal-lg">
+			<div class="modal-content">
+				<div class="modal-header text-center">
+					<label style="margin-left: auto; margin-bottom:auto; margin-top:auto; font-size: 1.5rem">강아지 품종 검색</label>
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">X</span>
+					</button>
+				</div>
+				<div class="modal-body text-center">
+					
+					<div class="input-group" align="left">
+						<input type="text" class="form-control" id="doro" name="doro"
+							placeholder="검색 할 품종명"> <span
+							class="input-group-btn"> <input type="button"
+							class="btn btn-warning" value="검색" id="searchBtn">
+						</span>
+					</div>
+					<div style="width: 100%; height: 500px; overflow: auto; margin-top: 1%;">
+		
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 	<!-- navbar-->
 	<header class="header">
 		<nav class="navbar navbar-expand-lg px-4 py-2 bg-white shadow">
@@ -294,7 +362,7 @@
 
 		<div class="page-holder w-100 d-flex flex-wrap">
 			<div class="container-fluid" id="contents">
-				<!-- section 2 -->
+				<!-- section 1 -->
 				<section class="register">
 					<div class="col-lg-10 mb-5">
 						<div class="card">
@@ -306,36 +374,37 @@
 									<div class="form-group row">
 										<label class="col-md-3 form-control-label">반려동물 이름(*)</label>
 										<div class="col-md-5">
-											<input type="text" placeholder="아이디를 입력하세요"
+											<input type="text" placeholder="반려동물 이름을 입력하세요"
 												class="form-control" required>
 										</div>
 										<label class="col-md-2 form-control-label">같은 이름으로 등록된
 											펫확인</label>
 									</div>
 									<div class="line"></div>
-									<div class="form-group row">
+									<div class="form-group row dogkinddiv">
 										<label class="col-md-3 form-control-label">반려동물 품종</label>
 										<div class="col-md-8">
+											<input type="hidden" value="" name="kind">
 											<button type="button"
-												class="btn btn-outline-primary col-md-2">말티즈</button>
+												class="btn btn-outline-primary col-md-2 dogkind">말티즈</button>
 											<button type="button"
-												class="btn btn-outline-primary col-md-2">푸들</button>
+												class="btn btn-outline-primary col-md-2 dogkind">푸들</button>
 											<button type="button"
-												class="btn btn-outline-primary col-md-2">포메</button>
+												class="btn btn-outline-primary col-md-2 dogkind">포메</button>
 											<button type="button"
-												class="btn btn-outline-primary col-md-2">시츄</button>
+												class="btn btn-outline-primary col-md-2 dogkind">시츄</button>
 											<button type="button"
-												class="btn btn-outline-primary col-md-2">비숑</button>
+												class="btn btn-outline-primary col-md-2 dogkind">비숑</button>
 											<button type="button"
-												class="btn btn-outline-primary col-md-2">요크셔</button>
+												class="btn btn-outline-primary col-md-2 dogkind">요크셔</button>
 											<button type="button"
-												class="btn btn-outline-primary col-md-2">치와와</button>
+												class="btn btn-outline-primary col-md-2 dogkind">치와와</button>
 											<button type="button"
-												class="btn btn-outline-primary col-md-2">스피츠</button>
+												class="btn btn-outline-primary col-md-2 dogkind">스피츠</button>
 											<button type="button"
-												class="btn btn-outline-primary col-md-2">믹스</button>
+												class="btn btn-outline-primary col-md-2 dogkind">믹스</button>
 											<button type="button"
-												class="btn btn-outline-primary col-md-2 kindother">기타</button>
+												class="btn btn-outline-primary col-md-2 dogkind kindother">기타</button>
 										</div>
 									</div>
 									<div class="line"></div>
@@ -357,8 +426,11 @@
 										</div>
 									</div>
 									<div class="line"></div>
-									<div class="form-group row">
+									<div class="form-group row calendar">
 										<label class="col-md-3 form-control-label">반려동물 생일</label>
+										<div class="col-md-5">
+											<input type='text' class="form-control datepicker-here" data-position="right top" data-language='kr'/>
+										</div>
 									</div>
 									<div class="line"></div>
 									<div class="form-group row registerfileupload">
@@ -384,392 +456,11 @@
 											</div>
 										</div>
 									</div>
-
-
-
-									<div class="line"></div>
-									<div class="form-group row registeremail">
-										<label class="col-md-3 form-control-label">이메일(*)</label>
-										<div class="col-md-3">
-											<input type="text" placeholder="이메일을 입력하세요"
-												class="form-control" required>
-										</div>
-										<label class="form-control-label text-label">@</label>
-										<div class="input-group-prepend col-md-3">
-											<button type="button" data-toggle="dropdown"
-												aria-haspopup="true" aria-expanded="false"
-												class="btn btn-outline-primary dropdown-toggle">이메일선택</button>
-											<div class="dropdown-menu">
-												<span class="dropdown-item">gmail.com</span> <span
-													class="dropdown-item">naver.com</span> <span
-													class="dropdown-item">daum.net</span>
-											</div>
-										</div>
-									</div>
-									<div class="line"></div>
-									<div class="form-group row registernickname">
-										<label class="col-md-3 form-control-label">닉네임(*)</label>
-										<div class="col-md-5">
-											<input type="text" placeholder="닉네임을 입력해주세요"
-												class="form-control" required>
-										</div>
-									</div>
-									<div class="line"></div>
-
-									<div class="line"></div>
-									<div class="form-group row registertel">
-										<label class="col-md-3 form-control-label">전화번호</label>
-										<div class="col-md-5">
-											<input type="tel" placeholder="전화번호를 입력해주세요"
-												class="form-control">
-										</div>
-										<label class="col-md-2 form-control-label">(-)은 생략</label>
-									</div>
-									<div class="line"></div>
-									<div class="line"></div>
-									<div class="form-group row registeraddress">
-										<label class="col-md-3 form-control-label">주소</label>
-										<div class="col-md-9">
-											<button type="button"
-												class="btn btn-outline-primary col-md-4">우편번호</button>
-											<input type="text" placeholder="주소를 입력주세요"
-												class="form-control" readonly> <input type="text"
-												placeholder="상세주소를 입력해주세요" class="form-control">
-										</div>
-									</div>
 									<div class="line"></div>
 									<div class="form-group row">
 										<div class="col-md-9 ml-auto">
 											<button type="reset" class="btn btn-primary">취소</button>
-											<button type="submit" class="btn btn-primary">회원가입</button>
-										</div>
-									</div>
-								</form>
-							</div>
-						</div>
-					</div>
-				</section>
-				<!-- section 2 -->
-				<section class="register">
-					<div class="col-lg-10 mb-5">
-						<div class="card">
-							<div class="card-header">
-								<h3 class="h6 text-uppercase mb-0">회원 가입</h3>
-							</div>
-							<div class="card-body">
-								<form class="form-horizontal">
-									<div class="line"></div>
-									<div class="form-group row">
-										<label class="col-md-3 form-control-label">Password</label>
-										<div class="col-md-9">
-											<input type="password" name="password" class="form-control">
-										</div>
-									</div>
-									<div class="line"></div>
-									<div class="form-group row">
-										<label class="col-md-3 form-control-label">Placeholder</label>
-										<div class="col-md-9">
-											<input type="text" placeholder="placeholder"
-												class="form-control">
-										</div>
-									</div>
-									<div class="line"></div>
-									<div class="form-group row">
-										<label class="col-md-3 form-control-label">Ranges</label>
-										<div class="col-md-9">
-											<div>
-												<label for="formControlRange">Example Range</label> <input
-													id="formControlRange" type="range"
-													class="form-control-range">
-											</div>
-											<div>
-												<label for="customRange1">Custom Range</label> <input
-													id="customRange1" type="range" class="custom-range">
-											</div>
-										</div>
-									</div>
-									<div class="line"></div>
-									<div class="form-group row">
-										<label class="col-md-3 form-control-label">Disabled</label>
-										<div class="col-md-9">
-											<input type="text" disabled=""
-												placeholder="Disabled input here..." class="form-control">
-										</div>
-									</div>
-									<div class="line"></div>
-									<div class="form-group row">
-										<label class="col-md-3 form-control-label">Checkboxes
-											and radios <br> <small class="text-primary">Standard
-												HTML elements</small>
-										</label>
-										<div class="col-md-9">
-											<div>
-												<input id="option" type="checkbox" value=""> <label
-													for="option">Option one is this and that—be sure to
-													include why it's great</label>
-											</div>
-											<div>
-												<input id="optionsRadios1" type="radio" checked=""
-													value="option1" name="optionsRadios"> <label
-													for="optionsRadios1">Option one is this and that be
-													sure to include why it's great</label>
-											</div>
-											<div>
-												<input id="optionsRadios2" type="radio" value="option2"
-													name="optionsRadios"> <label for="optionsRadios2">Option
-													two can be something else and selecting it will deselect
-													option one</label>
-											</div>
-										</div>
-									</div>
-									<div class="line"></div>
-									<div class="form-group row">
-										<label class="col-md-3 form-control-label">Inline
-											checkboxes</label>
-										<div class="col-md-9">
-											<label class="checkbox-inline"> <input
-												id="inlineCheckbox1" type="checkbox" value="option1">
-												a
-											</label> <label class="checkbox-inline"> <input
-												id="inlineCheckbox2" type="checkbox" value="option2">
-												b
-											</label> <label class="checkbox-inline"> <input
-												id="inlineCheckbox3" type="checkbox" value="option3">
-												c
-											</label>
-										</div>
-									</div>
-									<div class="line"></div>
-									<div class="form-group row">
-										<label class="col-md-3 form-control-label">Checkboxes
-											&amp; radios <br> <small class="text-primary">Bootstrap4
-												custom controls</small>
-										</label>
-										<div class="col-md-9">
-											<div class="custom-control custom-checkbox">
-												<input id="customCheck1" type="checkbox"
-													class="custom-control-input"> <label
-													for="customCheck1" class="custom-control-label">Check
-													this custom checkbox</label>
-											</div>
-											<div
-												class="custom-control custom-radio custom-control-inline">
-												<input id="customRadioInline1" type="radio"
-													name="customRadioInline1" class="custom-control-input">
-												<label for="customRadioInline1" class="custom-control-label">Toggle
-													this custom radio</label>
-											</div>
-											<div
-												class="custom-control custom-radio custom-control-inline">
-												<input id="customRadioInline2" type="radio"
-													name="customRadioInline1" class="custom-control-input">
-												<label for="customRadioInline2" class="custom-control-label">Or
-													toggle this other custom radio</label>
-											</div>
-										</div>
-									</div>
-									<div class="line"></div>
-									<div class="form-group row">
-										<label class="col-md-3 form-control-label">Select</label>
-										<div class="col-md-9 select mb-3">
-											<select name="account" class="form-control">
-												<option>option 1</option>
-												<option>option 2</option>
-												<option>option 3</option>
-												<option>option 4</option>
-											</select>
-										</div>
-										<div class="col-md-9 ml-auto select">
-											<select multiple="" class="form-control rounded">
-												<option>option 1</option>
-												<option>option 2</option>
-												<option>option 3</option>
-												<option>option 4</option>
-											</select>
-										</div>
-									</div>
-									<div class="line"></div>
-									<div class="form-group row has-success">
-										<label class="col-sm-3 form-control-label">Input with
-											success</label>
-										<div class="col-sm-9">
-											<input type="text" class="form-control is-valid">
-										</div>
-									</div>
-									<div class="line"></div>
-									<div class="form-group row has-danger">
-										<label class="col-sm-3 form-control-label">Input with
-											error</label>
-										<div class="col-sm-9">
-											<input type="text" class="form-control is-invalid">
-											<div class="invalid-feedback ml-3">Please provide your
-												name.</div>
-										</div>
-									</div>
-									<div class="line"></div>
-									<div class="form-group row">
-										<label class="col-md-3 form-control-label">Control
-											sizing</label>
-										<div class="col-md-9">
-											<div class="form-group">
-												<input type="text" placeholder=".input-lg"
-													class="form-control form-control-lg">
-											</div>
-											<div class="form-group">
-												<input type="text" placeholder="Default input"
-													class="form-control">
-											</div>
-											<div class="form-group">
-												<input type="text" placeholder=".input-sm"
-													class="form-control form-control-sm">
-											</div>
-										</div>
-									</div>
-									<div class="line"></div>
-									<div class="form-group row">
-										<label class="col-md-3 form-control-label">Column
-											sizing</label>
-										<div class="col-md-9">
-											<div class="row">
-												<div class="col-md-3">
-													<input type="text" placeholder=".col-md-3"
-														class="form-control">
-												</div>
-												<div class="col-md-4">
-													<input type="text" placeholder=".col-md-4"
-														class="form-control">
-												</div>
-												<div class="col-md-5">
-													<input type="text" placeholder=".col-md-5"
-														class="form-control">
-												</div>
-											</div>
-										</div>
-									</div>
-									<div class="line"></div>
-									<div class="form-group row">
-										<label class="col-md-3 form-control-label">Input
-											groups</label>
-										<div class="col-md-9">
-											<div class="form-group">
-												<div class="input-group mb-3">
-													<div class="input-group-prepend">
-														<span class="input-group-text">$</span>
-													</div>
-													<input type="text"
-														aria-label="Dollar amount (with dot and two decimal places)"
-														class="form-control">
-												</div>
-											</div>
-											<div class="form-group">
-												<div class="input-group">
-													<input type="text"
-														aria-label="Dollar amount (with dot and two decimal places)"
-														class="form-control">
-													<div class="input-group-append">
-														<span class="input-group-text">$</span>
-													</div>
-												</div>
-											</div>
-											<div class="form-group">
-												<div class="input-group mb-3">
-													<div class="input-group-prepend">
-														<span class="input-group-text">$</span>
-													</div>
-													<input type="text"
-														aria-label="Amount (to the nearest dollar)"
-														class="form-control">
-													<div class="input-group-append">
-														<span class="input-group-text">.00</span>
-													</div>
-												</div>
-											</div>
-											<div class="form-group">
-												<div class="input-group mb-3">
-													<div class="input-group-prepend">
-														<div class="input-group-text">
-															<input type="checkbox"
-																aria-label="Checkbox for following text input">
-														</div>
-													</div>
-													<input type="text" aria-label="Text input with checkbox"
-														class="form-control">
-												</div>
-											</div>
-											<div class="form-group">
-												<div class="input-group">
-													<div class="input-group-prepend">
-														<div class="input-group-text">
-															<input type="radio"
-																aria-label="Radio button for following text input">
-														</div>
-													</div>
-													<input type="text"
-														aria-label="Text input with radio button"
-														class="form-control">
-												</div>
-											</div>
-										</div>
-									</div>
-									<div class="line"></div>
-									<div class="form-group row">
-										<label class="col-md-3 form-control-label">Button
-											addons</label>
-										<div class="col-md-9">
-											<div class="form-group">
-												<div class="input-group mb-3">
-													<div class="input-group-prepend">
-														<button id="button-addon1" type="button"
-															class="btn btn-primary">Button</button>
-													</div>
-													<input type="text" placeholder=""
-														aria-label="Example text with button addon"
-														aria-describedby="button-addon1" class="form-control">
-												</div>
-											</div>
-											<div class="form-group">
-												<div class="input-group mb-3">
-													<input type="text" placeholder="Recipient's username"
-														aria-label="Recipient's username"
-														aria-describedby="button-addon2" class="form-control">
-													<div class="input-group-append">
-														<button id="button-addon2" type="button"
-															class="btn btn-primary">Button</button>
-													</div>
-												</div>
-											</div>
-										</div>
-									</div>
-									<div class="line"></div>
-									<div class="form-group row">
-										<label class="col-md-3 form-control-label">With
-											dropdowns</label>
-										<div class="col-md-9">
-											<div class="input-group mb-3">
-												<div class="input-group-prepend">
-													<button type="button" data-toggle="dropdown"
-														aria-haspopup="true" aria-expanded="false"
-														class="btn btn-outline-primary dropdown-toggle">Dropdown</button>
-													<div class="dropdown-menu">
-														<a href="#" class="dropdown-item">Action</a><a href="#"
-															class="dropdown-item">Another action</a><a href="#"
-															class="dropdown-item">Something else here</a>
-														<div role="separator" class="dropdown-divider"></div>
-														<a href="#" class="dropdown-item">Separated link</a>
-													</div>
-												</div>
-												<input type="text"
-													aria-label="Text input with dropdown button"
-													class="form-control">
-											</div>
-										</div>
-									</div>
-									<div class="line"></div>
-									<div class="form-group row">
-										<div class="col-md-9 ml-auto">
-											<button type="submit" class="btn btn-secondary">Cancel</button>
-											<button type="submit" class="btn btn-primary">Save
-												changes</button>
+											<button type="submit" class="btn btn-primary">등록</button>
 										</div>
 									</div>
 								</form>
