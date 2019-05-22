@@ -144,6 +144,69 @@ table.calendar td {
 						</div>
 					</div>
 					</div>
+					
+					
+					<div class="col-lg-4">
+                <div class="card">
+                  <div class="card-header">
+                    <h5 class="text-uppercase mb-0">일정리스트</h5>
+                  </div>
+                  <div class="card-body">
+                    <table class="table card-text">
+                      <thead>
+                        <tr>
+                          <th>날짜</th>
+                          <th>시간</th>
+                          <th>일정</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td>Mark</td>
+                          <td>Otto</td>
+                          <td>@mdo</td>
+                        </tr>
+                        <tr>
+                          <td>Jacob</td>
+                          <td>Thornton</td>
+                          <td>@fat</td>
+                        </tr>
+                        <tr>
+                          <td>Larry</td>
+                          <td>the Bird</td>
+                          <td>@twitter</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              
+          
+                <div class="card">
+                  <div class="card-header">
+                    <h5 class="text-uppercase mb-0">일정상세</h5>
+                  </div>
+                  <div class="card-body" id="meetingdetail">
+                   <label id="">2019.05.22</label><label id="">오후 07:00</label><label id="">정기 한강산책</label><br>
+                   <textarea class="form-control" rows="4" cols="3" contenteditable="false">내용을 입력하세요.</textarea>
+                  </div>
+                </div>
+             
+					
+					
+					
+                <div class="card">
+                  <div class="card-header">
+                    <h5 class="text-uppercase mb-0">참가자 명단</h5>
+                  </div>
+                  <div class="card-body">
+                   <textarea class="form-control" rows="4" cols="3" contenteditable="false"></textarea>
+                 
+              </div>
+                </div>
+              </div>
+					
+					
 					</div>
 
 					<script type="text/javascript">
@@ -179,7 +242,7 @@ table.calendar td {
 									$("#date").text(yearText + "년 " + monthText+ "월 " + dayText + "일");
 									//$("select[name=month]>option").append(monthText+ " / ");
 									//$("select[name=day]>option").append(dayText);
-									$("#myModal").modal();
+									$("#gmmeetingModal").modal();
 								
 							});
 							
@@ -269,10 +332,10 @@ table.calendar td {
 							drawDays();
 						}
 					</script>
-					<button type="button" data-toggle="modal" data-target="#myModal" class="btn btn-primary">Form in a simple modal </button>
+					<button type="button" data-toggle="modal" data-target="#gmmeetingModal" class="btn btn-primary">Form in a simple modal </button>
 				</section>
 			</div>
-			<div id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" class="modal fade text-left">
+			<div id="gmmeetingModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" class="modal fade text-left">
                       <div role="document" class="modal-dialog">
                         <div class="modal-content">
                           <div class="modal-header">
@@ -294,7 +357,7 @@ table.calendar td {
                                 <textarea class="form-control" rows="4" cols="3" placeholder="일정 상세내용을 입력하세요."></textarea>
                               </div>
                               <div class="line"></div>
-                              <div class="form-group">       
+                              <div class="form-group" id="managemeetingdate">       
                                 <label>날짜</label>
                                 <div style="inline:right;">
                                 <label id="date"></label>
