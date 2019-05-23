@@ -6,9 +6,6 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <%@ include file="/template/default_link.jsp"%>
-<link href="/plzdaengs/template/airdatepicker/css/datepicker.min.css" rel="stylesheet" type="text/css">
-<script src="/plzdaengs/template/airdatepicker/js/datepicker.js"></script>
-<script src="/plzdaengs/template/airdatepicker/js/i18n/datepicker.kr.js"></script>
 <script type="text/javascript">
 	$(function() {
 		//파일 업로드시 관련 이벤트 호출
@@ -16,14 +13,14 @@
 		$(".kindother").click(kindotherClick);
 		
 		fileDropDown();
-		
-		// 달력 띄우는 부분
-		//$('.calendar input[class=datepicker-here]').datepicker();
-		// Access instance of plugin
-		//$('input[class=datepicker-here]').data('datepicker');	
-		
+				
 		//품종클릭시 이벤트
 		$(".dogkind").click(dogkindClick);
+		
+		$(".datepicker-here").datepicker({
+			language: "kr"
+			, autoClose: true
+		});
 		
 		//예방접종 추가이벤트
 		$(".vaccinlistitem>.plus").click(vaccinplusClick);
@@ -43,15 +40,23 @@
 		var vaccinlistitems = vaccinlist.find(".vaccinlistitem");
 		var vaccinlistitemlast = $(vaccinlistitems[vaccinlistitems.length-1]);
 		var newvaccinlistitem = vaccinlistitemlast.clone();
-		vaccinlist.append(newvaccinlistitem);
-		vaccinlistitemlast.find(".plus").remove();
 		
+		vaccinlistitemlast.find(".plus").remove();		
+		//
 		newvaccinlistitem.find(".dropdown-toggle").text("예방접종 종류");
 		newvaccinlistitem.find("input[type=hidden]").val("");
-		var input = newvaccinlistitem.find(".datepicker-here");
-		//달력 추가해줘야함..
+		newvaccinlistitem.find("input[type=text]").val("");
+		
+		
+		newvaccinlistitem.find("input[type=text]").datepicker({
+		    language: 'kr'
+		    , autoClose: true
+		});
+		
 		newvaccinlistitem.find(".dropdown-menu>.dropdown-item").click(vaccindropdownitemClick);
 		newvaccinlistitem.find(".plus").click(vaccinplusClick);
+		vaccinlist.append(newvaccinlistitem);
+		
 		return false;
 	}
 	
@@ -274,6 +279,10 @@ input[type=checkbox] {
 	line-height: 1.2;
 	text-align: center;
 } 
+.dogkind{
+	padding-left: inherit;
+	padding-right: inherit;
+}
 </style>
 </head>
 <body>
@@ -468,7 +477,7 @@ input[type=checkbox] {
 									<div class="form-group row calendar">
 										<label class="col-md-3 form-control-label">반려동물 생일</label>
 										<div class="col-md-5">
-											<input type='text' placeholder="반려동물 생일을 입력해주세요" class="form-control datepicker-here" data-position="right top" data-language='kr'/>
+											<input type='text' placeholder="반려동물 생일을 입력해주세요" class="form-control datepicker-here" data-auto-close="true" data-position="right top" data-language='kr'/>
 										</div>
 									</div>
 									<div class="line"></div>
@@ -506,7 +515,7 @@ input[type=checkbox] {
 													<input type="hidden" value="" name="vaccin">
 													<button type="button" data-toggle="dropdown"
 														aria-haspopup="true" aria-expanded="false"
-														class="btn btn-outline-primary dropdown-toggle col-md-4">예방접종 종류</button>
+														class="btn btn-outline-primary dropdown-toggle col-md-3">예방접종 종류</button>
 													<div class="dropdown-menu">
 														<span class="dropdown-item">종합백신</span> 
 														<span class="dropdown-item">코로나 장염 예방접종</span>

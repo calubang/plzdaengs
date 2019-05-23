@@ -4273,7 +4273,8 @@ section{
 	display: none;
 	z-index: 1000;
 }
-#document{
+#contents{
+	margin-left: 20rem;
 }
 
 body {

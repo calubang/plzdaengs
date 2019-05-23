@@ -76,6 +76,19 @@
 			class="sidebar-link text-muted active"> <i
 				class="o-home-1 mr-3 text-gray"></i> <span>홈으로</span>
 		</a></li>
+		<li class="sidebar-list-item"><a href="#" data-toggle="collapse"
+			data-target="#pages" aria-expanded="false" aria-controls="pages"
+			class="sidebar-link text-muted"><i
+				class="o-wireframe-1 mr-3 text-gray"></i><span>마이페이지</span></a>
+			<div id="pages" class="collapse">
+				<ul
+					class="sidebar-menu list-unstyled border-left border-primary border-thick">
+					<li class="sidebar-list-item"><a href="/plzdaengs/menu?act=membermodify"
+						class="sidebar-link pl-lg-5">회원정보</a></li>
+					<li class="sidebar-list-item"><a href="/plzdaengs/menu?act=animals"
+						class="sidebar-link pl-lg-5">반려동물 정보</a></li>
+				</ul>
+			</div></li>
 		<li class="sidebar-list-item"><a href="/plzdaengs/charts.html"
 			class="sidebar-link text-muted"><i
 				class="o-sales-up-1 mr-3 text-gray"></i><span>다이어리</span></a></li>
