@@ -20,20 +20,26 @@ public class AnimalFrontController extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String act = request.getParameter("act");
-		String path = "";
-
+		String path = "/index.jsp";
+		
+		System.out.println("animal : " + act);
+		
 		if(act == null)
 			return;
 		
 		switch (act) {
-		case "registeranimal":
-			path = "/member/registeranimal2.jsp";
-			MoveUrl.forward(request, response, path);
+		case "animalregister":
+			path = "/member/animalregister.jsp";
 			break;
-
+		case "animals":
+			path = "/member/animals.jsp";
+			break;
+			
 		default:
 			break;
 		}
+		
+		MoveUrl.forward(request, response, path);
 	}
 
 

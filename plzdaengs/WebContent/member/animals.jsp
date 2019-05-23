@@ -17,11 +17,10 @@ $(function () {
 });
 
 function registerAnimal() {
-	alert("눌렸다");
 	$.ajax({
 		url : "/plzdaengs/animal"
 		, data: {
-			act : "registeranimal"
+			act : "animalregister"
 		}
 		, success: function(result){
 			$("#contents").html(result);
@@ -49,6 +48,14 @@ function initAnimals() {
 	opacity: 1;
 	border-color: #c6d8ff;
 	box-shadow: 0 0 0 0.2rem rgba(70, 128, 255, 0.25);
+}
+.animals .card{
+	min-height: 15rem;
+	max-height: 20rem;	
+}
+
+.animals .card .card-header{
+	text-align: center;
 }
 
 </style>
@@ -178,7 +185,7 @@ function initAnimals() {
 		<div class="page-holder w-100 d-flex flex-wrap">
 			<div class="container-fluid" id="contents">
 				<!-- section 1 -->
-				<section class="py-5">
+				<section class="py-5 animals">
 					<div class="row">
 						<div class="col-lg-6 mb-4">
 							<div class="card">

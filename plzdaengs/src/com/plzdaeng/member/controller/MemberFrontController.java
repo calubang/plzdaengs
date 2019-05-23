@@ -21,12 +21,12 @@ public class MemberFrontController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		System.out.println("member front 입장");
 		String act = request.getParameter("act");
 		String path = "index.jsp";
 		if(act == null) {
 			return;
 		}
+		System.out.println("member : " + act);
 		
 		switch (act) {
 		case "login":
@@ -34,15 +34,18 @@ public class MemberFrontController extends HttpServlet {
 			session.setAttribute("userInfo", "userInfo 테스트중..");
 			//path = "/member/loginfail.jsp";
 			path = "/member/loginsuccess.jsp";
-			MoveUrl.forward(request, response, path);
 			break;
-		case "kakaologin":
-			String authorization = request.getParameter("Authorization");
-			System.out.println(authorization);
-			
+		case "join":
+			path = "/member/memberjoin.jsp";
+			break;
+		case "zipsearchWeb":
+			path = "/zipsearch";
+			break;
 		default:
 			break;
 		}
+		
+		MoveUrl.forward(request, response, path);
 	}
 
 

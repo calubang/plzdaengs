@@ -15,7 +15,7 @@ var zipListView;
 
 function zipSearchAjax(doro, currentPage) {
 	$.ajax({
-		url: "<%=zipSearchWebRoot%>/user"
+		url: "<%=zipSearchWebRoot%>/member"
 		, type:"get"
 		, dataType:"xml"
 		, data : "act=zipsearchWeb&doro="+doro + "&currentPage=" + currentPage
@@ -106,7 +106,7 @@ function zipsearchResult() {
 		}
 	} else{
 		//로딩중...
-		zipListView.innerHTML = "<img src='<%=root%>/img/loading.gif' width='80' height='80'>";
+		zipListView.innerHTML = "<img src='<%=zipSearchWebRoot%>/template/img/loading.gif' width='80' height='80'>";
 	}
 }
 var zipcodetag;

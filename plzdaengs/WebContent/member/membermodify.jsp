@@ -197,7 +197,6 @@
 	<!-- 우편번호 검색 모달 -->
 	<%@ include file="/template/zipsearchWeb.jsp"%>
 	<!-- navbar-->
-
 	<header class="header">
 		<nav class="navbar navbar-expand-lg px-4 py-2 bg-white shadow">
 			<a href="#" class="sidebar-toggler text-gray-500 mr-4 mr-lg-5 lead"><i
@@ -279,7 +278,8 @@
 							class="dropdown-item">Activity log </a>
 						<div class="dropdown-divider"></div>
 						<a href="/plzdaengs/login.html" class="dropdown-item">Logout</a>
-					</div></li>
+					</div>
+				</li>
 			</ul>
 		</nav>
 	</header>
@@ -296,7 +296,7 @@
 					<div class="col-lg-10 mb-5">
 						<div class="card">
 							<div class="card-header">
-								<h3 class="h6 text-uppercase mb-0">회원 가입</h3>
+								<h3 class="h6 text-uppercase mb-0">회원 정보</h3>
 							</div>
 							<div class="card-body">
 								<form class="form-horizontal">
