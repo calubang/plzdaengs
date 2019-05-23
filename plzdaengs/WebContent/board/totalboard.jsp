@@ -161,15 +161,17 @@
                     </table>
                   </div>
                 </div><!-- 여기 끝에 글쓰기버튼 -->
+                <button class="btn btn-primary" type="button" style="background-color: #dc3545; float: right">글쓰기</button>
               </div>
               <!-- 사용할 게시판 끝과 사용안할것  -->
             </div><!-- 여기 끝에 페이징처리 -->
-            <div class="col-md-12 select mb-2">
+            <div class="form-group row">
               <select name="account" class="form-control col-md-2">
                     <option>제목</option>
                     <option>작성자</option>
               </select>
-              <input type="text" class="form-control is-valid col-md-7">
+              <input type="text" class="form-control col-md-7" style="margin-left:1rem;margin-right:4rem;">
+              <button type="submit" class="btn btn-primary">검색하기</button>
             </div>
           </section>
         </div>

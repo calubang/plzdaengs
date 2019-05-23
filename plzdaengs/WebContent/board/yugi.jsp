@@ -64,7 +64,6 @@ function sidoResult(){
 			for(var i = 0; i < item.length; i++) {
 				var option = $("<option>"+item[i].getElementsByTagName("orgdownNm")[0].firstChild.data+"</option>");
                 $('#sido').append(option);
-				
 			}			
 		}
 	}else{
@@ -242,7 +241,7 @@ function sidoResult(){
 													<option>시도</option>
 												</select>
 											</div>
-
+											<label class="col-md-1 form-control-label">시군구</label>
 											<div class="col-md-2">
 												<select name="account" class="form-control">
 													<option>시군구</option>
