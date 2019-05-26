@@ -82,11 +82,12 @@ $(document).ready(function() {//
 		$("#"+target).datepicker().focus();
 	});
 	
-	var today = new Date();
-	today.setDate(today.getDate()-1);
-	$("#bgnde").datepicker('setDate',today);
 	
-	$("#endde").datepicker('setDate',today);
+	$("#bgnde").datepicker('setDate','-1m');
+	
+	$("#endde").datepicker('setDate','today');
+	
+	searchList();
 	
 });
 
@@ -127,7 +128,7 @@ function sidochage(){
 			var item = result.getElementsByTagName("item");
 			
 			$("select[id='sigungu'] option").remove();
-			$('#sigungu').append("<option>시군구</option>");
+			$('#sigungu').append("<option value=''>시군구</option>");
 			
 			for(var i = 0; i < item.length; i++) {
 				var option = $("<option value='"+item[i].getElementsByTagName("orgCd")[0].firstChild.data+"'>"+item[i].getElementsByTagName("orgdownNm")[0].firstChild.data+"</option>");
@@ -145,7 +146,7 @@ function sigunguchage(){
 			var result = httpRequest.responseXML;
 			var item = result.getElementsByTagName("item");
 			$("select[id='shelter'] option").remove();
-			$('#shelter').append("<option>보호센터</option>");
+			$('#shelter').append("<option value=''>보호센터</option>");
 			
 			for(var i = 0; i < item.length; i++) {
 				var option = $("<option value='"+item[i].getElementsByTagName("careRegNo")[0].firstChild.data+"'>"+item[i].getElementsByTagName("careNm")[0].firstChild.data+"</option>");
@@ -162,7 +163,7 @@ function kinduchage(){
 			var result = httpRequest.responseXML;
 			var item = result.getElementsByTagName("item");
 			$("select[id='kindDetail'] option").remove();
-			$('#kindDetail').append("<option>품종(중)</option>");
+			$('#kindDetail').append("<option value=''>품종(중)</option>");
 			
 			for(var i = 0; i < item.length; i++) {
 				var option = $("<option value='"+item[i].getElementsByTagName("kindCd")[0].firstChild.data+"'>"+item[i].getElementsByTagName("KNm")[0].firstChild.data+"</option>");
@@ -177,9 +178,52 @@ function serchResult(){
 	if(httpRequest.readyState == 4){
 		if(httpRequest.status == 200){
 			var result = httpRequest.responseXML;
+			var item = result.getElementsByTagName("item");
+			//yugiList
+			$("#yugiList").html('');
+			
+			for(var i = 0; i < item.length; i++) {
+			
+				var option = "<tr>";
+					option += "		<th>";
+					option += "			<img src='"+item[i].getElementsByTagName("filename")[0].firstChild.data+"' style='widows: 100%; max-height:10rem; max-width:7rem; height: 10rem; width:7rem; float: left; padding: 10px;'>";
+					option += "			<li>공고번호 : "+item[i].getElementsByTagName("noticeNo")[0].firstChild.data+"</li>";
+					option += "			<li>접 수 일  : "+item[i].getElementsByTagName("happenDt")[0].firstChild.data+"</li>";
+					option += "			<li>품     종  : "+item[i].getElementsByTagName("kindCd")[0].firstChild.data+"</li>";
+					option += "			<li>상     태  : "+item[i].getElementsByTagName("processState")[0].firstChild.data+"</li>";
+					option += "		</th>";
+					option += "		<th>";
+					option += "			<img src='"+item[i+1].getElementsByTagName("filename")[0].firstChild.data+"' style='widows: 100%; max-height:10rem; max-width:7rem; height: 10rem; width:7rem; float: left; padding: 10px;'>";
+					option += "			<li>공고번호 : "+item[i+1].getElementsByTagName("noticeNo")[0].firstChild.data+"</li>";
+					option += "			<li>접 수 일  : "+item[i+1].getElementsByTagName("happenDt")[0].firstChild.data+"</li>";
+					option += "			<li>품     종  : "+item[i+1].getElementsByTagName("kindCd")[0].firstChild.data+"</li>";
+					option += "			<li>상     태  : "+item[i+1].getElementsByTagName("processState")[0].firstChild.data+"</li>";
+					option += "		</th>";
+					option += "</tr>"
+					
+					i = i + 1;
+				
+				$("#yugiList").append(option);
+				
+			}	
 			
 		}
 	}
+}
+
+function searchList(){
+	var params = "cmd=abandonmentPublic&bgnde="+$("#bgnde").val().replace(/-/g,"");
+	params += "&endde="+$("#endde").val().replace(/-/g,"");		//검색일자
+	params += "&upkind="+$("#kind option:selected").val();	//축종코드 품종(대)
+	params += "&kind="+$("#kindDetail option:selected").val(); //품종(중)
+	params += "&upr_cd="+$("#sido option:selected").val(); //시도
+	params += "&org_cd="+$("#sigungu option:selected").val(); ///시군구
+	params += "&care_reg_no="+$("#shelter option:selected").val(); //보호센터
+	params += "&pageNo=1";
+	
+	
+	sendRequest("/plzdaengs/yugi",params,serchResult,"GET");
+	
 }
 
 $(function(){
@@ -199,16 +243,7 @@ $(function(){
 	});
 	
 	$('#btnSearch').click(function(){
-		var params = "cmd=abandonmentPublic&bgnde="+$("#bgnde").val().split("-");
-		params += "&endde="+$("#endde").val().split("-");		//검색일자
-		params += "&upkind="+$("#kind option:selected").val();	//축종코드 품종(대)
-		params += "&kind="+$("#kindDetail option:selected").val(); //품종(중)
-		params += "&upr_cd="+$("#sido option:selected").val(); //시도
-		params += "&org_cd="+$("#sigungu option:selected").val(); ///시군구
-		params += "&care_reg_no="+$("#shelter option:selected").val(); //보호센터
-		params += "&pageNo=1";
-		
-		sendRequest("/plzdaengs/yugi",params,serchResult,"GET");
+		searchList();
 	});
 });
 
@@ -391,20 +426,20 @@ $(function(){
 											<label class="col-md-1 form-control-label">시도</label>
 											<div class="col-md-2">
 												<select id="sido" class="form-control" >
-													<option>시도</option>
+													<option value="">시도</option>
 												</select>
 											</div>
 											<label class="col-md-1 form-control-label">시군구</label>
 											<div class="col-md-2">
 												<select id="sigungu" class="form-control">
-													<option>시군구</option>
+													<option value="">시군구</option>
 												</select>
 											</div>
 
 											<label class="col-md-2 form-control-label">보호센터</label>
 											<div class="col-md-3">
 												<select id="shelter" class="form-control">
-													<option>보호센터</option>
+													<option value="">보호센터</option>
 												</select>
 											</div>
 										</div>
@@ -414,7 +449,7 @@ $(function(){
 											<label class="col-md-1 form-control-label">품종</label>
 											<div class="col-md-2">
 												<select id="kind" class="form-control">
-													<option>품종(대)</option>
+													<option value="">품종(대)</option>
 													<option value="417000">개</option>
 													<option value="422400">고양이</option>
 													<option value="42990">기타</option>
@@ -423,11 +458,11 @@ $(function(){
 
 											<div class="col-md-2">
 												<select id="kindDetail" class="form-control">
-													<option>품중(중)</option>
+													<option value="">품중(중)</option>
 												</select>
 											</div>
 											<div class="col-md-3"></div>
-											<button id="btnSearch" type="submit" class="btn btn-primary">검색</button>
+											<button id="btnSearch" type="button" class="btn btn-primary">검색</button>
 
 										</div>
 
@@ -436,38 +471,7 @@ $(function(){
 								</div>
 								<div class="card-body">
 									<table class="table card-text col-xl-auto">
-										<tbody>
-											<tr>
-												<th scope="row"><img
-													src="../template/img/basic_pet_profile.jpg"
-													style="widows: 50%; height: 50%; float: left; padding: 10px;">
-													<li>이름 : 댕댕</li></th>
-												<th scope="row"><img
-													src="../template/img/basic_pet_profile.jpg"
-													style="widows: 50%; height: 50%; float: left; padding: 10px;">
-													<li>이름 : 댕댕</li></th>
-											</tr>
-											<tr>
-												<th scope="row"><img
-													src="../template/img/basic_pet_profile.jpg"
-													style="widows: 50%; height: 50%; float: left; padding: 10px;">
-													<li>이름 : 댕댕</li></th>
-												<th scope="row"><img
-													src="../template/img/basic_pet_profile.jpg"
-													style="widows: 50%; height: 50%; float: left; padding: 10px;">
-													<li>이름 : 댕댕</li></th>
-											</tr>
-											<tr>
-												<th scope="row"><img
-													src="../template/img/basic_pet_profile.jpg"
-													style="widows: 50%; height: 50%; float: left; padding: 10px;">
-													<li>이름 : 댕댕</li></th>
-												<th scope="row"><img
-													src="../template/img/basic_pet_profile.jpg"
-													style="widows: 50%; height: 50%; float: left; padding: 10px;">
-													<li>이름 : 댕댕</li></th>
-											</tr>
-
+										<tbody id="yugiList">
 										</tbody>
 										<!-- 게시글목록끝 -->
 									</table>
