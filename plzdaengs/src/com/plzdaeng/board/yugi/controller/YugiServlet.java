@@ -39,6 +39,52 @@ public class YugiServlet extends HttpServlet {
 				e.printStackTrace();
 			}
 			
+		}else if("sigungu".equals(cmd)) {
+			 response.setContentType("text/xml;charset=utf-8");
+			 String uprCd = request.getParameter("upr_cd");
+				try {
+					
+					PrintWriter out = response.getWriter();
+					out.print(new YugiService().getSigungu(cmd, uprCd));
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+		}else if("shelter".equals(cmd)) {
+			 response.setContentType("text/xml;charset=utf-8");
+			 String uprCd = request.getParameter("upr_cd");
+			 String orgCd = request.getParameter("org_cd");
+				try {
+					
+					PrintWriter out = response.getWriter();
+					out.print(new YugiService().getShelter(cmd, uprCd, orgCd));
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+		}else if("kind".equals(cmd)) {
+			 response.setContentType("text/xml;charset=utf-8");
+			 String upKindCd = request.getParameter("up_kind_cd");
+				try {
+					
+					PrintWriter out = response.getWriter();
+					out.print(new YugiService().getKind(cmd, upKindCd));
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+		}else if("abandonmentPublic".equals(cmd)) {
+			 response.setContentType("text/xml;charset=utf-8");
+				try {
+					
+					PrintWriter out = response.getWriter();
+					out.print(new YugiService().getSearch(cmd, request));
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 		}
 	}
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

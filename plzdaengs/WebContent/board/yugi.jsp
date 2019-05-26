@@ -42,6 +42,10 @@
 <link rel="stylesheet" href="/plzdaengs/template/css/custom.css">
 <!-- Favicon-->
 <link rel="shortcut icon" href="/plzdaengs/template/img/favicon.png?3">
+
+<script src="/plzdaengs/board/js/bootstrap-datepicker.js"></script>
+<script src="/plzdaengs/board/js/bootstrap-datepicker.kr.js"></script>
+<link rel="stylesheet"	href="/plzdaengs/board/css/datepicker3.css">
 <!-- Tweaks for older IEs-->
 <!--[if lt IE 9]>
         <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
@@ -53,24 +57,160 @@ $(document).ready(function() {//
 	var params = "cmd=sido";
 	sendRequest("/plzdaengs/yugi",params,sidoResult,"GET");
 	
+	$("#bgnde").datepicker({
+		format : "yyyy-mm-dd",
+		calendarWeeks : false,
+		autoclose : true,
+		todayHighlight : false,
+		language : "kr",
+		useCurrent : false,
+		endDate : new Date()
+		});
+	
+	$("#endde").datepicker({
+		format : "yyyy-mm-dd",
+		calendarWeeks : false,
+		autoclose : true,
+		todayHighlight : false,
+		language : "kr",
+		useCurrent : false,
+		endDate : new Date()
+		})
+	
+	$(".calendar-icon").click(function(){
+		var target = $(this).attr("target");
+		$("#"+target).datepicker().focus();
+	});
+	
+	var today = new Date();
+	today.setDate(today.getDate()-1);
+	$("#bgnde").datepicker('setDate',today);
+	
+	$("#endde").datepicker('setDate',today);
+	
 });
+
+function getRecentDate(){
+    var dt = new Date();
+ 
+    var recentYear = dt.getFullYear();
+    var recentMonth = dt.getMonth() + 1;
+    var recentDay = dt.getDate();
+ 
+    if(recentMonth < 10) recentMonth = "0" + recentMonth;
+    if(recentDay < 10) recentDay = "0" + recentDay;
+ 
+    return recentYear + "-" + recentMonth + "-" + recentDay;
+}
 
 function sidoResult(){
 	if(httpRequest.readyState == 4){
 		if(httpRequest.status == 200){
+			
 			var result = httpRequest.responseXML;
 			var item = result.getElementsByTagName("item");
 			
 			for(var i = 0; i < item.length; i++) {
-				var option = $("<option>"+item[i].getElementsByTagName("orgdownNm")[0].firstChild.data+"</option>");
+				var option = $("<option value='"+item[i].getElementsByTagName("orgCd")[0].firstChild.data+"'>"+item[i].getElementsByTagName("orgdownNm")[0].firstChild.data+"</option>");
                 $('#sido').append(option);
 			}			
 		}
-	}else{
-		
 	}
-	
 }
+
+
+function sidochage(){
+	if(httpRequest.readyState == 4){
+		if(httpRequest.status == 200){
+			
+			var result = httpRequest.responseXML;
+			var item = result.getElementsByTagName("item");
+			
+			$("select[id='sigungu'] option").remove();
+			$('#sigungu').append("<option>시군구</option>");
+			
+			for(var i = 0; i < item.length; i++) {
+				var option = $("<option value='"+item[i].getElementsByTagName("orgCd")[0].firstChild.data+"'>"+item[i].getElementsByTagName("orgdownNm")[0].firstChild.data+"</option>");
+                $('#sigungu').append(option);
+			}	
+			
+		}
+	}
+}
+
+function sigunguchage(){
+	if(httpRequest.readyState == 4){
+		if(httpRequest.status == 200){
+			
+			var result = httpRequest.responseXML;
+			var item = result.getElementsByTagName("item");
+			$("select[id='shelter'] option").remove();
+			$('#shelter').append("<option>보호센터</option>");
+			
+			for(var i = 0; i < item.length; i++) {
+				var option = $("<option value='"+item[i].getElementsByTagName("careRegNo")[0].firstChild.data+"'>"+item[i].getElementsByTagName("careNm")[0].firstChild.data+"</option>");
+                $('#shelter').append(option);
+			}	
+			
+		}
+	}
+}
+
+function kinduchage(){
+	if(httpRequest.readyState == 4){
+		if(httpRequest.status == 200){
+			var result = httpRequest.responseXML;
+			var item = result.getElementsByTagName("item");
+			$("select[id='kindDetail'] option").remove();
+			$('#kindDetail').append("<option>품종(중)</option>");
+			
+			for(var i = 0; i < item.length; i++) {
+				var option = $("<option value='"+item[i].getElementsByTagName("kindCd")[0].firstChild.data+"'>"+item[i].getElementsByTagName("KNm")[0].firstChild.data+"</option>");
+                $('#kindDetail').append(option);
+			}	
+			
+		}
+	}
+}
+
+function serchResult(){
+	if(httpRequest.readyState == 4){
+		if(httpRequest.status == 200){
+			var result = httpRequest.responseXML;
+			
+		}
+	}
+}
+
+$(function(){
+	$('#sido').change(function(){
+		var params = "cmd=sigungu&upr_cd="+this.value;
+		sendRequest("/plzdaengs/yugi",params,sidochage,"GET");
+	});
+	
+	$('#sigungu').change(function(){
+		var params = "cmd=shelter&upr_cd="+$('#sido option:selected').val()+"&org_cd="+this.value;
+		sendRequest("/plzdaengs/yugi",params,sigunguchage,"GET");
+	});
+	
+	$('#kind').change(function(){
+		var params = "cmd=kind&up_kind_cd="+this.value;
+		sendRequest("/plzdaengs/yugi",params,kinduchage,"GET");
+	});
+	
+	$('#btnSearch').click(function(){
+		var params = "cmd=abandonmentPublic&bgnde="+$("#bgnde").val().split("-");
+		params += "&endde="+$("#endde").val().split("-");		//검색일자
+		params += "&upkind="+$("#kind option:selected").val();	//축종코드 품종(대)
+		params += "&kind="+$("#kindDetail option:selected").val(); //품종(중)
+		params += "&upr_cd="+$("#sido option:selected").val(); //시도
+		params += "&org_cd="+$("#sigungu option:selected").val(); ///시군구
+		params += "&care_reg_no="+$("#shelter option:selected").val(); //보호센터
+		params += "&pageNo=1";
+		
+		sendRequest("/plzdaengs/yugi",params,serchResult,"GET");
+	});
+});
 
 </script>
 <body>
@@ -230,36 +370,41 @@ function sidoResult(){
 									<form class="form-horizontal">
 										<!-- 날짜 -->
 										<div class="form-group row">
-											<label class="col-md-1 form-control-label">날짜</label>
-											<div class="col-md-3"></div>
+												<label class="col-md-1 form-control-label">날짜</label>
+												<div class="col-md-3">
+													<input type='text' class="form-control datePicker" id="bgnde" name="bgnde" required="required"/>
+													<label class="calendar-icon" target="bgnde"></label>
+													
+												</div>
+												
+												<div class="col-md-2">
+													<label class="col-md-1 form-control-label">   ~  </label>
+												</div>
+												
+												<div class="col-md-3">
+													<input type='text' class="form-control datePicker" id="endde" name="endde" required="required"/>
+													<label class="calendar-icon" target="endde"></label>
+												</div>
 										</div>
 										<!-- 시도 -->
 										<div class="form-group row">
 											<label class="col-md-1 form-control-label">시도</label>
 											<div class="col-md-2">
-												<select id="sido" class="form-control">
+												<select id="sido" class="form-control" >
 													<option>시도</option>
 												</select>
 											</div>
 											<label class="col-md-1 form-control-label">시군구</label>
 											<div class="col-md-2">
-												<select name="account" class="form-control">
+												<select id="sigungu" class="form-control">
 													<option>시군구</option>
-													<option>option 1</option>
-													<option>option 2</option>
-													<option>option 3</option>
-													<option>option 4</option>
 												</select>
 											</div>
 
 											<label class="col-md-2 form-control-label">보호센터</label>
 											<div class="col-md-3">
-												<select name="account" class="form-control">
+												<select id="shelter" class="form-control">
 													<option>보호센터</option>
-													<option>option 1</option>
-													<option>option 2</option>
-													<option>option 3</option>
-													<option>option 4</option>
 												</select>
 											</div>
 										</div>
@@ -268,26 +413,21 @@ function sidoResult(){
 										<div class="form-group row">
 											<label class="col-md-1 form-control-label">품종</label>
 											<div class="col-md-2">
-												<select name="account" class="form-control">
+												<select id="kind" class="form-control">
 													<option>품종(대)</option>
-													<option>option 1</option>
-													<option>option 2</option>
-													<option>option 3</option>
-													<option>option 4</option>
+													<option value="417000">개</option>
+													<option value="422400">고양이</option>
+													<option value="42990">기타</option>
 												</select>
 											</div>
 
 											<div class="col-md-2">
-												<select name="account" class="form-control">
+												<select id="kindDetail" class="form-control">
 													<option>품중(중)</option>
-													<option>option 1</option>
-													<option>option 2</option>
-													<option>option 3</option>
-													<option>option 4</option>
 												</select>
 											</div>
 											<div class="col-md-3"></div>
-											<button type="submit" class="btn btn-primary">검색</button>
+											<button id="btnSearch" type="submit" class="btn btn-primary">검색</button>
 
 										</div>
 
