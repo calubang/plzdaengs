@@ -11,112 +11,12 @@ String user = (String)request.getSession().getAttribute("userInfo");
 %>
 
 <script type="text/javascript">
-$(function() {
-	$("#loginbtn").click(loginModalShow);
-	$("#loginmodal .modal-success").click(login);
-	$("#loginmodal .kakao-login").click(loginWithKakao);
-	//회원가입
-	$("#registerbtn").click(registerbtnClick);
-	
-	$(".modal-cancel").click(function() {
-		var name = $(this).attr("name");
-		$("#"+name).modal("hide");
-		return false;
+$(function name() {
+	$("#loginbtn").click(function() {
+		$("#imguploadModal").modal("show");
 	});
 	
-	//2중모달 처리
-	$("#alert").on('hidden.bs.modal', function(){
-		$("body").prop("class", "modal-open");
-	  });
-	
-	<%
-	if(user != null ){
-		//프로필 변경
-		//메인페이지 변경
-	%>
-		//loginProcess();
-	<%
-	}
-	%>
 });
-
-function registerbtnClick() {
-	$.ajax({
-		url : "member"
-		, data : {
-			act : "join"
-		}
-		, success : function (result) {
-			$("#contents").html(result);
-		}
-	});
-	return false;
-}
-
-function loginAlertBtnClick() {
-	$("#alert").modal("hide");
-	$("body").prop("class", "modal-open");
-	return false;
-}
-
-function loginProcess() {
-	$("#profile").css("background-image", "url('/plzdaengs/template/img/profile.jpg')");
-}
-function loginModalShow() {
-	$("#loginmodal").modal("show");
-}
-
-function login(){
-	var id = $("#loginmodal input[name=id]").val();
-	var password = $("#loginmodal input[name=password]").val();
-	
-	var idPattern = /^[A-Za-z]{1}[A-Za-z0-9]{3,10}$/;
-	
-	//로그인 실패를 위해 ajax
-	$.ajax({
-		url : "/plzdaengs/member"
-		, method : "post"
-		, data : $("#loginmodal form").serialize()
-		, success : function(result){
-			if(result.trim() != "success"){
-				//$("#loginalert p").html(result);
-				showAlertModal("로그인 경고", result);
-			}else{
-				location.href = "/plzdaengs/menu?act=main";
-			}
-		}
-	});
-}
-
-
-//카카오 로그인
-var authObject;
-
-Kakao.init('ae62f166e56328952bdb327fa784bba6');
-function loginWithKakao() {
-	//카카오 api key
-	
-	// 로그인 창을 띄웁니다.
-	Kakao.Auth.login({
-		success : function(authObj) {
-			//authObject = JSON.parse(authObj);
-			alert(JSON.stringify(authObj));
-			//authObject = JSON.parse(authObj);
-			//alert(authObj.access_token);
-			authObject = authObj;
-			Kakao.API.request({
-				url : "/v2/user/me"
-				, success: function(res) {
-					alert(res.id);
-					alert(JSON.stringify(res));
-				}
-			});
-		},
-		fail : function(err) {
-			alert(JSON.stringify(err));
-		}
-	});
-};
 </script>
 <style type="text/css">
 #loginmodal .modal-lg{
@@ -235,43 +135,9 @@ function loginWithKakao() {
 		
 		<div class="page-holder w-100 d-flex flex-wrap">
 			<div class="container-fluid" id="contents">
-				<!-- 로그인 모달창 -->
-				<div id="loginmodal" class="modal fade" role="dialog">
-					<div class="modal-dialog modal-lg">
-						<div class="modal-content">
-							<div class="modal-header text-center">
-								<h5 class="modal-title" id="myModalLabel" style="margin-left: auto;">로그인</h5>
-								<button type="button" class="close" data-dismiss="modal"
-									aria-label="Close">
-									<span aria-hidden="true">×</span>
-								</button>
-							</div>
-							<div class="modal-body">
-								<form>
-									<input type="hidden" name="act" value="login">
-				            		<div class="form-group" align="right">
-										<label for="">
-										<input type="checkbox" class="form-control" name="idsave" value="idsave" >아이디저장</label>
-									</div>
-									<div class="form-group">
-				                        <label class="form-control-label text-uppercase" >아이디</label>
-				                        <input type="text" placeholder="아이디를 입력하세요" class="form-control" required="required" name="id">
-				                      </div>
-				                      <div class="form-group">       
-				                        <label class="form-control-label text-uppercase">비밀번호</label>
-				                        <input type="password" placeholder="" class="form-control" name="password" required="required">
-				                      </div>
-			            		</form>
-			            		<div class="">
-				            		<button class="btn btn-primary btn-login-sm modal-success" name="loginmodal">로그인</button>
-				            		<!--  <button class="btn btn-primary btn-login-sm kakao-login" name="loginmodal">카카오 로그인</button>-->
-				            		<button class="btn btn-primary btn-login-sm modal-cancel" name="loginmodal">취소</button>
-				            	</div>
-							</div>
-						</div>
-					</div>
-				</div>
-				<!-- 로그인 시 뜨는 경고창 -->
+				
+				<%@ include file="/template/imgupload/imguploadModal.jsp" %>
+				<!-- 경고창 -->
 				<%@ include file="/template/alert_danger.jsp" %>
 				<!-- section 1 -->
 				<section class="py-5" id="mainSection">
