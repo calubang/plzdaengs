@@ -165,7 +165,7 @@
               </div>
               <!-- 사용할 게시판 끝과 사용안할것  -->
             </div><!-- 여기 끝에 페이징처리 -->
-            <div class="form-group row">
+            <div class="form-group row mb-4" style="margin-left: 5rem;">
               <select name="account" class="form-control col-md-1">
                     <option>제목</option>
                     <option>작성자</option>
@@ -173,6 +173,7 @@
               <input type="text" class="form-control col-md-7" style="margin-left:1rem;margin-right:4rem;">
               <button type="submit" class="btn btn-primary">검색하기</button>
             </div>
+            
           </section>
         </div>
         <footer class="footer bg-white shadow align-self-end py-3 px-xl-5 w-100">
