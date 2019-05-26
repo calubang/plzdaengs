@@ -3,26 +3,22 @@
 <!DOCTYPE html>
 <html>
 <head>
-		<title>Add Event</title>
-		<%@ include file="/template/default_link.jsp"%>
-		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<title>Add Event</title>
+<%@ include file="/template/default_link.jsp"%>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 	
-		<script type="text/javascript" src="js/jquery-1.11.1.min.js"></script>
-		<script type="text/javascript" src="js/jquery-ui-custom-1.11.2.min.js"></script>
-    	<link rel="stylesheet" type="text/css" href="css/jquery-ui-custom-1.11.2.min.css" />
-    
-    	<script type="text/javascript" src="js/bootstrap.diary.min.js"></script>
-    	<link rel="stylesheet" type="text/css" href="css/bootstrap.diary.min.css" />
-    
-    	<script type="text/javascript" src="js/DateTimePicker.js"></script>
-    	<link rel="stylesheet" type="text/css" href="css/DateTimePicker.css" />
-    
-		<link rel="stylesheet" type="text/css" href="css/calenstyle.css" />
-		<link rel="stylesheet" type="text/css" href="css/calenstyle-jquery-ui-override.css" />
-		<link rel="stylesheet" type="text/css" href="css/calenstyle-iconfont.css" />
-		<script type="text/javascript" src="css/calenstyle.js"></script>
-	
-		<script type="text/javascript" src="js/CalJsonGenerator.js"></script>
+<script type="text/javascript" src="js/jquery-1.11.1.min.js"></script>
+<script type="text/javascript" src="js/jquery-ui-custom-1.11.2.min.js"></script>
+<link rel="stylesheet" type="text/css" href="css/jquery-ui-custom-1.11.2.min.css" />
+<script type="text/javascript" src="js/bootstrap.diary.min.js"></script>
+<link rel="stylesheet" type="text/css" href="css/bootstrap.diary.min.css" />
+<script type="text/javascript" src="js/DateTimePicker.js"></script>
+<link rel="stylesheet" type="text/css" href="css/DateTimePicker.css" />
+<link rel="stylesheet" type="text/css" href="css/calenstyle.css" />
+<link rel="stylesheet" type="text/css" href="css/calenstyle-jquery-ui-override.css" />
+<link rel="stylesheet" type="text/css" href="css/calenstyle-iconfont.css" />
+<script type="text/javascript" src="css/calenstyle.js"></script>
+<script type="text/javascript" src="js/CalJsonGenerator.js"></script>
 	
 <style type="text/css">
 .calendarContOuterParent {
@@ -43,309 +39,265 @@
 	}
 </style>
 	
+	
 <script type="text/javascript">
-	var oCal1, sInputTZOffset = "-00:00";
-		
-	$(document).ready(function() {
+var oCal1, sInputTZOffset = "-00:00";
+$(document).ready(function() {
 	$(".calendarContOuter").CalenStyle({
-		initialize: function() {
-			oCal1 = this;
-	},
+		initialize: 
+			function() {
+				oCal1 = this;
+			},
 
-					//selectedDate: new Date(2014, 05, 12, 0, 0, 0, 0),
-				
-					displayWeekNumInMonthView: true,
-				
-					calculateDetailedMonthViewRowMinHeight: false,
-				
-					//fixedHeightOfDetailedMonthView: true,
-				
-					changeColorBasedOn: "Event",
-				
-					hideEventIcon: {Default: true},
-				
-					formatDates: 
+		//selectedDate: new Date(2014, 05, 12, 0, 0, 0, 0),
+		displayWeekNumInMonthView: true,
+		calculateDetailedMonthViewRowMinHeight: false,
+					
+		//fixedHeightOfDetailedMonthView: true,
+		changeColorBasedOn: "Event",
+		hideEventIcon: {Default: true},
+		formatDates: {
+			"hh:mm": function(iDate)
+			{
+				if(iDate.H < 5)
+					return "Night " + oCal1.getNumberStringInFormat(iDate.h, 2, true) + ":" + oCal1.getNumberStringInFormat(iDate.m, 2, true);
+				else if(iDate.H < 10)
+					return "Morning " + oCal1.getNumberStringInFormat(iDate.h, 2, true) + ":" + oCal1.getNumberStringInFormat(iDate.m, 2, true);
+				else if(iDate.H < 14)
+					return "Afternoon " + oCal1.getNumberStringInFormat(iDate.h, 2, true) + ":" + oCal1.getNumberStringInFormat(iDate.m, 2, true);
+				else if(iDate.H < 19)
+					return "Evening " + oCal1.getNumberStringInFormat(iDate.h, 2, true) + ":" + oCal1.getNumberStringInFormat(iDate.m, 2, true);
+				else
+					return "Night " + oCal1.getNumberStringInFormat(iDate.h, 2, true) + ":" + oCal1.getNumberStringInFormat(iDate.m, 2, true);
+			}
+		},
+					
+		calDataSource: 
+			[{
+				sourceId: "s1",
+				sourceFetchType: "DateRange",
+				sourceType: "FUNCTION",
+				config: 
 					{
-						"hh:mm": function(iDate)
-						{
-							if(iDate.H < 5)
-								return "Night " + oCal1.getNumberStringInFormat(iDate.h, 2, true) + ":" + oCal1.getNumberStringInFormat(iDate.m, 2, true);
-							else if(iDate.H < 10)
-								return "Morning " + oCal1.getNumberStringInFormat(iDate.h, 2, true) + ":" + oCal1.getNumberStringInFormat(iDate.m, 2, true);
-							else if(iDate.H < 14)
-								return "Afternoon " + oCal1.getNumberStringInFormat(iDate.h, 2, true) + ":" + oCal1.getNumberStringInFormat(iDate.m, 2, true);
-							else if(iDate.H < 19)
-								return "Evening " + oCal1.getNumberStringInFormat(iDate.h, 2, true) + ":" + oCal1.getNumberStringInFormat(iDate.m, 2, true);
-							else
-								return "Night " + oCal1.getNumberStringInFormat(iDate.h, 2, true) + ":" + oCal1.getNumberStringInFormat(iDate.m, 2, true);
-						}
+						inputTZOffset: sInputTZOffset,
 					},
-				
-					calDataSource: 
-					[
-						{
-							sourceId: "s1",
-							sourceFetchType: "DateRange",
-							sourceType: "FUNCTION",
-							config:
-							{
-								inputTZOffset: sInputTZOffset,
-							},
-							source: function(fetchStartDate, fetchEndDate, durationStartDate, durationEndDate, oConfig, loadViewCallback)
+				source: function(fetchStartDate, fetchEndDate, durationStartDate, durationEndDate, oConfig, loadViewCallback) 
 							{
 								var calObj1 = this;
 								calObj1.incrementDataLoadingCount(1);
-							
+										
 								var oEventResponse = generateJsonEvents(fetchStartDate, fetchEndDate);
-								if(oEventResponse != undefined)
-								{
-									if(oEventResponse[0])
-									{
+								if(oEventResponse != undefined) {
+									if(oEventResponse[0]) {
 										calObj1.parseDataSource("EventSource", oEventResponse[1], durationStartDate, durationEndDate, loadViewCallback, oConfig, false);
-									}
-								}
+													}
+												}
 							}
+			}],
+					
+		saveChangesOnEventDrop: 
+			function(oDraggedEvent, startDateBeforeDrop, endDateBeforeDrop, startDateAfterDrop, endDateAfterDrop) {
+				var calObj1 = this;
+					
+				console.log(oDraggedEvent);
+				console.log(startDateAfterDrop);
+				console.log(endDateAfterDrop);
+						
+				//calObj1.revertToOriginalEvent(oDraggedEvent, startDateBeforeDrop, endDateBeforeDrop);
+			},
+					
+		cellClicked: 
+			function(sView, dSelectedDate, bIsAllDay, pClickedAt){
+					console.log("Cell Clicked 1 : " + dSelectedDate);
+					showModal(true, dSelectedDate);						
+			},
+					
+		eventsAddedInView: function(visibleView, eventClass){
+			var thisObj = this;
+					
+			$(thisObj.elem).find(eventClass).popover({
+				placement: "top",
+				trigger: "hover",
+				html: true,
+				container: "body",
+				content: function() {
+					var oTooltipContent = $(this).data("tooltipcontent"),
+					sTooltipText = "<div class='cTooltipTitle'>" + oTooltipContent.title + "</div><div class='cTooltipTime'>" + oTooltipContent.startDateTime + "<br/>" + oTooltipContent.endDateTime + "</div>";
+					return sTooltipText;
 						}
-					],
-				
-					saveChangesOnEventDrop: function(oDraggedEvent, startDateBeforeDrop, endDateBeforeDrop, startDateAfterDrop, endDateAfterDrop)
-					{
-						var calObj1 = this;
-					
-						console.log(oDraggedEvent);
-						console.log(startDateAfterDrop);
-						console.log(endDateAfterDrop);
-					
-						//calObj1.revertToOriginalEvent(oDraggedEvent, startDateBeforeDrop, endDateBeforeDrop);
-					},
-				
-					cellClicked: function(sView, dSelectedDate, bIsAllDay, pClickedAt)
-					{
-						console.log("Cell Clicked 1 : " + dSelectedDate);
-						showModal(true, dSelectedDate);						
-					},
-				
-					eventsAddedInView: function(visibleView, eventClass)
-					{
-						var thisObj = this;
-				
-						$(thisObj.elem).find(eventClass).popover(
-						{
-						
-							placement: "top",
-						
-							trigger: "hover",
-						
-							html: true,
-						
-							container: "body",
-						
-							content: function()
-							{
-								var oTooltipContent = $(this).data("tooltipcontent"),
-								sTooltipText = "<div class='cTooltipTitle'>" + oTooltipContent.title + "</div><div class='cTooltipTime'>" + oTooltipContent.startDateTime + "<br/>" + oTooltipContent.endDateTime + "</div>";
-								return sTooltipText;
-							}
-						
-						});
-					}
-				
-				});
-			
-				$('input[type="checkbox"]').bind('click',function() 
-				{
-					validateAllDayChecked();
-				});
-			
-				$('#modal-form').on('show.bs.modal', function (e) 
-				{
-					validateAllDayChecked();
-				});
-			
-				customizeInputs();
-				defineFormEvents();
-			
 			});
+		}
+					
+	});
+				
+	$('input[type="checkbox"]').bind('click',function(){
+		validateAllDayChecked();
+	});
+				
+	$('#modal-form').on('show.bs.modal', function (e){
+		validateAllDayChecked();
+	});
+				
+	customizeInputs();
+	defineFormEvents();
+	
+}); // 1. $(document).ready(function()) 끝
 		
-			function showModal(bIsAllDay, dStartDateTime)
-			{
-				console.log("showModal : " + bIsAllDay + " " + dStartDateTime);
-				$("#modal-form").modal('show');
-				$("#ipTitle, #ipDesc").val("");
-				$("#ipAllDay").prop("checked", bIsAllDay);
+function showModal(bIsAllDay, dStartDateTime){
+	console.log("showModal : " + bIsAllDay + " " + dStartDateTime);
+	$("#modal-form").modal('show');
+	$("#ipTitle, #ipDesc").val("");
+	$("#ipAllDay").prop("checked", bIsAllDay);
 			
-				var dEndDateTime, sStartDateTime, sEndDateTime;
-				if(bIsAllDay)
-				{
-					dEndDateTime = new Date(dStartDateTime);
-					dEndDateTime.setDate(dStartDateTime.getDate() + (oCal1.setting.allDayEventDuration - 1));
+	var dEndDateTime, sStartDateTime, sEndDateTime;
+	if(bIsAllDay) {
+		dEndDateTime = new Date(dStartDateTime);
+		dEndDateTime.setDate(dStartDateTime.getDate() + (oCal1.setting.allDayEventDuration - 1));
 				
-					sStartDateTime = oCal1.getDateInFormat({"date": dStartDateTime}, "dd-MM-yyyy", false, false);
-					sEndDateTime = oCal1.getDateInFormat({"date": dEndDateTime}, "dd-MM-yyyy", false, false);
-				}
-				else
-				{
-					dEndDateTime = new Date(dStartDateTime.getTime() + (oCal1.setting.eventDuration * 6E4));
+		sStartDateTime = oCal1.getDateInFormat({"date": dStartDateTime}, "dd-MM-yyyy", false, false);
+		sEndDateTime = oCal1.getDateInFormat({"date": dEndDateTime}, "dd-MM-yyyy", false, false);
+	} else {
+		dEndDateTime = new Date(dStartDateTime.getTime() + (oCal1.setting.eventDuration * 6E4));
 				
-					sStartDateTime = oCal1.getDateInFormat({"date": dStartDateTime}, "dd-MM-yyyy HH:mm", oCal1.setting.is24Hour, false);
-					sEndDateTime = oCal1.getDateInFormat({"date": dEndDateTime}, "dd-MM-yyyy HH:mm", oCal1.setting.is24Hour, false);
-				}
+		sStartDateTime = oCal1.getDateInFormat({"date": dStartDateTime}, "dd-MM-yyyy HH:mm", oCal1.setting.is24Hour, false);
+		sEndDateTime = oCal1.getDateInFormat({"date": dEndDateTime}, "dd-MM-yyyy HH:mm", oCal1.setting.is24Hour, false);
+	}
 			
-				console.log(sEndDateTime + "  " + sEndDateTime);
-				$("#ipStart").val(sStartDateTime);
-				$("#ipEnd").val(sEndDateTime);
-				validateAllDayChecked();
-			}
+	console.log(sEndDateTime + "  " + sEndDateTime);
+	$("#ipStart").val(sStartDateTime);
+	$("#ipEnd").val(sEndDateTime);
+	validateAllDayChecked();
+} // 2. function showModal(bIsAllDay, dStartDateTime) 끝
+	
+
+function customizeInputs() {
+	console.log("DateTimePicker : ");
+	console.log($(".modal-dtpicker"));
+	$(".modal-dtpicker").DateTimePicker( {
+		dateSeparator: oCal1.setting.formatSeparatorDate,
+		timeSeparator: oCal1.setting.formatSeparatorTime,
+		dateTimeSeparator: oCal1.setting.formatSeparatorDateTime,
+		dateFormat: "dd-MM-yyyy",
+		dateTimeFormat: "dd-MM-yyyy HH:mm:ss"
+				
+	});
+} // 3. function customizeInputs() 끝
 		
-			function customizeInputs()
-			{
-				console.log("DateTimePicker : ");
-				console.log($(".modal-dtpicker"));
-				$(".modal-dtpicker").DateTimePicker(
-				{
-				
-					dateSeparator: oCal1.setting.formatSeparatorDate,
-				
-					timeSeparator: oCal1.setting.formatSeparatorTime,
-				
-					dateTimeSeparator: oCal1.setting.formatSeparatorDateTime,
-				
-					dateFormat: "dd-MM-yyyy",
-				
-					dateTimeFormat: "dd-MM-yyyy HH:mm:ss"
-				
-				});
-			}
 		
-			function validateDateTimes(bIsAllDay, dStartDateTime, dEndDateTime)
-			{
-				if(bIsAllDay)
-				{
-					console.log("Date Comparison : " + oCal1.compareDates(dStartDateTime, dEndDateTime));
-					if(oCal1.compareDates(dStartDateTime, dEndDateTime)  > 0)
-					{
-						$("#ipAlertStartEnd").show();
-						return false;
-					}
+function validateDateTimes(bIsAllDay, dStartDateTime, dEndDateTime) {
+	if(bIsAllDay) {
+		console.log("Date Comparison : " + oCal1.compareDates(dStartDateTime, dEndDateTime));
+			if(oCal1.compareDates(dStartDateTime, dEndDateTime) > 0) {
+				$("#ipAlertStartEnd").show();
+				return false;
 				}
-				else
-				{
-					console.log("DateTime Comparison : " + oCal1.compareDateTimes(dStartDateTime, dEndDateTime));
-					if(oCal1.compareDateTimes(dStartDateTime, dEndDateTime)  > 0)
-					{
-						$("#ipAlertStartEnd").show();
-						return false;
-					}
+	} else {
+		console.log("DateTime Comparison : " + oCal1.compareDateTimes(dStartDateTime, dEndDateTime));
+			if(oCal1.compareDateTimes(dStartDateTime, dEndDateTime) > 0){
+				$("#ipAlertStartEnd").show();
+				return false;
 				}
-				$("#ipAlertStartEnd").hide();
-				return true;
-			}
+	}
+	
+	$("#ipAlertStartEnd").hide();
+	return true;
+} // 4. function validateDateTimes(bIsAllDay, dStartDateTime, dEndDateTime) 끝
 		
-			function validateAllDayChecked()
-			{
-				console.log("validateAllDayChecked " + ($("#ipAllDay").is(':checked')));
-				if($("#ipAllDay").is(':checked'))
-				{
-					$("#ipStart-group label").html("Start Date : ");
-					$("#ipEnd-group label").html("End Date : ");
-				
-					$("#ipStart, #ipEnd").data("field", "date");
-				
-					var sDateTimeRegex = /^([0-3]{1}[0-9]{1})(-([0-1]{1}[0-9]{1}))(-([0-9]{4}))(\s)([0-2]{1}[0-9]{1}):([0-6]{1}[0-9]{1})/;
-					var sDateTimeStart = $("#ipStart").val(),
-					sArrDateTimeStart = sDateTimeStart.match(sDateTimeRegex),
-					sDateTimeEnd = $("#ipEnd").val(),
-					sArrDateTimeEnd = sDateTimeEnd.match(sDateTimeRegex);
-					if(sArrDateTimeStart != null)
-						$("#ipStart").val(sDateTimeStart.split(" ")[0]);
-					if(sArrDateTimeEnd != null)
-						$("#ipEnd").val(sDateTimeEnd.split(" ")[0]);
-				}
-				else
-				{
-					$("#ipStart-group label").html("Start Date Time : ");
-					$("#ipEnd-group label").html("End Date Time : ");
-				
-					$("#ipStart, #ipEnd").data("field", "datetime");
-				
-					var sDateTimeRegex = /^([0-3]{1}[0-9]{1})(-([0-1]{1}[0-9]{1}))(-([0-9]{4}))(\s)([0-2]{1}[0-9]{1}):([0-6]{1}[0-9]{1})/;
-					var sDateTimeStart = $("#ipStart").val(),
-					sArrDateTimeStart = sDateTimeStart.match(sDateTimeRegex),
-					sDateTimeEnd = $("#ipEnd").val(),
-					sArrDateTimeEnd = sDateTimeEnd.match(sDateTimeRegex);
-					console.log("Arrays : " + sDateTimeStart + " " + sDateTimeEnd);
-					console.log(sArrDateTimeStart);
-					console.log(sArrDateTimeEnd);
-					if(sArrDateTimeStart == null)
-						$("#ipStart").val(sDateTimeStart + " 00:00");
-					if(sArrDateTimeEnd == null)
-						$("#ipEnd").val(sDateTimeEnd + " 00:00");
-				}
-			}
 		
-			function parseDateInFormat(bIsAllDay, sDateTime)
-			{
-				var dDateTime;
-				if(bIsAllDay)
-				{
-					var sArrDateTime = sDateTime.match(/^([0-3]{1}[0-9]{1})(-([0-1]{1}[0-9]{1}))(-([0-9]{4}))/);
-					console.log(sArrDateTime);
-					dDateTime = new Date(sArrDateTime[5], sArrDateTime[3] - 1, sArrDateTime[1], 0, 1, 0, 0);
-				}
-				else
-				{
-					var sArrDateTime = sDateTime.match(/^([0-3]{1}[0-9]{1})(-([0-1]{1}[0-9]{1}))(-([0-9]{4}))(\s)([0-2]{1}[0-9]{1}):([0-6]{1}[0-9]{1})/);
-					console.log(sArrDateTime);
-					dDateTime = new Date(sArrDateTime[5], sArrDateTime[3] - 1, sArrDateTime[1], sArrDateTime[7], sArrDateTime[8], 0, 0);
-				}
-				return dDateTime;
-			}
+function validateAllDayChecked() {
+	console.log("validateAllDayChecked " + ($("#ipAllDay").is(':checked')));
+	if($("#ipAllDay").is(':checked')){
+		$("#ipStart-group label").html("Start Date : ");
+		$("#ipEnd-group label").html("End Date : ");
+				
+		$("#ipStart, #ipEnd").data("field", "date");
+				
+		var sDateTimeRegex = /^([0-3]{1}[0-9]{1})(-([0-1]{1}[0-9]{1}))(-([0-9]{4}))(\s)([0-2]{1}[0-9]{1}):([0-6]{1}[0-9]{1})/;
+		var sDateTimeStart = $("#ipStart").val(),
+		sArrDateTimeStart = sDateTimeStart.match(sDateTimeRegex),
+		sDateTimeEnd = $("#ipEnd").val(),
+		sArrDateTimeEnd = sDateTimeEnd.match(sDateTimeRegex);
 		
-			function defineFormEvents()
-			{
+		if(sArrDateTimeStart != null)
+			$("#ipStart").val(sDateTimeStart.split(" ")[0]);
+		if(sArrDateTimeEnd != null)
+			$("#ipEnd").val(sDateTimeEnd.split(" ")[0]);
+	} else {
+		$("#ipStart-group label").html("Start Date Time : ");
+		$("#ipEnd-group label").html("End Date Time : ");
+				
+		$("#ipStart, #ipEnd").data("field", "datetime");
+				
+		var sDateTimeRegex = /^([0-3]{1}[0-9]{1})(-([0-1]{1}[0-9]{1}))(-([0-9]{4}))(\s)([0-2]{1}[0-9]{1}):([0-6]{1}[0-9]{1})/;
+		var sDateTimeStart = $("#ipStart").val(),
+		sArrDateTimeStart = sDateTimeStart.match(sDateTimeRegex),
+		sDateTimeEnd = $("#ipEnd").val(),
+		sArrDateTimeEnd = sDateTimeEnd.match(sDateTimeRegex);
+		console.log("Arrays : " + sDateTimeStart + " " + sDateTimeEnd);
+		console.log(sArrDateTimeStart);
+		console.log(sArrDateTimeEnd);
+			if(sArrDateTimeStart == null)
+				$("#ipStart").val(sDateTimeStart + " 00:00");
+			if(sArrDateTimeEnd == null)
+				$("#ipEnd").val(sDateTimeEnd + " 00:00");
+			}
+} // 5. function validateAllDayChecked() 끝
+		
+		
+function parseDateInFormat(bIsAllDay, sDateTime){
+	var dDateTime;
+	if(bIsAllDay){
+		var sArrDateTime = sDateTime.match(/^([0-3]{1}[0-9]{1})(-([0-1]{1}[0-9]{1}))(-([0-9]{4}))/);
+		console.log(sArrDateTime);
+		dDateTime = new Date(sArrDateTime[5], sArrDateTime[3] - 1, sArrDateTime[1], 0, 1, 0, 0);
+	} else {
+		var sArrDateTime = sDateTime.match(/^([0-3]{1}[0-9]{1})(-([0-1]{1}[0-9]{1}))(-([0-9]{4}))(\s)([0-2]{1}[0-9]{1}):([0-6]{1}[0-9]{1})/);
+		console.log(sArrDateTime);
+		dDateTime = new Date(sArrDateTime[5], sArrDateTime[3] - 1, sArrDateTime[1], sArrDateTime[7], sArrDateTime[8], 0, 0);
+	}
+	
+	return dDateTime;
+} // 6. function parseDateInFormat(bIsAllDay, sDateTime) 끝
+		
+		
+function defineFormEvents() {
+	$("#ipStart, #ipEnd").change(function() {
+		var bIsAllDay = $("#ipAllDay").is(':checked'),
+		dStartDateTime = parseDateInFormat(bIsAllDay, $("#ipStart").val()),
+		dEndDateTime = parseDateInFormat(bIsAllDay, $("#ipEnd").val());
+		validateDateTimes(bIsAllDay, dStartDateTime, dEndDateTime);
+	});
 			
-				$("#ipStart, #ipEnd").change(function()
-				{
-					var bIsAllDay = $("#ipAllDay").is(':checked'),
-					dStartDateTime = parseDateInFormat(bIsAllDay, $("#ipStart").val()),
-					dEndDateTime = parseDateInFormat(bIsAllDay, $("#ipEnd").val());
-					validateDateTimes(bIsAllDay, dStartDateTime, dEndDateTime);
-				});
-			
-				$("#submit").click(function()
-				{
-					var bIsAllDay = $("#ipAllDay").is(':checked'),
-					dStartDateTime = parseDateInFormat(bIsAllDay, $("#ipStart").val()),
-					dEndDateTime = parseDateInFormat(bIsAllDay, $("#ipEnd").val()),
-					sTitle = $("#ipTitle").val(),
-					sDesc= $("#ipDesc").val();
+	$("#submit").click(function(){
+		var bIsAllDay = $("#ipAllDay").is(':checked'),
+		dStartDateTime = parseDateInFormat(bIsAllDay, $("#ipStart").val()),
+		dEndDateTime = parseDateInFormat(bIsAllDay, $("#ipEnd").val()),
+		sTitle = $("#ipTitle").val(),
+		sDesc= $("#ipDesc").val();
 				
-					if(sTitle != "")
-						$("#ipAlertTitle").hide();
-					else
-						$("#ipAlertTitle").show();
+		if(sTitle != "")
+			$("#ipAlertTitle").hide();
+		else
+			$("#ipAlertTitle").show();
 				
-					if(sTitle != "" && validateDateTimes(bIsAllDay, dStartDateTime, dEndDateTime))
-					{
-						if(!bIsAllDay)
-						{
-							dStartDateTime = oCal1.normalizeDateTimeWithOffset(dStartDateTime, oCal1.setting.outputTZOffset, sInputTZOffset);
-							dEndDateTime = oCal1.normalizeDateTimeWithOffset(dEndDateTime, oCal1.setting.outputTZOffset, sInputTZOffset);
+		if(sTitle != "" && validateDateTimes(bIsAllDay, dStartDateTime, dEndDateTime)) {
+			if(!bIsAllDay) {
+				dStartDateTime = oCal1.normalizeDateTimeWithOffset(dStartDateTime, oCal1.setting.outputTZOffset, sInputTZOffset);
+				dEndDateTime = oCal1.normalizeDateTimeWithOffset(dEndDateTime, oCal1.setting.outputTZOffset, sInputTZOffset);
 						}
 					
-						var oEvent = new CalEvent("AddedOnUI", bIsAllDay, dStartDateTime, dEndDateTime, "Dynamic", sTitle, sDesc, "https://www.google.com");
-						var oArrEvent = new Array();
-						oArrEvent.push(oEvent);
-						console.log(oEvent);
-						console.log(oArrEvent);
-						oCal1.addEventsForSource(oArrEvent, "s1");
-						oCal1.refreshView();
+			var oEvent = new CalEvent("AddedOnUI", bIsAllDay, dStartDateTime, dEndDateTime, "Dynamic", sTitle, sDesc, "https://www.google.com");
+			var oArrEvent = new Array();
+			oArrEvent.push(oEvent);
+			console.log(oEvent);
+			console.log(oArrEvent);
+			oCal1.addEventsForSource(oArrEvent, "s1");
+			oCal1.refreshView();
 					
-						$("#modal-form").modal("hide");
+			$("#modal-form").modal("hide");
 					}
-				});
-			
-			}
+	});
+} // 7. function defineFormEvents() 끝
 </script>
 </head>
 
