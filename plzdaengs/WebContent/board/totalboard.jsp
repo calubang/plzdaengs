@@ -165,7 +165,7 @@
               </div>
               <!-- 사용할 게시판 끝과 사용안할것  -->
             </div><!-- 여기 끝에 페이징처리 -->
-            <div class="form-group row mb-4" style="margin-left: 5rem;">
+            <div class="form-group row mb-4" style="margin-left: 10%;">
               <select name="account" class="form-control col-md-1">
                     <option>제목</option>
                     <option>작성자</option>
@@ -173,6 +173,33 @@
               <input type="text" class="form-control col-md-7" style="margin-left:1rem;margin-right:4rem;">
               <button type="submit" class="btn btn-primary">검색하기</button>
             </div>
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12"><!-- 페이징 -->
+			<nav>
+				<ul class="pagination" style="margin-left: 30%;">
+					<li class="page-item">
+						<a class="page-link" href="#">Previous</a>
+					</li>
+					<li class="page-item">
+						<a class="page-link" href="#">1</a>
+					</li>
+					<li class="page-item">
+						<a class="page-link" href="#">2</a>
+					</li>
+					<li class="page-item">
+						<a class="page-link" href="#">3</a>
+					</li>
+					<li class="page-item">
+						<a class="page-link" href="#">4</a>
+					</li>
+					<li class="page-item">
+						<a class="page-link" href="#">5</a>
+					</li>
+					<li class="page-item">
+						<a class="page-link" href="#">Next</a>
+					</li>
+				</ul>
+			</nav>
+		</div>
             
           </section>
         </div>

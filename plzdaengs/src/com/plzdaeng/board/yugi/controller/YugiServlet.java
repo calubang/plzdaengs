@@ -85,36 +85,35 @@ public class YugiServlet extends HttpServlet {
 					e.printStackTrace();
 				}
 				
-		}else if("abandonmentPublic".equals(cmd)) {
-			System.out.println("abandonmentPublic in ");
-				try {
-					String resultXML = new YugiService().getSearch(cmd, request);
-					response.setContentType("text/xml;charset=utf-8");
-					
-					
-					DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-					DocumentBuilder documentBuilder = factory.newDocumentBuilder();
-					Document document = documentBuilder.parse(new InputSource(new StringReader(resultXML)));
-					
-					NodeList nodelist = document.getElementsByTagName("totalCount");
-					Node node = nodelist.item(0);
-					System.out.println(node.getChildNodes().item(0).getNodeValue());
-					
-					int totalCount = Integer.parseInt(node.getChildNodes().item(0).getNodeValue());
-					
-					
-					new YugiPage(totalCount,Integer.parseInt(request.getParameter("page")));
-					
-					
-					
-					PrintWriter out = response.getWriter();
-					out.print(resultXML);
-					
-				} catch (Exception e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-		}
+		} 
+			  else if("abandonmentPublic".equals(cmd)) {
+			  System.out.println("abandonmentPublic in "); try { String resultXML = new
+			  YugiService().getSearch(cmd, request);
+			  response.setContentType("text/xml;charset=utf-8");
+			  
+			  
+			  DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+			  DocumentBuilder documentBuilder = factory.newDocumentBuilder(); Document
+			  document = documentBuilder.parse(new InputSource(new
+			  StringReader(resultXML)));
+			  
+			  NodeList nodelist = document.getElementsByTagName("totalCount"); Node node =
+			  nodelist.item(0);
+			  System.out.println(node.getChildNodes().item(0).getNodeValue());
+			  
+			  int totalCount =
+			  Integer.parseInt(node.getChildNodes().item(0).getNodeValue());
+			  
+			  
+			  new YugiPage(totalCount,Integer.parseInt(request.getParameter("page")));
+			  
+			  
+			  
+			  PrintWriter out = response.getWriter(); out.print(resultXML);
+			  
+			  } catch (Exception e) { // TODO Auto-generated catch block
+			  e.printStackTrace(); } }
+			 
 	}
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
