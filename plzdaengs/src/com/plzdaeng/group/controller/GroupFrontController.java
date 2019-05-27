@@ -13,7 +13,7 @@ import com.plzdaeng.util.MoveUrl;
 import com.plzdaeng.util.SiteConstance;
 
 
-@WebServlet("/front")
+@WebServlet("/groupfront")
 public class GroupFrontController extends HttpServlet {
 	@Override
 	public void init(ServletConfig config) throws ServletException {
@@ -27,13 +27,15 @@ public class GroupFrontController extends HttpServlet {
     }
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		response.setContentType("text/html;charset=UTF-8");
+		System.out.println("front 도착");
 		String act = request.getParameter("act");
 		String path = "/group/index.jsp";
+		System.out.println(act);
 		
-		if("creatgroup".equals(act)) {
-			System.out.println(act);
-			
-//			path = "creategroup";
+		if("creategroup".equals(act)) {
+			System.out.println("if문 안으로 들어옴");
+			GroupController.getCreateGroup().create(request, response);
 			MoveUrl.forward(request, response, path);
 		}
 	}
@@ -42,5 +44,6 @@ public class GroupFrontController extends HttpServlet {
 		request.setCharacterEncoding(SiteConstance.ENCODE);
 		doGet(request, response);
 	}
+
 
 }

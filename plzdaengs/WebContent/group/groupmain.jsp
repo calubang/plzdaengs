@@ -17,14 +17,16 @@
 <script>
 $(function(){
 	
-	var createBtn = $("input[name=creategroup]");
+	var createBtn = $('input[name=creategroup]');
+
 	$(createBtn).click(function(){
 		alert("소모임생성");
 		$.ajax({
-			url:"",
-			method:"get",
+			url:'/plzdaengs/groupfront',
+			method:'get',
+			data : $('#creategroup').serialize(),
 			success:function(result){
-				alert("생성완료");
+				alert(result);
 				
 			}
 		});
@@ -142,7 +144,8 @@ $(function(){
               <div class="col-lg-8 mb-4 mb-lg-0">
               <!-- 소모임검색창 -->
              	 <div class="searchgroup">
-	             	 <form>
+	             	 <form id="searchgroup">
+	             	 <input type="hidden" name="act" value="searchgroup">
 		             	 <select name="searchoption">
 		             	 <option>소모임 이름</option>
 		             	 <option>소모임 지역</option>
@@ -162,53 +165,52 @@ $(function(){
                           </div>
                           <div class="modal-body">
                             <p>다른 사람들과 함께하고싶은 소모임을 만들어보세요.</p>
-                            <form>
+                            <form id="creategroup">
+                              <input type="hidden" name="act" value="creategroup">
                               <div class="form-group">
                                 <label>소모임 이름</label>
-                                <input type="text" placeholder="소모임 이름을 입력하세요." class="form-control">
+                                <input name="groupname" type="text" placeholder="소모임 이름을 입력하세요." class="form-control">
                               </div>
                               <div class="line"></div>
 		                      <div class="form-group">
 		                        <label class="col-md-3 form-control-label">소모임 키워드</label>
 		                        <div class="col-md-9">
 		                          <label class="checkbox-inline">
-		                            <input id="inlineCheckbox1" type="checkbox" value="option1"> 산책
+		                            <input name="groupkeyword" type="radio" value="1"> 산책
 		                          </label>
 		                          <label class="checkbox-inline">
-		                            <input id="inlineCheckbox2" type="checkbox" value="option2"> 지식공유
+		                            <input name="groupkeyword" type="radio" value="2"> 지식공유
 		                          </label>
 		                          <label class="checkbox-inline">
-		                            <input id="inlineCheckbox3" type="checkbox" value="option3"> 모임
+		                            <input name="groupkeyword" type="radio" value="3"> 모임
 		                          </label>
 		                          <label class="checkbox-inline">
-		                            <input id="inlineCheckbox4" type="checkbox" value="option4"> 기타
-		                            <input id="inlinecheckbox5" type="text"value="">
+		                            <input name="groupkeyword" type="radio" value="4"> 기타
 		                          </label>
 		                        </div>
                    			   </div>
                               <div class="line"></div>
                               <div class="form-group">       
                                 <label>소모임 소개</label>
-                                <input type="text" placeholder="소모임을 소개하세요." class="form-control"><br>
-                                <textarea class="form-control" rows="3" cols="3" placeholder="소모임을 소개하세요."></textarea>
+                                <textarea name="groupdescription" class="form-control" rows="3" cols="3" placeholder="소모임을 소개하세요."></textarea>
                               </div>
                               <div class="line"></div>
                               <div class="form-group">       
                                 <div ><label>지역</label></div>
                                 <div style="inline:right;">
-                                <select>
+                                <select name="groupsido">
                              		<option>서울</option>
                              		<option>경기</option>
                              		<option>부산</option>
                              		<option>대구</option>
                                 </select>
-                                <select>
+                                <select name="groupsigungu">
                              		<option>강북구</option>
                              		<option>중구</option>
                              		<option>강서구</option>
                              		<option>구로구</option>
                                 </select>
-                                <label><input type="checkbox">지역무관</label>
+                                <label><input name="groupdontselect" type="checkbox">지역무관</label>
                                 </div>
                                 
                               </div>
@@ -249,7 +251,7 @@ $(function(){
                     <h2 class="h6 text-uppercase mb-0" style="font-size: large;">집사들의 지식공유커뮤니티</h2>
                   	</div>
                   	<div class="card-body">
-                  	<img style="display:inline;float:left;" src="plzdaengs/group/img/001.jpg" width="80" height="80">
+                  	<img style="display:inline;float:left;" src="/plzdaengs/group/img/001.jpg" width="80" height="80">
                     <p class="mb-5 text-gray" style="display:inline;float:left">집사들이 똑똑해야 내 주인이 건강하다<br>집사들이여 모여라</p>
                     <div style="display:inline;float:right">
                     <div><label>지역 : </label>동대문구</div>
@@ -268,7 +270,7 @@ $(function(){
                     <h2 class="h6 text-uppercase mb-0" style="font-size: large;">집사들의 지식공유커뮤니티</h2>
                   	</div>
                   	<div class="card-body">
-                  	<img style="display:inline;float:left;" src="plzdaengs/group/img/001.jpg" width="80" height="80">
+                  	<img style="display:inline;float:left;" src="/plzdaengs/group/img/001.jpg" width="80" height="80">
                     <p class="mb-5 text-gray" style="display:inline;float:left">집사들이 똑똑해야 내 주인이 건강하다<br>집사들이여 모여라</p>
                     <div style="display:inline;float:right">
                     <div><label>지역 : </label>동대문구</div>
@@ -282,7 +284,7 @@ $(function(){
                     <h2 class="h6 text-uppercase mb-0" style="font-size: large;">집사들의 지식공유커뮤니티</h2>
                   	</div>
                   	<div class="card-body">
-                  	<img style="display:inline;float:left;" src="plzdaengs/group/img/001.jpg" width="80" height="80">
+                  	<img style="display:inline;float:left;" src="/plzdaengs/group/img/001.jpg" width="80" height="80">
                     <p class="mb-5 text-gray" style="display:inline;float:left">집사들이 똑똑해야 내 주인이 건강하다<br>집사들이여 모여라</p>
                     <div style="display:inline;float:right">
                     <div><label>지역 : </label>동대문구</div>
