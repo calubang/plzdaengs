@@ -2,8 +2,8 @@
 	pageEncoding="UTF-8"%>
 <div id="sidebar" class="sidebar py-3">
 	<a href="#" class="sidebar-toggler text-gray-500 mr-4 mr-lg-5 lead"><i
-				class="fas fa-align-left" id="toggle"></i></a><a href="index.html"
-				class="navbar-brand font-weight-bold text-uppercase"></a>
+		class="fas fa-align-left" id="toggle"></i></a><a href="index.html"
+		class="navbar-brand font-weight-bold text-uppercase"></a>
 	<div
 		class="text-gray-400 text-uppercase px-3 px-lg-4 py-4 font-weight-bold small headings-font-family"
 		id="profile"></div>
@@ -59,12 +59,12 @@
 		<li class="nav-item dropdown ml-auto"><a id="userInfo"
 			href="http://example.com" data-toggle="dropdown" aria-haspopup="true"
 			aria-expanded="false" class="nav-link dropdown-toggle"><img
-				src="/plzdaengs/template/img/avatar-6.jpg" alt="Jason Doe" style="max-width: 2.5rem;"
-				class="img-fluid rounded-circle shadow"></a>
+				src="/plzdaengs/template/img/avatar-6.jpg" alt="Jason Doe"
+				style="max-width: 2.5rem;" class="img-fluid rounded-circle shadow"></a>
 			<div aria-labelledby="userInfo" class="dropdown-menu">
 				<a href="#" class="dropdown-item"><strong
-					class="d-block text-uppercase headings-font-family">이름</strong>
-					<small>반려견 주인</small></a>
+					class="d-block text-uppercase headings-font-family">이름</strong> <small>반려견
+						주인</small></a>
 				<div class="dropdown-divider"></div>
 				<a href="#" class="dropdown-item">회원 정보</a><a href="#"
 					class="dropdown-item"> 활동 내역 </a>
@@ -83,13 +83,17 @@
 			<div id="pages" class="collapse">
 				<ul
 					class="sidebar-menu list-unstyled border-left border-primary border-thick">
-					<li class="sidebar-list-item"><a href="/plzdaengs/menu?act=membermodify"
+					<li class="sidebar-list-item"><a
+						href="/plzdaengs/menu?act=membermodify"
 						class="sidebar-link pl-lg-5">회원정보</a></li>
-					<li class="sidebar-list-item"><a href="/plzdaengs/menu?act=animals"
-						class="sidebar-link pl-lg-5">반려동물 정보</a></li>
+					<li class="sidebar-list-item"><a
+						href="/plzdaengs/menu?act=animals" class="sidebar-link pl-lg-5">반려동물
+							정보</a></li>
 				</ul>
 			</div></li>
-		<li class="sidebar-list-item"><a href="/plzdaengs/charts.html"
+			
+		<!-- 윤영 PART > 기존의 다이어리 → table 모여있는 화면으로 가려면 tables.html을 보시오 -->
+		<li class="sidebar-list-item"><a href="/plzdaengs/diary/diarymain.html"
 			class="sidebar-link text-muted"><i
 				class="o-sales-up-1 mr-3 text-gray"></i><span>다이어리</span></a></li>
 		<li class="sidebar-list-item"><a href="#" data-toggle="collapse"
@@ -129,8 +133,8 @@
 						class="sidebar-link pl-lg-5">Page four</a></li>
 				</ul>
 			</div></li>
-		<li class="sidebar-list-item"><a href="/plzdaengs/template/login.html"
-			class="sidebar-link text-muted"><i
+		<li class="sidebar-list-item"><a
+			href="/plzdaengs/template/login.html" class="sidebar-link text-muted"><i
 				class="o-exit-1 mr-3 text-gray"></i><span>Login</span></a></li>
 	</ul>
 
