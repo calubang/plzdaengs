@@ -103,7 +103,7 @@
 			<div id="pages" class="collapse">
 				<ul
 					class="sidebar-menu list-unstyled border-left border-primary border-thick">
-					<li class="sidebar-list-item"><a href="#"
+					<li class="sidebar-list-item"><a href="/plzdaengs/group/groupmain.jsp"
 						class="sidebar-link pl-lg-5">소모임메인</a></li>
 					<li class="sidebar-list-item"><a href="#"
 						class="sidebar-link pl-lg-5">소모임1</a></li>

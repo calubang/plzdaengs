@@ -14,6 +14,31 @@
     padding: 10px;
     }
     </style>
+<script>
+$(function(){
+	
+	var createBtn = $("input[name=creategroup]");
+	$(createBtn).click(function(){
+		alert("소모임생성");
+		$.ajax({
+			url:"",
+			method:"get",
+			success:function(result){
+				alert("생성완료");
+				
+			}
+		});
+		
+		
+		
+		
+	});
+	
+	
+});
+
+
+</script>
 </head>
 <body>
 <!-- navbar-->	
@@ -192,11 +217,10 @@
                           </div>
                           <div class="modal-footer">
                                      
-                            <input type="submit" value="소모임생성" class="btn btn-primary">
+                            <input name="creategroup" type="submit" value="소모임생성" class="btn btn-primary">
                             <input type="button" value="취소" class="btn btn-primary">
                                                          
-                            <button type="submit" data-dismiss="modal" class="btn btn-secondary">소모임생성</button>
-                            <button type="button" data-dismiss="modal" class="btn btn-secondary">취소</button>
+                          
                             
                           </div>
                         </div>

@@ -4,7 +4,16 @@
     <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ page session="true"%>
-    
+ 
+ 
+<!-- 
+
+1. 서로간의 브라우저에서 채팅 연결
+2. 채팅을 보냈을때 DB에 insert
+3. 접속했을시에 DB에 저장된 contents select
+4-1. 다중 채팅 프로토콜 활용
+4-2. login시 생성되는 session 정보를 토대로 특정 채팅 목록 불러오기
+ -->   
 <!DOCTYPE html>
 <html>
 <head>
@@ -35,6 +44,7 @@ function onError(event) {
 var inputsend = $("#inputsend");
 $(inputsend).click(function(){
 	alert("click");
+	send();
 });
 
 
