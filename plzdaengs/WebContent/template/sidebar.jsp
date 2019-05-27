@@ -92,9 +92,23 @@
 		<li class="sidebar-list-item"><a href="/plzdaengs/charts.html"
 			class="sidebar-link text-muted"><i
 				class="o-sales-up-1 mr-3 text-gray"></i><span>다이어리</span></a></li>
-		<li class="sidebar-list-item"><a href="/plzdaengs/tables.html"
+		<li class="sidebar-list-item"><a href="#" data-toggle="collapse"
+			data-target="#pages" aria-expanded="false" aria-controls="pages"
 			class="sidebar-link text-muted"><i
-				class="o-table-content-1 mr-3 text-gray"></i><span>소모임</span></a></li>
+				class="o-wireframe-1 mr-3 text-gray"></i><span>소모임</span></a>
+			<div id="pages" class="collapse">
+				<ul
+					class="sidebar-menu list-unstyled border-left border-primary border-thick">
+					<li class="sidebar-list-item"><a href="#"
+						class="sidebar-link pl-lg-5">소모임메인</a></li>
+					<li class="sidebar-list-item"><a href="#"
+						class="sidebar-link pl-lg-5">소모임1</a></li>
+					<li class="sidebar-list-item"><a href="#"
+						class="sidebar-link pl-lg-5">소모임2</a></li>
+					<li class="sidebar-list-item"><a href="#"
+						class="sidebar-link pl-lg-5">소모임3</a></li>
+				</ul>
+			</div></li>
 		<li class="sidebar-list-item"><a href="/plzdaengs/forms.html"
 			class="sidebar-link text-muted"><i
 				class="o-survey-1 mr-3 text-gray"></i><span>유기견</span></a></li>

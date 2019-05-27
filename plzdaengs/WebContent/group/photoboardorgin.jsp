@@ -117,7 +117,6 @@
 		<div class="page-holder w-100 d-flex flex-wrap">
 			<div class="container-fluid" id="contents">
 				<section class="py-5">
-				<div></div>
 					<div class="is-preload-0 is-preload-1 is-preload-2">
 						<!-- Main -->
 						<div id="main">
@@ -247,7 +246,9 @@
 		</div>
 	</div>
 							<!-- Scripts -->
-
+	<script src="/plzdaengs/template/grouptems/photoboard/browser.min.js"></script>
+	<script src="/plzdaengs/template/grouptems/photoboard/breakpoints.min.js"></script>
+	<script src="/plzdaengs/template/grouptems/photoboard/main.js"></script>
 	<%@ include file="/template/default_js_link.jsp"%>
 </body>
 </html>

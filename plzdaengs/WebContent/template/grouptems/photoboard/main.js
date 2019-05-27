@@ -43,7 +43,7 @@ var main = (function($) { var _ = {
 	 * 
 	 * @var {jQuery}
 	 */
-	$body: null,
+	$section: null,
 
 	/**
 	 * Main wrapper.
@@ -154,7 +154,7 @@ var main = (function($) { var _ = {
 
 		// Window, body.
 			_.$window = $(window);
-			_.$body = $('body');
+			_.$section = $("section");
 
 		// Thumbnails.
 			_.$thumbnails = $('#thumbnails');
@@ -168,7 +168,7 @@ var main = (function($) { var _ = {
 						'<div class="toggle"></div>' +
 					'</div>' +
 				'</div>'
-			).appendTo(_.$body);
+			).appendTo(_.$section);
 
 		// Nav.
 			_.$navNext = _.$viewer.find('.nav-next');
@@ -195,14 +195,14 @@ var main = (function($) { var _ = {
 			// Remove is-preload-* classes on load.
 				_.$window.on('load', function() {
 
-					_.$body.removeClass('is-preload-0');
+					_.$section.removeClass('is-preload-0');
 
 					window.setTimeout(function() {
-						_.$body.removeClass('is-preload-1');
+						_.$section.removeClass('is-preload-1');
 					}, 100);
 
 					window.setTimeout(function() {
-						_.$body.removeClass('is-preload-2');
+						_.$section.removeClass('is-preload-2');
 					}, 100 + Math.max(_.settings.layoutDuration - 150, 0));
 
 				});
@@ -212,11 +212,11 @@ var main = (function($) { var _ = {
 
 				_.$window.on('resize', function() {
 
-					_.$body.addClass('is-preload-0');
+					_.$section.addClass('is-preload-0');
 					window.clearTimeout(resizeTimeout);
 
 					resizeTimeout = window.setTimeout(function() {
-						_.$body.removeClass('is-preload-0');
+						_.$section.removeClass('is-preload-0');
 					}, 100);
 
 				});
@@ -362,7 +362,7 @@ var main = (function($) { var _ = {
 		// Keyboard shortcuts.
 
 			// Ignore shortcuts within form elements.
-				_.$body.on('keydown', 'input,select,textarea', function(event) {
+				_.$section.on('keydown', 'input,select,textarea', function(event) {
 					event.stopPropagation();
 				});
 
@@ -676,7 +676,7 @@ var main = (function($) { var _ = {
 	up: function() {
 
 		// Fullscreen? Bail.
-			if (_.$body.hasClass('fullscreen'))
+			if (_.$section.hasClass('fullscreen'))
 				return;
 
 		// Calculate new index.
@@ -698,7 +698,7 @@ var main = (function($) { var _ = {
 	down: function() {
 
 		// Fullscreen? Bail.
-			if (_.$body.hasClass('fullscreen'))
+			if (_.$section.hasClass('fullscreen'))
 				return;
 
 		// Calculate new index.
@@ -720,11 +720,11 @@ var main = (function($) { var _ = {
 	show: function() {
 
 		// Already visible? Bail.
-			if (!_.$body.hasClass('fullscreen'))
+			if (!_.$section.hasClass('fullscreen'))
 				return;
 
 		// Show main wrapper.
-			_.$body.removeClass('fullscreen');
+			_.$section.removeClass('fullscreen');
 
 		// Focus.
 			_.$main.focus();
@@ -737,11 +737,11 @@ var main = (function($) { var _ = {
 	hide: function() {
 
 		// Already hidden? Bail.
-			if (_.$body.hasClass('fullscreen'))
+			if (_.$section.hasClass('fullscreen'))
 				return;
 
 		// Hide main wrapper.
-			_.$body.addClass('fullscreen');
+			_.$section.addClass('fullscreen');
 
 		// Blur.
 			_.$main.blur();
@@ -753,7 +753,7 @@ var main = (function($) { var _ = {
 	 */
 	toggle: function() {
 
-		if (_.$body.hasClass('fullscreen'))
+		if (_.$section.hasClass('fullscreen'))
 			_.show();
 		else
 			_.hide();
