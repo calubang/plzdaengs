@@ -61,10 +61,10 @@ $(function() {
 	fileDropDown();
 	
 	//회원가입
-	$("button[type=submit]").click(memberjoin);
+	$("button[type=submit]").click(memberjoinClick);
 });
 
-function memberjoin() {
+function memberjoinClick() {
 	var id = $("input[name=id]").val();
 	var password = $("input[name=password]").val();
 	var passwordcheck = $("input[name=passwordcheck]").val();
@@ -108,8 +108,39 @@ function memberjoin() {
 		$("input[name=nickname]").focus();
 		return false;
 	}
-
+	
+	memberjoin();
+	
+	return false;
 }
+
+function memberjoin() {
+	alert("ajax 호출");
+	var form = $(".register form")[0];
+	console.log(form);
+	var formData = new FormData(form);
+	console.log(formData.get("id"));
+	/* $.ajax({
+		url : "memberjoin"
+		, method : "post"
+		, data : $("form").serialize()
+		, success : function (result) {
+			alert("success 실행 : " + result);
+		}
+	}); */
+	
+	$.ajax({
+		url : "memberjoin"
+		, method : "post"
+		, processData : false
+		, contentType : false
+		, data : formData
+		, success : function (result) {
+			alert("success 실행 : " + result);
+		}
+	}); 
+}
+
 function fileDropDown() {
 	var fileInputText = $(".registerfileupload input[type=text]");
 	var fileInput = $(".registerfileupload input[type=file]");
@@ -165,8 +196,10 @@ function fileRegisterProcess(files) {
 	var imgtag = $(".registerfileupload img");
 
 	var fileName = files[0].name;
+	imgtag.prop("src", "/plzdaengs/template/img/basic_user_profile.png");
 
 	if (!(files[0].type.startsWith('image/'))) {
+		alert(files[0].type);
 		showAlertModal("이미지 업로드 경고", "올릴수 없는 확장자입니다.");
 		return;
 	}
@@ -174,23 +207,12 @@ function fileRegisterProcess(files) {
 	fileInput[0].files = files;
 	fileName = fileInput[0].files[0].name;
 	$(fileInputText[0]).val(fileName);
-	//
-
-	imgtag.prop("src", "/plzdaengs/template/img/basic_user_profile.png");
-	if (window.FileReader) {
-		var reader = new FileReader();
-		reader.onload = function(e) {
-			var src = e.target.result;
-			imgtag.prop("src", src);
-		}
-		reader.readAsDataURL(fileInput[0].files[0]);
-	} else {
-		fileInput[0].select();
-		fileInput[0].blur();
-		var imgSrc = document.selection.createRange().text;
-		imgtag.style.filter = "progid:DXImageTransform.Microsoft.AlphaImageLoader(enable='true',sizingMethod='scale',src=\""
-				+ imgSrc + "\")";
+	
+	var reader =new FileReader();
+	reader.onload = function (e) {
+		imgtag.prop("src", e.target.result);
 	}
+	reader.readAsDataURL(fileInput[0].files[0]);
 }
 
 function dropdownItemClick() {
@@ -209,29 +231,21 @@ function fileUploadChange() {
 	var imgtag = $(this).siblings("img");
 	imgtag.prop("src", "/plzdaengs/template/img/basic_user_profile.png");
 	
-	if (!($(this)[0].type.startsWith('image/'))) {
-		$(this)[0].value = "";
+	
+	if (!this.files[0].type.startsWith("image/")) {
+		this.files[0].value = "";
 		showAlertModal("이미지 업로드 경고", "올릴수 없는 확장자입니다.");
 		return;
 	}
-	
+
+	imgtag.prop("src", "/plzdaengs/template/img/basic_user_profile.png");
+	var reader =new FileReader();
+	reader.onload = function (e) {
+		imgtag.prop("src", e.target.result);
+	}
+	reader.readAsDataURL(this.files[0]);
 	$(this).siblings("input[type=text]").val(filename);
 
-	if (window.FileReader) {
-		var reader = new FileReader();
-		reader.onload = function(e) {
-			var src = e.target.result;
-			imgtag.prop("src", src);
-		}
-		reader.readAsDataURL($(this)[0].files[0]);
-	} else {
-		$(this)[0].select();
-		$(this)[0].blur();
-		var imgSrc = document.selection.createRange().text;
-		//alert(imgSrc);
-		imgtag.style.filter = "progid:DXImageTransform.Microsoft.AlphaImageLoader(enable='true',sizingMethod='scale',src=\""
-				+ imgSrc + "\")";
-	}
 }
 </script>
 <!-- section -->
@@ -246,7 +260,7 @@ function fileUploadChange() {
 				<h3 class="h6 text-uppercase mb-0">회원 가입</h3>
 			</div>
 			<div class="card-body">
-				<form class="form-horizontal">
+				<form class="form-horizontal" enctype="multipart/form-data">
 					<div class="form-group row registerid">
 						<label class="col-md-3 form-control-label">아이디(*)</label>
 						<div class="col-md-5">
@@ -307,9 +321,9 @@ function fileUploadChange() {
 						<div class="col-md-9 input-group-prepend">
 							<label for="ex_file" class="col-md-2">프로필선택</label> <input
 								type="file" class="form-control file-hidden" id="ex_file"
-								accept="image/*"> <input type="text"
-								placeholder="파일을 등록해주세요" class="form-control col-md-5 "
-								readonly> <img alt="" class="col-md-2 fileuploadimg"
+								accept="image/*" name="imgdata"> 
+								<input type="text" placeholder="파일을 등록해주세요" class="form-control col-md-5 "
+								name="userimg" readonly> <img alt="" class="col-md-2 fileuploadimg"
 								src="/plzdaengs/template/img/basic_user_profile.png">
 						</div>
 					</div>
