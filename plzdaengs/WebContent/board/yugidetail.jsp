@@ -136,11 +136,11 @@
 					<div class="row">
 						<div class="col-xl-12 col-lg-auto">
 							<div class="card">
-								<div class="card-header">
+							<!-- <div class="card-header">
 									<h6 class="text-uppercase mb-0">유기견 정보 게시판</h6>
-								</div>
+								</div> -->
 								<div class="card-body" align="center">
-									<img src="../template/img/profile.jpg" />
+									<img src="../template/img/profile.jpg" style="width: 28rem; height: 26rem; max-height: 80%; max-width: 80%" />
 								</div>
 								<div class="card-body">
 									<table class="table card-text col-xl-auto">
@@ -170,6 +170,7 @@
 									</table>
 								</div>
 							</div>
+							<button class="btn btn-primary " type="button" style="background-color: #dc3545; float: right; padding: 0.2rem 0.8rem;">목록</button>
 						</div>
 					</div>
 				</section>
