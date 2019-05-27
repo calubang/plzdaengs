@@ -25,9 +25,10 @@ public class MemberService {
 		}
 		//등록한 파일이 없으면 기본 이미지 사용
 		if(inputFile  == null) {
-			
+			userDto.setUser_img("/template/img/basic_user_profile.png");
 		}
-		
+		//디비에 데이터 입력
 		dao.insert(userDto);
+		
 	}
 }

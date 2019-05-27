@@ -14,6 +14,7 @@ import com.plzdaeng.dto.UserDetailDto;
 import com.plzdaeng.dto.UserDto;
 import com.plzdaeng.member.model.MemberService;
 import com.plzdaeng.util.ProfileCreate;
+import com.plzdaeng.util.SiteConstance;
 
 @WebServlet("/memberjoin")
 public class MemberJoinServlet extends HttpServlet {
@@ -28,7 +29,8 @@ public class MemberJoinServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		System.out.println("memberjoin");
 	
-		String saveDirectory = "D:\\javaData\\fileupload";
+		//String saveDirectory = request.getServletContext().getRealPath("\\img\\user");
+		String saveDirectory = SiteConstance.IMG_PATH;
 		MultipartRequest mr = new MultipartRequest(request, saveDirectory, "utf-8");
 		
 		String id = mr.getParameter("id");
@@ -59,9 +61,9 @@ public class MemberJoinServlet extends HttpServlet {
 		userDetailDto.setAddress_detail(addressdetail);
 		
 		System.out.println(userDto);
+		
 		service.memberJoin(userDto, mr.getFile("imgdata"));
-		
-		
+	
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

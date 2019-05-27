@@ -28,6 +28,11 @@ public class ProfileCreate {
 		}
 		
 		try {
+			if(file == null) {
+				//기본 프로필로 설정
+				return;
+			}
+			
 			fin = new FileInputStream(file);
 			fout = new FileOutputStream(path + file.getName().substring(file.getName().lastIndexOf(".")+1));
 			
@@ -44,7 +49,7 @@ public class ProfileCreate {
 			if(fin != null) {
 				try {
 					fin.close();
-					file.delete();
+					//file.delete();
 				} catch (IOException e) {
 					e.printStackTrace();
 				}

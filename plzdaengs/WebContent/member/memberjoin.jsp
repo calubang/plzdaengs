@@ -343,13 +343,13 @@ function fileUploadChange() {
 							<div
 								class="custom-control custom-radio custom-control-inline">
 								<input id="genderfemaleradio" type="radio"
-									class="custom-control-input" name="gender" value="female">
+									class="custom-control-input" name="gender" value="F">
 								<label for="genderfemaleradio" class="custom-control-label">여자</label>
 							</div>
 							<div
 								class="custom-control custom-radio custom-control-inline">
 								<input id="gendermaleradio" type="radio"
-									class="custom-control-input" name="gender" value="male">
+									class="custom-control-input" name="gender" value="M">
 								<label for="gendermaleradio" class="custom-control-label">남자</label>
 							</div>
 						</div>
