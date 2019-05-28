@@ -101,11 +101,17 @@ COMMENT ON COLUMN PLZ_USER.user_img IS '유저프로필';
 
 COMMENT ON COLUMN PLZ_USER.authority IS '권한';
 
+ALTER TABLE PLZ_USER
+	ADD
+		CONSTRAINT PK_PLZ_USER
+		PRIMARY KEY (
+			user_id
+		);
+
 /* GROUP */
 CREATE TABLE PLZ_GROUP (
 	group_id NUMBER NOT NULL, /* 그룹ID */
 	group_category_id VARCHAR2(1), /* 그룹카테고리ID */
-	group_category_input VARCHAR2(128), /* 그룹카테고리직접입력 */
 	group_name VARCHAR2(64), /* 그룹이름 */
 	description VARCHAR2(1024), /* 그룹설명 */
 	group_img VARCHAR2(128), /* 그룹대표이미지 */
@@ -124,8 +130,6 @@ COMMENT ON COLUMN PLZ_GROUP.group_category_id IS '오프라인
 직접입력
 ';
 
-COMMENT ON COLUMN PLZ_GROUP.group_category_input IS '그룹카테고리직접입력';
-
 COMMENT ON COLUMN PLZ_GROUP.group_name IS '그룹이름';
 
 COMMENT ON COLUMN PLZ_GROUP.description IS '그룹설명';
@@ -135,6 +139,13 @@ COMMENT ON COLUMN PLZ_GROUP.group_img IS '그룹대표이미지';
 COMMENT ON COLUMN PLZ_GROUP.address_sido IS '주소시도';
 
 COMMENT ON COLUMN PLZ_GROUP.address_sigungu IS '주소시군구';
+
+ALTER TABLE PLZ_GROUP
+	ADD
+		CONSTRAINT PK_PLZ_GROUP
+		PRIMARY KEY (
+			group_id
+		);
 
 /* GROUP_MEMBER */
 CREATE TABLE PLZ_GROUP_MEMBER (
@@ -155,6 +166,14 @@ COMMENT ON COLUMN PLZ_GROUP_MEMBER.member_status IS '대표        L
 탈퇴        X
 ';
 
+ALTER TABLE PLZ_GROUP_MEMBER
+	ADD
+		CONSTRAINT PK_PLZ_GROUP_MEMBER
+		PRIMARY KEY (
+			group_id,
+			user_id
+		);
+
 /* GROUP_CHAT */
 CREATE TABLE PLZ_GROUP_CHAT (
 	group_id NUMBER NOT NULL, /* 그룹ID */
@@ -172,6 +191,15 @@ COMMENT ON COLUMN PLZ_GROUP_CHAT.user_id IS '유저ID';
 COMMENT ON COLUMN PLZ_GROUP_CHAT.chat_date IS '채팅날짜';
 
 COMMENT ON COLUMN PLZ_GROUP_CHAT.chat_contents IS '채팅내용';
+
+ALTER TABLE PLZ_GROUP_CHAT
+	ADD
+		CONSTRAINT PK_PLZ_GROUP_CHAT
+		PRIMARY KEY (
+			group_id,
+			user_id,
+			chat_date
+		);
 
 /* PLZ_PET */
 CREATE TABLE PLZ_PET (
@@ -206,6 +234,14 @@ F : 비대표
 ';
 
 COMMENT ON COLUMN PLZ_PET.pet_img IS '펫이미지';
+
+ALTER TABLE PLZ_PET
+	ADD
+		CONSTRAINT PK_PLZ_PET
+		PRIMARY KEY (
+			user_id,
+			pet_name
+		);
 
 /* DIARY */
 CREATE TABLE PLZ_DIARY (
@@ -249,6 +285,13 @@ COMMENT ON COLUMN PLZ_DIARY.location_y IS 'y좌표';
 
 COMMENT ON COLUMN PLZ_DIARY.create_date IS '다이어리생성일';
 
+ALTER TABLE PLZ_DIARY
+	ADD
+		CONSTRAINT PK_PLZ_DIARY
+		PRIMARY KEY (
+			diary_number
+		);
+
 /* PLZ_BREED */
 CREATE TABLE PLZ_BREED (
 	animal_code VARCHAR2(32) NOT NULL, /* 동물코드 */
@@ -264,6 +307,14 @@ COMMENT ON COLUMN PLZ_BREED.breed_code IS '품종코드';
 
 COMMENT ON COLUMN PLZ_BREED.breed_name IS '품종이름';
 
+ALTER TABLE PLZ_BREED
+	ADD
+		CONSTRAINT PK_PLZ_BREED
+		PRIMARY KEY (
+			animal_code,
+			breed_code
+		);
+
 /* PLZ_ANIMAL */
 CREATE TABLE PLZ_ANIMAL (
 	animal_code VARCHAR2(32) NOT NULL, /* 동물코드 */
@@ -275,6 +326,13 @@ COMMENT ON TABLE PLZ_ANIMAL IS 'PLZ_ANIMAL';
 COMMENT ON COLUMN PLZ_ANIMAL.animal_code IS '동물코드';
 
 COMMENT ON COLUMN PLZ_ANIMAL.animal_name IS '동물종이름';
+
+ALTER TABLE PLZ_ANIMAL
+	ADD
+		CONSTRAINT PK_PLZ_ANIMAL
+		PRIMARY KEY (
+			animal_code
+		);
 
 /* VACCINATION */
 CREATE TABLE PLZ_VACCINATION (
@@ -294,6 +352,13 @@ COMMENT ON COLUMN PLZ_VACCINATION.animal_code IS '동물코드';
 
 COMMENT ON COLUMN PLZ_VACCINATION.vaccin_cycle IS '일단위로 저장함';
 
+ALTER TABLE PLZ_VACCINATION
+	ADD
+		CONSTRAINT PK_PLZ_VACCINATION
+		PRIMARY KEY (
+			vaccin_code
+		);
+
 /* TAKEVACCIN */
 CREATE TABLE PLZ_TAKEVACCIN (
 	user_id VARCHAR2(32) NOT NULL, /* 유저ID */
@@ -308,6 +373,15 @@ COMMENT ON COLUMN PLZ_TAKEVACCIN.user_id IS '유저ID';
 COMMENT ON COLUMN PLZ_TAKEVACCIN.pet_name IS '펫이름';
 
 COMMENT ON COLUMN PLZ_TAKEVACCIN.vaccin_code IS '백신코드';
+
+ALTER TABLE PLZ_TAKEVACCIN
+	ADD
+		CONSTRAINT PK_PLZ_TAKEVACCIN
+		PRIMARY KEY (
+			user_id,
+			pet_name,
+			vaccin_code
+		);
 
 /* GROUP_MEETING */
 CREATE TABLE PLZ_GROUP_MEETING (
@@ -335,6 +409,13 @@ COMMENT ON COLUMN PLZ_GROUP_MEETING.meeting_date IS '미팅할날짜';
 COMMENT ON COLUMN PLZ_GROUP_MEETING.location_x IS '미팅장소X좌표';
 
 COMMENT ON COLUMN PLZ_GROUP_MEETING.location_y IS '미팅장소Y좌표';
+
+ALTER TABLE PLZ_GROUP_MEETING
+	ADD
+		CONSTRAINT PK_PLZ_GROUP_MEETING
+		PRIMARY KEY (
+			meeting_id
+		);
 
 /* BOARD */
 CREATE TABLE PLZ_BOARD (
@@ -370,12 +451,18 @@ COMMENT ON COLUMN PLZ_BOARD.views IS '조회수';
 
 COMMENT ON COLUMN PLZ_BOARD.group_id IS '그룹ID';
 
+ALTER TABLE PLZ_BOARD
+	ADD
+		CONSTRAINT PK_PLZ_BOARD
+		PRIMARY KEY (
+			post_id,
+			board_category_id
+		);
+
 /* USER_DETAIL */
 CREATE TABLE PLZ_USER_DETAIL (
 	user_id VARCHAR2(32) NOT NULL, /* 유저ID */
-	tel1 VARCHAR2(4), /* 전화번호1 */
-	tel2 VARCHAR2(4), /* 전화번호2 */
-	tel3 VARCHAR2(4), /* 전화번호3 */
+	tel VARCHAR2(15), /* 전화번호1 */
 	gender VARCHAR2(1), /* 성별 */
 	zipcode VARCHAR2(5), /* 우편번호 */
 	address VARCHAR2(128), /* 주소 */
@@ -386,11 +473,7 @@ COMMENT ON TABLE PLZ_USER_DETAIL IS 'USER_DETAIL';
 
 COMMENT ON COLUMN PLZ_USER_DETAIL.user_id IS '유저ID';
 
-COMMENT ON COLUMN PLZ_USER_DETAIL.tel1 IS '전화번호1';
-
-COMMENT ON COLUMN PLZ_USER_DETAIL.tel2 IS '전화번호2';
-
-COMMENT ON COLUMN PLZ_USER_DETAIL.tel3 IS '전화번호3';
+COMMENT ON COLUMN PLZ_USER_DETAIL.tel IS '전화번호1';
 
 COMMENT ON COLUMN PLZ_USER_DETAIL.gender IS '남자 : M
 여자 : F';
@@ -400,6 +483,13 @@ COMMENT ON COLUMN PLZ_USER_DETAIL.zipcode IS '우편번호';
 COMMENT ON COLUMN PLZ_USER_DETAIL.address IS '주소';
 
 COMMENT ON COLUMN PLZ_USER_DETAIL.address_detail IS '상세주소';
+
+ALTER TABLE PLZ_USER_DETAIL
+	ADD
+		CONSTRAINT PK_PLZ_USER_DETAIL
+		PRIMARY KEY (
+			user_id
+		);
 
 /* REPLY */
 CREATE TABLE PLZ_REPLY (
@@ -425,6 +515,13 @@ COMMENT ON COLUMN PLZ_REPLY.reply_contents IS '리플내용';
 
 COMMENT ON COLUMN PLZ_REPLY.creat_date IS '리플생성일';
 
+ALTER TABLE PLZ_REPLY
+	ADD
+		CONSTRAINT PK_PLZ_REPLY
+		PRIMARY KEY (
+			reply_id
+		);
+
 /* BOARD_CATEGORY */
 CREATE TABLE PLZ_BOARD_CATEGORY (
 	board_category_id VARCHAR2(1) NOT NULL, /* 보드카테고리ID */
@@ -439,6 +536,13 @@ COMMENT ON COLUMN PLZ_BOARD_CATEGORY.board_category_id IS '보드카테고리ID'
 COMMENT ON COLUMN PLZ_BOARD_CATEGORY.board_category_name IS '보드카테고리이름';
 
 COMMENT ON COLUMN PLZ_BOARD_CATEGORY.board_category_descripton IS '보드카테고리설명';
+
+ALTER TABLE PLZ_BOARD_CATEGORY
+	ADD
+		CONSTRAINT PK_PLZ_BOARD_CATEGORY
+		PRIMARY KEY (
+			board_category_id
+		);
 
 /* LIKES */
 CREATE TABLE PLZ_LIKES (
@@ -455,6 +559,15 @@ COMMENT ON COLUMN PLZ_LIKES.post_id IS '글번호';
 
 COMMENT ON COLUMN PLZ_LIKES.board_category_id IS '보드카테고리ID';
 
+ALTER TABLE PLZ_LIKES
+	ADD
+		CONSTRAINT PK_PLZ_LIKES
+		PRIMARY KEY (
+			user_id,
+			post_id,
+			board_category_id
+		);
+
 /* DIARY_CATEGORY */
 CREATE TABLE PLZ_DIARY_CATEGORY (
 	category_id VARCHAR2(32) NOT NULL, /* 카테고리ID */
@@ -470,11 +583,18 @@ COMMENT ON COLUMN PLZ_DIARY_CATEGORY.category_name IS '카테고리이름';
 
 COMMENT ON COLUMN PLZ_DIARY_CATEGORY.category_description IS '카테고리설명';
 
+ALTER TABLE PLZ_DIARY_CATEGORY
+	ADD
+		CONSTRAINT PK_PLZ_DIARY_CATEGORY
+		PRIMARY KEY (
+			category_id
+		);
+
 /* GROUP_TYPE */
 CREATE TABLE PLZ_GROUP_TYPE (
-	group_category__id VARCHAR2(1) NOT NULL, /* 그룹카테고리ID */
-	group_category__name VARCHAR2(64), /* 그룹카테고리이름 */
-	group_category__description VARCHAR2(1024) /* 그룹카테고리설명 */
+	group_category_id VARCHAR2(1) NOT NULL, /* 그룹카테고리ID */
+	group_category_name VARCHAR2(64), /* 그룹카테고리이름 */
+	group_category_description VARCHAR2(1024) /* 그룹카테고리설명 */
 );
 
 COMMENT ON TABLE PLZ_GROUP_TYPE IS 'GROUP_TYPE';
@@ -484,6 +604,13 @@ COMMENT ON COLUMN PLZ_GROUP_TYPE.group_category__id IS '그룹카테고리ID';
 COMMENT ON COLUMN PLZ_GROUP_TYPE.group_category__name IS '그룹카테고리이름';
 
 COMMENT ON COLUMN PLZ_GROUP_TYPE.group_category__description IS '그룹카테고리설명';
+
+ALTER TABLE PLZ_GROUP_TYPE
+	ADD
+		CONSTRAINT PK_PLZ_GROUP_TYPE
+		PRIMARY KEY (
+			group_category__id
+		);
 
 /* MEETING_MEMBER */
 CREATE TABLE PLZ_MEETING_MEMBER (
@@ -499,3 +626,244 @@ COMMENT ON COLUMN PLZ_MEETING_MEMBER.meeting_id IS '미팅ID';
 COMMENT ON COLUMN PLZ_MEETING_MEMBER.group_id IS '그룹ID';
 
 COMMENT ON COLUMN PLZ_MEETING_MEMBER.user_id IS '유저ID';
+
+ALTER TABLE PLZ_MEETING_MEMBER
+	ADD
+		CONSTRAINT PK_PLZ_MEETING_MEMBER
+		PRIMARY KEY (
+			meeting_id,
+			group_id,
+			user_id
+		);
+
+ALTER TABLE PLZ_GROUP
+	ADD
+		CONSTRAINT FK_PLZ_GROUP_TYPE_TO_PLZ_GROUP
+		FOREIGN KEY (
+			group_category_id
+		)
+		REFERENCES PLZ_GROUP_TYPE (
+			group_category__id
+		);
+
+ALTER TABLE PLZ_GROUP_MEMBER
+	ADD
+		CONSTRAINT FK_PLZ_GROUP_TO_PLZ_GROUP_MEMBER
+		FOREIGN KEY (
+			group_id
+		)
+		REFERENCES PLZ_GROUP (
+			group_id
+		);
+
+ALTER TABLE PLZ_GROUP_MEMBER
+	ADD
+		CONSTRAINT FK_PLZ_USER_TO_PLZ_GROUP_MEMBER
+		FOREIGN KEY (
+			user_id
+		)
+		REFERENCES PLZ_USER (
+			user_id
+		);
+
+ALTER TABLE PLZ_GROUP_CHAT
+	ADD
+		CONSTRAINT FK_PLZ_GROUP_MEMBER_TO_PLZ_GROUP_CHAT
+		FOREIGN KEY (
+			group_id,
+			user_id
+		)
+		REFERENCES PLZ_GROUP_MEMBER (
+			group_id,
+			user_id
+		);
+
+ALTER TABLE PLZ_PET
+	ADD
+		CONSTRAINT FK_PLZ_USER_TO_PLZ_PET
+		FOREIGN KEY (
+			user_id
+		)
+		REFERENCES PLZ_USER (
+			user_id
+		);
+
+ALTER TABLE PLZ_PET
+	ADD
+		CONSTRAINT FK_PLZ_BREED_TO_PLZ_PET
+		FOREIGN KEY (
+			animal_code,
+			breed_code
+		)
+		REFERENCES PLZ_BREED (
+			animal_code,
+			breed_code
+		);
+
+ALTER TABLE PLZ_DIARY
+	ADD
+		CONSTRAINT FK_PLZ_DIARY_CATEGORY_TO_PLZ_DIARY
+		FOREIGN KEY (
+			category_id2
+		)
+		REFERENCES PLZ_DIARY_CATEGORY (
+			category_id
+		);
+
+ALTER TABLE PLZ_DIARY
+	ADD
+		CONSTRAINT FK_PLZ_USER_TO_PLZ_DIARY
+		FOREIGN KEY (
+			user_id
+		)
+		REFERENCES PLZ_USER (
+			user_id
+		);
+
+ALTER TABLE PLZ_BREED
+	ADD
+		CONSTRAINT FK_PLZ_ANIMAL_TO_PLZ_BREED
+		FOREIGN KEY (
+			animal_code
+		)
+		REFERENCES PLZ_ANIMAL (
+			animal_code
+		);
+
+ALTER TABLE PLZ_VACCINATION
+	ADD
+		CONSTRAINT FK_PLZ_ANIMAL_TO_PLZ_VACCINATION
+		FOREIGN KEY (
+			animal_code
+		)
+		REFERENCES PLZ_ANIMAL (
+			animal_code
+		);
+
+ALTER TABLE PLZ_TAKEVACCIN
+	ADD
+		CONSTRAINT FK_PLZ_PET_TO_PLZ_TAKEVACCIN
+		FOREIGN KEY (
+			user_id,
+			pet_name
+		)
+		REFERENCES PLZ_PET (
+			user_id,
+			pet_name
+		);
+
+ALTER TABLE PLZ_TAKEVACCIN
+	ADD
+		CONSTRAINT FK_PLZ_VACCINATION_TO_PLZ_TAKEVACCIN
+		FOREIGN KEY (
+			vaccin_code
+		)
+		REFERENCES PLZ_VACCINATION (
+			vaccin_code
+		);
+
+ALTER TABLE PLZ_GROUP_MEETING
+	ADD
+		CONSTRAINT FK_PLZ_GROUP_TO_PLZ_GROUP_MEETING
+		FOREIGN KEY (
+			group_id
+		)
+		REFERENCES PLZ_GROUP (
+			group_id
+		);
+
+ALTER TABLE PLZ_BOARD
+	ADD
+		CONSTRAINT FK_PLZ_USER_TO_PLZ_BOARD
+		FOREIGN KEY (
+			user_id
+		)
+		REFERENCES PLZ_USER (
+			user_id
+		);
+
+ALTER TABLE PLZ_BOARD
+	ADD
+		CONSTRAINT FK_PLZ_BOARD_CATEGORY_TO_PLZ_BOARD
+		FOREIGN KEY (
+			board_category_id
+		)
+		REFERENCES PLZ_BOARD_CATEGORY (
+			board_category_id
+		);
+
+ALTER TABLE PLZ_USER_DETAIL
+	ADD
+		CONSTRAINT FK_PLZ_USER_TO_PLZ_USER_DETAIL
+		FOREIGN KEY (
+			user_id
+		)
+		REFERENCES PLZ_USER (
+			user_id
+		);
+
+ALTER TABLE PLZ_REPLY
+	ADD
+		CONSTRAINT FK_PLZ_BOARD_TO_PLZ_REPLY
+		FOREIGN KEY (
+			post_id,
+			board_category_id
+		)
+		REFERENCES PLZ_BOARD (
+			post_id,
+			board_category_id
+		);
+
+ALTER TABLE PLZ_REPLY
+	ADD
+		CONSTRAINT FK_PLZ_USER_TO_PLZ_REPLY
+		FOREIGN KEY (
+			user_id
+		)
+		REFERENCES PLZ_USER (
+			user_id
+		);
+
+ALTER TABLE PLZ_LIKES
+	ADD
+		CONSTRAINT FK_PLZ_USER_TO_PLZ_LIKES
+		FOREIGN KEY (
+			user_id
+		)
+		REFERENCES PLZ_USER (
+			user_id
+		);
+
+ALTER TABLE PLZ_LIKES
+	ADD
+		CONSTRAINT FK_PLZ_BOARD_TO_PLZ_LIKES
+		FOREIGN KEY (
+			post_id,
+			board_category_id
+		)
+		REFERENCES PLZ_BOARD (
+			post_id,
+			board_category_id
+		);
+
+ALTER TABLE PLZ_MEETING_MEMBER
+	ADD
+		CONSTRAINT FK_PLZ_GROUP_MEETING_TO_PLZ_MEETING_MEMBER
+		FOREIGN KEY (
+			meeting_id
+		)
+		REFERENCES PLZ_GROUP_MEETING (
+			meeting_id
+		);
+
+ALTER TABLE PLZ_MEETING_MEMBER
+	ADD
+		CONSTRAINT FK_PLZ_GROUP_MEMBER_TO_PLZ_MEETING_MEMBER
+		FOREIGN KEY (
+			group_id,
+			user_id
+		)
+		REFERENCES PLZ_GROUP_MEMBER (
+			group_id,
+			user_id
+		);

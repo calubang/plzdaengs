@@ -51,18 +51,68 @@
 }
 </style>
 <script>
+//아이디 중복검사용
+var idcheck = false;
+
 $(function() {
+	//드랍다운 이벤트
 	$(".dropdown-item").click(dropdownItemClick);
 
+	//주소검색 세팅
 	zipsearchWebSetting($(".registeraddress button"), $(".address input"));
+	//주소검색
 	$(".registeraddress button").click(zipModalPopUp);
+	
+	//프로필 파일 업로드
 	$("input[type=file].file-hidden").change(fileUploadChange);
-
 	fileDropDown();
 	
+	//아이디 중복검사
+	$("input[name=id]").change(idCheck);
+
 	//회원가입
 	$("button[type=submit]").click(memberjoinClick);
+	
+	//회원가입 성공시 뜨는 모달
+	$("#alertSuccess button").click(successAlertOkClick);
+	
 });
+
+function idCheck(){
+	var id = $(this).val();
+	var idchecklabel = $(this).parent().siblings("label[role=idcheck]");
+	$.ajax({
+		url : "idcheck"
+		, data : {
+			id : id
+		}
+		, beforeSend : function () {
+			idchecklabel.css("background-image", "url('/plzdaengs/template/img/loading.gif')");
+			idchecklabel.css("background-repeat", "no-repeat");
+			idchecklabel.css("background-size", "contain");
+			idchecklabel.css("background-position", "center");
+		}
+		, success : function (result) {
+			idchecklabel.css("background-image", "none");
+			result = result.trim();
+			if(result == 0){
+				idchecklabel.css("color", "green");
+				idchecklabel.text("사용가능한 아이디입니다.");
+				idcheck = true;
+			}else{
+				idchecklabel.css("color", "red");
+				idchecklabel.text("이미 사용중인 아이디입니다.");
+				idcheck = false;
+			}
+		}
+	});
+}
+
+function successAlertOkClick() {
+	$("#alertSuccess").modal("hide");
+	location.href = "/plzdaengs/index.jsp";
+	return false;
+}
 
 function memberjoinClick() {
 	var id = $("input[name=id]").val();
@@ -80,6 +130,11 @@ function memberjoinClick() {
 	//필수 입력 확인
 	if(id == null || id.length ==0){
 		showAlertModal("필수값 입력 확인", "아이디를 입력하지 않으셨어요.");
+		$("input[name=id]").focus();
+		return false;
+	}
+	if(!idcheck){
+		showAlertModal("아이디 중복확인", "아이디가 사용중입니다.");
 		$("input[name=id]").focus();
 		return false;
 	}
@@ -117,26 +172,20 @@ function memberjoinClick() {
 function memberjoin() {
 	alert("ajax 호출");
 	var form = $(".register form")[0];
-	console.log(form);
 	var formData = new FormData(form);
-	console.log(formData.get("id"));
-	/* $.ajax({
-		url : "memberjoin"
-		, method : "post"
-		, data : $("form").serialize()
-		, success : function (result) {
-			alert("success 실행 : " + result);
-		}
-	}); */
-	
+
 	$.ajax({
-		url : "memberjoin"
+		url : "userjoin"
 		, method : "post"
 		, processData : false
 		, contentType : false
 		, data : formData
 		, success : function (result) {
-			alert("success 실행 : " + result);
+			if(result.trim() == 1){
+				showSuccessAlertModal("회원가입 성공", "회원가입이 성공하였습니다");
+			}else{
+				showAlertModal("회원가입 실패", "회원가입이 실패하였습니다");
+			}
 		}
 	}); 
 }
@@ -252,6 +301,7 @@ function fileUploadChange() {
 <section class="register">
 <!-- 경고창 모달 -->
 <%@ include file="/template/alert_danger.jsp"%>
+<%@ include file="/template/alert_success.jsp"%>
 <!-- 우편번호 검색 모달 -->
 <%@ include file="/template/zipsearchWeb.jsp"%>
 	<div class="col-lg-10 mb-5">
@@ -267,7 +317,7 @@ function fileUploadChange() {
 							<input type="text" placeholder="아이디를 입력하세요"
 								class="form-control" name="id">
 						</div>
-						<label class="col-md-2 form-control-label">아이디중복체크</label>
+						<label class="col-md-3 form-control-label" role="idcheck">아이디중복체크</label>
 					</div>
 					<div class="line"></div>
 					<div class="form-group row registerpassword">

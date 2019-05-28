@@ -1,4 +1,4 @@
-package com.plzdaeng.member.controller;
+package com.plzdaeng.user.controller;
 
 import java.io.*;
 
@@ -12,22 +12,21 @@ import javax.swing.plaf.metal.MetalIconFactory.FolderIcon16;
 import com.oreilly.servlet.MultipartRequest;
 import com.plzdaeng.dto.UserDetailDto;
 import com.plzdaeng.dto.UserDto;
-import com.plzdaeng.member.model.MemberService;
-import com.plzdaeng.util.ProfileCreate;
-import com.plzdaeng.util.SiteConstance;
+import com.plzdaeng.user.service.UserService;
+import com.plzdaeng.util.*;
 
-@WebServlet("/memberjoin")
-public class MemberJoinServlet extends HttpServlet {
+@WebServlet("/userjoin")
+public class UserJoinServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private MemberService service;
+	private UserService service;
        
-    public MemberJoinServlet() {
+    public UserJoinServlet() {
         super();
-        service = new MemberService();
+        service = new UserService();
     }
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		System.out.println("memberjoin");
+		System.out.println("userjoin");
 	
 		//String saveDirectory = request.getServletContext().getRealPath("\\img\\user");
 		String saveDirectory = SiteConstance.IMG_PATH;
@@ -62,8 +61,10 @@ public class MemberJoinServlet extends HttpServlet {
 		
 		System.out.println(userDto);
 		
-		service.memberJoin(userDto, mr.getFile("imgdata"));
-	
+		int result = service.userJoin(userDto, mr.getFile("imgdata"));
+		System.out.println(result);
+		request.setAttribute("userjoinresult", result);
+		MoveUrl.forward(request, response, "/user/userjoinresult.jsp");
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

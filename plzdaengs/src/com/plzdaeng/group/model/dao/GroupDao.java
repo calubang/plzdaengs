@@ -2,6 +2,7 @@ package com.plzdaeng.group.model.dao;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.List;
 
 import com.plzdaeng.group.model.GroupDto;
 
@@ -14,6 +15,10 @@ public interface GroupDao {
 	int changeGroup(GroupDto dto);
 	
 	int deleteGroup(GroupDto dto);
+	
+	List<GroupDto> inGroup(int id);
+	
+	List<GroupDto> recommendGroup(int id);
 	
 	
 }

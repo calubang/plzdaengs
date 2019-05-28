@@ -15,14 +15,15 @@ var zipListView;
 
 function zipSearchAjax(doro, currentPage) {
 	$.ajax({
-		url: "<%=zipSearchWebRoot%>/member"
+		url: "<%=zipSearchWebRoot%>/zipsearchweb"
 		, type:"get"
 		, dataType:"xml"
-		, data : "act=zipsearchWeb&doro="+doro + "&currentPage=" + currentPage
+		, data : "doro="+doro + "&currentPage=" + currentPage
 		, timeout : 30000
 		, cache:false
 		, success: function(xml){	
 			//성공
+			alert(xml);
 			var totalCount = $(xml).find("totalCount");
 		 	var countPerPage = $(xml).find("countPerPage");
 		 	var totalPage = $(xml).find("totalPage");
