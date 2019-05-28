@@ -110,7 +110,8 @@ public class UserDao {
 		
 		DBClose.close(null, pstmt);
 	}
-
+	
+	//id체크용
 	public int selectById(String id) {
 		int result = 1;
 		Connection con = null;
@@ -138,6 +139,52 @@ public class UserDao {
 		}
 		
 		return result;
+	}
+	
+	//로그인용
+	public UserDto selectById(UserDto userDto) {
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		UserDto loginUser = null;
+		String selectByIdSQL = 
+				"select \r\n" + 
+				"    user_id\r\n" + 
+				"    , password\r\n" + 
+				"    , emailid\r\n" + 
+				"    , emaildomain\r\n" + 
+				"    , nickname\r\n" + 
+				"    , user_img\r\n" + 
+				"from plz_user\r\n" + 
+				"where \r\n" + 
+				"    user_id = ?\r\n" + 
+				"    and password = ?";
+		
+		try {
+			conn = DBConnection.makeConnection();
+			pstmt = conn.prepareStatement(selectByIdSQL);
+			int index = 0;
+			pstmt.setString(++index, userDto.getUser_id());
+			pstmt.setString(++index, userDto.getPassword());
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				loginUser = new UserDto();
+				loginUser.setUser_id(rs.getString("user_id"));
+				loginUser.setPassword(rs.getString("password"));
+				loginUser.setEmail(rs.getString("emailid"));
+				loginUser.setEmaildomain(rs.getString("emaildomain"));
+				loginUser.setNickname(rs.getString("nickname"));
+				loginUser.setUser_img(rs.getString("user_img"));
+			}
+		
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DBClose.close(conn, pstmt, rs);
+		}
+		
+		return loginUser;
 	}
 
 }

@@ -1,6 +1,8 @@
 package com.plzdaeng.user.controller;
 
 import java.io.IOException;
+import java.io.PrintWriter;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -29,9 +31,13 @@ public class ZipSearchWebServlet extends HttpServlet {
 		System.out.println("doro : " + doro + "// currentPage : " + currentPage);
 		
 		StringBuffer xml = service.zipSearchWeb(doro, currentPage);
-		request.setAttribute("zipsearchwebresult", xml.toString());
-		MoveUrl.forward(request, response, "/user/zipsearchwebresult.jsp");
+		//request.setAttribute("zipsearchwebresult", xml.toString());
+		//MoveUrl.forward(request, response, "/user/zipsearchwebresult.jsp");
 		//System.out.println(xml);
+		
+		response.setContentType("text/xml;charset=utf-8");
+		PrintWriter out = response.getWriter();
+		out.print(xml);
 		
 	}
 

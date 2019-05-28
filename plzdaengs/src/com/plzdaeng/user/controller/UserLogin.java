@@ -7,39 +7,27 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.plzdaeng.util.MoveUrl;
+import com.plzdaeng.dto.UserDto;
+import com.plzdaeng.user.service.UserService;
 
-@WebServlet("/animal")
-public class AnimalFrontController extends HttpServlet {
+@WebServlet("/userlogin")
+public class UserLogin extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-  
-    public AnimalFrontController() {
-       
+    private UserService service;
+	
+    public UserLogin() {
+        super();
+        service = new UserService();
     }
 
-
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String act = request.getParameter("act");
-		String path = "/index.jsp";
-		
-		System.out.println("animal : " + act);
-		
-		if(act == null)
-			return;
-		
-		switch (act) {
-		case "animalregister":
-			path = "/user/animalregister.jsp";
-			break;
-		case "animals":
-			path = "/user/animals.jsp";
-			break;
-			
-		default:
-			break;
-		}
-		
-		MoveUrl.forward(request, response, path);
+		String id = request.getParameter("id");
+		String password = request.getParameter("password");
+		System.out.println("userlogin : " + id + "//" + password);
+		UserDto userDto = new UserDto();
+		userDto.setUser_id(id);
+		userDto.setPassword(password);
+		userDto = service.userLogin(userDto);
 	}
 
 

@@ -59,7 +59,7 @@ $(function() {
 	$(".dropdown-item").click(dropdownItemClick);
 
 	//주소검색 세팅
-	zipsearchWebSetting($(".registeraddress button"), $(".address input"));
+	zipsearchWebSetting($(".registeraddress button"), $(".registeraddress input[name=address]"));
 	//주소검색
 	$(".registeraddress button").click(zipModalPopUp);
 	

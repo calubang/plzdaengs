@@ -19,11 +19,7 @@ function zipSearchAjax(doro, currentPage) {
 		, type:"get"
 		, dataType:"xml"
 		, data : "doro="+doro + "&currentPage=" + currentPage
-		, timeout : 30000
-		, cache:false
 		, success: function(xml){	
-			//성공
-			alert(xml);
 			var totalCount = $(xml).find("totalCount");
 		 	var countPerPage = $(xml).find("countPerPage");
 		 	var totalPage = $(xml).find("totalPage");
@@ -43,25 +39,21 @@ function zipSearchAjax(doro, currentPage) {
 				var tr2 = $("<tr>");
 				
 				tdzipNo.click(function() {
-					$("#zipcode").val(tdzipNo.text());
-					$("#address").val(tdlnmAdres.text());
-					$('#zipModal').modal("hide");
+					selectZip(tdzipNo.text(), tdlnmAdres.text());
 				});
 				tdlnmAdres.click(function() {
-					$("#zipcode").val(tdzipNo.text());
-					$("#address").val(tdlnmAdres.text());
-					$('#zipModal').modal("hide");
+					selectZip(tdzipNo.text(), tdlnmAdres.text());
 				});
 				tdrnAdres.click(function() {
-					$("#zipcode").val(tdzipNo.text());
-					$("#address").val(tdrnAdres.text());
-					$('#zipModal').modal("hide");
+					selectZip(tdzipNo.text(), tdrnAdres.text());
 				});
 				
 				tr.append(tdzipNo).append(tdlnmAdres);
 				tr2.append(tdrnAdres);
 				$("#zip_codeList").append(tr).append(tr2);
 		 	}
+		 	
+		 	//페이지 처리..
 		}
 	});
 }
@@ -78,38 +70,6 @@ function zipSearch() {
 	}
 }
 
-function zipsearchResult() {
-	if(httpRequest.readyState == 4){
-		if(httpRequest.status = 200){
-			var result = httpRequest.responseXML;
-			if(result.getElementsByTagName("ziplist")[0].firstChild == null || result.getElementsByTagName("ziplist")[0].firstChild == ""){
-				zipListView.innerHTML = "데이터가 없습니다.";
-				return;
-			}
-			var ziplist = result.getElementsByTagName("zip");
-			var length = ziplist.length;
-			var view = "";
-			
-			for(var i =0 ; i<length ; i++){
-				var zipcode = ziplist[i].getElementsByTagName("zipcode")[0].firstChild.data;
-				var address = ziplist[i].getElementsByTagName("address")[0].firstChild.data;
-				view += "<tr>"+"\n";
-				view += "	<td align='left'>" + zipcode +"\n";
-				view += "	</td>"+"\n";
-				view += "	<td align='left'>";
-				view += "	<a href='javascript:selectZip(" + "\""+ zipcode +"\", \"" + address + "\");'" + ">";
-				view += address +"\n";
-				view += "	</a>";
-				view += "	</td>"+"\n";
-				view += "</tr>"+"\n";
-			}
-			zipListView.innerHTML = view;
-		}
-	} else{
-		//로딩중...
-		zipListView.innerHTML = "<img src='<%=zipSearchWebRoot%>/template/img/loading.gif' width='80' height='80'>";
-	}
-}
 var zipcodetag;
 var addresstag;
 
@@ -119,8 +79,13 @@ function zipsearchWebSetting(zipcodeselector, addressselector) {
 }
 
 function selectZip(zipcode, address) {
-	zipcodetag.val(zipcode);
-	zipcodetag.val(zipcode);
+	//console.log(zipcodetag);
+	//console.log(addresstag);
+	
+	zipcodetag.text(zipcode);
+	//hidden 부분도 변경
+	zipcodetag.siblings("input[type=hidden]").val(zipcode);
+	addresstag.val(address);
 	$('#zipModal').modal("hide");
 }
 </script>
@@ -141,7 +106,6 @@ function selectZip(zipcode, address) {
 				</button>
 			</div>
 			<div class="modal-body text-center">
-				
 				<div class="input-group" align="left">
 					<input type="text" class="form-control" id="doro" name="doro"
 						placeholder="검색 할 도로명 입력(예: 구로디지털로, 여수울로)"> <span
@@ -168,6 +132,13 @@ function selectZip(zipcode, address) {
 							</tr>
 						</tbody>
 					</table>
+					<ul class="pagination" style="padding-left: 30%">
+						  <li class="page-item"><a class="page-link" href="#">Previous</a></li>
+						  <li class="page-item"><a class="page-link" href="#">1</a></li>
+						  <li class="page-item active"><a class="page-link" href="#">2</a></li>
+						  <li class="page-item"><a class="page-link" href="#">3</a></li>
+						  <li class="page-item"><a class="page-link" href="#">Next</a></li>
+					</ul>
 				</div>
 			</div>
 		</div>

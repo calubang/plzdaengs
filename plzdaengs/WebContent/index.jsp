@@ -14,7 +14,7 @@ String user = (String)request.getSession().getAttribute("userInfo");
 $(function() {
 	$("#loginbtn").click(loginModalShow);
 	$("#loginmodal .modal-success").click(login);
-	$("#loginmodal .kakao-login").click(loginWithKakao);
+	//$("#loginmodal .kakao-login").click(loginWithKakao);
 	//회원가입
 	$("#registerbtn").click(registerbtnClick);
 	
@@ -72,9 +72,18 @@ function login(){
 	
 	var idPattern = /^[A-Za-z]{1}[A-Za-z0-9]{3,10}$/;
 	
+	if(id == null || id.length == 0){
+		showAlertModal("로그인 경고", "아이디를 입력하세요");
+		return;
+	}
+	if(password == null || password.length == 0){
+		showAlertModal("로그인 경고", "비밀번호를 입력하세요");
+		return;
+	}
+	
 	//로그인 실패를 위해 ajax
 	$.ajax({
-		url : "/plzdaengs/member"
+		url : "userlogin"
 		, method : "post"
 		, data : $("#loginmodal form").serialize()
 		, success : function(result){
@@ -87,36 +96,6 @@ function login(){
 		}
 	});
 }
-
-
-//카카오 로그인
-var authObject;
-
-Kakao.init('ae62f166e56328952bdb327fa784bba6');
-function loginWithKakao() {
-	//카카오 api key
-	
-	// 로그인 창을 띄웁니다.
-	Kakao.Auth.login({
-		success : function(authObj) {
-			//authObject = JSON.parse(authObj);
-			alert(JSON.stringify(authObj));
-			//authObject = JSON.parse(authObj);
-			//alert(authObj.access_token);
-			authObject = authObj;
-			Kakao.API.request({
-				url : "/v2/user/me"
-				, success: function(res) {
-					alert(res.id);
-					alert(JSON.stringify(res));
-				}
-			});
-		},
-		fail : function(err) {
-			alert(JSON.stringify(err));
-		}
-	});
-};
 </script>
 <style type="text/css">
 #loginmodal .modal-lg{
@@ -248,11 +227,6 @@ function loginWithKakao() {
 							</div>
 							<div class="modal-body">
 								<form>
-									<input type="hidden" name="act" value="login">
-				            		<div class="form-group" align="right">
-										<label for="">
-										<input type="checkbox" class="form-control" name="idsave" value="idsave" >아이디저장</label>
-									</div>
 									<div class="form-group">
 				                        <label class="form-control-label text-uppercase" >아이디</label>
 				                        <input type="text" placeholder="아이디를 입력하세요" class="form-control" required="required" name="id">

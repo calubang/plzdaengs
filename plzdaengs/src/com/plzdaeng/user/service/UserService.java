@@ -77,4 +77,10 @@ public class UserService {
 		
 		return resultXML;
 	}
+	
+	//로그인 프로세스
+	public UserDto userLogin(UserDto userDto) {
+		
+		return dao.selectById(userDto);
+	}
 }

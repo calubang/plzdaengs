@@ -29,20 +29,11 @@ public class UserFrontController extends HttpServlet {
 		System.out.println("member : " + act);
 		
 		switch (act) {
-		case "login":
-			HttpSession session = request.getSession();
-			session.setAttribute("userInfo", "userInfo 테스트중..");
-			//path = "/member/loginfail.jsp";
-			path = "/user/loginsuccess.jsp";
-			break;
-		case "userjoin":
-			path = "/user/userjoin.jsp";
-			break;
-		case "zipsearchWeb":
-			path = "/zipsearch";
-			break;
-		default:
-			break;
+			case "userjoin":
+				path = "/user/userjoin.jsp";
+				break;
+			default:
+				break;
 		}
 		
 		MoveUrl.forward(request, response, path);

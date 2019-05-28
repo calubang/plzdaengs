@@ -26,10 +26,6 @@ public class MenuFrontControl extends HttpServlet {
 		if(act == null)
 			return;
 		
-		if("animals".equals(act)) {
-			System.out.println("22");
-		}
-		
 		switch (act) {
 		case "animals":
 			path = "/animal";
