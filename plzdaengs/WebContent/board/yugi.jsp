@@ -9,19 +9,19 @@
 <meta name="description" content="">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="all,follow">
-	<!-- JavaScript files-->
-	<script src="/plzdaengs/template/vendor/jquery/jquery.min.js"></script>
-	<script src="/plzdaengs/template/vendor/popper.js/umd/popper.min.js">
+<!-- JavaScript files-->
+<script src="/plzdaengs/template/vendor/jquery/jquery.min.js"></script>
+<script src="/plzdaengs/template/vendor/popper.js/umd/popper.min.js">
 		
 	</script>
-	<script src="/plzdaengs/board/js/httpRequest.js"></script>
-	<script src="/plzdaengs/template/vendor/bootstrap/js/bootstrap.min.js"></script>
-	<script src="/plzdaengs/template/vendor/jquery.cookie/jquery.cookie.js">
+<script src="/plzdaengs/board/js/httpRequest.js"></script>
+<script src="/plzdaengs/template/vendor/bootstrap/js/bootstrap.min.js"></script>
+<script src="/plzdaengs/template/vendor/jquery.cookie/jquery.cookie.js">
 		
 	</script>
-	<script
-		src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script>
-	<script src="/plzdaengs/template/js/front.js"></script>
+<script
+	src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script>
+<script src="/plzdaengs/template/js/front.js"></script>
 <!-- Bootstrap CSS-->
 <link rel="stylesheet"
 	href="/plzdaengs/template/vendor/bootstrap/css/bootstrap.min.css">
@@ -45,7 +45,7 @@
 
 <script src="/plzdaengs/board/js/bootstrap-datepicker.js"></script>
 <script src="/plzdaengs/board/js/bootstrap-datepicker.kr.js"></script>
-<link rel="stylesheet"	href="/plzdaengs/board/css/datepicker3.css">
+<link rel="stylesheet" href="/plzdaengs/board/css/datepicker3.css">
 <!-- Tweaks for older IEs-->
 <!--[if lt IE 9]>
         <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
@@ -87,7 +87,6 @@ $(document).ready(function() {//
 	
 	$("#endde").datepicker('setDate','today');
 	
-	searchList();
 	
 });
 
@@ -114,7 +113,9 @@ function sidoResult(){
 			for(var i = 0; i < item.length; i++) {
 				var option = $("<option value='"+item[i].getElementsByTagName("orgCd")[0].firstChild.data+"'>"+item[i].getElementsByTagName("orgdownNm")[0].firstChild.data+"</option>");
                 $('#sido').append(option);
-			}			
+			}	
+			
+			searchList('');
 		}
 	}
 }
@@ -179,6 +180,11 @@ function serchResult(){
 		if(httpRequest.status == 200){
 			var result = httpRequest.responseXML;
 			var item = result.getElementsByTagName("item");
+			
+			var pageNo = result.getElementsByTagName("pageNo");
+			var totalCount = result.getElementsByTagName("totalCount");
+			
+			
 			//yugiList
 			$("#yugiList").html('');
 			
@@ -207,11 +213,69 @@ function serchResult(){
 				
 			}	
 			
+			searchPage(pageNo[0].firstChild.data, totalCount[0].firstChild.data);
+			
 		}
 	}
 }
 
-function searchList(){
+
+function searchPage(pageNo, totalCount){
+	var page_scale = 10;
+	var block_scale = 10;
+	var curBlock = 1;
+	var curPage = pageNo;
+	var totalPage = parseInt(totalCount * 1.0 /page_scale);
+	
+	
+	var pageBegin = (curPage-1)*page_scale+1;
+	var pageEnd = pageBegin+page_scale-1;
+	
+	var totalBlock = parseInt(totalPage / page_scale);
+	curBlock = parseInt((curPage - 1)/block_scale+1);
+	var blockBegin = (curBlock-1) * block_scale+1;
+	var blockEnd = blockBegin + block_scale-1;
+	
+	if(blockEnd > totalPage) blockEnd = totalPage;
+	
+	var prevPage = 1;
+	
+	if(curPage != 1){
+		prevPage = (curBlock-1)*block_scale;
+	}
+	
+	var nextPage = 0;
+	if(curBlock > totalBlock){
+		nextPage = curBlock*block_scale;
+	}else{
+		nextPage = (curBlock*block_scale)+1;
+	}
+	
+	if(nextPage >= totalPage) nextPage = totalPage;
+	
+	//pageArea
+	$("#pageArea").html('');
+	if(curBlock > 1){
+		$("#pageArea").append("<li class='page-item'><a class='page-link' href='#' onClick='searchList("+(blockBegin-1)+")'>Prev</a></li>");
+	}
+	
+	for(var i=blockBegin; i<=blockEnd; i++){
+		if(i == curPage){
+			$("#pageArea").append("<li class='page-item'> <a class='page-link' onClick='searchList("+i+")'>"+i+"</a> </li>");
+		}else{
+			$("#pageArea").append("<li class='page-item'><a class='page-link' href='#' onClick='searchList("+i+")'>"+i+"</a></li>");
+		}
+	}
+	
+	if(curBlock <= totalBlock){
+		$("#pageArea").append("<li class='page-item'><a class='page-link' href='#' onClick='searchList("+(blockEnd+1)+")'>Next</a></li>");
+	}
+	
+	
+}
+
+function searchList(pageNo){
+	if(pageNo == "") pageNo = 1;
 	var params = "cmd=abandonmentPublic&bgnde="+$("#bgnde").val().replace(/-/g,"");
 	params += "&endde="+$("#endde").val().replace(/-/g,"");		//검색일자
 	params += "&upkind="+$("#kind option:selected").val();	//축종코드 품종(대)
@@ -219,7 +283,7 @@ function searchList(){
 	params += "&upr_cd="+$("#sido option:selected").val(); //시도
 	params += "&org_cd="+$("#sigungu option:selected").val(); ///시군구
 	params += "&care_reg_no="+$("#shelter option:selected").val(); //보호센터
-	params += "&pageNo=1";
+	params += "&pageNo="+pageNo;
 	
 	
 	sendRequest("/plzdaengs/yugi",params,serchResult,"GET");
@@ -243,7 +307,7 @@ $(function(){
 	});
 	
 	$('#btnSearch').click(function(){
-		searchList();
+		searchList('');
 	});
 });
 
@@ -405,27 +469,29 @@ $(function(){
 									<form class="form-horizontal">
 										<!-- 날짜 -->
 										<div class="form-group row">
-												<label class="col-md-1 form-control-label">날짜</label>
-												<div class="col-md-3">
-													<input type='text' class="form-control datePicker" id="bgnde" name="bgnde" required="required"/>
-													<label class="calendar-icon" target="bgnde"></label>
-													
-												</div>
-												
-												<div class="col-md-2">
-													<label class="col-md-1 form-control-label">   ~  </label>
-												</div>
-												
-												<div class="col-md-3">
-													<input type='text' class="form-control datePicker" id="endde" name="endde" required="required"/>
-													<label class="calendar-icon" target="endde"></label>
-												</div>
+											<label class="col-md-1 form-control-label">날짜</label>
+											<div class="col-md-3">
+												<input type='text' class="form-control datePicker"
+													id="bgnde" name="bgnde" required="required" /> <label
+													class="calendar-icon" target="bgnde"></label>
+
+											</div>
+
+											<div class="col-md-2">
+												<label class="col-md-1 form-control-label"> ~ </label>
+											</div>
+
+											<div class="col-md-3">
+												<input type='text' class="form-control datePicker"
+													id="endde" name="endde" required="required" /> <label
+													class="calendar-icon" target="endde"></label>
+											</div>
 										</div>
 										<!-- 시도 -->
 										<div class="form-group row">
 											<label class="col-md-1 form-control-label">시도</label>
 											<div class="col-md-2">
-												<select id="sido" class="form-control" >
+												<select id="sido" class="form-control">
 													<option value="">시도</option>
 												</select>
 											</div>
@@ -478,6 +544,15 @@ $(function(){
 								</div>
 							</div>
 						</div>
+					</div>
+
+					<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+						<!-- 페이징 -->
+						<nav>
+							<ul class="pagination" style="margin-left: 30%;" id="pageArea">
+								
+							</ul>
+						</nav>
 					</div>
 				</section>
 				<!-- 게시판 뷰 끝 -->

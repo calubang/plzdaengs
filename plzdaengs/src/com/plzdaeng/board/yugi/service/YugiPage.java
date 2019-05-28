@@ -149,25 +149,23 @@ public class YugiPage {
 	
 	public String getPageString() {
 		StringBuilder strB = new StringBuilder();
-		strB.append("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>");
-		strB.append("<response><header></header>");
-		strB.append("<response><header></header>");
+		strB.append("<page>");
+		strB.append("<curPage>"+curPage+"</curPage>");
+		strB.append("<prevPage>"+prevPage+"</prevPage>");
+		strB.append("<nextPage>"+nextPage+"</nextPage>");
+		strB.append("<totalPage>"+totalPage+"</totalPage>");
+		strB.append("<totalBlock>"+totalBlock+"</totalBlock>");
+		strB.append("<curBlock>"+curBlock+"</curBlock>");
+		strB.append("<prevBlock>"+prevBlock+"</prevBlock>");
+		strB.append("<nextBlock>"+nextBlock+"</nextBlock>");
+
+		strB.append("<pageBegin>"+pageBegin+"</pageBegin>");
+		strB.append("<pageEnd>"+pageEnd+"</pageEnd>");
+		strB.append("<blockBegin>"+blockBegin+"</blockBegin>");
+		strB.append("<blockEnd>"+blockEnd+"</blockEnd>");
+		strB.append("</page>");
 		
-		
-//		private int curPage;
-//		private int prevPage;
-//		private int nextPage;
-//		private int totalPage;
-//		private int totalBlock;
-//		private int curBlock;
-//		private int prevBlock;
-//		private int nextBlock;
-//		
-//		private int pageBegin;
-//		private int pageEnd;
-//		private int blockBegin;
-//		private int blockEnd;
-		return "";
+		return strB.toString();
 	}
 
 	
