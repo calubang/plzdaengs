@@ -1,5 +1,7 @@
 package com.plzdaeng.group.controller;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -19,9 +21,19 @@ public class GroupController {
 		return groupController;
 	}
 
+	public String pageLoaing(HttpServletRequest request, HttpServletResponse response) {
+		String path = "/plzdaengs/template/alert_danger.jsp";
+//		String id = reqeust.getParameter("logininfo");
+		int id = 1;
+		List<GroupDto> list = GroupDaoImpl.getGroupDaoImpl().inGroup(id);
+		request.setAttribute("ingroup", list);
+		return path;
+	}
+	
 	public String create(HttpServletRequest request, HttpServletResponse response) {
 		String path = "/plzdaengs/group/groupmain.jsp";
 //		String id = reqeust.getParameter("logininfo");
+		String id = "1";
 		String name = request.getParameter("groupname");
 		String desc = request.getParameter("groupdescription");
 		String keyword = request.getParameter("groupkeyword");
@@ -35,7 +47,7 @@ public class GroupController {
 		GroupCategory cate = new GroupCategory();
 		cate.setGroup_category_id(keyword);
 		GroupDto dto = new GroupDto();
-		dto.setGroup_leader("1");
+		dto.setGroup_leader(id);
 		dto.setGroup_name(name);
 		dto.setGroup_description(desc);
 		if(groupdontselect!="on") {

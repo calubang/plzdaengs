@@ -592,9 +592,9 @@ ALTER TABLE PLZ_DIARY_CATEGORY
 
 /* GROUP_TYPE */
 CREATE TABLE PLZ_GROUP_TYPE (
-	group_category__id VARCHAR2(1) NOT NULL, /* 그룹카테고리ID */
-	group_category__name VARCHAR2(64), /* 그룹카테고리이름 */
-	group_category__description VARCHAR2(1024) /* 그룹카테고리설명 */
+	group_category_id VARCHAR2(1) NOT NULL, /* 그룹카테고리ID */
+	group_category_name VARCHAR2(64), /* 그룹카테고리이름 */
+	group_category_description VARCHAR2(1024) /* 그룹카테고리설명 */
 );
 
 COMMENT ON TABLE PLZ_GROUP_TYPE IS 'GROUP_TYPE';
