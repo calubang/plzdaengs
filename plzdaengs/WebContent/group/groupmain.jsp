@@ -17,6 +17,10 @@
 <script>
 $(function(){
 	
+	
+	
+	
+	
 	var createBtn = $('input[name=creategroup]');
 
 	$(createBtn).click(function(){
@@ -27,7 +31,7 @@ $(function(){
 			data : $('#creategroup').serialize(),
 			success:function(result){
 				alert(result);
-				
+				document.location.href ='groupmain.jsp';
 			}
 		});
 		
@@ -220,8 +224,8 @@ $(function(){
                           <div class="modal-footer">
                                      
                             <input name="creategroup" type="submit" value="소모임생성" class="btn btn-primary">
-                            <input type="button" value="취소" class="btn btn-primary">
-                                                         
+                            <input name="modalcancel" type="button" data-dismiss="modal" value="취소" class="btn btn-primary">
+                              
                           
                             
                           </div>
@@ -232,6 +236,28 @@ $(function(){
              	 <!-- 가입한소모임 -->
              	 <div><label style="text-align:center">내가 가입한 소모임</label>
              	 </div>
+<script>
+$(function(){
+	alert("start page loading");
+	$.ajax({
+		url: '/plzdaengs/groupfront',
+		method:'GET',
+		data:{
+			act:"loading"
+		},
+		success:function(result){
+			$(").html(result);	
+		}
+			
+		
+	});
+	
+		
+		
+			
+	
+});
+</script>
                	 <div class="card">
                  	<div class="card-header">
                   <h2 class="h6 text-uppercase mb-0" style="font-size: large;">펫과 함께하는 한강산책</h2>

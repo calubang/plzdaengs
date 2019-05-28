@@ -34,8 +34,12 @@ public class GroupFrontController extends HttpServlet {
 		System.out.println(act);
 		
 		if("creategroup".equals(act)) {
-			System.out.println("if문 안으로 들어옴");
+			System.out.println("front create");
 			GroupController.getCreateGroup().create(request, response);
+			MoveUrl.forward(request, response, path);
+		}else if("loading".equals(act)) {
+			System.out.println("front loading");
+			GroupController.getCreateGroup().pageLoaing(request, response);
 			MoveUrl.forward(request, response, path);
 		}
 	}

@@ -1,7 +1,10 @@
 package com.plzdaeng.group.model.dao;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
+import com.plzdaeng.group.model.GroupCategory;
 import com.plzdaeng.group.model.GroupDto;
 import com.plzdaeng.util.DBClose;
 import com.plzdaeng.util.DBConnection;
@@ -115,6 +118,68 @@ public class GroupDaoImpl implements GroupDao {
 		int result = -1;
 
 		return result;
+	}
+
+	@Override
+	public List<GroupDto> inGroup(int id) {
+		List<GroupDto> list = new ArrayList<>();
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		StringBuffer inGourpSQL = new StringBuffer("");
+		inGourpSQL.append("SELECT \n");
+				inGourpSQL.append("	g.group_name\n");
+				inGourpSQL.append("	, g.description\n");
+				inGourpSQL.append("	, c.group_category__id\n");
+				inGourpSQL.append("	, c.group_category__name\n");
+				inGourpSQL.append("	, g.group_img\n");
+				inGourpSQL.append("	, g.address_sido\n");
+				inGourpSQL.append("	, g.address_sigungu\n");
+				inGourpSQL.append("FROM  \n");
+				inGourpSQL.append("	plz_group g \n");
+				inGourpSQL.append("	inner join plz_group_type c \n");
+				inGourpSQL.append("		on g.group_category_id = c.group_category__id \n");
+				inGourpSQL.append("	inner join plz_group_member m \n");
+				inGourpSQL.append("		on g.group_id = m.group_id\n");
+				inGourpSQL.append("WHERE \n");
+				inGourpSQL.append("	user_id = ? \n");
+				
+				
+		try {
+			conn = DBConnection.makeConnectplzdb();
+			pstmt = conn.prepareStatement(inGourpSQL.toString());
+			pstmt.setInt(1, id);
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				GroupCategory cate = new GroupCategory();
+				cate.setGroup_category_id(rs.getString("group_category_id"));
+				cate.setGroup_category_name(rs.getString("group_category__name"));
+				GroupDto dto = new GroupDto();
+				dto.setGroupCategory(cate);
+				dto.setGroup_name(rs.getString("group_name"));
+				dto.setGroup_description(rs.getString("description"));
+//				dto.setGroup_leader(group_leader);
+				dto.setGroup_img(rs.getString("group_img"));
+				dto.setAddress_sido(rs.getString("address_sido"));
+				dto.setAddress_sigungu(rs.getString("address_sigungu"));
+				
+				list.add(dto);
+			}
+			
+		
+		} catch (SQLException e) {
+			System.out.println("inGroup() error");
+			e.printStackTrace();
+		}
+		
+		
+		return list;
+	}
+
+	@Override
+	public List<GroupDto> recommendGroup(int id) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }
