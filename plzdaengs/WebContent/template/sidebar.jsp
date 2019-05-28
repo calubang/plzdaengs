@@ -84,7 +84,7 @@
 				<ul
 					class="sidebar-menu list-unstyled border-left border-primary border-thick">
 					<li class="sidebar-list-item"><a
-						href="/plzdaengs/menu?act=membermodify"
+						href="/plzdaengs/menu?act=usermodify"
 						class="sidebar-link pl-lg-5">회원정보</a></li>
 					<li class="sidebar-list-item"><a
 						href="/plzdaengs/menu?act=animals" class="sidebar-link pl-lg-5">반려동물

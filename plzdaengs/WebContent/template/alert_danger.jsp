@@ -18,7 +18,7 @@ function showAlertModal(title, body, footer) {
 	margin-top: 15%;
 }
 </style>
-<!-- 로그인 시 뜨는 경고창 -->
+<!-- 경고창 -->
 <div class="modal fade" id="alert" role="dialog">
 	<div class="modal-dialog">
 		<!-- Modal content-->

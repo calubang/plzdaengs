@@ -1,25 +1,20 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <script>
-$(function() {
-	$("#alert button[name=alertOK]").click(function () {
-		$("#alert").modal("hide");
-	});
-});
-function showAlertModal(title, body, footer) {
+function showSuccessAlertModal(title, body, footer) {
 	//아짓 footer는 고려안함..
-	$("#alert .modal-title").html(title);
-	$("#alert .modal-body>p").html(body);
-	$("#alert").modal("show");
+	$("#alertSuccess .modal-title").html(title);
+	$("#alertSuccess .modal-body>p").html(body);
+	$("#alertSuccess").modal("show");
 }
 </script>
 <style>
-#alert .modal-dialog{
+#alertSuccess .modal-dialog{
 	margin-top: 15%;
 }
 </style>
-<!-- 로그인 시 뜨는 경고창 -->
-<div class="modal fade" id="alert" role="dialog">
+<!-- 성공창 -->
+<div class="modal fade" id="alertSuccess" role="dialog">
 	<div class="modal-dialog">
 		<!-- Modal content-->
 		<div class="modal-content">

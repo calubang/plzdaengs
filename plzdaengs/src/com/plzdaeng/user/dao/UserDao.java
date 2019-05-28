@@ -1,4 +1,4 @@
-package com.plzdaeng.member.controller;
+package com.plzdaeng.user.dao;
 
 import java.sql.*;
 
@@ -7,16 +7,19 @@ import com.plzdaeng.dto.UserDto;
 import com.plzdaeng.util.DBClose;
 import com.plzdaeng.util.DBConnection;
 
-public class MemberDao {
+import sun.nio.ch.SelChImpl;
 
-	public void insert(UserDto userDto) {
+public class UserDao {
+
+	public int insert(UserDto userDto) {
 		Connection con = null;
-		
+		int result = -1;
 		try {
 			con = DBConnection.makeConnection();
 			con.setAutoCommit(false);
 			insertUser(con, userDto);
 			insertUserDetail(con, userDto);
+			result = 1;
 		
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -33,7 +36,7 @@ public class MemberDao {
 			}
 			DBClose.close(con, null);
 		}
-		
+		return result;
 	}
 	
 	private void insertUserDetail(Connection con, UserDto userDto) throws SQLException {
@@ -41,7 +44,7 @@ public class MemberDao {
 		StringBuffer inserUserDetailSQL = new StringBuffer();
 		inserUserDetailSQL.append("insert into plz_user_detail(\n");
 		inserUserDetailSQL.append("    user_id\n");
-		inserUserDetailSQL.append("    , tel1\n");
+		inserUserDetailSQL.append("    , tel\n");
 		inserUserDetailSQL.append("    , gender\n");
 		inserUserDetailSQL.append("    , zipcode\n");
 		inserUserDetailSQL.append("    , address\n");
@@ -59,8 +62,7 @@ public class MemberDao {
 		int index = 0;
 		UserDetailDto userDetailDto = userDto.getUserDetailDto();
 		pstmt.setString(++index, userDto.getUser_id());
-		//전화번호 수정 필요
-		pstmt.setString(++index, "");
+		pstmt.setString(++index, userDetailDto.getTel());
 		pstmt.setString(++index, userDetailDto.getGender());
 		pstmt.setString(++index, userDetailDto.getZipcode());
 		pstmt.setString(++index, userDetailDto.getAddress());
@@ -107,6 +109,35 @@ public class MemberDao {
 		pstmt.executeUpdate();
 		
 		DBClose.close(null, pstmt);
+	}
+
+	public int selectById(String id) {
+		int result = 1;
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String selectByIdSQL = 
+				"select count(user_id) count\r\n" + 
+				"from plz_user\r\n" + 
+				"where \r\n" + 
+				"    user_id = ?";
+		
+		try {
+			con = DBConnection.makeConnection();
+			pstmt = con.prepareStatement(selectByIdSQL);
+			pstmt.setString(1, id);
+			rs = pstmt.executeQuery();
+			
+			rs.next();
+			result = rs.getInt("count");
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DBClose.close(con, pstmt, rs);
+		}
+		
+		return result;
 	}
 
 }

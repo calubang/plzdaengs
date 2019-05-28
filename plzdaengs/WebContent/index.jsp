@@ -42,9 +42,9 @@ $(function() {
 
 function registerbtnClick() {
 	$.ajax({
-		url : "member"
+		url : "user"
 		, data : {
-			act : "join"
+			act : "userjoin"
 		}
 		, success : function (result) {
 			$("#contents").html(result);
