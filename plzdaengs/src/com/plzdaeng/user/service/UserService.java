@@ -46,9 +46,10 @@ public class UserService {
 				+ "&countPerPage=" +  countPerPage 
 				+ "&currentPage=" + currentPage
 				+ "&srchwrd=";
-
+		
 		BufferedReader in = null;
 		try {
+			System.out.println(apiUrl + URLEncoder.encode(doro, "UTF-8"));
 			URL url = new URL(apiUrl + URLEncoder.encode(doro, "UTF-8"));
 			in = new BufferedReader(new InputStreamReader(url.openStream(), "UTF-8"));
 			String temp = null;

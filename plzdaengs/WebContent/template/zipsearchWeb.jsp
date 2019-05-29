@@ -17,10 +17,12 @@ function zipSearchAjax(doro, currentPage) {
 	$.ajax({
 		url: "<%=zipSearchWebRoot%>/zipsearchweb"
 		, type:"get"
-		, dataType:"xml"
+		//, dataType:"xml"
 		, data : "doro="+doro + "&currentPage=" + currentPage
-		, success: function(xml){	
-			var totalCount = $(xml).find("totalCount");
+		, success: function(result){
+			alert(result);
+			$("#addressdiv").html(result);
+			/* var totalCount = $(xml).find("totalCount");
 		 	var countPerPage = $(xml).find("countPerPage");
 		 	var totalPage = $(xml).find("totalPage");
 		 	var currentPage = $(xml).find("currentPage");
@@ -51,7 +53,7 @@ function zipSearchAjax(doro, currentPage) {
 				tr.append(tdzipNo).append(tdlnmAdres);
 				tr2.append(tdrnAdres);
 				$("#zip_codeList").append(tr).append(tr2);
-		 	}
+		 	} */
 		 	
 		 	//페이지 처리..
 		}
@@ -114,7 +116,7 @@ function selectZip(zipcode, address) {
 					</span>
 				</div>
 				<div
-					style="width: 100%; height: 500px; overflow: auto; margin-top: 1%;">
+					style="width: 100%; height: 500px; overflow: auto; margin-top: 1%;" id="addressdiv">
 					<table class="table-bordered text-center">
 						<thead>
 							<tr>
