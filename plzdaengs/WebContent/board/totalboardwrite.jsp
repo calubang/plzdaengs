@@ -120,6 +120,17 @@
 									<script>
 										$('#summernote').summernote({
 											placeholder : '내용을 입력하세요',
+											disableDragAndDrop: true,
+											toolbar: [
+												  ['style', ['style']],
+												  ['font', ['bold', 'underline', 'clear']],
+												  ['fontname', ['fontname']],
+												  ['color', ['color']],
+												  ['para', ['ul', 'ol', 'paragraph']],
+												  ['table', ['table']],
+												  ['insert', ['link', 'picture']],
+												  ['view', ['codeview']],
+												],
 											lang : 'ko-KR',
 											tabsize : 3,
 											height : 400

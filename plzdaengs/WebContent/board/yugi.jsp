@@ -46,10 +46,6 @@
 <script src="/plzdaengs/board/js/bootstrap-datepicker.js"></script>
 <script src="/plzdaengs/board/js/bootstrap-datepicker.kr.js"></script>
 <link rel="stylesheet" href="/plzdaengs/board/css/datepicker3.css">
-<!-- Tweaks for older IEs-->
-<!--[if lt IE 9]>
-        <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-        <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script><![endif]-->
 </head>
 <script type="text/javascript">
 $(document).ready(function() {//

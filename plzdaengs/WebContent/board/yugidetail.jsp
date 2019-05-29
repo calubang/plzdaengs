@@ -7,49 +7,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <title>Bubbly - Boootstrap 4 Admin template by Bootstrapious.com</title>
 <meta name="description" content="">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="robots" content="all,follow">
-	<!-- JavaScript files-->
-	<script src="/plzdaengs/template/vendor/jquery/jquery.min.js"></script>
-	<script src="/plzdaengs/template/vendor/popper.js/umd/popper.min.js">
-		
-	</script>
-	<script src="/plzdaengs/board/js/httpRequest.js"></script>
-	<script src="/plzdaengs/template/vendor/bootstrap/js/bootstrap.min.js"></script>
-	<script src="/plzdaengs/template/vendor/jquery.cookie/jquery.cookie.js">
-		
-	</script>
-	<script
-		src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script>
-	<script src="/plzdaengs/template/js/front.js"></script>
-<!-- Bootstrap CSS-->
-<link rel="stylesheet"
-	href="/plzdaengs/template/vendor/bootstrap/css/bootstrap.min.css">
-<!-- Font Awesome CSS-->
-<link rel="stylesheet"
-	href="https://use.fontawesome.com/releases/v5.3.1/css/all.css"
-	integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU"
-	crossorigin="anonymous">
-<!-- Google fonts - Popppins for copy-->
-<link rel="stylesheet"
-	href="https://fonts.googleapis.com/css?family=Poppins:300,400,800">
-<!-- orion icons-->
-<link rel="stylesheet" href="/plzdaengs/template/css/orionicons.css">
-<!-- theme stylesheet-->
-<link rel="stylesheet" href="/plzdaengs/template/css/style.default.css"
-	id="theme-stylesheet">
-<!-- Custom stylesheet - for your changes-->
-<link rel="stylesheet" href="/plzdaengs/template/css/custom.css">
-<!-- Favicon-->
-<link rel="shortcut icon" href="/plzdaengs/template/img/favicon.png?3">
-
-<script src="/plzdaengs/board/js/bootstrap-datepicker.js"></script>
-<script src="/plzdaengs/board/js/bootstrap-datepicker.kr.js"></script>
-<link rel="stylesheet"	href="/plzdaengs/board/css/datepicker3.css">
-<!-- Tweaks for older IEs-->
-<!--[if lt IE 9]>
-        <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-        <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script><![endif]-->
+<%@ include file="/template/default_link.jsp" %>
 </head>
   <body>
     <!-- navbar-->
@@ -140,7 +98,7 @@
 									<h6 class="text-uppercase mb-0">유기견 정보 게시판</h6>
 								</div> -->
 								<div class="card-body" align="center">
-									<img src="../template/img/profile.jpg" style="width: 28rem; height: 26rem; max-height: 80%; max-width: 80%" />
+									<img src="../template/img/profile.jpg" style="width: 28rem; height: 26rem; max-height: 80%; max-width: 80%; border: solid; border-width: thin thin thin thin;" />
 								</div>
 								<div class="card-body">
 									<table class="table card-text col-xl-auto">
@@ -175,29 +133,9 @@
 					</div>
 				</section>
         </div>
-        <footer class="footer bg-white shadow align-self-end py-3 px-xl-5 w-100">
-          <div class="container-fluid">
-            <div class="row">
-              <div class="col-md-6 text-center text-md-left text-primary">
-                <p class="mb-2 mb-md-0">Your company &copy; 2018-2020</p>
-              </div>
-              <div class="col-md-6 text-center text-md-right text-gray-400">
-                <p class="mb-0">Design by <a href="https://bootstrapious.com/admin-templates" class="external text-gray-400">Bootstrapious</a></p>
-                <!-- Please do not remove the backlink to us unless you support further theme's development at https://bootstrapious.com/donate. It is part of the license conditions. Thank you for understanding :)-->
-              </div>
-            </div>
-          </div>
-        </footer>
+        <%@ include file="/template/footer.jsp" %>
       </div>
     </div>
-    <!-- JavaScript files-->
-    <script src="/plzdaengs/template/vendor/jquery/jquery.min.js"></script>
-    <script src="/plzdaengs/template/vendor/popper.js/umd/popper.min.js"> </script>
-    <script src="/plzdaengs/template/vendor/bootstrap/js/bootstrap.min.js"></script>
-    <script src="/plzdaengs/template/vendor/jquery.cookie/jquery.cookie.js"> </script>
-    <script src="/plzdaengs/template/vendor/chart.js/Chart.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script>
-    <script src="/plzdaengs/template/js/charts-custom.js"></script>
-    <script src="/plzdaengs/template/js/front.js"></script>
+    <%@ include file="/template/default_js_link.jsp" %>
   </body>
 </html>
