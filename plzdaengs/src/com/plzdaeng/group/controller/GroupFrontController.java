@@ -30,17 +30,19 @@ public class GroupFrontController extends HttpServlet {
 		response.setContentType("text/html;charset=UTF-8");
 		System.out.println("front 도착");
 		String act = request.getParameter("act");
-		String path = "/group/index.jsp";
+		//String path = "/group/index.jsp";
 		System.out.println(act);
+
 		
 		if("creategroup".equals(act)) {
 			System.out.println("front create");
-			GroupController.getCreateGroup().create(request, response);
+			String path = GroupController.getCreateGroup().create(request, response);
 			MoveUrl.forward(request, response, path);
 		}else if("loading".equals(act)) {
 			System.out.println("front loading");
-			GroupController.getCreateGroup().pageLoaing(request, response);
+			String path = GroupController.getCreateGroup().pageLoaing(request, response);
 			MoveUrl.forward(request, response, path);
+			System.out.println(path);
 		}
 	}
 

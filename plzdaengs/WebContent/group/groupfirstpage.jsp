@@ -6,6 +6,14 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <%@ include file="/template/default_link.jsp" %>
+<script>
+$(function(){
+	
+	
+});
+
+
+</script>
 </head>
 <body>
 <!-- navbar-->	

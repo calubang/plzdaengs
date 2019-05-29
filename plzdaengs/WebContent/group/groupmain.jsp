@@ -16,10 +16,74 @@
     </style>
 <script>
 $(function(){
-	
-	
-	
-	
+		alert("start page loading");
+		var gArr;
+		//Mygrouplist on First Loading 
+		/* $.ajax({
+			url: '/plzdaengs/groupfront',
+			method:'GET',
+			data:{
+				act:"loading",
+				type:"mine"
+			},
+			success:function(result){
+				alert("enter resultpage");
+				$("#grouplist").html(result);	
+				gArr = $(".card");
+				gArr.click();
+				
+			} 
+				
+		
+		});*/
+		
+			//Mygrouplist
+			var tArr = $("ul.grouplisttype>li>a");
+			$(tArr).click(function(){
+				alert($(this).text());
+				alert($(this).attr("id"));
+				
+				if($(this).attr("id")=="mygroup"){
+					alert("good");
+				$.ajax({
+					url: '/plzdaengs/groupfront',
+					method:'GET',
+					data:{
+						act:"loading",
+						type:"mine"
+					},
+					success:function(result){
+						alert("enter myresultpage");
+						$("#grouplist").html(result);	
+						gArr = $(".card");
+					}
+				});
+				
+				//Recommendgrouplist
+			}else if($(this).attr("id")=="recommendgroup"){
+				alert("good,too");
+					$.ajax({
+						url: '/plzdaengs/groupfront',
+						method:'GET',
+						data:{
+							act:"loading",
+							type:"recommend"
+						},
+						success:function(result){
+							alert("enter recoresultpage");
+							$("#grouplist").html(result);	
+							gArr = $(".card");
+						}
+							
+						
+					});
+					
+				}
+					
+			});
+				
+		
+
 	
 	var createBtn = $('input[name=creategroup]');
 
@@ -34,15 +98,39 @@ $(function(){
 				document.location.href ='groupmain.jsp';
 			}
 		});
-		
-		
+
+	});
+	
+	/* $(gArr).click(function(){
+		alert("some groupclick");
+	}); */
+	
+	
+	$("#searchgroup").submit(function(){
+		alert("검색버튼클릭");
+		$.ajax({
+			url: '/plzdaengs/groupfront',
+			method:'GET',
+			data:$(this).serialize(),
+			success:function(result){
+				alert("enter searchresultpage");
+				$("#grouplist").html(result);	
+				gArr = $(".card");
+			}
+				
+			
+		});
 		
 		
 	});
 	
+		 
+		 
+	
 	
 });
 
+ 
 
 </script>
 </head>
@@ -149,13 +237,13 @@ $(function(){
               <!-- 소모임검색창 -->
              	 <div class="searchgroup">
 	             	 <form id="searchgroup">
-	             	 <input type="hidden" name="act" value="searchgroup">
+	             	 <input type="hidden" name="act" value="loading">
 		             	 <select name="searchoption">
-		             	 <option>소모임 이름</option>
-		             	 <option>소모임 지역</option>
-		             	 <option>키워드</option>
+		             	 <option value="1">소모임 이름</option>
+		             	 <option value="2">소모임 지역</option>
+		             	 <option value="3">키워드</option>
 		             	 </select>
-		             	 <input type="text" name="searchword" size="50"><button type="submit" class="btn btn-secondary">검색</button>
+		             	 <input type="text" name="searchword" size="50"><button id="btnsearch" type="submit" class="btn btn-secondary">검색</button>
 		             	 <button type="button" data-toggle="modal" data-target="#myModal" class="btn btn-primary">소모임생성</button>
 	             	 </form>
 	             	 </div>
@@ -234,30 +322,18 @@ $(function(){
                     </div>
              	 
              	 <!-- 가입한소모임 -->
-             	 <div><label style="text-align:center">내가 가입한 소모임</label>
-             	 </div>
-<script>
-$(function(){
-	alert("start page loading");
-	$.ajax({
-		url: '/plzdaengs/groupfront',
-		method:'GET',
-		data:{
-			act:"loading"
-		},
-		success:function(result){
-			$(").html(result);	
-		}
-			
-		
-	});
-	
-		
-		
-			
-	
-});
-</script>
+             	
+<ul class="nav nav-tabs grouplisttype">
+    <li class="nav-item">
+      <a class="nav-link" id="mygroup">내가 가입한 소모임</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" id="recommendgroup">회원님께 추천하는 소모임</a>
+    </li>
+    </ul>
+				<div id="grouplist">
+             	 
+             	 <!--  
                	 <div class="card">
                  	<div class="card-header">
                   <h2 class="h6 text-uppercase mb-0" style="font-size: large;">펫과 함께하는 한강산책</h2>
@@ -286,43 +362,17 @@ $(function(){
                		</div>
                		</div>
            		 </div>
+           		 
+           		  -->
+           		 </div>
+           		 <!-- <label style="text-align:center">내가 가입한 소모임</label>
            		 <div>페이징처리를 위한 공간1</div>
-            	 <!-- 추천소모임 -->
-              	 <div><label >회원님께 추천하는 소모임</label>
+            	 추천소모임
+              	 <div><label id="recommendgrouplist">회원님께 추천하는 소모임</label>
            		 </div> 
 
-				 <div class="card">
-                 	<div class="card-header">
-                    <h2 class="h6 text-uppercase mb-0" style="font-size: large;">집사들의 지식공유커뮤니티</h2>
-                  	</div>
-                  	<div class="card-body">
-                  	<img style="display:inline;float:left;" src="/plzdaengs/group/img/001.jpg" width="80" height="80">
-                    <p class="mb-5 text-gray" style="display:inline;float:left">집사들이 똑똑해야 내 주인이 건강하다<br>집사들이여 모여라</p>
-                    <div style="display:inline;float:right">
-                    <div><label>지역 : </label>동대문구</div>
-                    <div><label>인원 : </label>100명</div>
-                    <div><label>키워드 : </label>지식공유</div>
-               		</div>
-               		</div>
-           		 </div>
-           		  <div class="card">
-                 	<div class="card-header">
-                    <h2 class="h6 text-uppercase mb-0" style="font-size: large;">집사들의 지식공유커뮤니티</h2>
-                  	</div>
-                  	<div class="card-body">
-                  	<img style="display:inline;float:left;" src="/plzdaengs/group/img/001.jpg" width="80" height="80">
-                    <p class="mb-5 text-gray" style="display:inline;float:left">집사들이 똑똑해야 내 주인이 건강하다<br>집사들이여 모여라</p>
-                    <div style="display:inline;float:right">
-                    <div><label>지역 : </label>동대문구</div>
-                    <div><label>인원 : </label>100명</div>
-                    <div><label>키워드 : </label>지식공유</div>
-               		</div>
-               		</div>
-           		 </div>
-        		</div>
-       		 </div>
-       		 <div>페이징처리를 위한 공간2</div>
-	
+       		 <div>페이징처리를 위한 공간2</div> -->
+			
 				</section>
 			</div>
 			<%@ include file="/template/footer.jsp" %>

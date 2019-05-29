@@ -16,9 +16,11 @@ public interface GroupDao {
 	
 	int deleteGroup(GroupDto dto);
 	
-	List<GroupDto> inGroup(int id);
+	List<GroupDto> myGroup(int id);
 	
-	List<GroupDto> recommendGroup(int id);
+	List<GroupDto> recommendGroup();
+	
+	List<GroupDto> searchGroup(String key, String word);
 	
 	
 }

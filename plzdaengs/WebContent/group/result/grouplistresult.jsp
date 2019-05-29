@@ -1,0 +1,41 @@
+<%@page import="javafx.scene.control.Alert"%>
+<%@page import="com.plzdaeng.group.model.GroupDto"%>
+<%@page import="java.util.List"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+
+
+<%!List<GroupDto> list;%>
+
+<%
+	
+	list = (List) request.getAttribute("grouplist");
+
+	for (GroupDto dto : list) {
+%>
+
+<div class="card" id="<%=dto.getGroup_id()%>">
+	<div class="card-header">
+		<h2 class="h6 text-uppercase mb-0" style="font-size: large;"><%=dto.getGroup_name() %></h2>
+	</div>
+	<div class="card-body" style="padding: 10;">
+		<img style="display: inline; float: left;"
+			src="/plzdaengs/group/img/001.jpg" width="80" height="80">
+		<p class="mb-5 text-gray" style="display: inline; float: left"><%=dto.getGroup_description() %></p>
+		<div style="display: inline; float: right">
+			<div>
+				<label>지역 : </label><%=dto.getAddress_sido() %> <%=dto.getAddress_sigungu() %>
+			</div>
+			<div>
+				<label>인원 : </label>100명
+			</div>
+			<div>
+				<label>키워드 : </label><%=dto.getGroupCategory().getGroup_category_name() %>
+			</div>
+		</div>
+	</div>
+</div>
+
+<%
+	}
+%>
