@@ -23,7 +23,7 @@ public class UserLogin extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String id = request.getParameter("id");
 		String password = request.getParameter("password");
-		System.out.println("userlogin : " + id + "//" + password);
+		
 		UserDto userDto = new UserDto();
 		userDto.setUser_id(id);
 		userDto.setPassword(password);

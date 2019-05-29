@@ -30,6 +30,7 @@ public class UserJoinServlet extends HttpServlet {
 	
 		//String saveDirectory = request.getServletContext().getRealPath("\\img\\user");
 		String saveDirectory = SiteConstance.IMG_PATH;
+		System.out.println(request.getContentType());
 		MultipartRequest mr = new MultipartRequest(request, saveDirectory, "utf-8");
 		
 		String id = mr.getParameter("id");
@@ -58,11 +59,16 @@ public class UserJoinServlet extends HttpServlet {
 		userDetailDto.setZipcode(zipcode);
 		userDetailDto.setAddress(address);
 		userDetailDto.setAddress_detail(addressdetail);
-		
-		System.out.println(userDto);
-		
-		int result = service.userJoin(userDto, mr.getFile("imgdata"));
-		System.out.println(result);
+				
+		//등록한 파일이 없으면 기본 이미지 사용
+		if(mr.getFile("imgdata")  == null) {
+			userDto.setUser_img("\\template\\img\\basic_user_profile.png");
+		}else {
+			userDto.setUser_img("\\img\\user\\"+userDto.getUser_id()+"\\user_profile.jpg");
+			ProfileCreate.profileRegister(mr.getFile("imgdata"),request.getServletContext().getRealPath("\\img"), userDto.getUser_id(), "user");
+		}
+		//프로필 등록시작
+		int result = service.userJoin(userDto);
 		request.setAttribute("userjoinresult", result);
 		MoveUrl.forward(request, response, "/user/userjoinresult.jsp");
 	}

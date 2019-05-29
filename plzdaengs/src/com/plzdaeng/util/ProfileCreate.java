@@ -3,14 +3,12 @@ package com.plzdaeng.util;
 import java.io.*;
 
 public class ProfileCreate {
-	public static void profileRegister(File file, String id, String type) {
+	public static void profileRegister(File file,String path, String id, String type) {
 		byte[] buf = new byte[1024];
 		FileInputStream fin = null;
 		FileOutputStream fout = null;
-		
 		int read = 0;
-		String path = SiteConstance.IMG_PATH;
-		String newFileName= "";
+		
 		switch (type) {
 		case "user":
 			path += "\\user\\"+id;
@@ -18,7 +16,7 @@ public class ProfileCreate {
 			if(!temp.exists()) {
 				temp.mkdir();
 			}
-			path += "\\user_profile.";
+			path += "\\user_profile.jpg";
 			break;
 		case "pet":
 			path += "\\user\\"+id;
@@ -34,7 +32,7 @@ public class ProfileCreate {
 			}
 			
 			fin = new FileInputStream(file);
-			fout = new FileOutputStream(path + file.getName().substring(file.getName().lastIndexOf(".")+1));
+			fout = new FileOutputStream(path);
 			
 			while((read = fin.read(buf, 0, buf.length)) != -1) {
 				fout.write(buf, 0, read);
@@ -45,11 +43,11 @@ public class ProfileCreate {
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
+			System.out.println("여기서 에러임?");
 		} finally {
 			if(fin != null) {
 				try {
 					fin.close();
-					//file.delete();
 				} catch (IOException e) {
 					e.printStackTrace();
 				}

@@ -7,6 +7,7 @@ import org.apache.tomcat.jdbc.pool.ConnectionPool;
 
 import com.plzdaeng.dto.UserDto;
 import com.plzdaeng.user.dao.UserDao;
+import com.plzdaeng.util.ProfileCreate;
 
 public class UserService {
 	private UserDao dao;
@@ -15,21 +16,18 @@ public class UserService {
 		dao = new UserDao();
 	}
 	
-	public int userJoin(UserDto userDto, File inputFile) {
+	public int userJoin(UserDto userDto) {
 		
 		String authority = userDto.getAuthority();
 		String userImg = userDto.getUser_img();
-		
+		int result = -1;
 		//유저로 세팅
 		if(authority == null) {
 			userDto.setAuthority("U");
 		}
-		//등록한 파일이 없으면 기본 이미지 사용
-		if(inputFile  == null) {
-			userDto.setUser_img("/template/img/basic_user_profile.png");
-		}
 		//디비에 데이터 입력
-		return dao.insert(userDto);
+		result = dao.insert(userDto);
+		return result;
 		
 	}
 

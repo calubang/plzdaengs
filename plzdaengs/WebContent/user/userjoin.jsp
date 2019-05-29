@@ -170,8 +170,7 @@ function memberjoinClick() {
 }
 
 function memberjoin() {
-	alert("ajax 호출");
-	var form = $(".register form")[0];
+	var form = $(".register form[name=registerForm]")[0];
 	var formData = new FormData(form);
 
 	$.ajax({
@@ -181,11 +180,15 @@ function memberjoin() {
 		, contentType : false
 		, data : formData
 		, success : function (result) {
+			alert(result.trim());
 			if(result.trim() == 1){
 				showSuccessAlertModal("회원가입 성공", "회원가입이 성공하였습니다");
 			}else{
 				showAlertModal("회원가입 실패", "회원가입이 실패하였습니다");
 			}
+		}
+		, error : function (jqXHR, result) {
+			alert(result);
 		}
 	}); 
 }
@@ -310,7 +313,7 @@ function fileUploadChange() {
 				<h3 class="h6 text-uppercase mb-0">회원 가입</h3>
 			</div>
 			<div class="card-body">
-				<form class="form-horizontal" enctype="multipart/form-data">
+				<form class="form-horizontal" enctype="multipart/form-data" method="post" name="registerForm">
 					<div class="form-group row registerid">
 						<label class="col-md-3 form-control-label">아이디(*)</label>
 						<div class="col-md-5">

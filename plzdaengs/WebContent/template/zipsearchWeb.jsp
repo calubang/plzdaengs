@@ -20,7 +20,6 @@ function zipSearchAjax(doro, currentPage) {
 		//, dataType:"xml"
 		, data : "doro="+doro + "&currentPage=" + currentPage
 		, success: function(result){
-			alert(result);
 			$("#addressdiv").html(result);
 			/* var totalCount = $(xml).find("totalCount");
 		 	var countPerPage = $(xml).find("countPerPage");
@@ -116,7 +115,7 @@ function selectZip(zipcode, address) {
 					</span>
 				</div>
 				<div
-					style="width: 100%; height: 500px; overflow: auto; margin-top: 1%;" id="addressdiv">
+					style="width: 100%; margin-top: 1%;" id="addressdiv">
 					<table class="table-bordered text-center">
 						<thead>
 							<tr>

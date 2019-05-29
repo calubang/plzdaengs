@@ -32,10 +32,10 @@ public class ZipSearchWebServlet extends HttpServlet {
 		String doro = request.getParameter("doro");
 		int currentPage = Integer.parseInt(request.getParameter("currentPage"));
 		
-		System.out.println("doro : " + doro + "// currentPage : " + currentPage);
+		//System.out.println("doro : " + doro + "// currentPage : " + currentPage);
 		
 		StringBuffer xml = service.zipSearchWeb(doro, currentPage);
-		System.out.println(xml);
+		//System.out.println(xml);
 		
 		request.setAttribute("zipsearchwebresult", xml.toString());
 		MoveUrl.forward(request, response, "/user/zipsearchwebresult.jsp");
