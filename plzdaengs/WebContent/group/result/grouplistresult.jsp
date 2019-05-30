@@ -27,7 +27,7 @@
 				<label>지역 : </label><%=dto.getAddress_sido() %> <%=dto.getAddress_sigungu() %>
 			</div>
 			<div>
-				<label>인원 : </label>100명
+				<label>인원 : </label><%=dto.getGroupMembers().size() %>
 			</div>
 			<div>
 				<label>키워드 : </label><%=dto.getGroupCategory().getGroup_category_name() %>

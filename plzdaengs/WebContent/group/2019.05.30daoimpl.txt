@@ -1,10 +1,11 @@
-package com.plzdaeng.group.model.dao;
+ckage com.plzdaeng.group.model.dao;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.plzdaeng.group.model.*;
+import com.plzdaeng.group.model.GroupCategory;
+import com.plzdaeng.group.model.GroupDto;
 import com.plzdaeng.util.DBClose;
 import com.plzdaeng.util.DBConnection;
 
@@ -67,7 +68,7 @@ public class GroupDaoImpl implements GroupDao {
 
 			System.out.println(r);
 			DBClose.close(null, pstmt);
-
+			
 			applyGroupCategory(conn, dto);
 
 			conn.commit();
@@ -121,44 +122,41 @@ public class GroupDaoImpl implements GroupDao {
 
 	@Override
 	public List<GroupDto> myGroup(int id) {
-
+		
 		List<GroupDto> list = new ArrayList<>();
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
-		String inGourpSQL = "SELECT g.group_id , g.group_name, g.description "
-				+ ", t.group_category__id, t.group_category__name, g.group_img "
-				+ ", g.address_sido, g.address_sigungu, m.user_id \r\n"
-				+ "FROM plz_group g inner join plz_group_type t \r\n"
-				+ "on g.group_category_id = t.group_category__id \r\n" + 
-				"inner join plz_group_member m \r\n" + 
-				"on g.group_id = m.group_id \r\n" + 
-				"WHERE m.user_id = ? and m.member_status != all('X', 'A')"+
-				"ORDER BY g.group_id, m.user_id DESC";
-
+		StringBuffer inGourpSQL = new StringBuffer("");
+		inGourpSQL.append("SELECT \n");
+				inGourpSQL.append("	g.group_name\n");
+				inGourpSQL.append("	, g.description\n");
+				inGourpSQL.append("	, c.group_category__id\n");
+				inGourpSQL.append("	, c.group_category__name\n");
+				inGourpSQL.append("	, g.group_img\n");
+				inGourpSQL.append("	, g.address_sido\n");
+				inGourpSQL.append("	, g.address_sigungu\n");
+				inGourpSQL.append("FROM  \n");
+				inGourpSQL.append("	plz_group g \n");
+				inGourpSQL.append("	inner join plz_group_type c \n");
+				inGourpSQL.append("		on g.group_category_id = c.group_category__id \n");
+				inGourpSQL.append("	inner join plz_group_member m \n");
+				inGourpSQL.append("		on g.group_id = m.group_id\n");
+				inGourpSQL.append("WHERE \n");
+				inGourpSQL.append("	user_id = ? \n");
+				
+				
 		try {
 			conn = DBConnection.makeConnectplzdb();
 			pstmt = conn.prepareStatement(inGourpSQL.toString());
 			pstmt.setInt(1, id);
 			rs = pstmt.executeQuery();
-			GroupDto dto = null;
-			GroupCategory cate = null;
-			GroupMember member = null;
-			List<GroupMember> memberList = null;
-			int old_group_id = -1;
-			int group_id = 0;
-			while (rs.next()) {
-				group_id = rs.getInt("group_id");				
-				if(old_group_id != group_id) {
-				
-				cate = new GroupCategory();
+			while(rs.next()) {
+				GroupCategory cate = new GroupCategory();
 				cate.setGroup_category_id(rs.getString("group_category__id"));
 				cate.setGroup_category_name(rs.getString("group_category__name"));
-				
-				dto = new GroupDto();
-				list.add(dto);
+				GroupDto dto = new GroupDto();
 				dto.setGroupCategory(cate);
-				dto.setGroup_id(rs.getInt("group_id"));
 				dto.setGroup_name(rs.getString("group_name"));
 				dto.setGroup_description(rs.getString("description"));
 //				dto.setGroup_leader(group_leader);
@@ -166,71 +164,54 @@ public class GroupDaoImpl implements GroupDao {
 				dto.setAddress_sido(rs.getString("address_sido"));
 				dto.setAddress_sigungu(rs.getString("address_sigungu"));
 				
-				memberList = new ArrayList<GroupMember>();
-				dto.setGroupMembers(memberList);
-				
-				
-				}
-				
-				member = new GroupMember();
-				member.setUser_id(rs.getInt("user_id"));
-				//member.setMember_status(rs.getString("member_status"));
-				memberList.add(member);
-				
-
-				
+				list.add(dto);
 			}
-
+			
+		
 		} catch (SQLException e) {
 			System.out.println("myGroup() error");
 			e.printStackTrace();
-		}finally {
-			DBClose.close(conn, pstmt, rs);
 		}
-
+		
+		
 		return list;
 	}
 
 	@Override
-	public List<GroupDto> recommendGroup(int id) {
-
+	public List<GroupDto> recommendGroup() {
+		
 		List<GroupDto> list = new ArrayList<>();
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
-		String inGourpSQL = "SELECT g.group_id , g.group_name, g.description \r\n"
-				+ ", t.group_category__id, t.group_category__name, g.group_img \r\n"
-				+ ", g.address_sido, g.address_sigungu, m.user_id \r\n"
-				+ "FROM plz_group g inner join plz_group_type t \r\n"
-				+ "on g.group_category_id = t.group_category__id \r\n" + 
-				"inner join plz_group_member m \r\n" + 
-				"on g.group_id = m.group_id \r\n" + 
-				"WHERE m.user_id != ? and m.member_status != 'A' \r\n"+
-				"ORDER BY g.group_id, m.user_id DESC";
+		StringBuffer inGourpSQL = new StringBuffer("");
+		inGourpSQL.append("SELECT \n");
+				inGourpSQL.append("	g.group_name\n");
+				inGourpSQL.append("	, g.description\n");
+				inGourpSQL.append("	, c.group_category__id\n");
+				inGourpSQL.append("	, c.group_category__name\n");
+				inGourpSQL.append("	, g.group_img\n");
+				inGourpSQL.append("	, g.address_sido\n");
+				inGourpSQL.append("	, g.address_sigungu\n");
+				inGourpSQL.append("FROM  \n");
+				inGourpSQL.append("	plz_group g \n");
+				inGourpSQL.append("	inner join plz_group_type c \n");
+				inGourpSQL.append("		on g.group_category_id = c.group_category__id \n");
+				inGourpSQL.append("	inner join plz_group_member m \n");
+				inGourpSQL.append("		on g.group_id = m.group_id\n");
 
+				
+				
 		try {
 			conn = DBConnection.makeConnectplzdb();
 			pstmt = conn.prepareStatement(inGourpSQL.toString());
-			pstmt.setInt(1, id);
 			rs = pstmt.executeQuery();
-			GroupDto dto = null;
-			GroupCategory cate = null;
-			GroupMember member = null;
-			List<GroupMember> memberList = null;
-			int old_group_id = -1;
-			int group_id = 0;
-			while (rs.next()) {
-				group_id = rs.getInt("group_id");				
-				if(old_group_id != group_id) {
-				
-				cate = new GroupCategory();
+			while(rs.next()) {
+				GroupCategory cate = new GroupCategory();
 				cate.setGroup_category_id(rs.getString("group_category__id"));
 				cate.setGroup_category_name(rs.getString("group_category__name"));
-				
-				dto = new GroupDto();
-				list.add(dto);
+				GroupDto dto = new GroupDto();
 				dto.setGroupCategory(cate);
-				dto.setGroup_id(rs.getInt("group_id"));
 				dto.setGroup_name(rs.getString("group_name"));
 				dto.setGroup_description(rs.getString("description"));
 //				dto.setGroup_leader(group_leader);
@@ -238,85 +219,70 @@ public class GroupDaoImpl implements GroupDao {
 				dto.setAddress_sido(rs.getString("address_sido"));
 				dto.setAddress_sigungu(rs.getString("address_sigungu"));
 				
-				memberList = new ArrayList<GroupMember>();
-				dto.setGroupMembers(memberList);
-				
-				
-				}
-				
-				member = new GroupMember();
-				member.setUser_id(rs.getInt("user_id"));
-				//member.setMember_status(rs.getString("member_status"));
-				memberList.add(member);
+				list.add(dto);
 			}
-				
+			
+		
 		} catch (SQLException e) {
 			System.out.println("recommendGroup() error");
 			e.printStackTrace();
-		}finally {
-			DBClose.close(conn, pstmt, rs);
 		}
+		
 
 		return list;
 	}
 
 	@Override
 	public List<GroupDto> searchGroup(String key, String word) {
-
+		
 		List<GroupDto> list = new ArrayList<>();
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
+		StringBuffer inGourpSQL = new StringBuffer("");
 		
-		
-
+				
+				
 		try {
 			conn = DBConnection.makeConnectplzdb();
-
-			String inGroupSQL = "SELECT g.group_id , g.group_name, g.description \r\n"
-					+ ", t.group_category__id, t.group_category__name, g.group_img \r\n"
-					+ ", g.address_sido, g.address_sigungu, m.user_id \r\n"
-					+ "FROM plz_group g inner join plz_group_type t \r\n"
-					+ "on g.group_category_id = t.group_category__id \r\n" + 
-					"inner join plz_group_member m \r\n" + 
-					"on g.group_id = m.group_id \r\n";
-					
-					
-			if (key.equals("1")) {
-				inGroupSQL += "WHERE g.group_name like '%" + word + "%' \r\n";
-				//pstmt = conn.prepareStatement(inGourpSQL);
+			
+			
+			inGourpSQL.append("SELECT \n");
+			inGourpSQL.append("	g.group_name\n");
+			inGourpSQL.append("	, g.description\n");
+			inGourpSQL.append("	, c.group_category__id\n");
+			inGourpSQL.append("	, c.group_category__name\n");
+			inGourpSQL.append("	, g.group_img\n");
+			inGourpSQL.append("	, g.address_sido\n");
+			inGourpSQL.append("	, g.address_sigungu\n");
+			inGourpSQL.append("FROM  \n");
+			inGourpSQL.append("	plz_group g \n");
+			inGourpSQL.append("	inner join plz_group_type c\n");
+			inGourpSQL.append("		on g.group_category_id = c.group_category__id\n");
+			inGourpSQL.append("	inner join plz_group_member m\n");
+			inGourpSQL.append("		on g.group_id = m.group_id\n");
+			if(key.equals("1")) {
+				inGourpSQL.append("WHERE g.group_name like '%" + word +"'\n");
+				pstmt = conn.prepareStatement(inGourpSQL.toString());
 //				pstmt.setString(1, word);
-			} else if (key.equals("2")) {
-				inGroupSQL += "WHERE g.address_sido like '%" + word + "%' or g.address_sigungu like '%" + word + "%' \r\n";
-				//pstmt = conn.prepareStatement(inGourpSQL);
+			}else if(key.equals("2")) {
+				inGourpSQL.append("WHERE g.address_sido like '%" + word +"' || g.address_sigungu like '%" + word +"'\n");
+				pstmt = conn.prepareStatement(inGourpSQL.toString());
 //				pstmt.setString(1, word);
 //				pstmt.setString(2, word);
-			} else if (key.equals("3")) {
-				inGroupSQL += "WHERE t.group_category__name like '%" + word + "%' \r\n";
-				//pstmt = conn.prepareStatement(inGourpSQL);
+			}else if(key.equals("3")) {
+				inGourpSQL.append("WHERE c.group_category__name like '%" + word +"'\n");
+				pstmt = conn.prepareStatement(inGourpSQL.toString());
 //				pstmt.setString(1, word);
 			}
-			inGroupSQL += "ORDER BY g.group_id, m.user_id DESC";
-			pstmt = conn.prepareStatement(inGroupSQL);
+			pstmt = conn.prepareStatement(inGourpSQL.toString());
 			rs = pstmt.executeQuery();
-			GroupDto dto = null;
-			GroupCategory cate = null;
-			GroupMember member = null;
-			List<GroupMember> memberList = null;
-			int old_group_id = -1;
-			int group_id = 0;
-			while (rs.next()) {
-				group_id = rs.getInt("group_id");				
-				if(old_group_id != group_id) {
-				
-				cate = new GroupCategory();
+			while(rs.next()) {
+				GroupCategory cate = new GroupCategory();
 				cate.setGroup_category_id(rs.getString("group_category__id"));
 				cate.setGroup_category_name(rs.getString("group_category__name"));
-				
-				dto = new GroupDto();
-				list.add(dto);
+				GroupDto dto = new GroupDto();
 				dto.setGroupCategory(cate);
-				dto.setGroup_id(rs.getInt("group_id"));
 				dto.setGroup_name(rs.getString("group_name"));
 				dto.setGroup_description(rs.getString("description"));
 //				dto.setGroup_leader(group_leader);
@@ -324,78 +290,19 @@ public class GroupDaoImpl implements GroupDao {
 				dto.setAddress_sido(rs.getString("address_sido"));
 				dto.setAddress_sigungu(rs.getString("address_sigungu"));
 				
-				memberList = new ArrayList<GroupMember>();
-				dto.setGroupMembers(memberList);
-				
-				
-				}
-				
-				member = new GroupMember();
-				member.setUser_id(rs.getInt("user_id"));
-				//member.setMember_status(rs.getString("member_status"));
-				memberList.add(member);
+				list.add(dto);
 			}
-				
-
-
+			
+		
 		} catch (SQLException e) {
 			System.out.println("searchGroup() error");
 			e.printStackTrace();
-		} finally {
-			DBClose.close(conn, pstmt, rs);
 		}
+		
 
 		return list;
 	}
 
-	@Override
-	public int inquiry(int group_id, int user_id) {
-		int result = -1;
-		
-		Connection conn = null;
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-		
-		
-
-		try {
-			conn = DBConnection.makeConnectplzdb();
-
-			String checkSQL = "SELECT group_id, user_id, member_status"
-								+ "FROM plz_group_member"
-								+ "WHERE group_id = ? and user_id =? and member_status = 'X'";
-			
-			
-			
-			
-			if(rs.next() == 0) {
-				
-				return result;
-			}
-				
-
-
-		} catch (SQLException e) {
-			System.out.println("searchGroup() error");
-			e.printStackTrace();
-		} finally {
-			DBClose.close(conn, pstmt, rs);
-		}
-		
-		
-		
-		
-		
-		
-		
-		
-		return result;
-	}
-
-	@Override
-	public List<GroupBoard> firstpage(int group_id) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	
 
 }

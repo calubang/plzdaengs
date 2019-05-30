@@ -33,7 +33,7 @@ public class GroupController {
 			list = GroupDaoImpl.getGroupDaoImpl().myGroup(id);
 		} else if (type != null && type.equals("recommend")) {
 			System.out.println("if type recommend");
-			list = GroupDaoImpl.getGroupDaoImpl().recommendGroup();
+			list = GroupDaoImpl.getGroupDaoImpl().recommendGroup(id);
 		} else {
 			String key = request.getParameter("searchoption");
 			String word = request.getParameter("searchword");
@@ -76,6 +76,29 @@ public class GroupController {
 		int result = GroupDaoImpl.getGroupDaoImpl().createGroup(dto);
 		System.out.println("dao 결과 result : " + result);
 		request.setAttribute("result", result);
+		return path;
+	}
+
+	public String enterorsingup(HttpServletRequest request, HttpServletResponse response) {
+		String path = "";
+		int user = 1;
+		int group_id = Integer.parseInt(request.getParameter("group"));
+		System.out.println(group_id);
+		int result = GroupDaoImpl.getGroupDaoImpl().inquiry(group_id, user);
+		if(result == 1) {
+			//grouppage loading
+			GroupDaoImpl.getGroupDaoImpl().firstpage(group_id);
+			
+		}else if(result == -1) {
+			//소모임 그룹 가입 모달창으로
+			
+			//return;
+		}
+		
+		
+		
+		
+		
 		return path;
 	}
 

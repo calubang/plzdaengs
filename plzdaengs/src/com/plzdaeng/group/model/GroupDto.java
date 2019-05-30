@@ -1,5 +1,7 @@
 package com.plzdaeng.group.model;
 
+import java.util.List;
+
 public class GroupDto {
 
 	private int group_id;
@@ -8,13 +10,17 @@ public class GroupDto {
 	private String group_description;
 	private String address_sido;
 	private String address_sigungu;
-	private GroupCategory groupCategory;
 	private String group_img;
+	private GroupCategory groupCategory;
+	private List<GroupMember> groupMembers;
 
-	public GroupDto() {}
-	
+	// private
+
+	public GroupDto() {
+	}
+
 	public GroupDto(int group_id, String group_leader, String group_name, String group_description, String address_sido,
-			String address_sigungu, GroupCategory groupCategory, String group_img) {
+			String address_sigungu, String group_img, GroupCategory groupCategory, List<GroupMember> groupMembers) {
 		super();
 		this.group_id = group_id;
 		this.group_leader = group_leader;
@@ -22,12 +28,11 @@ public class GroupDto {
 		this.group_description = group_description;
 		this.address_sido = address_sido;
 		this.address_sigungu = address_sigungu;
-		this.groupCategory = groupCategory;
 		this.group_img = group_img;
+		this.groupCategory = groupCategory;
+		this.groupMembers = groupMembers;
 	}
 
-	
-	
 	
 	public int getGroup_id() {
 		return group_id;
@@ -77,14 +82,6 @@ public class GroupDto {
 		this.address_sigungu = address_sigungu;
 	}
 
-	public GroupCategory getGroupCategory() {
-		return groupCategory;
-	}
-
-	public void setGroupCategory(GroupCategory groupCategory) {
-		this.groupCategory = groupCategory;
-	}
-
 	public String getGroup_img() {
 		return group_img;
 	}
@@ -93,9 +90,25 @@ public class GroupDto {
 		this.group_img = group_img;
 	}
 
-	
-	
-	
+	public GroupCategory getGroupCategory() {
+		return groupCategory;
+	}
+
+	public void setGroupCategory(GroupCategory groupCategory) {
+		this.groupCategory = groupCategory;
+	}
+
+	public List<GroupMember> getGroupMembers() {
+		return groupMembers;
+	}
+
+	public void setGroupMembers(List<GroupMember> groupMembers) {
+		this.groupMembers = groupMembers;
+	}
 
 	
+
+
+	
+
 }

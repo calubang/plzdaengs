@@ -17,9 +17,9 @@
 <script>
 $(function(){
 		alert("start page loading");
-		var gArr;
+		
 		//Mygrouplist on First Loading 
-		/* $.ajax({
+		 $.ajax({
 			url: '/plzdaengs/groupfront',
 			method:'GET',
 			data:{
@@ -29,13 +29,14 @@ $(function(){
 			success:function(result){
 				alert("enter resultpage");
 				$("#grouplist").html(result);	
-				gArr = $(".card");
-				gArr.click();
+				alert("dfdf");
+				$(".card").click(divClick);
 				
 			} 
 				
 		
-		});*/
+		});
+		//return false;
 		
 			//Mygrouplist
 			var tArr = $("ul.grouplisttype>li>a");
@@ -55,10 +56,10 @@ $(function(){
 					success:function(result){
 						alert("enter myresultpage");
 						$("#grouplist").html(result);	
-						gArr = $(".card");
+						$(".card").click(divClick);
 					}
 				});
-				
+				return false;
 				//Recommendgrouplist
 			}else if($(this).attr("id")=="recommendgroup"){
 				alert("good,too");
@@ -72,12 +73,12 @@ $(function(){
 						success:function(result){
 							alert("enter recoresultpage");
 							$("#grouplist").html(result);	
-							gArr = $(".card");
+							$(".card").click(divClick);
 						}
 							
 						
 					});
-					
+					return false;
 				}
 					
 			});
@@ -95,15 +96,13 @@ $(function(){
 			data : $('#creategroup').serialize(),
 			success:function(result){
 				alert(result);
-				document.location.href ='groupmain.jsp';
+				document.location.href ='groupmain.jsp?groupid=';
 			}
 		});
-
+		return false;
 	});
 	
-	/* $(gArr).click(function(){
-		alert("some groupclick");
-	}); */
+	
 	
 	
 	$("#searchgroup").submit(function(){
@@ -114,21 +113,26 @@ $(function(){
 			data:$(this).serialize(),
 			success:function(result){
 				alert("enter searchresultpage");
-				$("#grouplist").html(result);	
-				gArr = $(".card");
+				$("#grouplist").html(result);
+				$(".card").click(divClick);
 			}
-				
-			
 		});
-		
-		
+		return false;
 	});
 	
-		 
+	
 		 
 	
 	
 });
+
+function divClick(){
+	alert("some groupclick");
+	var groupid = $(this).attr("id");
+	alert(groupid);
+	document.location.href="/plzdaengs/groupfront?act=enter&group=" + groupid;
+	
+}
 
  
 
