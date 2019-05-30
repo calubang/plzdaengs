@@ -20,7 +20,7 @@ public class UserDao {
 			insertUser(con, userDto);
 			insertUserDetail(con, userDto);
 			result = 1;
-		
+			con.commit();
 		} catch (SQLException e) {
 			e.printStackTrace();
 			try {
@@ -29,11 +29,6 @@ public class UserDao {
 				e1.printStackTrace();
 			}
 		} finally {
-			try {
-				con.commit();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
 			DBClose.close(con, null);
 		}
 		return result;
@@ -101,7 +96,7 @@ public class UserDao {
 		pstmt.setString(++index, userDto.getUser_id());
 		pstmt.setString(++index, userDto.getPassword());
 		pstmt.setString(++index, userDto.getAuthority());
-		pstmt.setString(++index, userDto.getEmail());
+		pstmt.setString(++index, userDto.getEmailid());
 		pstmt.setString(++index, userDto.getEmaildomain());
 		pstmt.setString(++index, userDto.getNickname());
 		pstmt.setString(++index, userDto.getUser_img());
@@ -172,7 +167,7 @@ public class UserDao {
 				loginUser = new UserDto();
 				loginUser.setUser_id(rs.getString("user_id"));
 				loginUser.setPassword(rs.getString("password"));
-				loginUser.setEmail(rs.getString("emailid"));
+				loginUser.setEmailid(rs.getString("emailid"));
 				loginUser.setEmaildomain(rs.getString("emaildomain"));
 				loginUser.setNickname(rs.getString("nickname"));
 				loginUser.setUser_img(rs.getString("user_img"));
@@ -185,6 +180,70 @@ public class UserDao {
 		}
 		
 		return loginUser;
+	}
+
+	public UserDto selectDetailById(UserDto userDto) {
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		UserDto dto = null;
+		String selectDetailById = 
+				"select \r\n" + 
+				"    u.user_id\r\n" + 
+				"    , u.password\r\n" + 
+				"    , u.emailid\r\n" + 
+				"    , u.emaildomain\r\n" + 
+				"    , u.nickname\r\n" + 
+				"    , u.user_img\r\n" + 
+				"    , u.authority\r\n" + 
+				"    , detail.tel\r\n" + 
+				"    , detail.gender\r\n" + 
+				"    , detail.zipcode\r\n" + 
+				"    , detail.address\r\n" + 
+				"    , detail.address_detail\r\n" + 
+				"from \r\n" + 
+				"    plz_user u\r\n" + 
+				"    inner join plz_user_detail detail\r\n" + 
+				"        on u.user_id = detail.user_id\r\n" + 
+				"where \r\n" + 
+				"    u.user_id = ?";
+		
+		try {
+			conn = DBConnection.makeConnection();
+			pstmt = conn.prepareStatement(selectDetailById);
+			pstmt.setString(1, userDto.getUser_id());
+			
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				dto = new UserDto();
+				dto.setUser_id(rs.getString("user_id"));
+				dto.setPassword(rs.getString("password"));
+				dto.setEmailid(rs.getString("emailid"));
+				dto.setEmaildomain(rs.getString("emaildomain"));
+				dto.setNickname(rs.getString("nickname"));
+				dto.setUser_img(rs.getString("user_img"));
+				dto.setAuthority(rs.getString("authority"));
+								
+				UserDetailDto userDetailDto = new UserDetailDto();
+				dto.setUserDetailDto(userDetailDto);
+				
+				userDetailDto.setTel(rs.getString("tel"));
+				userDetailDto.setGender(rs.getString("gender"));
+				userDetailDto.setZipcode(rs.getString("zipcode"));
+				userDetailDto.setAddress(rs.getString("address"));
+				userDetailDto.setAddress_detail(rs.getString("address_detail"));
+				
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DBClose.close(conn, pstmt, rs);
+		}
+		
+		
+		return dto;
 	}
 
 }

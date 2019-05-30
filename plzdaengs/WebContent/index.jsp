@@ -1,15 +1,29 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<c:set var="userInfo" value="${sessionScope.userInfo}"></c:set>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <%@ include file="/template/default_link.jsp" %>
-<% 
-String user = (String)request.getSession().getAttribute("userInfo");
-%>
+<c:if test="${!empty userInfo}">
+<script>
+$(function(){
+	//로그인 한 유저에 대해서 반영할 내용
+	loginSuccessProcess();
+});
 
+function loginSuccessProcess(){
+	$("#profile").css("background-image", "url('${userInfo.user_img}')");
+	mainSectionChange();
+}
+function mainSectionChange() {
+	$("#contents").html("<h3>여기에 다이어리 들어가야함.</h3>");
+}
+</script>
+</c:if>
 <script type="text/javascript">
 $(function() {
 	$("#loginbtn").click(loginModalShow);
@@ -29,15 +43,6 @@ $(function() {
 		$("body").prop("class", "modal-open");
 	  });
 	
-	<%
-	if(user != null ){
-		//프로필 변경
-		//메인페이지 변경
-	%>
-		//loginProcess();
-	<%
-	}
-	%>
 });
 
 function registerbtnClick() {
@@ -87,7 +92,7 @@ function login(){
 		, method : "post"
 		, data : $("#loginmodal form").serialize()
 		, success : function(result){
-			if(result.trim() != "success"){
+			if(result.trim() != "1"){
 				//$("#loginalert p").html(result);
 				showAlertModal("로그인 경고", result);
 			}else{

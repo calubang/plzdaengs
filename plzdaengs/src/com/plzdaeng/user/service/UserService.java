@@ -5,6 +5,7 @@ import java.net.*;
 
 import org.apache.tomcat.jdbc.pool.ConnectionPool;
 
+import com.plzdaeng.dto.UserDetailDto;
 import com.plzdaeng.dto.UserDto;
 import com.plzdaeng.user.dao.UserDao;
 import com.plzdaeng.util.ProfileCreate;
@@ -81,5 +82,9 @@ public class UserService {
 	public UserDto userLogin(UserDto userDto) {
 		
 		return dao.selectById(userDto);
+	}
+
+	public UserDto userModify(UserDto userDto) {
+		return dao.selectDetailById(userDto);
 	}
 }

@@ -30,7 +30,7 @@ public class UserJoinServlet extends HttpServlet {
 	
 		//String saveDirectory = request.getServletContext().getRealPath("\\img\\user");
 		String saveDirectory = SiteConstance.IMG_PATH;
-		System.out.println(request.getContentType());
+		//System.out.println(request.getContentType());
 		MultipartRequest mr = new MultipartRequest(request, saveDirectory, "utf-8");
 		
 		String id = mr.getParameter("id");
@@ -47,7 +47,7 @@ public class UserJoinServlet extends HttpServlet {
 		UserDto userDto = new UserDto();
 		userDto.setUser_id(id);
 		userDto.setPassword(password);
-		userDto.setEmail(emailid);
+		userDto.setEmailid(emailid);
 		userDto.setEmaildomain(emaildomain);
 		userDto.setNickname(nickname);
 		
@@ -61,11 +61,14 @@ public class UserJoinServlet extends HttpServlet {
 		userDetailDto.setAddress_detail(addressdetail);
 				
 		//등록한 파일이 없으면 기본 이미지 사용
-		if(mr.getFile("imgdata")  == null) {
-			userDto.setUser_img("\\template\\img\\basic_user_profile.png");
+		File profileFile = mr.getFile("imgdata");
+		if(profileFile  == null) {
+			userDto.setUser_img("/template/img/basic_user_profile.png");
 		}else {
-			userDto.setUser_img("\\img\\user\\"+userDto.getUser_id()+"\\user_profile.jpg");
-			ProfileCreate.profileRegister(mr.getFile("imgdata"),request.getServletContext().getRealPath("\\img"), userDto.getUser_id(), "user");
+			userDto.setUser_img("/plzdaengs/img/user/"+userDto.getUser_id()+"/user_profile.jpg");
+			String path = request.getServletContext().getRealPath("/img");
+			//System.out.println(path);
+			ProfileCreate.profileRegister(profileFile, path , userDto.getUser_id() , "user");
 		}
 		//프로필 등록시작
 		int result = service.userJoin(userDto);

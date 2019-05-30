@@ -3,7 +3,7 @@ package com.plzdaeng.dto;
 public class UserDto {
 	private String user_id;
 	private String password;
-	private String email;
+	private String emailid;
 	private String emaildomain;
 	private String nickname;
 	private String user_img;
@@ -43,12 +43,12 @@ public class UserDto {
 		this.authority = authority;
 	}
 
-	public String getEmail() {
-		return email;
+	public String getEmailid() {
+		return emailid;
 	}
 
-	public void setEmail(String email) {
-		this.email = email;
+	public void setEmailid(String emailid) {
+		this.emailid = emailid;
 	}
 
 	public String getEmaildomain() {
@@ -86,7 +86,7 @@ public class UserDto {
 	@Override
 	public String toString() {
 		return "UserDto [user_id=" + user_id + ", password=" + password + ", authority=" + authority
-				+ ", email=" + email + ", emaildomain=" + emaildomain + ", nickname=" + nickname + ", user_img="
+				+ ", emailid=" + emailid + ", emaildomain=" + emaildomain + ", nickname=" + nickname + ", user_img="
 				+ user_img + ", userDetailDto=" + userDetailDto + "]";
 	}
 	

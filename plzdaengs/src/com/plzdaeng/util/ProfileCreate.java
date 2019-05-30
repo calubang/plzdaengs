@@ -11,15 +11,20 @@ public class ProfileCreate {
 		
 		switch (type) {
 		case "user":
-			path += "\\user\\"+id;
+			path += "/user";
 			File temp = new File(path);
 			if(!temp.exists()) {
 				temp.mkdir();
 			}
-			path += "\\user_profile.jpg";
+			path += "/"+id;
+			temp = new File(path);
+			if(!temp.exists()) {
+				temp.mkdir();
+			}
+			path += "/user_profile.jpg";
 			break;
 		case "pet":
-			path += "\\user\\"+id;
+			path += "/user/"+id;
 			break;
 		default:
 			break;

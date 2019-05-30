@@ -3,10 +3,9 @@ package com.plzdaengs.main.control;
 import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.*;
 
+import com.plzdaeng.dto.UserDto;
 import com.plzdaeng.util.MoveUrl;
 
 @WebServlet("/menu")
@@ -20,7 +19,8 @@ public class MenuFrontControl extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String act = request.getParameter("act");
 		String path = "index.jsp";
-		
+		HttpSession session = request.getSession();
+		UserDto userDto = (UserDto)session.getAttribute("userInfo");
 		System.out.println("menu : " + act);
 		
 		if(act == null)
@@ -30,9 +30,15 @@ public class MenuFrontControl extends HttpServlet {
 		case "animals":
 			path = "/animal";
 			break;
-		case "membermodify":
-			path = "/member/membermodify.jsp";
+			
+		case "usermodify":
+			if(userDto == null) {
+				path = "/index.jsp";
+			}else {
+				path = "usermodify";
+			}
 			break;
+		
 		default:
 			break;
 		}

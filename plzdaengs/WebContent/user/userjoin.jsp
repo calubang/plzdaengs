@@ -53,6 +53,7 @@
 <script>
 //아이디 중복검사용
 var idcheck = false;
+var passcheck = false;
 
 $(function() {
 	//드랍다운 이벤트
@@ -68,15 +69,45 @@ $(function() {
 	fileDropDown();
 	
 	//아이디 중복검사
-	$("input[name=id]").change(idCheck);
+	$("input[name=id]").keyup(idCheck);
+	
+	//비밀번호 같은지 체크
+	$("input[type=password]").keyup(passwordCheck);
 
 	//회원가입
-	$("button[type=submit]").click(memberjoinClick);
-	
+	//$("button[type=submit]").click(memberjoinClick);
+	$("#registerBtn").click(memberjoinClick);
 	//회원가입 성공시 뜨는 모달
 	$("#alertSuccess button").click(successAlertOkClick);
 	
 });
+
+function passwordCheck(){
+	var password = $("input[name=password]").val();
+	var passwordcheck = $("input[name=passwordcheck]").val();
+	var passwordCheckLabel = $($("input[name=passwordcheck]").parent().siblings("label")[1]);
+	
+	passcheck = false;
+	passwordCheckLabel.css("color", "red");
+	if(password == null || password.length == 0){
+		passwordCheckLabel.text("비밀번호를 확인해주세요");
+		return;
+	}
+	if(passwordcheck == null || passwordcheck.length == 0){
+		passwordCheckLabel.text("비밀번호를 확인해주세요");
+		return;
+	}
+	
+	if(password != passwordcheck){
+		passwordCheckLabel.text("비밀번호를 확인해주세요");
+		return;
+	}else{
+		passwordCheckLabel.css("color", "green");
+		passwordCheckLabel.text("비밀번호가 일치합니다");
+		passcheck = true;
+		return;
+	}
+}
 
 function idCheck(){
 	var id = $(this).val();
@@ -148,6 +179,12 @@ function memberjoinClick() {
 		$("input[name=passwordcheck]").focus();
 		return false;
 	}
+	if(!passcheck){
+		showAlertModal("비밀번호 확인", "비밀번호가 일치하지 않아요.");
+		$("input[name=id]").focus();
+		return false;
+	}
+	
 	if(emailid == null || emailid.length ==0){
 		showAlertModal("필수값 입력 확인", "이메일을 입력하지 않으셨어요.");
 		$("input[name=emailid]").focus();
@@ -170,9 +207,8 @@ function memberjoinClick() {
 }
 
 function memberjoin() {
-	var form = $(".register form[name=registerForm]")[0];
+	var form = $("#registerForm")[0];
 	var formData = new FormData(form);
-
 	$.ajax({
 		url : "userjoin"
 		, method : "post"
@@ -180,17 +216,18 @@ function memberjoin() {
 		, contentType : false
 		, data : formData
 		, success : function (result) {
-			alert(result.trim());
-			if(result.trim() == 1){
+			if(result.trim() == '1'){
 				showSuccessAlertModal("회원가입 성공", "회원가입이 성공하였습니다");
 			}else{
 				showAlertModal("회원가입 실패", "회원가입이 실패하였습니다");
 			}
 		}
 		, error : function (jqXHR, result) {
-			alert(result);
+			showAlertModal("에러", result + "관리자에게 연락하세요.");
 		}
-	}); 
+	});
+	
+	return false;
 }
 
 function fileDropDown() {
@@ -313,7 +350,7 @@ function fileUploadChange() {
 				<h3 class="h6 text-uppercase mb-0">회원 가입</h3>
 			</div>
 			<div class="card-body">
-				<form class="form-horizontal" enctype="multipart/form-data" method="post" name="registerForm">
+				<form class="form-horizontal" enctype="multipart/form-data" method="post" id="registerForm">
 					<div class="form-group row registerid">
 						<label class="col-md-3 form-control-label">아이디(*)</label>
 						<div class="col-md-5">
@@ -338,7 +375,7 @@ function fileUploadChange() {
 							<input type="password" placeholder="비밀번호를 입력하세요"
 								class="form-control" name="passwordcheck">
 						</div>
-						<label class="col-md-2 form-control-label">비밀번호 확인</label>
+						<label class="col-md-4 form-control-label">비밀번호 확인</label>
 					</div>
 					<div class="line"></div>
 					<div class="form-group row registeremail">
@@ -372,12 +409,11 @@ function fileUploadChange() {
 					<div class="form-group row registerfileupload">
 						<label class="col-md-3 form-control-label">프로필등록</label>
 						<div class="col-md-9 input-group-prepend">
-							<label for="ex_file" class="col-md-2">프로필선택</label> <input
-								type="file" class="form-control file-hidden" id="ex_file"
+							<label for="ex_file" class="col-md-3">프로필선택</label> 
+							<input type="file" class="form-control file-hidden" id="ex_file"
 								accept="image/*" name="imgdata"> 
-								<input type="text" placeholder="파일을 등록해주세요" class="form-control col-md-5 "
-								name="userimg" readonly> <img alt="" class="col-md-2 fileuploadimg"
-								src="/plzdaengs/template/img/basic_user_profile.png">
+							<input type="text" placeholder="파일을 등록해주세요" class="form-control col-md-5 " name="userimg" readonly> 
+							<img alt="" class="col-md-2 fileuploadimg" src="/plzdaengs/template/img/basic_user_profile.png">
 						</div>
 					</div>
 					<div class="line"></div>
@@ -385,7 +421,7 @@ function fileUploadChange() {
 						<label class="col-md-3 form-control-label">전화번호</label>
 						<div class="col-md-5">
 							<input type="tel" placeholder="전화번호를 입력해주세요"
-								class="form-control" name="tel">
+								class="form-control" name="tel" >
 						</div>
 						<label class="col-md-2 form-control-label">(-)은 생략</label>
 					</div>
@@ -423,7 +459,7 @@ function fileUploadChange() {
 					<div class="form-group row">
 						<div class="col-md-9 ml-auto">
 							<button type="reset" class="btn btn-primary">취소</button>
-							<button type="submit" class="btn btn-primary">회원가입</button>
+							<button type="submit" class="btn btn-primary" id="registerBtn">회원가입</button>
 						</div>
 					</div>
 				</form>
