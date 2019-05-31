@@ -13,5 +13,3 @@
 	src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script>
 <script src="/plzdaengs/template/js/charts-home.js"></script>
 <script src="/plzdaengs/template/js/front.js"></script>
-<script src="/plzdaengs/template/airdatepicker/js/datepicker.js"></script>
-<script src="/plzdaengs/template/airdatepicker/js/i18n/datepicker.kr.js"></script>

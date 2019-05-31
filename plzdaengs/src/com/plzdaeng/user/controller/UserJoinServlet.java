@@ -30,6 +30,7 @@ public class UserJoinServlet extends HttpServlet {
 	
 		//String saveDirectory = request.getServletContext().getRealPath("\\img\\user");
 		String saveDirectory = SiteConstance.IMG_PATH;
+		
 		//System.out.println(request.getContentType());
 		MultipartRequest mr = new MultipartRequest(request, saveDirectory, "utf-8");
 		

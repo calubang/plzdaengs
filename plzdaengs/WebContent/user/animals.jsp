@@ -6,6 +6,10 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <%@ include file="/template/default_link.jsp"%>
+<script src="/plzdaengs/template/airdatepicker/js/datepicker.js"></script>
+<script src="/plzdaengs/template/airdatepicker/js/i18n/datepicker.kr.js"></script>
+
+<!-- datepicker -->
 <link href="/plzdaengs/template/airdatepicker/css/datepicker.min.css" rel="stylesheet" type="text/css">
 <script type="text/javascript">
 $(function () {

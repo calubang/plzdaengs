@@ -35,6 +35,3 @@ String root = request.getContextPath();
 
 <!-- kakao login -->
 <script src="//developers.kakao.com/sdk/js/kakao.min.js"></script>
-
-<!-- datepicker -->
-<link href="/plzdaengs/template/airdatepicker/css/datepicker.min.css" rel="stylesheet" type="text/css">
