@@ -4,13 +4,13 @@ public class GroupMember {
 
 
 	private int group_id;
-	private int user_id;
+	private String user_id;
 	private String member_status;
 	
 	public GroupMember() {
 	}
 
-	public GroupMember(int group_id, int user_id, String member_status) {
+	public GroupMember(int group_id, String user_id, String member_status) {
 		super();
 		this.group_id = group_id;
 		this.user_id = user_id;
@@ -29,13 +29,13 @@ public class GroupMember {
 
 
 
-	public int getUser_id() {
+	public String getUser_id() {
 		return user_id;
 	}
 
 
 
-	public void setUser_id(int user_id) {
+	public void setUser_id(String user_id) {
 		this.user_id = user_id;
 	}
 

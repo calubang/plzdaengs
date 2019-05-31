@@ -5,10 +5,9 @@ import java.io.IOException;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.*;
 
+import com.plzdaeng.dto.UserDto;
 import com.plzdaeng.util.MoveUrl;
 import com.plzdaeng.util.SiteConstance;
 
@@ -32,20 +31,22 @@ public class GroupFrontController extends HttpServlet {
 		String act = request.getParameter("act");
 		//String path = "/group/index.jsp";
 		System.out.println(act);
-
+		HttpSession session = request.getSession();
+		UserDto user = (UserDto)session.getAttribute("userInfo");
+		System.out.println(user);
 		
 		if("creategroup".equals(act)) {
 			System.out.println("front create");
-			String path = GroupController.getCreateGroup().create(request, response);
+			String path = GroupController.getCreateGroup().create(request, response, user);
 			MoveUrl.forward(request, response, path);
 		}else if("loading".equals(act)) {
 			System.out.println("front loading");
-			String path = GroupController.getCreateGroup().pageLoaing(request, response);
+			String path = GroupController.getCreateGroup().pageLoaing(request, response, user);
 			MoveUrl.forward(request, response, path);
 			System.out.println(path);
 		}else if("enter".equals(act)) {
 			System.out.println("front enter");
-			String path = GroupController.getCreateGroup().enterorsingup(request, response);
+			String path = GroupController.getCreateGroup().enterorsingup(request, response, user);
 		}
 	}
 

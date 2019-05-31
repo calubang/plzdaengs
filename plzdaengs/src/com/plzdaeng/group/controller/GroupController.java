@@ -2,9 +2,9 @@ package com.plzdaeng.group.controller;
 
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.*;
 
+import com.plzdaeng.dto.UserDto;
 import com.plzdaeng.group.model.GroupCategory;
 import com.plzdaeng.group.model.GroupDto;
 import com.plzdaeng.group.model.dao.GroupDaoImpl;
@@ -21,10 +21,12 @@ public class GroupController {
 		return groupController;
 	}
 
-	public String pageLoaing(HttpServletRequest request, HttpServletResponse response) {
+	
+	
+	
+	public String pageLoaing(HttpServletRequest request, HttpServletResponse response, UserDto user) {
 		// path = "/plzdaengs/template/alert_danger.jsp";
-//		String id = reqeust.getParameter("logininfo");
-		int id = 1;
+		String id = user.getUser_id();
 		String type = request.getParameter("type");
 		System.out.println(type);
 		List<GroupDto> list = null;
@@ -45,10 +47,9 @@ public class GroupController {
 		return path;
 	}
 
-	public String create(HttpServletRequest request, HttpServletResponse response) {
+	public String create(HttpServletRequest request, HttpServletResponse response, UserDto user) {
 		String path = "/group/groupmain.jsp";
-//		String id = reqeust.getParameter("logininfo");
-		String id = "1";
+		String id = user.getUser_id();
 		String name = request.getParameter("groupname");
 		String desc = request.getParameter("groupdescription");
 		String keyword = request.getParameter("groupkeyword");
@@ -79,12 +80,12 @@ public class GroupController {
 		return path;
 	}
 
-	public String enterorsingup(HttpServletRequest request, HttpServletResponse response) {
+	public String enterorsingup(HttpServletRequest request, HttpServletResponse response, UserDto user) {
 		String path = "";
-		int user = 1;
+		String id = user.getUser_id();
 		int group_id = Integer.parseInt(request.getParameter("group"));
 		System.out.println(group_id);
-		int result = GroupDaoImpl.getGroupDaoImpl().inquiry(group_id, user);
+		int result = GroupDaoImpl.getGroupDaoImpl().inquiry(group_id, id);
 		if(result == 1) {
 			//grouppage loading
 			GroupDaoImpl.getGroupDaoImpl().firstpage(group_id);

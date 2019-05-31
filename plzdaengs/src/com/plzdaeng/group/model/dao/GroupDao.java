@@ -17,13 +17,13 @@ public interface GroupDao {
 	
 	int deleteGroup(GroupDto dto);
 	
-	List<GroupDto> myGroup(int id);
+	List<GroupDto> myGroup(String user_id);
 	
-	List<GroupDto> recommendGroup(int id);
+	List<GroupDto> recommendGroup(String user_id);
 	
 	List<GroupDto> searchGroup(String key, String word);
 	
-	int inquiry(int group_id, int user_id);
+	int inquiry(int group_id, String user_id);
 	
 	List<GroupBoard> firstpage(int group_id);
 	

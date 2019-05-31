@@ -10,6 +10,6 @@ public class SiteConstance {
  public static final String DB_PASSWORD = "plz";
  
  //Image Path 
- public static final String IMG_PATH = "D:\\javaData\\fileupload";
+ public static final String IMG_PATH = "C:\\fileupload";
  
 }

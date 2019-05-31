@@ -1,5 +1,26 @@
+<%@page import="com.plzdaeng.dto.UserDto"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<c:set var="userInfo" value="${sessionScope.userInfo}"></c:set>
+<c:if test="${empty userInfo}">
+<script>
+	location.href = "/plzdaengs/index.jsp";
+</script>
+</c:if>
+<%
+UserDto user = (UserDto)request.getSession().getAttribute("userInfo");
+if(user == null){
+%>
+<script>
+	location.href = "/plzdaengs/index.jsp";
+</script>
+<%
+}else{
+	String id = user.getUser_id();
+}
+%>
+
 <!DOCTYPE html>
 <html>
 <head>
