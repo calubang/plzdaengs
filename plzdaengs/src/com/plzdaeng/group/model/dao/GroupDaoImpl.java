@@ -368,10 +368,10 @@ public class GroupDaoImpl implements GroupDao {
 			
 			
 			
-			if(rs.next() == 0) {
+	//		if(rs.next() == 0) {
 				
-				return result;
-			}
+		//		return result;
+	//		}
 				
 
 
