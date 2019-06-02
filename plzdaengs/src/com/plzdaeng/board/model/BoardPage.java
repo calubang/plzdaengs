@@ -1,6 +1,6 @@
-package com.plzdaeng.board.yugi.service;
+package com.plzdaeng.board.model;
 
-public class YugiPage {
+public class BoardPage {
 	public static final int PAGE_SCALE = 10;
 	public static final int BLOCK_SCALE = 10;
 	
@@ -19,7 +19,7 @@ public class YugiPage {
 	private int blockEnd;
 	
 	//갯수, 현재페이지
-	public YugiPage(int cnt, int curPage) {
+	public BoardPage(int cnt, int curPage) {
 		curBlock = 1;
 		this.curPage = curPage;
 		setTotalPage(cnt);
@@ -146,26 +146,13 @@ public class YugiPage {
 	public int getTotalPage() {
 		return totalPage;
 	}
-	
-	public String getPageString() {
-		StringBuilder strB = new StringBuilder();
-		strB.append("<page>");
-		strB.append("<curPage>"+curPage+"</curPage>");
-		strB.append("<prevPage>"+prevPage+"</prevPage>");
-		strB.append("<nextPage>"+nextPage+"</nextPage>");
-		strB.append("<totalPage>"+totalPage+"</totalPage>");
-		strB.append("<totalBlock>"+totalBlock+"</totalBlock>");
-		strB.append("<curBlock>"+curBlock+"</curBlock>");
-		strB.append("<prevBlock>"+prevBlock+"</prevBlock>");
-		strB.append("<nextBlock>"+nextBlock+"</nextBlock>");
 
-		strB.append("<pageBegin>"+pageBegin+"</pageBegin>");
-		strB.append("<pageEnd>"+pageEnd+"</pageEnd>");
-		strB.append("<blockBegin>"+blockBegin+"</blockBegin>");
-		strB.append("<blockEnd>"+blockEnd+"</blockEnd>");
-		strB.append("</page>");
-		
-		return strB.toString();
+	@Override
+	public String toString() {
+		return "BoardPage [curPage=" + curPage + ", prevPage=" + prevPage + ", nextPage=" + nextPage + ", totalPage="
+				+ totalPage + ", totalBlock=" + totalBlock + ", curBlock=" + curBlock + ", prevBlock=" + prevBlock
+				+ ", nextBlock=" + nextBlock + ", pageBegin=" + pageBegin + ", pageEnd=" + pageEnd + ", blockBegin="
+				+ blockBegin + ", blockEnd=" + blockEnd + "]";
 	}
 
 	

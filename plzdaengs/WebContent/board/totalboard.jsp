@@ -1,14 +1,40 @@
+<%@page import="com.plzdaeng.board.model.BoardPage"%>
+<%@page import="com.plzdaeng.board.model.PlzBoard"%>
+<%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <!DOCTYPE html>
+<%
+	List<PlzBoard> board = (List) request.getAttribute("boardList");
+	BoardPage pageInfo = (BoardPage) request.getAttribute("boardPage");
+%>
 <html>
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Bubbly - Boootstrap 4 Admin template by Bootstrapious.com</title>
     <%@ include file="/template/default_link.jsp" %>
+    <script src="/plzdaengs/board/js/httpRequest.js"></script>
   </head>
   <script type="text/javascript">
+  	function searchList(){
+		
+  		$("#searchGubun").val($("#searchGubun2 option:selected").val());
+  		$("#searchValue").val($("#searchValue2").val());
+  		$("#curPage").val("1");
+  		
+  		
+		document.getElementById("search").action = "/plzdaengs/plzBoard";
+		document.getElementById("search").submit();
+  	}
+  	
+  	function goDetail(post_id){
+  		$("#post_id").val(post_id);
+  		document.getElementById("detail").action = "/plzdaengs/plzBoard";
+		document.getElementById("detail").submit();
+  	}
+  	
+  
   </script>
   <body>
     <!-- navbar-->
@@ -113,33 +139,19 @@
                       </thead>
                       <!--게시물 목록 반복문 실행될 곳-->
                       <tbody>
-                        <tr>
-                          <th scope="row">1</th>
-                          <td>Mark</td>
-                          <td colspan="5">안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요</td>
-                          <td>@mdo</td>
-                          <td>@mdo</td>
-                          <td>@mdo</td>
-                          <td>@mdo</td>
+                        <%
+                        	for(int i=0; i<board.size();i++){
+                        %>
+	                        <tr onclick="goDetail(<%=board.get(i).getPost_id() %>)">
+	                          <th scope="row"><%=board.get(i).getNo() %></th>
+	                          <td><%=board.get(i).getBoard_category_descripton() %></td>
+	                          <td colspan="5"><%=board.get(i).getPost_subject() %></td>
+	                          <td><%=board.get(i).getNickname() %></td>
+	                          <td>@mdo</td>
+	                          <td><%=board.get(i).getViews() %></td>
+	                          <td><%=board.get(i).getCreat_date() %></td>
                         </tr>
-                        <tr>
-                          <th scope="row">2</th>
-                          <td>Jacob</td>
-                          <td colspan="5">안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요</td>
-                          <td>@fat</td>
-                          <td>@fat</td>
-                          <td>@fat</td>
-                          <td>@fat</td>
-                        </tr>
-                        <tr>
-                          <th scope="row">3</th>
-                          <td>Larry</td>
-                          <td colspan="5">안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요</td>
-                          <td>@twitter</td>
-                          <td>@twitter</td>
-                          <td>@twitter</td>
-                          <td>@twitter</td>
-                        </tr>
+                        <%} %>
                       </tbody>
                     </table>
                   </div>
@@ -149,40 +161,55 @@
               <!-- 사용할 게시판 끝과 사용안할것  -->
             </div><!-- 여기 끝에 페이징처리 -->
             <div class="form-group row mb-4" style="margin-left: 10%;">
-              <select name="account" class="form-control col-md-1">
-                    <option>제목</option>
-                    <option>작성자</option>
+              <select id="searchGubun2" class="form-control col-md-1">
+                    <option value="1">제목</option>
+                    <option value="2">작성자</option>
               </select>
-              <input type="text" class="form-control col-md-7" style="margin-left:1rem;margin-right:4rem;">
-              <button type="submit" class="btn btn-primary">검색하기</button>
+              <input type="text" id="searchValue2" class="form-control col-md-7" style="margin-left:1rem;margin-right:4rem;">
+              <button type="button" class="btn btn-primary" onclick="searchList()">검색하기</button>
             </div>
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12"><!-- 페이징 -->
 			<nav>
 				<ul class="pagination" style="margin-left: 30%;">
+					<% if(pageInfo.getCurBlock() > 1 ){ %>
 					<li class="page-item">
 						<a class="page-link" href="#">Previous</a>
 					</li>
-					<li class="page-item">
-						<a class="page-link" href="#">1</a>
-					</li>
-					<li class="page-item">
-						<a class="page-link" href="#">2</a>
-					</li>
-					<li class="page-item">
-						<a class="page-link" href="#">3</a>
-					</li>
-					<li class="page-item">
-						<a class="page-link" href="#">4</a>
-					</li>
-					<li class="page-item">
-						<a class="page-link" href="#">5</a>
-					</li>
+					<%} 
+					
+						for(int i = pageInfo.getBlockBegin(); i <=pageInfo.getBlockEnd() ; i++){
+							if(i == pageInfo.getCurPage()){
+					%>
+						<li class="page-item" onclick="goMovePage(<%=i%>)">
+							<a class="page-link"><%=i %></a>
+						</li>
+					<%}else{ %>
+						<li class="page-item" onclick="goMovePage(<%=i%>)">
+							<a class="page-link" href="#"><%=i %></a>
+						</li>
+					<% 
+					}
+						}
+						
+						if(pageInfo.getCurBlock() <= pageInfo.getTotalBlock()){ %>
 					<li class="page-item">
 						<a class="page-link" href="#">Next</a>
 					</li>
+					<%} %>
 				</ul>
 			</nav>
 		</div>
+		<form id="search" method="get" action="">
+			<input type="hidden" name="searchValue" id="searchValue" value="">
+			<input type="hidden" name="searchGubun" id="searchGubun" value="">
+			<input type="hidden" name="curPage" id="curPage" value="">
+			<input type="hidden" name="cmd" id="cmd" value="boardList">
+		</form>
+		
+		<form id="detail" method="post" action="">
+			<input type="hidden" name="post_id" id="post_id" value="">
+			<input type="hidden" name="cmd" id="cmd" value="detail">
+		</form>
             
           </section>
         </div>

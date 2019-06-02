@@ -19,7 +19,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 
-import com.plzdaeng.board.yugi.service.YugiPage;
+import com.plzdaeng.board.model.BoardPage;
 import com.plzdaeng.board.yugi.service.YugiService;
 
 @WebServlet("/yugi")

@@ -1,3 +1,4 @@
+<%@page import="com.plzdaeng.board.model.PlzBoard"%>
 <%@page import="java.util.List"%>
 <%@page import="com.plzdaeng.board.model.PlzBoardCategory"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
@@ -5,6 +6,8 @@
 <!DOCTYPE html>
 <%
 	List<PlzBoardCategory> category = (List) request.getAttribute("category");
+	PlzBoard board = (PlzBoard) request.getAttribute("updateView");
+	String mode = (String)request.getAttribute("mode");
 %>
 <html>
   <head>
@@ -19,7 +22,20 @@
 <!-- 서머노트 -->
   </head>
   <script type="text/javascript">
-  	function regist(){
+  $(document).ready(function() {//
+	var contents = '<%=board.getPost_contents()%>';
+	var subject = '<%= board.getPost_subject()%>';
+	
+	if('null' != contents){
+		$('#summernote').summernote('code',contents);
+	}
+	
+	if('null' != subject){
+		$('#post_subject').val(subject);
+	}
+  });
+
+  	function regist(mode){
   		var categoryId = $("#board_category option:selected").val();
   		if(categoryId == ""){
   			alert('카테고리를 선택해주세요');
@@ -37,10 +53,13 @@
   		  return;
   	  }
   		$('#board_category_id').val(categoryId);
-
+		
+  		
   		document.getElementById("boardRegist").action = "/plzdaengs/plzBoard";
   		document.getElementById("boardRegist").submit();
   	}
+  	
+  	
   </script>
   <body>
   
@@ -129,7 +148,8 @@
               <div class=" col-lg-12 mb-4">
                 <div class="card" style="min-width:40rem"><!-- 여기 끝에 글쓰기버튼 -->
                 <form id="boardRegist" method="post" action="">
-                <input type="hidden" name="cmd" value="regist">
+                <input type="hidden" name="cmd" value="<%=mode%>">
+                <input type="hidden" name="post_id" id="post_id" value="<%=board.getPost_id()%>">
                 <input type="hidden" name="board_category_id" id="board_category_id" value="">
                   <div class="card-header">
                   <div class="form-group row" >
@@ -139,14 +159,19 @@
 													<%
 														for(int i=0; i<category.size();i++){
 															PlzBoardCategory plz = category.get(i);
+															if("update".equals(mode) && plz.getBoard_category_id().equals(board.getBoard_category_id())){
 													%>
+														<option value="<%=plz.getBoard_category_id()%>" selected="selected"><%=plz.getBoard_category_descripton()%></option>
+													<%}else{ %>
 														<option value="<%=plz.getBoard_category_id()%>"><%=plz.getBoard_category_descripton()%></option>
-													<%} %>
+													<%
+														}
+													} %>
 												</select>
 											</div>
                         <label class="col-md-1 form-control-label">제목</label>
                         <div class="col-md-9">
-                          <input type="text" id="post_subject" name="post_subject" class="form-control">
+                          <input type="text" id="post_subject" name="post_subject" class="form-control" value="">
                         </div>
                       </div>
                   </div>
@@ -171,13 +196,20 @@
 											tabsize : 3,
 											height : 400
 										});
+										
+									
 									</script>
 									<!-- 여기까지 -->
 								</div>
                 </div><!-- 여기 끝에 글쓰기버튼 -->
                 </form>
                 <button class="btn btn-primary " type="button" style="background-color: #dc3545; float: left; padding: 0.2rem 0.8rem;">목록가기</button>
-                <button class="btn btn-primary " onclick="regist()" type="button" style="background-color: #dc3545; float: right; padding: 0.2rem 0.8rem;">등록하기</button>
+                <% if("regist".equals(mode)){ %>
+               	 <button class="btn btn-primary " onclick="regist()" type="button" style="background-color: #dc3545; float: right; padding: 0.2rem 0.8rem;">등록하기</button>
+                <%}else{ %>
+                	<button class="btn btn-primary " onclick="regist()" type="button" style="background-color: #dc3545; float: right; padding: 0.2rem 0.8rem;">수정하기</button>
+                <%} %>
+                
               </div>
             </div>
           </section>

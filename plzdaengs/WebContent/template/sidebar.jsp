@@ -123,8 +123,8 @@
 			<div id="pages" class="collapse">
 				<ul
 					class="sidebar-menu list-unstyled border-left border-primary border-thick">
-					<li class="sidebar-list-item"><a href="#"
-						class="sidebar-link pl-lg-5">Page one</a></li>
+					<li class="sidebar-list-item"><a href="/plzdaengs/plzBoard?cmd=boardList&curPage=1"
+						class="sidebar-link pl-lg-5">게시판1</a></li>
 					<li class="sidebar-list-item"><a href="#"
 						class="sidebar-link pl-lg-5">Page two</a></li>
 					<li class="sidebar-list-item"><a href="#"

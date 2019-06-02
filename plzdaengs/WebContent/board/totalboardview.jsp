@@ -1,6 +1,10 @@
+<%@page import="com.plzdaeng.board.model.PlzBoard"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
+<%
+	PlzBoard board = (PlzBoard) request.getAttribute("detailView");
+%>
 <html>
 <head>
 <meta charset="utf-8">
@@ -16,6 +20,13 @@
 	src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.12/summernote-lite.js"></script>
 <!-- 서머노트 -->
 </head>
+<script type="text/javascript">
+	function goModify(post_id){
+		$("#post_id").val(post_id);
+		document.getElementById("modify").action = "/plzdaengs/plzBoard";
+		document.getElementById("modify").submit();
+	}
+</script>
 <body>
 
 	<!-- navbar-->
@@ -169,25 +180,14 @@
 								<!-- 여기 끝에 글쓰기버튼 -->
 								<div class="card-header">
 									<div class="form-group row">
-										<label class="col-md-1 form-control-label">카테고리값</label> <label
-											class="col-md-1 form-control-label">제목</label> <label
-											class="col-md-10 form-control-label">대충 제목 들어갈곳</label>
+										<label class="col-md-1 form-control-label">카테고리 : <%=board.getBoard_category_descripton() %></label> 
+										<label class="col-md-1 form-control-label">제 목 : <%=board.getPost_subject() %></label> 
+										<label class="col-md-10 form-control-label">조회수 : <%=board.getViews() %></label>
+										<label class="col-md-10 form-control-label">등록일 : <%=board.getCreat_date() %></label>
 									</div>
 								</div>
 								<div class="card-body">
-									<!-- 글 내용 들어갈 곳 -->
-									안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요<br>
-									안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요<br>
-									안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요<br>
-									안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요<br>
-									안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요<br>
-									안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요<br>
-									안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요<br>
-									안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요<br>
-									안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요<br>
-									안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요<br>
-									안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요<br>
-									안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요<br>
+									<%=board.getPost_contents() %>
 								</div>
 								<div class="card-footer">
 									<!-- 댓글 내용 들어갈 곳 -->
@@ -210,11 +210,16 @@
 							<button class="btn btn-primary " type="button"
 								style="background-color: #dc3545; float: left; padding: 0.2rem 0.8rem;">목록가기</button>
 							<button class="btn btn-primary " type="button"
-								style="background-color: #dc3545; float: right; padding: 0.2rem 0.8rem;">수정하기</button>
+								style="background-color: #dc3545; float: right; padding: 0.2rem 0.8rem;" onclick="goModify(<%=board.getPost_id()%>)">수정하기</button>
 							<button class="btn btn-primary " type="button"
 								style="background-color: #dc3545; float: right; padding: 0.2rem 0.8rem;">등록하기</button>
 						</div>
 					</div>
+					
+					<form id="modify" method="post" action="">
+						<input type="hidden" name="post_id" id="post_id" value="">
+						<input type="hidden" name="cmd" id="cmd" value="modify">
+					</form>
 				</section>
 			</div>
 			<%@ include file="/template/footer.jsp"%>
