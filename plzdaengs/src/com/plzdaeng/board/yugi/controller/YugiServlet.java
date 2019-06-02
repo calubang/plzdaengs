@@ -32,7 +32,6 @@ public class YugiServlet extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		System.out.println("서블릿들어와짐");
 		String cmd = request.getParameter("cmd");
 
 		if ("sido".equals(cmd)) {
@@ -84,7 +83,6 @@ public class YugiServlet extends HttpServlet {
 			}
 
 		} else if ("abandonmentPublic".equals(cmd)) {
-			System.out.println("abandonmentPublic in ");
 			try {
 				String resultXML = new YugiService().getSearch(cmd, request);
 				response.setContentType("text/xml;charset=utf-8");
@@ -98,9 +96,6 @@ public class YugiServlet extends HttpServlet {
 
 	}
 
-	protected void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		// TODO Auto-generated method stub
-	}
+	
 
 }

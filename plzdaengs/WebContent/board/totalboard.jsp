@@ -8,6 +8,8 @@
     <title>Bubbly - Boootstrap 4 Admin template by Bootstrapious.com</title>
     <%@ include file="/template/default_link.jsp" %>
   </head>
+  <script type="text/javascript">
+  </script>
   <body>
     <!-- navbar-->
     <header class="header">
@@ -142,7 +144,7 @@
                     </table>
                   </div>
                 </div><!-- 여기 끝에 글쓰기버튼 -->
-                <button class="btn btn-primary " type="button" style="background-color: #dc3545; float: right; padding: 0.2rem 0.8rem;">글쓰기</button>
+                <button class="btn btn-primary" type="button" style="background-color: #dc3545; float: right; padding: 0.2rem 0.8rem;"><a href="/plzdaengs/plzBoard?cmd=boardWrite">글쓰기</a></button>
               </div>
               <!-- 사용할 게시판 끝과 사용안할것  -->
             </div><!-- 여기 끝에 페이징처리 -->

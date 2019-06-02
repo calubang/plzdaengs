@@ -8,6 +8,7 @@
 <title>Bubbly - Boootstrap 4 Admin template by Bootstrapious.com</title>
 <meta name="description" content="">
 <%@ include file="/template/default_link.jsp" %>
+<%request.setCharacterEncoding("UTF-8");%>
 </head>
   <body>
     <!-- navbar-->
@@ -98,37 +99,37 @@
 									<h6 class="text-uppercase mb-0">유기견 정보 게시판</h6>
 								</div> -->
 								<div class="card-body" align="center">
-									<img src="../template/img/profile.jpg" style="width: 28rem; height: 26rem; max-height: 80%; max-width: 80%; border: solid; border-width: thin thin thin thin;" />
+									<img src="<%=request.getParameter("popfile")%>" style="width: 28rem; height: 26rem; max-height: 80%; max-width: 80%; border: solid; border-width: thin thin thin thin;" />
 								</div>
 								<div class="card-body">
 									<table class="table card-text col-xl-auto">
 									<tbody>
 											<tr>
 												<th scope="row">
-													<li>공고번호:</li>
-													<li>색상:</li>
-													<li>나이/체중:</li>
-													<li>접수일:</li>
-													<li>보호상태:</li>
-													<li>보호센터:</li>
-													<li>보호센터연락처:</li>
-													<li>특징:</li>
+													<li>공고번호:<%=request.getParameter("desertionNo")%></li>
+													<li>색상:<%=request.getParameter("colorCd")%></li>
+													<li>나이/체중:<%=request.getParameter("age")%>/<%=request.getParameter("weight")%></li>
+													<li>접수일:<%=request.getParameter("happenDt")%></li>
+													<li>보호상태:<%=request.getParameter("processState")%></li>
+													<li>보호센터:<%=request.getParameter("careNm")%></li>
+													<li>보호센터연락처:<%=request.getParameter("careTel")%></li>
+													<li>특징:<%=request.getParameter("specialMark")%></li>
 												</th>
 												<th scope="row">
-													<li>품종:</li>
-													<li>성별:</li>
-													<li>발견장소:</li>
-													<li>관할기관:</li>
-													<li>RFID_CD:</li>
-													<li>보호장소:</li>
-													<li>중성화:</li>
+													<li>품종:<%=request.getParameter("kindCd")%></li>
+													<li>성별:<%=request.getParameter("sexCd")%></li>
+													<li>발견장소:<%=request.getParameter("happenPlace")%></li>
+													<li>관할기관:<%=request.getParameter("orgNm")%></li>
+													<li>RFID_CD:<%=request.getParameter("desertionNo")%></li>
+													<li>보호장소:<%=request.getParameter("careAddr")%></li>
+													<li>중성화:<%=request.getParameter("neuterYn")%></li>
 												</th>
 											</tr>
 									</tbody>
 									</table>
 								</div>
 							</div>
-							<button class="btn btn-primary " type="button" style="background-color: #dc3545; float: right; padding: 0.2rem 0.8rem;">목록</button>
+							<button class="btn btn-primary " type="button" style="background-color: #dc3545; float: right; padding: 0.2rem 0.8rem;" onclick="javascript:history.go(-1)">목록</button>
 						</div>
 					</div>
 				</section>

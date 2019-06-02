@@ -1,6 +1,11 @@
+<%@page import="java.util.List"%>
+<%@page import="com.plzdaeng.board.model.PlzBoardCategory"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <!DOCTYPE html>
+<%
+	List<PlzBoardCategory> category = (List) request.getAttribute("category");
+%>
 <html>
   <head>
     <meta charset="utf-8">
@@ -13,6 +18,30 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.12/summernote-lite.js"></script>
 <!-- 서머노트 -->
   </head>
+  <script type="text/javascript">
+  	function regist(){
+  		var categoryId = $("#board_category option:selected").val();
+  		if(categoryId == ""){
+  			alert('카테고리를 선택해주세요');
+  			return;
+  		}
+  		
+  		if($("#post_subject").val() == ""){
+  			alert('제목을 입력해주세요');
+  			return;
+  		}
+  	  var markupStr = $('#summernote').summernote('code');
+  	  
+  	  if(markupStr == ""){
+  		  alert('내용을 입력해주세요');
+  		  return;
+  	  }
+  		$('#board_category_id').val(categoryId);
+
+  		document.getElementById("boardRegist").action = "/plzdaengs/plzBoard";
+  		document.getElementById("boardRegist").submit();
+  	}
+  </script>
   <body>
   
     <!-- navbar-->
@@ -99,24 +128,31 @@
             <div class="row">
               <div class=" col-lg-12 mb-4">
                 <div class="card" style="min-width:40rem"><!-- 여기 끝에 글쓰기버튼 -->
+                <form id="boardRegist" method="post" action="">
+                <input type="hidden" name="cmd" value="regist">
+                <input type="hidden" name="board_category_id" id="board_category_id" value="">
                   <div class="card-header">
                   <div class="form-group row" >
                   <div class="col-md-2">
-												<select id="kindDetail" class="form-control">
+												<select id="board_category" class="form-control">
 													<option value="">카테고리</option>
-													<option value="">일반</option>
-													<option value="">나눔</option>
+													<%
+														for(int i=0; i<category.size();i++){
+															PlzBoardCategory plz = category.get(i);
+													%>
+														<option value="<%=plz.getBoard_category_id()%>"><%=plz.getBoard_category_descripton()%></option>
+													<%} %>
 												</select>
 											</div>
                         <label class="col-md-1 form-control-label">제목</label>
                         <div class="col-md-9">
-                          <input type="text" class="form-control">
+                          <input type="text" id="post_subject" name="post_subject" class="form-control">
                         </div>
                       </div>
                   </div>
                   <div class="card-body"><!-- 서머노트 들어갈 곳 -->
 									<!-- 서머노트 예제 -->
-									<div id="summernote"></div>
+									<textarea id="summernote" name="post_contents"></textarea>
 									<script>
 										$('#summernote').summernote({
 											placeholder : '내용을 입력하세요',
@@ -139,8 +175,9 @@
 									<!-- 여기까지 -->
 								</div>
                 </div><!-- 여기 끝에 글쓰기버튼 -->
+                </form>
                 <button class="btn btn-primary " type="button" style="background-color: #dc3545; float: left; padding: 0.2rem 0.8rem;">목록가기</button>
-                <button class="btn btn-primary " type="button" style="background-color: #dc3545; float: right; padding: 0.2rem 0.8rem;">등록하기</button>
+                <button class="btn btn-primary " onclick="regist()" type="button" style="background-color: #dc3545; float: right; padding: 0.2rem 0.8rem;">등록하기</button>
               </div>
             </div>
           </section>

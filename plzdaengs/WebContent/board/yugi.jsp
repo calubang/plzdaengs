@@ -6,48 +6,15 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <title>Bubbly - Boootstrap 4 Admin template by Bootstrapious.com</title>
-<meta name="description" content="">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="robots" content="all,follow">
-<!-- JavaScript files-->
-<script src="/plzdaengs/template/vendor/jquery/jquery.min.js"></script>
-<script src="/plzdaengs/template/vendor/popper.js/umd/popper.min.js">
-		
-	</script>
+<%@ include file="/template/default_link.jsp" %>
+<%request.setCharacterEncoding("UTF-8");%>
 <script src="/plzdaengs/board/js/httpRequest.js"></script>
-<script src="/plzdaengs/template/vendor/bootstrap/js/bootstrap.min.js"></script>
-<script src="/plzdaengs/template/vendor/jquery.cookie/jquery.cookie.js">
-		
-	</script>
-<script
-	src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script>
-<script src="/plzdaengs/template/js/front.js"></script>
-<!-- Bootstrap CSS-->
-<link rel="stylesheet"
-	href="/plzdaengs/template/vendor/bootstrap/css/bootstrap.min.css">
-<!-- Font Awesome CSS-->
-<link rel="stylesheet"
-	href="https://use.fontawesome.com/releases/v5.3.1/css/all.css"
-	integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU"
-	crossorigin="anonymous">
-<!-- Google fonts - Popppins for copy-->
-<link rel="stylesheet"
-	href="https://fonts.googleapis.com/css?family=Poppins:300,400,800">
-<!-- orion icons-->
-<link rel="stylesheet" href="/plzdaengs/template/css/orionicons.css">
-<!-- theme stylesheet-->
-<link rel="stylesheet" href="/plzdaengs/template/css/style.default.css"
-	id="theme-stylesheet">
-<!-- Custom stylesheet - for your changes-->
-<link rel="stylesheet" href="/plzdaengs/template/css/custom.css">
-<!-- Favicon-->
-<link rel="shortcut icon" href="/plzdaengs/template/img/favicon.png?3">
-
 <script src="/plzdaengs/board/js/bootstrap-datepicker.js"></script>
 <script src="/plzdaengs/board/js/bootstrap-datepicker.kr.js"></script>
 <link rel="stylesheet" href="/plzdaengs/board/css/datepicker3.css">
 </head>
 <script type="text/javascript">
+var eleTmep;
 $(document).ready(function() {//
 	
 	var params = "cmd=sido";
@@ -179,7 +146,7 @@ function serchResult(){
 			
 			var pageNo = result.getElementsByTagName("pageNo");
 			var totalCount = result.getElementsByTagName("totalCount");
-			
+			eleTmep = item;
 			
 			//yugiList
 			$("#yugiList").html('');
@@ -187,23 +154,26 @@ function serchResult(){
 			for(var i = 0; i < item.length; i++) {
 			
 				var option = "<tr>";
-					option += "		<th>";
+					option += "		<th style='width:50%;'>";
 					option += "			<img src='"+item[i].getElementsByTagName("filename")[0].firstChild.data+"' style='widows: 100%; max-height:10rem; max-width:7rem; height: 10rem; width:7rem; float: left; padding: 10px;'>";
-					option += "			<li>공고번호 : "+item[i].getElementsByTagName("noticeNo")[0].firstChild.data+"</li>";
+					option += "			<li><a  href='#' onClick='goDetail("+i+")'>공고번호 : "+item[i].getElementsByTagName("noticeNo")[0].firstChild.data+"</a></li>";
 					option += "			<li>접 수 일  : "+item[i].getElementsByTagName("happenDt")[0].firstChild.data+"</li>";
 					option += "			<li>품     종  : "+item[i].getElementsByTagName("kindCd")[0].firstChild.data+"</li>";
 					option += "			<li>상     태  : "+item[i].getElementsByTagName("processState")[0].firstChild.data+"</li>";
 					option += "		</th>";
-					option += "		<th>";
-					option += "			<img src='"+item[i+1].getElementsByTagName("filename")[0].firstChild.data+"' style='widows: 100%; max-height:10rem; max-width:7rem; height: 10rem; width:7rem; float: left; padding: 10px;'>";
-					option += "			<li>공고번호 : "+item[i+1].getElementsByTagName("noticeNo")[0].firstChild.data+"</li>";
-					option += "			<li>접 수 일  : "+item[i+1].getElementsByTagName("happenDt")[0].firstChild.data+"</li>";
-					option += "			<li>품     종  : "+item[i+1].getElementsByTagName("kindCd")[0].firstChild.data+"</li>";
-					option += "			<li>상     태  : "+item[i+1].getElementsByTagName("processState")[0].firstChild.data+"</li>";
+					
+					i = i + 1;
+					
+					option += "		<th style='width:50%;'>";
+					option += "			<img src='"+item[i].getElementsByTagName("filename")[0].firstChild.data+"' style='widows: 100%; max-height:10rem; max-width:7rem; height: 10rem; width:7rem; float: left; padding: 10px;'>";
+					option += "			<li><a  href='#' onClick='goDetail("+i+")'>공고번호 "+item[i].getElementsByTagName("noticeNo")[0].firstChild.data+"</a></li>";
+					option += "			<li>접 수 일  : "+item[i].getElementsByTagName("happenDt")[0].firstChild.data+"</li>";
+					option += "			<li>품     종  : "+item[i].getElementsByTagName("kindCd")[0].firstChild.data+"</li>";
+					option += "			<li>상     태  : "+item[i].getElementsByTagName("processState")[0].firstChild.data+"</li>";
 					option += "		</th>";
 					option += "</tr>"
 					
-					i = i + 1;
+					
 				
 				$("#yugiList").append(option);
 				
@@ -215,6 +185,32 @@ function serchResult(){
 	}
 }
 
+
+function goDetail(idx){
+	$('#desertionNo').val(eleTmep[idx].getElementsByTagName("desertionNo")[0].firstChild.data);
+	$('#popfile').val(eleTmep[idx].getElementsByTagName("popfile")[0].firstChild.data);
+	$('#happenDt').val(eleTmep[idx].getElementsByTagName("happenDt")[0].firstChild.data);
+	$('#happenPlace').val(eleTmep[idx].getElementsByTagName("happenPlace")[0].firstChild.data);
+	$('#kindCd').val(eleTmep[idx].getElementsByTagName("kindCd")[0].firstChild.data);
+	$('#colorCd').val(eleTmep[idx].getElementsByTagName("colorCd")[0].firstChild.data);
+	$('#age').val(eleTmep[idx].getElementsByTagName("age")[0].firstChild.data);
+	$('#weight').val(eleTmep[idx].getElementsByTagName("weight")[0].firstChild.data);
+	$('#noticeNo').val(eleTmep[idx].getElementsByTagName("noticeNo")[0].firstChild.data);
+	$('#processState').val(eleTmep[idx].getElementsByTagName("processState")[0].firstChild.data);
+	$('#sexCd').val(eleTmep[idx].getElementsByTagName("sexCd")[0].firstChild.data);
+	$('#neuterYn').val(eleTmep[idx].getElementsByTagName("neuterYn")[0].firstChild.data);
+	$('#specialMark').val(eleTmep[idx].getElementsByTagName("specialMark")[0].firstChild.data);
+	$('#careNm').val(eleTmep[idx].getElementsByTagName("careNm")[0].firstChild.data);
+	$('#careTel').val(eleTmep[idx].getElementsByTagName("careTel")[0].firstChild.data);
+	$('#careAddr').val(eleTmep[idx].getElementsByTagName("careAddr")[0].firstChild.data);
+	$('#orgNm').val(eleTmep[idx].getElementsByTagName("orgNm")[0].firstChild.data);
+	//$('#chargeNm').val(eleTmep[idx].getElementsByTagName("chargeNm")[0].firstChild.data);
+	$('#officetel').val(eleTmep[idx].getElementsByTagName("officetel")[0].firstChild.data);
+	
+	
+	document.getElementById("tmp").action = "/plzdaengs/yugidetail";
+	document.getElementById("tmp").submit();
+}
 
 function searchPage(pageNo, totalCount){
 	var page_scale = 10;
@@ -546,31 +542,41 @@ $(function(){
 						<!-- 페이징 -->
 						<nav>
 							<ul class="pagination" style="margin-left: 30%;" id="pageArea">
-								
 							</ul>
 						</nav>
 					</div>
+					<form id="tmp" method="post" action="">
+						<input type="hidden" id="cmd" name="cmd" value="yugiDetail">
+						<input type="hidden" id="desertionNo" name="desertionNo">
+						<input type="hidden" id="popfile" name="popfile">
+						<input type="hidden" id="happenDt" name="happenDt">
+						<input type="hidden" id="happenPlace" name="happenPlace">
+						<input type="hidden" id="kindCd" name="kindCd">
+						<input type="hidden" id="colorCd" name="colorCd">
+						<input type="hidden" id="age" name="age">
+						<input type="hidden" id="weight" name="weight">
+						<input type="hidden" id="noticeNo" name="noticeNo">
+						<input type="hidden" id="noticeSdt" name="noticeSdt">
+						<input type="hidden" id="noticeEdt" name="noticeEdt">
+						<input type="hidden" id="popfile" name="popfile">
+						<input type="hidden" id="sexCd" name="sexCd">
+						<input type="hidden" id="neuterYn" name="neuterYn">
+						<input type="hidden" id="specialMark" name="specialMark">
+						<input type="hidden" id="careNm" name="careNm">
+						<input type="hidden" id="careTel" name="careTel">
+						<input type="hidden" id="careAddr" name="careAddr">
+						<input type="hidden" id="orgNm" name="orgNm">
+						<input type="hidden" id="chargeNm" name="chargeNm">
+						<input type="hidden" id="officetel" name="officetel">
+						<input type="hidden" id="noticeComment" name="noticeComment">
+						
+					</form>
 				</section>
 				<!-- 게시판 뷰 끝 -->
 			</div>
-			<footer
-				class="footer bg-white shadow align-self-end py-3 px-xl-5 w-100">
-				<div class="container-fluid">
-					<div class="row">
-						<div class="col-md-6 text-center text-md-left text-primary">
-							<p class="mb-2 mb-md-0">Your company &copy; 2018-2020</p>
-						</div>
-						<div class="col-md-6 text-center text-md-right text-gray-400">
-							<p class="mb-0">
-								Design by <a href="https://bootstrapious.com/admin-templates"
-									class="external text-gray-400">Bootstrapious</a>
-							</p>
-							<!-- Please do not remove the backlink to us unless you support further theme's development at https://bootstrapious.com/donate. It is part of the license conditions. Thank you for understanding :)-->
-						</div>
-					</div>
-				</div>
-			</footer>
+			<%@ include file="/template/footer.jsp" %>
 		</div>
 	</div>
+	<%@ include file="/template/default_js_link.jsp" %>
 </body>
 </html>
