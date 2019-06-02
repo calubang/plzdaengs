@@ -9,25 +9,25 @@
 <title>Insert title here</title>
 <%@ include file="/template/default_link.jsp"%>
 <style>
-.register .input-group-prepend>button {
+.usermodify .input-group-prepend>button {
 	width: inherit;
 }
 
-.register .form-control-label {
+.usermodify .form-control-label {
 	font-size: 1.0rem;
 	margin-top: auto;
 	margin-bottom: auto;
 }
 
-.register .form-group input {
+.usermodify .form-group input {
 	font-size: 1.0rem;
 }
 
-.register .file-hidden {
+.usermodify .file-hidden {
 	display: none;
 }
 
-.register label[for=ex_file] {
+.usermodify label[for=ex_file] {
 	border: 1px solid #4680ff;
 	border-radius: 2rem;
 	height: calc(2.25rem + 2px);
@@ -36,25 +36,25 @@
 	color: #4680ff;
 }
 
-.register label[for=ex_file]:hover {
+.usermodify label[for=ex_file]:hover {
 	background-color: #4680ff;
 	color: white;
 }
 
-.register .fileuploadimg {
+.usermodify .fileuploadimg {
 	margin-left: 20px;
 	max-width: 100px;
 	max-height: 100px;
 	padding: 0px;
 }
 
-.register .registerfileupload label, .register .registerfileupload input
+.usermodify .usermodifyfileupload label, .usermodify .usermodifyfileupload input
 	{
 	margin-top: auto;
 	margin-bottom: auto;
 }
 
-.register h3 {
+.usermodify h3 {
 	font-size: 1.5rem;
 }
 </style>
@@ -67,9 +67,9 @@ $(function() {
 	$(".dropdown-item").click(dropdownItemClick);
 
 	//주소검색 세팅
-	zipsearchWebSetting($(".registeraddress button"), $(".registeraddress input[name=address]"));
+	zipsearchWebSetting($(".usermodifyaddress button"), $(".usermodifyaddress input[name=address]"));
 	//주소검색
-	$(".registeraddress button").click(zipModalPopUp);
+	$(".usermodifyaddress button").click(zipModalPopUp);
 	
 	//프로필 파일 업로드
 	$("input[type=file].file-hidden").change(fileUploadChange);
@@ -201,7 +201,7 @@ function userModifyClick() {
 }
 
 function userModify() {
-	var form = $("#registerForm")[0];
+	var form = $("#usermodifyForm")[0];
 	var formData = new FormData(form);
 	$.ajax({
 		url : "userjoin"
@@ -226,8 +226,8 @@ function userModify() {
 }
 
 function fileDropDown() {
-	var fileInputText = $(".registerfileupload input[type=text]");
-	var fileInput = $(".registerfileupload input[type=file]");
+	var fileInputText = $(".usermodifyfileupload input[type=text]");
+	var fileInput = $(".usermodifyfileupload input[type=file]");
 
 	//드래그 한채로 들어오기
 	fileInputText.on("dragenter", function(e) {
@@ -267,17 +267,17 @@ function fileDropDown() {
 				showAlertModal("이미지 업로드 경고", "잘못된 파일입니다.");
 				return;
 			}
-			fileRegisterProcess(files);
+			fileusermodifyProcess(files);
 		} else {
 			showAlertModal("이미지 업로드 경고", "프로필 등록을 실패하였습니다.");
 		}
 	});
 }
 
-function fileRegisterProcess(files) {
-	var fileInputText = $(".registerfileupload input[type=text]");
-	var fileInput = $(".registerfileupload input[type=file]");
-	var imgtag = $(".registerfileupload img");
+function fileusermodifyProcess(files) {
+	var fileInputText = $(".usermodifyfileupload input[type=text]");
+	var fileInput = $(".usermodifyfileupload input[type=file]");
+	var imgtag = $(".usermodifyfileupload img");
 
 	var fileName = files[0].name;
 	imgtag.prop("src", "/plzdaengs/template/img/basic_user_profile.png");
@@ -428,7 +428,7 @@ function fileUploadChange() {
 		<div class="page-holder w-100 d-flex flex-wrap">
 			<div class="container-fluid" id="contents">
 				<!-- section -->
-				<section class="register">
+				<section class="usermodify">
 					<!-- 경고창 모달 -->
 					<%@ include file="/template/alert_danger.jsp"%>
 					<%@ include file="/template/alert_success.jsp"%>
@@ -441,8 +441,8 @@ function fileUploadChange() {
 							</div>
 							<div class="card-body">
 								<form class="form-horizontal" enctype="multipart/form-data"
-									method="post" id="registerForm">
-									<div class="form-group row registerid">
+									method="post" id="usermodifyForm">
+									<div class="form-group row usermodifyid">
 										<label class="col-md-3 form-control-label">아이디(*)</label>
 										<div class="col-md-5">
 											<input type="text" placeholder="아이디를 입력하세요"
@@ -450,7 +450,7 @@ function fileUploadChange() {
 										</div>
 									</div>
 									<div class="line"></div>
-									<div class="form-group row registerpassword">
+									<div class="form-group row usermodifypassword">
 										<label class="col-md-3 form-control-label">비밀번호(*)</label>
 										<div class="col-md-5">
 											<input type="password" placeholder="비밀번호를 입력하세요"
@@ -458,7 +458,7 @@ function fileUploadChange() {
 										</div>
 									</div>
 									<div class="line"></div>
-									<div class="form-group row registerpassword">
+									<div class="form-group row usermodifypassword">
 										<label class="col-md-3 form-control-label">비밀번호
 											다시입력(*)</label>
 										<div class="col-md-5">
@@ -468,7 +468,7 @@ function fileUploadChange() {
 										<label class="col-md-4 form-control-label">비밀번호 확인</label>
 									</div>
 									<div class="line"></div>
-									<div class="form-group row registeremail">
+									<div class="form-group row usermodifyemail">
 										<label class="col-md-3 form-control-label">이메일(*)</label>
 										<div class="col-md-3">
 											<input type="text" placeholder="이메일을 입력하세요"
@@ -488,7 +488,7 @@ function fileUploadChange() {
 										</div>
 									</div>
 									<div class="line"></div>
-									<div class="form-group row registernickname">
+									<div class="form-group row usermodifynickname">
 										<label class="col-md-3 form-control-label">닉네임(*)</label>
 										<div class="col-md-5">
 											<input type="text" placeholder="닉네임을 입력해주세요"
@@ -496,7 +496,7 @@ function fileUploadChange() {
 										</div>
 									</div>
 									<div class="line"></div>
-									<div class="form-group row registerfileupload">
+									<div class="form-group row usermodifyfileupload">
 										<label class="col-md-3 form-control-label">프로필등록</label>
 										<div class="col-md-9 input-group-prepend">
 											<label for="ex_file" class="col-md-3">프로필선택</label> <input
@@ -509,7 +509,7 @@ function fileUploadChange() {
 										</div>
 									</div>
 									<div class="line"></div>
-									<div class="form-group row registertel">
+									<div class="form-group row usermodifytel">
 										<label class="col-md-3 form-control-label">전화번호</label>
 										<div class="col-md-5">
 											<input type="tel" placeholder="전화번호를 입력해주세요"
@@ -518,7 +518,7 @@ function fileUploadChange() {
 										<label class="col-md-2 form-control-label">(-)은 생략</label>
 									</div>
 									<div class="line"></div>
-									<div class="form-group row registergender">
+									<div class="form-group row usermodifygender">
 										<label class="col-md-3 form-control-label">성별</label>
 										<div class="col-md-5">
 											<div
@@ -536,7 +536,7 @@ function fileUploadChange() {
 										</div>
 									</div>
 									<div class="line"></div>
-									<div class="form-group row registeraddress">
+									<div class="form-group row usermodifyaddress">
 										<label class="col-md-3 form-control-label">주소</label>
 										<div class="col-md-9">
 											<input type="hidden" name="zipcode" value="">
@@ -553,7 +553,7 @@ function fileUploadChange() {
 										<div class="col-md-9 ml-auto">
 											<button type="reset" class="btn btn-primary">취소</button>
 											<button type="submit" class="btn btn-primary"
-												id="registerBtn">회원수정</button>
+												id="usermodifyBtn">회원수정</button>
 										</div>
 									</div>
 								</form>

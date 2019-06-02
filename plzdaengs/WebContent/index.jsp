@@ -16,7 +16,8 @@ $(function(){
 });
 
 function loginSuccessProcess(){
-	$("#profile").css("background-image", "url('${userInfo.user_img}')");
+	var profilePath = "${userInfo.user_img}";
+	$("#profile").css("background-image", "url('"+profilePath + "')");
 	mainSectionChange();
 }
 function mainSectionChange() {

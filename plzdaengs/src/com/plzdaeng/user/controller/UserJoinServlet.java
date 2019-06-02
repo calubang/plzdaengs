@@ -64,10 +64,10 @@ public class UserJoinServlet extends HttpServlet {
 		//등록한 파일이 없으면 기본 이미지 사용
 		File profileFile = mr.getFile("imgdata");
 		if(profileFile  == null) {
-			userDto.setUser_img("/template/img/basic_user_profile.png");
+			userDto.setUser_img("//template//img\basic_user_profile.png");
 		}else {
-			userDto.setUser_img("/plzdaengs/img/user/"+userDto.getUser_id()+"/user_profile.jpg");
-			String path = request.getServletContext().getRealPath("/img");
+			userDto.setUser_img("//plzdaengs//img//user//"+userDto.getUser_id()+"//user_profile.jpg");
+			String path = request.getServletContext().getRealPath("//img");
 			//System.out.println(path);
 			ProfileCreate.profileRegister(profileFile, path , userDto.getUser_id() , "user");
 		}
