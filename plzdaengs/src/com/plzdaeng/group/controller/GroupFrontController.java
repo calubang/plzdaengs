@@ -47,6 +47,9 @@ public class GroupFrontController extends HttpServlet {
 		}else if("enter".equals(act)) {
 			System.out.println("front enter");
 			String path = GroupController.getCreateGroup().enterorsingup(request, response, user);
+		}else if("".equals(act)) {
+			
+			
 		}
 	}
 

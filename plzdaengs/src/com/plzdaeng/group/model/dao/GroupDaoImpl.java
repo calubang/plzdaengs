@@ -333,8 +333,8 @@ public class GroupDaoImpl implements GroupDao {
 	}
 
 	@Override
-	public int inquiry(int group_id, String user_id) {
-		int result = -1;
+	public String inquiry(int group_id, String user_id) {
+		String result = "X";
 
 		Connection conn = null;
 		PreparedStatement pstmt = null;
@@ -352,9 +352,11 @@ public class GroupDaoImpl implements GroupDao {
 			rs = pstmt.executeQuery();
 			
 			if (rs.next()) {
-				result = 1;
+				
+				result = rs.getString("member_status");
 			}else {
-				result = -1;
+				
+				
 			}
 
 		} catch (SQLException e) {
@@ -367,9 +369,37 @@ public class GroupDaoImpl implements GroupDao {
 		return result;
 	}
 
+	// 그룹 첫페이지 게시판 로딩 ( 게시판 or 사진 게시판 )
 	@Override
-	public List<GroupBoard> firstpage(int group_id) {
-		// TODO Auto-generated method stub
+	public List<GroupBoard> boardLoading(int group_id) {
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+
+		try {
+			conn = DBConnection.makeConnectplzdb();
+
+			String boradLoadingSQL = "SELECT post_id, user_id, post_subject, post_contents, creat_date, img_id, views, group_id\r\n" + 
+					"FROM plz_board b\r\n" + 
+					"WHERE group_id = 20;";
+
+			pstmt = conn.prepareStatement(boradLoadingSQL);
+			pstmt.setInt(1, group_id);
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				
+				
+		
+				
+			}
+
+		} catch (SQLException e) {
+			System.out.println("boardLoading() error");
+			e.printStackTrace();
+		} finally {
+			DBClose.close(conn, pstmt, rs);
+		}
 		return null;
 	}
 

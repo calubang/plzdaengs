@@ -1,7 +1,8 @@
-<%@page import="com.plzdaeng.dto.UserDto"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%-- <%@page import="com.plzdaeng.dto.UserDto"%> --%>
+<%-- 
 <c:set var="userInfo" value="${sessionScope.userInfo}"></c:set>
 <c:if test="${empty userInfo}">
 <script>
@@ -19,7 +20,8 @@ if(user == null){
 }else{
 	String id = user.getUser_id();
 }
-%>
+%> 
+--%>
 
 <!DOCTYPE html>
 <html>

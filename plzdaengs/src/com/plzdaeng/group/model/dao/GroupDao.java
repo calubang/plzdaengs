@@ -23,9 +23,9 @@ public interface GroupDao {
 	
 	List<GroupDto> searchGroup(String key, String word);
 	
-	int inquiry(int group_id, String user_id);
+	String inquiry(int group_id, String user_id);
 	
-	List<GroupBoard> firstpage(int group_id);
+	List<GroupBoard> boardLoading(int group_id);
 	
 	
 }

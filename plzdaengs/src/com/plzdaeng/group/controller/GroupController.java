@@ -26,6 +26,8 @@ public class GroupController {
 	
 	public String pageLoaing(HttpServletRequest request, HttpServletResponse response, UserDto user) {
 		// path = "/plzdaengs/template/alert_danger.jsp";
+		//String id = user.getUser_id();
+		user.setUser_id("qwer");
 		String id = user.getUser_id();
 		String type = request.getParameter("type");
 		System.out.println(type);
@@ -49,6 +51,8 @@ public class GroupController {
 
 	public String create(HttpServletRequest request, HttpServletResponse response, UserDto user) {
 		String path = "/group/groupmain.jsp";
+		//String id = user.getUser_id();
+		user.setUser_id("qwer");
 		String id = user.getUser_id();
 		String name = request.getParameter("groupname");
 		String desc = request.getParameter("groupdescription");
@@ -82,19 +86,31 @@ public class GroupController {
 
 	public String enterorsingup(HttpServletRequest request, HttpServletResponse response, UserDto user) {
 		String path = "";
+		//String id = user.getUser_id();
+		user.setUser_id("qwer");
 		String id = user.getUser_id();
 		int group_id = Integer.parseInt(request.getParameter("group"));
 		System.out.println(group_id);
-		int result = GroupDaoImpl.getGroupDaoImpl().inquiry(group_id, id);
-		if(result == 1) {
-			//grouppage loading
-			GroupDaoImpl.getGroupDaoImpl().firstpage(group_id);
-			
-		}else if(result == -1) {
-			//소모임 그룹 가입 모달창으로
-			
-			//return;
-		}
+		//1 입장
+		//GroupDaoImpl.getGroupDaoImpl().firstpage(group_id);
+		//2 권한에 따라 버튼이 바뀜 ( 리더 : 관리, 일반 : 탈퇴, 요청중 : 대기, 비회원 : 가입 )
+		String result = GroupDaoImpl.getGroupDaoImpl().inquiry(group_id, id);
+		request.setAttribute("authority", result);
+		//3.그룹게시판 로딩
+		GroupDaoImpl.getGroupDaoImpl().boardLoading(group_id);
+		
+		
+		//		if(result != "X") {
+//			//grouppage loading n 가입요청중
+//			
+//			
+//		
+//			
+//		}else if(result == "X") {
+//			//소모임 그룹 가입 모달창으로
+//			
+//			//return;
+//		}
 		
 		
 		
@@ -102,5 +118,12 @@ public class GroupController {
 		
 		return path;
 	}
+
+
+
+
+
+	
+	
 
 }
