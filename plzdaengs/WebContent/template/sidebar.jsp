@@ -76,9 +76,13 @@
 			class="sidebar-link text-muted active"> <i
 				class="o-home-1 mr-3 text-gray"></i> <span>홈으로</span>
 		</a></li>
+		
+		<!-- 윤영 PART -->
 		<li class="sidebar-list-item"><a href="/plzdaengs/charts.html"
 			class="sidebar-link text-muted"><i
 				class="o-sales-up-1 mr-3 text-gray"></i><span>다이어리</span></a></li>
+				
+				
 		<li class="sidebar-list-item"><a href="/plzdaengs/tables.html"
 			class="sidebar-link text-muted"><i
 				class="o-table-content-1 mr-3 text-gray"></i><span>소모임</span></a></li>
