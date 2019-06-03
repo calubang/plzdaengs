@@ -355,9 +355,12 @@ function fileUploadChange() {
 						<label class="col-md-3 form-control-label">아이디(*)</label>
 						<div class="col-md-5">
 							<input type="text" placeholder="아이디를 입력하세요"
-								class="form-control" name="id">
-						</div>
+								class="form-control" name="id">		
+						</div>					
 						<label class="col-md-3 form-control-label" role="idcheck">아이디중복체크</label>
+					</div>
+					<div class="form-group row registerid">
+						<label class="col-md-10 form-control-label" style="color:#4680ff;">** 아이디는 영문소문자, 숫자 조합으로 된 3~7글자로 만들어주세요.</label>		
 					</div>
 					<div class="line"></div>
 					<div class="form-group row registerpassword">
@@ -365,8 +368,11 @@ function fileUploadChange() {
 						<div class="col-md-5">
 							<input type="password" placeholder="비밀번호를 입력하세요"
 								class="form-control" name="password">
-						</div>
+						</div>	
 					</div>
+					<div class="form-group row registerpassword">
+							<label class="col-md-10 form-control-label" style="color:#4680ff;">** 비밀번호는 3~7글자로 만들어 주세요.</label>		
+						</div>
 					<div class="line"></div>
 					<div class="form-group row registerpassword">
 						<label class="col-md-3 form-control-label">비밀번호

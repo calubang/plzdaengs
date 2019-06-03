@@ -23,7 +23,9 @@ public class UserModifyServlet extends HttpServlet {
 		
 		HttpSession session = request.getSession();
 		UserDto userDto = (UserDto)session.getAttribute("userInfo");
-		System.out.println("usermodify : " + userDto.getUser_id());
+		String act = request.getParameter("act");
+		System.out.println("usermodify : "+ userDto.getUser_id());
+		
 		
 		UserDto userDetail = service.userModify(userDto);
 		request.setAttribute("userDetail", userDetail);

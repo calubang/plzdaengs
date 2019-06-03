@@ -7,8 +7,6 @@ import com.plzdaeng.dto.UserDto;
 import com.plzdaeng.util.DBClose;
 import com.plzdaeng.util.DBConnection;
 
-import sun.nio.ch.SelChImpl;
-
 public class UserDao {
 
 	public int insert(UserDto userDto) {
@@ -244,6 +242,83 @@ public class UserDao {
 		
 		
 		return dto;
+	}
+
+	public int update(UserDto userDto) {
+		Connection conn = null;
+		int result = -1;
+		try {
+			conn = DBConnection.makeConnection();
+			conn.setAutoCommit(false);
+			updateUser(conn, userDto);
+			updateUserDetail(conn, userDto);
+			
+			result = 1;
+			conn.commit();
+			
+		} catch (SQLException e) {
+			try {
+				conn.rollback();
+			} catch (SQLException e1) {
+				e.printStackTrace();
+			}
+			e.printStackTrace();
+		} finally {
+			DBClose.close(conn, null);
+		}
+		
+		return result;
+	}
+
+	private void updateUserDetail(Connection conn, UserDto userDto) throws SQLException {
+		PreparedStatement pstmt = null;
+		String updateUserDetailSQL = 
+				"update plz_user_detail	\r\n" + 
+				"set	\r\n" + 
+				"    tel = ?	\r\n" + 
+				"    , gender = ?	\r\n" + 
+				"    , zipcode = ?	\r\n" + 
+				"    , address = ?	\r\n" + 
+				"    , address_detail = ?	\r\n" + 
+				"where\r\n" + 
+				"    user_id = ?";
+		pstmt = conn.prepareStatement(updateUserDetailSQL);
+		int index = 0;
+		pstmt.setString(++index, userDto.getUserDetailDto().getTel());
+		pstmt.setString(++index, userDto.getUserDetailDto().getGender());
+		pstmt.setString(++index, userDto.getUserDetailDto().getZipcode());
+		pstmt.setString(++index, userDto.getUserDetailDto().getAddress());
+		pstmt.setString(++index, userDto.getUserDetailDto().getAddress_detail());
+		pstmt.setString(++index, userDto.getUser_id());
+		
+		pstmt.executeQuery();
+		
+	}
+
+	private void updateUser(Connection con, UserDto userDto) throws SQLException {
+		PreparedStatement pstmt = null;
+		String updatUserSQL = 
+				"update plz_user\r\n" + 
+				"set\r\n" + 
+				"    password = ?	\r\n" + 
+				"    , emailid = ?	\r\n" + 
+				"    , emaildomain = ?	\r\n" + 
+				"    , nickname = ?	\r\n" + 
+				"    , user_img = ? \r\n" + 
+				"where\r\n" + 
+				"    user_id = ?";
+		
+		pstmt = con.prepareStatement(updatUserSQL);
+		int index = 0;
+		pstmt.setString(++index, userDto.getPassword());
+		pstmt.setString(++index, userDto.getEmailid());
+		pstmt.setString(++index, userDto.getEmaildomain());
+		pstmt.setString(++index, userDto.getNickname());
+		pstmt.setString(++index, userDto.getUser_img());
+		pstmt.setString(++index, userDto.getUser_id());
+		
+		pstmt.executeUpdate();
+		
 	}
 
 }

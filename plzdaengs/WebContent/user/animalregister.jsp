@@ -21,7 +21,37 @@
 		
 		$(".vaccinlistitem>.dropdown-menu>.dropdown-item").click(vaccindropdownitemClick);
 		
+		//등록 버튼
+		$(".registeranimal #registerBtn").click(animalRegisterClick);
+		
+		//펫이름 중복 확인
+		$(".registeranimal input[name=petname]").keyup(petnameKeyup);
 	});
+	
+	function petnameKeyup() {
+		var input = $(this).val();
+		var label = $(this).parent().siblings("label[role=check]");
+		
+		$.ajax({
+			url : "petnamecheck"
+			, data : {
+				petname : input
+			}
+			, success: function () {
+				alert("데이터 넘어옴");
+			}
+		});
+		
+		return false;
+	}
+	
+	function animalRegisterClick() {
+		//필수값 확인
+		var petname = $(".registeranimal input[name=petname]").val();
+		var breedcode = $(".registeranimal input[name=breedcode]").val();
+		
+		return false;
+	}
 	
 	function vaccindropdownitemClick() {
 		var text = $(this).text();
@@ -329,16 +359,16 @@
 						<label class="col-md-3 form-control-label">반려동물 이름(*)</label>
 						<div class="col-md-5">
 							<input type="text" placeholder="반려동물 이름을 입력하세요"
-								class="form-control" required>
+								class="form-control" name="petname">
 						</div>
-						<label class="col-md-2 form-control-label">같은 이름으로 등록된
+						<label class="col-md-2 form-control-label" role="check">같은 이름으로 등록된
 							펫확인</label>
 					</div>
 					<div class="line"></div>
 					<div class="form-group row dogkinddiv">
-						<label class="col-md-3 form-control-label">반려동물 품종</label>
+						<label class="col-md-3 form-control-label">반려동물 품종(*)</label>
 						<div class="col-md-8">
-							<input type="hidden" value="" name="kind">
+							<input type="hidden" value="" name="breedcode">
 							<button type="button"
 								class="btn btn-outline-primary col-md-2 dogkind">말티즈</button>
 							<button type="button"
@@ -368,13 +398,13 @@
 							<div
 								class="custom-control custom-radio custom-control-inline">
 								<input id="genderfemaleradio" type="radio"
-									class="custom-control-input" name="gender" value="female">
+									class="custom-control-input" name="petgender" value="female">
 								<label for="genderfemaleradio" class="custom-control-label">여아</label>
 							</div>
 							<div
 								class="custom-control custom-radio custom-control-inline">
 								<input id="gendermaleradio" type="radio"
-									class="custom-control-input" name="gender" value="male">
+									class="custom-control-input" name="petgender" value="male">
 								<label for="gendermaleradio" class="custom-control-label">남아</label>
 							</div>
 						</div>
@@ -383,7 +413,8 @@
 					<div class="form-group row calendar">
 						<label class="col-md-3 form-control-label">반려동물 생일</label>
 						<div class="col-md-5">
-							<input type='text' placeholder="반려동물 생일을 입력해주세요" class="form-control datepicker-here" data-auto-close="true" data-position="right top" data-language='kr'/>
+							<input type='text' placeholder="반려동물 생일을 입력해주세요" name="birthdate"
+							class="form-control datepicker-here" data-auto-close="true" data-position="right top" data-language='kr'/>
 						</div>
 					</div>
 					<div class="line"></div>
@@ -391,11 +422,10 @@
 						<label class="col-md-3 form-control-label">프로필등록</label>
 						<div class="col-md-9 input-group-prepend">
 							<label for="ex_file" class="col-md-3">프로필선택</label> <input
-								type="file" class="form-control file-hidden" id="ex_file"
-								accept="image/*"> <input type="text"
-								placeholder="파일을 등록해주세요" class="form-control col-md-5 "
-								readonly> <img alt="" class="col-md-2 fileuploadimg"
-								src="/plzdaengs/template/img/basic_pet_profile.jpg">
+								type="file" class="form-control file-hidden" id="ex_file" accept="image/*" name="imgdata"> 
+								<input type="text" placeholder="파일을 등록해주세요" class="form-control col-md-5 " name="petimg" readonly > 
+								<img alt="" class="col-md-2 fileuploadimg"
+								src="/plzdaengs/template/img/basic_pet_profile.jpg" >
 						</div>
 					</div>
 					<div class="line"></div>
@@ -404,7 +434,7 @@
 						<div class="col-md-8">
 							<div class="custom-control custom-checkbox">
 								<input id="mainpetCheck" type="checkbox"
-									class="custom-control-input"> 
+									class="custom-control-input" name="pettype"> 
 									<label
 									for="mainpetCheck" class="custom-control-label">대표
 									펫으로 설정(대표 펫은 좌측의 프로필에 보여집니다.)</label>
@@ -415,10 +445,10 @@
 					<div class="form-group row vaccin">
 						<label class="col-md-3 form-control-label">반려동물 예방접종</label>
 						<div class="col-md-9">
-							<label class="form-control-label">최근 1년이내 예방접종을 입력해주세요.</label>
+							<label class="form-control-label">최근 6개월이내 예방접종을 입력해주세요.</label>
 							<div class="vaccinlist">
 								<div class="input-group-prepend vaccinlistitem ">
-									<input type="hidden" value="" name="vaccin">
+									<input type="hidden" value="" name="vaccincode">
 									<button type="button" data-toggle="dropdown"
 										aria-haspopup="true" aria-expanded="false"
 										class="btn btn-outline-primary dropdown-toggle col-md-3">예방접종 종류</button>
@@ -427,7 +457,8 @@
 										<span class="dropdown-item">코로나 장염 예방접종</span>
 										<span class="dropdown-item">켄넬코프 예방접종</span>
 									</div>
-									<input type='text' class="form-control datepicker-here col-md-5" data-position="right top" data-language='kr' readonly/>
+									<input type='text' class="form-control datepicker-here col-md-5" name="vaccindate"
+									data-position="right top" data-language='kr' readonly/>
 									<button type="button" class="btn btn-outline-primary plus">+</button>
 								</div>
 							</div>
@@ -437,7 +468,7 @@
 					<div class="form-group row">
 						<div class="col-md-9 ml-auto">
 							<button type="reset" class="btn btn-primary">취소</button>
-							<button type="submit" class="btn btn-primary">등록</button>
+							<button type="submit" class="btn btn-primary" id="registerBtn">등록</button>
 						</div>
 					</div>
 				</form>

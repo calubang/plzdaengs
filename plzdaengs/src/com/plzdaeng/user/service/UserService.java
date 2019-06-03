@@ -87,4 +87,8 @@ public class UserService {
 	public UserDto userModify(UserDto userDto) {
 		return dao.selectDetailById(userDto);
 	}
+
+	public int userUpdate(UserDto userDto) {		
+		return dao.update(userDto);
+	}
 }

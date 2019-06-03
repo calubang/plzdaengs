@@ -81,9 +81,14 @@ $(function() {
 	//회원가입 성공시 뜨는 모달
 	$("#alertSuccess button").click(successAlertOkClick);
 	
+	//수정버튼 이벤트
+	$(".usermodify #usermodifyBtn").click(userModifyClick);
+	
 	initData();
 	
+	
 });
+
 function passwordCheck(){
 	var password = $("input[name=password]").val();
 	var passwordcheck = $("input[name=passwordcheck]").val();
@@ -159,16 +164,6 @@ function userModifyClick() {
 	var addressdetail = $("input[name=addressdetail]").val();
 	
 	//필수 입력 확인
-	if(id == null || id.length ==0){
-		showAlertModal("필수값 입력 확인", "아이디를 입력하지 않으셨어요.");
-		$("input[name=id]").focus();
-		return false;
-	}
-	if(!idcheck){
-		showAlertModal("아이디 중복확인", "아이디가 사용중입니다.");
-		$("input[name=id]").focus();
-		return false;
-	}
 	if(password == null || password.length ==0){
 		showAlertModal("필수값 입력 확인", "비밀번호를 입력하지 않으셨어요.");
 		$("input[name=password]").focus();
@@ -204,7 +199,7 @@ function userModify() {
 	var form = $("#usermodifyForm")[0];
 	var formData = new FormData(form);
 	$.ajax({
-		url : "userjoin"
+		url : "userupdate"
 		, method : "post"
 		, processData : false
 		, contentType : false
@@ -212,9 +207,9 @@ function userModify() {
 		, success : function (result) {
 			alert(result.trim());
 			if(result.trim() == '1'){
-				showSuccessAlertModal("회원가입 성공", "회원가입이 성공하였습니다");
+				showSuccessAlertModal("회원정보 수정", "회원정보가 수정되었습니다");
 			}else{
-				showAlertModal("회원가입 실패", "회원가입이 실패하였습니다");
+				showAlertModal("회원정보 수정", "회원정보 수정 실패하였습니다.");
 			}
 		}
 		, error : function (jqXHR, result) {
@@ -442,6 +437,7 @@ function fileUploadChange() {
 							<div class="card-body">
 								<form class="form-horizontal" enctype="multipart/form-data"
 									method="post" id="usermodifyForm">
+									<input type="hidden" name="act" value="userupdate">
 									<div class="form-group row usermodifyid">
 										<label class="col-md-3 form-control-label">아이디(*)</label>
 										<div class="col-md-5">
