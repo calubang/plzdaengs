@@ -1,10 +1,8 @@
 @font-face {
 	font-family: 'calenstyle-iconfont';
-	src:url('fonts/calenstyle-iconfont.eot');
-	src:url('fonts/calenstyle-iconfont.eot?#iefix') format('embedded-opentype'),
-		url('fonts/calenstyle-iconfont.ttf') format('truetype'),
-		url('fonts/calenstyle-iconfont.woff') format('woff'),
-		url('fonts/calenstyle-iconfont.svg#calenstyle-iconfont') format('svg');
+	src:url('diary/fonts/calenstyle-iconfont.eot');
+	src:url('diary/fonts/calenstyle-iconfont.eot?#iefix') format('embedded-opentype'),
+		url('diary/fonts/calenstyle-iconfont.svg#calenstyle-iconfont') format('svg');
 	font-weight: normal;
 	font-style: normal;
 }
