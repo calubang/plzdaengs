@@ -155,6 +155,18 @@ function divClick(){
 	alert(groupid);
 	document.location.href="/plzdaengs/groupfront?act=enter&group=" + groupid;
 	
+	/* $.ajax({
+		url: '/plzdaengs/groupfront',
+		method:'GET',
+		data:{act:"enter", 
+			group:groupid},
+		success:function(result){
+			alert("enter searchresultpage");
+			$("#grouplist").html(result);
+			$(".card").click(divClick);
+		}
+	}); */
+	
 }
 
  

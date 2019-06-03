@@ -114,11 +114,11 @@
 					<li class="sidebar-list-item"><a href="/plzdaengs/group/groupmain.jsp"
 						class="sidebar-link pl-lg-5">소모임메인</a></li>
 					<li class="sidebar-list-item"><a href="#"
-						class="sidebar-link pl-lg-5">소모임1</a></li>
+						class="sidebar-link pl-lg-5">소모임일정</a></li>
 					<li class="sidebar-list-item"><a href="#"
-						class="sidebar-link pl-lg-5">소모임2</a></li>
+						class="sidebar-link pl-lg-5">공지?게시판?</a></li>
 					<li class="sidebar-list-item"><a href="#"
-						class="sidebar-link pl-lg-5">소모임3</a></li>
+						class="sidebar-link pl-lg-5">사진게시판</a></li>
 				</ul>
 			</div></li>
 		<li class="sidebar-list-item"><a href="/plzdaengs/forms.html"

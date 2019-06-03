@@ -196,7 +196,7 @@ public class GroupDaoImpl implements GroupDao {
 				+ ", g.address_sido, g.address_sigungu, m.user_id \r\n"
 				+ "FROM plz_group g inner join plz_group_type t \r\n"
 				+ "on g.group_category_id = t.group_category_id \r\n" + "inner join plz_group_member m \r\n"
-				+ "on g.group_id = m.group_id \r\n" + "WHERE m.user_id != ? and m.member_status != 'A' \r\n"
+				+ "on g.group_id = m.group_id \r\n" + "WHERE m.member_status = 'A' or m.user_id != ? \r\n"
 				+ "ORDER BY g.group_id, m.user_id DESC";
 
 		try {
@@ -335,7 +335,7 @@ public class GroupDaoImpl implements GroupDao {
 	@Override
 	public String inquiry(int group_id, String user_id) {
 		String result = "X";
-
+		
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -343,8 +343,9 @@ public class GroupDaoImpl implements GroupDao {
 		try {
 			conn = DBConnection.makeConnectplzdb();
 
-			String checkSQL = "SELECT group_id, user_id, member_status" + "FROM plz_group_member"
-					+ "WHERE group_id = ? and user_id =? and member_status = 'X'";
+			String checkSQL = "SELECT group_id, user_id, member_status \r\n" + 
+								"FROM plz_group_member \r\n" +
+								"WHERE group_id = ? and user_id = ? and member_status in('L','M','A')";
 
 			pstmt = conn.prepareStatement(checkSQL);
 			pstmt.setInt(1, group_id);
@@ -353,14 +354,14 @@ public class GroupDaoImpl implements GroupDao {
 			
 			if (rs.next()) {
 				
+				
 				result = rs.getString("member_status");
-			}else {
 				
 				
 			}
-
+			
 		} catch (SQLException e) {
-			System.out.println("searchGroup() error");
+			System.out.println("inquiry() error");
 			e.printStackTrace();
 		} finally {
 			DBClose.close(conn, pstmt, rs);
@@ -381,7 +382,7 @@ public class GroupDaoImpl implements GroupDao {
 
 			String boradLoadingSQL = "SELECT post_id, user_id, post_subject, post_contents, creat_date, img_id, views, group_id\r\n" + 
 					"FROM plz_board b\r\n" + 
-					"WHERE group_id = 20;";
+					"WHERE group_id = ?;";
 
 			pstmt = conn.prepareStatement(boradLoadingSQL);
 			pstmt.setInt(1, group_id);

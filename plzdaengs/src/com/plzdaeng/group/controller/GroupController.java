@@ -22,13 +22,12 @@ public class GroupController {
 	}
 
 	
-	
+	String path = "";
 	
 	public String pageLoaing(HttpServletRequest request, HttpServletResponse response, UserDto user) {
 		// path = "/plzdaengs/template/alert_danger.jsp";
-		//String id = user.getUser_id();
-		user.setUser_id("qwer");
 		String id = user.getUser_id();
+		//user.setUser_id("qwer");
 		String type = request.getParameter("type");
 		System.out.println(type);
 		List<GroupDto> list = null;
@@ -45,15 +44,20 @@ public class GroupController {
 			list = GroupDaoImpl.getGroupDaoImpl().searchGroup(key, word);
 		}
 		request.setAttribute("grouplist", list);
-		String path = "/group/result/grouplistresult.jsp";
+		
+		//차후 로그인에서 넣어주면 지워도 되는 부분.
+		//HttpSession session = request.getSession();
+		//session.setAttribute("mygrouplist", list); 
+		
+		
+		path = "/group/result/grouplistresult.jsp";
 		return path;
 	}
 
 	public String create(HttpServletRequest request, HttpServletResponse response, UserDto user) {
-		String path = "/group/groupmain.jsp";
-		//String id = user.getUser_id();
-		user.setUser_id("qwer");
+		path = "/group/groupmain.jsp";
 		String id = user.getUser_id();
+		//user.setUser_id("qwer");
 		String name = request.getParameter("groupname");
 		String desc = request.getParameter("groupdescription");
 		String keyword = request.getParameter("groupkeyword");
@@ -85,21 +89,38 @@ public class GroupController {
 	}
 
 	public String enterorsingup(HttpServletRequest request, HttpServletResponse response, UserDto user) {
-		String path = "";
-		//String id = user.getUser_id();
-		user.setUser_id("qwer");
+		path = "";
 		String id = user.getUser_id();
+		String result = "";
+		//user.setUser_id("qwer");
 		int group_id = Integer.parseInt(request.getParameter("group"));
 		System.out.println(group_id);
 		//1 입장
 		//GroupDaoImpl.getGroupDaoImpl().firstpage(group_id);
+		
+		
+		//HttpSession session = request.getSession();
+		//List<GroupDto> list = (List)session.getAttribute("grouplist");
+		
+//		for(GroupDto group : list) {
+//			if(group_id == group.getGroup_id()) {
+//				System.out.println("그룹입장");
+//				result = group.
+//				return
+//			}
+//		}
+		
 		//2 권한에 따라 버튼이 바뀜 ( 리더 : 관리, 일반 : 탈퇴, 요청중 : 대기, 비회원 : 가입 )
-		String result = GroupDaoImpl.getGroupDaoImpl().inquiry(group_id, id);
+		result = GroupDaoImpl.getGroupDaoImpl().inquiry(group_id, id);
 		request.setAttribute("authority", result);
-		//3.그룹게시판 로딩
-		GroupDaoImpl.getGroupDaoImpl().boardLoading(group_id);
 		
 		
+		System.out.println(result);
+		
+		//3.그룹 홈페이지 로딩
+		//GroupDaoImpl.getGroupDaoImpl().boardLoading(group_id);
+		path = "/group/groupfirstpage.jsp";
+		System.out.println("그룹페이지가자!");
 		//		if(result != "X") {
 //			//grouppage loading n 가입요청중
 //			
@@ -116,6 +137,15 @@ public class GroupController {
 		
 		
 		
+		return path;
+	}
+
+
+
+
+	public String entermanege(HttpServletRequest request, HttpServletResponse response) {
+		
+		path = "/group/managegroupinfo.jsp";
 		return path;
 	}
 

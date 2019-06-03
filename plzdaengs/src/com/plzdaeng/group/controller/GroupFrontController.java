@@ -34,22 +34,24 @@ public class GroupFrontController extends HttpServlet {
 		HttpSession session = request.getSession();
 		UserDto user = (UserDto)session.getAttribute("userInfo");
 		System.out.println(user);
-		
+		String path = "";
 		if("creategroup".equals(act)) {
 			System.out.println("front create");
-			String path = GroupController.getCreateGroup().create(request, response, user);
+			path = GroupController.getCreateGroup().create(request, response, user);
 			MoveUrl.forward(request, response, path);
 		}else if("loading".equals(act)) {
 			System.out.println("front loading");
-			String path = GroupController.getCreateGroup().pageLoaing(request, response, user);
+			path = GroupController.getCreateGroup().pageLoaing(request, response, user);
 			MoveUrl.forward(request, response, path);
 			System.out.println(path);
 		}else if("enter".equals(act)) {
 			System.out.println("front enter");
-			String path = GroupController.getCreateGroup().enterorsingup(request, response, user);
-		}else if("".equals(act)) {
-			
-			
+			path = GroupController.getCreateGroup().enterorsingup(request, response, user);
+			MoveUrl.forward(request, response, path);
+		}else if("groupmanage".equals(act)) {
+			System.out.println("front enter");
+			path = GroupController.getCreateGroup().entermanege(request, response);
+			MoveUrl.redirect(request, response, path);
 		}
 	}
 
