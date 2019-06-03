@@ -76,11 +76,10 @@
 			class="sidebar-link text-muted active"> <i
 				class="o-home-1 mr-3 text-gray"></i> <span>홈으로</span>
 		</a></li>
-<<<<<<< HEAD
-		
+
 		<!-- 윤영 PART -->
-		<li class="sidebar-list-item"><a href="/plzdaengs/charts.html"
-=======
+		<li class="sidebar-list-item"><a href="/plzdaengs/charts.html"></a>
+
 		<li class="sidebar-list-item"><a href="#" data-toggle="collapse"
 			data-target="#pages" aria-expanded="false" aria-controls="pages"
 			class="sidebar-link text-muted"><i
@@ -98,18 +97,15 @@
 			</div></li>
 			
 		<!-- 윤영 PART > 기존의 다이어리 → table 모여있는 화면으로 가려면 tables.html을 보시오 -->
-		<li class="sidebar-list-item"><a href="/plzdaengs/diary/diarymain.html"
->>>>>>> refs/remotes/origin/master
+		<li class="sidebar-list-item"><a href="/plzdaengs/diary/diarymain.jsp"
 			class="sidebar-link text-muted"><i
 				class="o-sales-up-1 mr-3 text-gray"></i><span>다이어리</span></a></li>
-<<<<<<< HEAD
 				
 				
-		<li class="sidebar-list-item"><a href="/plzdaengs/tables.html"
-=======
+		<li class="sidebar-list-item"><a href="/plzdaengs/tables.html"></a>
+
 		<li class="sidebar-list-item"><a href="#" data-toggle="collapse"
 			data-target="#pages" aria-expanded="false" aria-controls="pages"
->>>>>>> refs/remotes/origin/master
 			class="sidebar-link text-muted"><i
 				class="o-wireframe-1 mr-3 text-gray"></i><span>소모임</span></a>
 			<div id="pages" class="collapse">
