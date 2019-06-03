@@ -3,22 +3,26 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Add Event</title>
-<%@ include file="/template/default_link.jsp"%>
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+		<title>Add Event</title>
+		<%@ include file="/template/default_link.jsp"%>
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 	
-<script type="text/javascript" src="js/jquery-1.11.1.min.js"></script>
-<script type="text/javascript" src="js/jquery-ui-custom-1.11.2.min.js"></script>
-<link rel="stylesheet" type="text/css" href="css/jquery-ui-custom-1.11.2.min.css" />
-<script type="text/javascript" src="js/bootstrap.diary.min.js"></script>
-<link rel="stylesheet" type="text/css" href="css/bootstrap.diary.min.css" />
-<script type="text/javascript" src="js/DateTimePicker.js"></script>
-<link rel="stylesheet" type="text/css" href="css/DateTimePicker.css" />
-<link rel="stylesheet" type="text/css" href="css/calenstyle.css" />
-<link rel="stylesheet" type="text/css" href="css/calenstyle-jquery-ui-override.css" />
-<link rel="stylesheet" type="text/css" href="css/calenstyle-iconfont.css" />
-<script type="text/javascript" src="css/calenstyle.js"></script>
-<script type="text/javascript" src="js/CalJsonGenerator.js"></script>
+		<script type="text/javascript" src="js/jquery-1.11.1.min.js"></script>
+		<script type="text/javascript" src="js/jquery-ui-custom-1.11.2.min.js"></script>
+    	<link rel="stylesheet" type="text/css" href="css/jquery-ui-custom-1.11.2.min.css" />
+    
+    	<script type="text/javascript" src="js/bootstrap.diary.min.js"></script>
+    	<link rel="stylesheet" type="text/css" href="css/bootstrap.diary.min.css" />
+    
+    	<script type="text/javascript" src="js/DateTimePicker.js"></script>
+    	<link rel="stylesheet" type="text/css" href="css/DateTimePicker.css" />
+    
+		<link rel="stylesheet" type="text/css" href="css/calenstyle.css" />
+		<link rel="stylesheet" type="text/css" href="css/calenstyle-jquery-ui-override.css" />
+		<link rel="stylesheet" type="text/css" href="css/calenstyle-iconfont.css" />
+		<script type="text/javascript" src="css/calenstyle.js"></script>
+	
+		<script type="text/javascript" src="js/CalJsonGenerator.js"></script>
 	
 <style type="text/css">
 .calendarContOuterParent {
@@ -301,17 +305,13 @@ function defineFormEvents() {
 </script>
 </head>
 
-<!-- BODY START > Calendar-->
+<!-- BODY START : /template/default_js_link.jsp를 include 하지 않아서 모달 뜬거였음-->
 <body>
 <div class="d-flex align-items-stretch" id ="document">
-		<%@ include file="/template/sidebar.jsp" %>
-	<div class="calendarContOuterParent">
-		<div class="calendarContOuter"></div>
-	</div>
+	<%@ include file="/template/sidebar.jsp" %>
+<div class="calendarContOuterParent">
+	<div class="calendarContOuter"></div>
 </div>
-<%@ include file="/template/default_js_link.jsp"%>
-
-
 
 
 <!-- Calendar 날짜 클릭했을시에 모달창 FE -->
