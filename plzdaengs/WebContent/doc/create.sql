@@ -867,3 +867,19 @@ ALTER TABLE PLZ_MEETING_MEMBER
 			group_id,
 			user_id
 		);
+
+-- animal 코드 등록
+insert into plz_animal(
+    animal_code
+    , animal_name
+)values(
+    '417000'
+    , '개'
+);
+insert into plz_animal(
+    animal_code
+    , animal_name
+)values(
+    '422400'
+    , '고양이'
+);
