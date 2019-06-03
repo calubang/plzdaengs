@@ -4242,14 +4242,17 @@ code {
 	color: #343a40;
 }
 
+section{
+	margin-top: 1rem;
+	margin-bottom: 1rem;
+}
+
 .py-5{
 	padding: 3rem;
 	min-height: 93vh;
 	max-height: 93vh;
 	max-width: 85rem;
 	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-	margin-top: 0;
-	margin-bottom: 3rem;
 }
 
 .subheading{
@@ -4270,7 +4273,8 @@ code {
 	display: none;
 	z-index: 1000;
 }
-#document{
+#contents{
+	margin-left: 20rem;
 }
 
 body {
@@ -4280,8 +4284,8 @@ body {
 #mainSection{
 	background-image: url("img/logo.png");
 	background-size: contain;
+	margin-top: 0;
 }
-
 input[type=password]{
-	font-family: fantasy !important;
+	font-family: fantasy;
 }

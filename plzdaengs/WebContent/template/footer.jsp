@@ -9,8 +9,8 @@
 			</div>
 			<div class="col-md-6 text-center text-md-right text-gray-400">
 				<p class="mb-0">
-					Design by <a href="https://bootstrapious.com/admin-templates"
-						class="external text-gray-400">Bootstrapious</a>
+					Create by <a href="https://bootstrapious.com/admin-templates"
+						class="external text-gray-400">Kitri 4조</a>
 				</p>
 				<!-- Please do not remove the backlink to us unless you support further theme's development at https://bootstrapious.com/donate. It is part of the license conditions. Thank you for understanding :)-->
 			</div>

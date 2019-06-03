@@ -17,6 +17,7 @@ public class MoveUrl {
 	
 	public static void forward(HttpServletRequest request, HttpServletResponse response, String path) throws IOException, ServletException {
 //		기준이 이미 프로젝트 안이기 때문에 request.getContextPath()를 쓸 필요가없다.
+		System.out.println("forward : "+path);
 		RequestDispatcher dispacher = request.getRequestDispatcher(path);
 		dispacher.forward(request, response);
 	}

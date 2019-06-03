@@ -2192,7 +2192,7 @@
                             set: function(t) {
                                 l.config.data = t
                             }
-                        }), u && d ? (l.initialize(), l.update()) : console.error("Failed to create chart: can't acquire context from the given item")
+                        }), u && d ? (l.initialize(), l.update()) : ""//console.error("Failed to create chart: can't acquire context from the given item")
                     },
                     initialize: function() {
                         var t = this;

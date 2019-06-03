@@ -16,4 +16,9 @@ public class DBConnection {
 		
 		return DriverManager.getConnection(SiteConstance.DB_URL,SiteConstance.DB_USERNAME,SiteConstance.DB_PASSWORD);
 	}
+	
+	public static Connection makeConnectplzdb() throws SQLException {
+		
+		return DriverManager.getConnection(SiteConstance.DB_URL,"plz","plz");
+	}
 }

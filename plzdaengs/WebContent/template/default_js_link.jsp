@@ -1,7 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <!-- JavaScript files-->
-<script src="/plzdaengs/template/vendor/jquery/jquery.min.js"></script>
 <script src="/plzdaengs/template/vendor/popper.js/umd/popper.min.js">
 	
 </script>

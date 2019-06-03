@@ -1,18 +1,136 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<c:set var="userInfo" value="${sessionScope.userInfo}"></c:set>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <%@ include file="/template/default_link.jsp" %>
+<c:if test="${!empty userInfo}">
+<script>
+$(function(){
+	//로그인 한 유저에 대해서 반영할 내용
+	loginSuccessProcess();
+});
+
+function loginSuccessProcess(){
+	var profilePath = "${userInfo.user_img}";
+	$("#profile").css("background-image", "url('"+profilePath + "')");
+	mainSectionChange();
+}
+function mainSectionChange() {
+	$("#contents").html("<h3>여기에 다이어리 들어가야함.</h3>");
+}
+</script>
+</c:if>
+<script type="text/javascript">
+$(function() {
+	$("#loginbtn").click(loginModalShow);
+	$("#loginmodal .modal-success").click(login);
+	//$("#loginmodal .kakao-login").click(loginWithKakao);
+	//회원가입
+	$("#registerbtn").click(registerbtnClick);
+	
+	$(".modal-cancel").click(function() {
+		var name = $(this).attr("name");
+		$("#"+name).modal("hide");
+		return false;
+	});
+	
+	//2중모달 처리
+	$("#alert").on('hidden.bs.modal', function(){
+		$("body").prop("class", "modal-open");
+	  });
+	
+});
+
+function registerbtnClick() {
+	$.ajax({
+		url : "user"
+		, data : {
+			act : "userjoin"
+		}
+		, success : function (result) {
+			$("#contents").html(result);
+		}
+	});
+	return false;
+}
+
+function loginAlertBtnClick() {
+	$("#alert").modal("hide");
+	$("body").prop("class", "modal-open");
+	return false;
+}
+
+function loginProcess() {
+	$("#profile").css("background-image", "url('/plzdaengs/template/img/profile.jpg')");
+}
+function loginModalShow() {
+	$("#loginmodal").modal("show");
+}
+
+function login(){
+	var id = $("#loginmodal input[name=id]").val();
+	var password = $("#loginmodal input[name=password]").val();
+	
+	var idPattern = /^[A-Za-z]{1}[A-Za-z0-9]{3,10}$/;
+	
+	if(id == null || id.length == 0){
+		showAlertModal("로그인 경고", "아이디를 입력하세요");
+		return;
+	}
+	if(password == null || password.length == 0){
+		showAlertModal("로그인 경고", "비밀번호를 입력하세요");
+		return;
+	}
+	
+	//로그인 실패를 위해 ajax
+	$.ajax({
+		url : "userlogin"
+		, method : "post"
+		, data : $("#loginmodal form").serialize()
+		, success : function(result){
+			if(result.trim() != "1"){
+				//$("#loginalert p").html(result);
+				showAlertModal("로그인 경고", result);
+			}else{
+				location.href = "/plzdaengs/menu?act=main";
+			}
+		}
+	});
+}
+</script>
+<style type="text/css">
+#loginmodal .modal-lg{
+	width: 50%;
+}
+#loginmodal .modal-content{
+	border-radius: 5%;
+}
+#loginmodal .form-control-label{
+	font-size: 1.2rem;
+}
+#loginmodal .form-group input{
+	height: 3rem;
+	font-size: 1.2rem;
+}
+#loginmodal .btn-group button{
+	height: 3rem
+}
+#loginmodal h5{
+	font-size: 1.7rem;	
+}
+</style>
 </head>
 <body>
-<!-- navbar-->	
+	<!-- navbar-->	
 	<header class="header">
 		<nav class="navbar navbar-expand-lg px-4 py-2 bg-white shadow">
 			<a href="#" class="sidebar-toggler text-gray-500 mr-4 mr-lg-5 lead"><i
-				class="fas fa-align-left"></i></a><a href="/plzdaengs/index.jsp"
+				class="fas fa-align-left"></i></a><a href="index.html"
 				class="navbar-brand font-weight-bold text-uppercase"></a>
 			<ul class="ml-auto d-flex align-items-center list-unstyled mb-0">
 				<li class="nav-item">
@@ -102,134 +220,50 @@
 		
 		<div class="page-holder w-100 d-flex flex-wrap">
 			<div class="container-fluid" id="contents">
+				<!-- 로그인 모달창 -->
+				<div id="loginmodal" class="modal fade" role="dialog">
+					<div class="modal-dialog modal-lg">
+						<div class="modal-content">
+							<div class="modal-header text-center">
+								<h5 class="modal-title" id="myModalLabel" style="margin-left: auto;">로그인</h5>
+								<button type="button" class="close" data-dismiss="modal"
+									aria-label="Close">
+									<span aria-hidden="true">×</span>
+								</button>
+							</div>
+							<div class="modal-body">
+								<form>
+									<div class="form-group">
+				                        <label class="form-control-label text-uppercase" >아이디</label>
+				                        <input type="text" placeholder="아이디를 입력하세요" class="form-control" required="required" name="id">
+				                      </div>
+				                      <div class="form-group">       
+				                        <label class="form-control-label text-uppercase">비밀번호</label>
+				                        <input type="password" placeholder="" class="form-control" name="password" required="required">
+				                      </div>
+			            		</form>
+			            		<div class="">
+				            		<button class="btn btn-primary btn-login-sm modal-success" name="loginmodal">로그인</button>
+				            		<!--  <button class="btn btn-primary btn-login-sm kakao-login" name="loginmodal">카카오 로그인</button>-->
+				            		<button class="btn btn-primary btn-login-sm modal-cancel" name="loginmodal">취소</button>
+				            	</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- 로그인 시 뜨는 경고창 -->
+				<%@ include file="/template/alert_danger.jsp" %>
 				<!-- section 1 -->
 				<section class="py-5" id="mainSection">
+				
 					<div class="w-100">
 						<h1 class="text-main">댕댕이를 <span class="text-primary">부탁해~</span></h1>
 						<div class="subheading">
 							kitri 2nd Project 4조
 						</div>
 						<div class="login-icons">
-							<button class="btn btn-primary">로그인</button>
-							<button class="btn btn-primary">회원가입</button>
-						</div>
-					</div>
-				</section>
-				
-				<!-- section 2 -->
-				<section>
-					<div class="row mb-4">
-						<div class="col-lg-7 mb-4 mb-lg-0">
-							<div class="card">
-								<div class="card-header">
-									<h2 class="h6 text-uppercase mb-0">Current server uptime</h2>
-								</div>
-								<div class="card-body">
-									<p class="text-gray">Lorem ipsum dolor sit amet,
-										consectetur adipisicing elit.</p>
-									<div class="chart-holder">
-										<canvas id="lineChart1" style="max-height: 14rem !important;"
-											class="w-100"></canvas>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="col-lg-5 mb-4 mb-lg-0 pl-lg-0">
-							<div class="card mb-3">
-								<div class="card-body">
-									<div class="row align-items-center flex-row">
-										<div class="col-lg-5">
-											<h2 class="mb-0 d-flex align-items-center">
-												<span>86.4</span><span
-													class="dot bg-green d-inline-block ml-3"></span>
-											</h2>
-											<span class="text-muted text-uppercase small">Work
-												hours</span>
-											<hr>
-											<small class="text-muted">Lorem ipsum dolor sit</small>
-										</div>
-										<div class="col-lg-7">
-											<canvas id="pieChartHome1"></canvas>
-										</div>
-									</div>
-								</div>
-							</div>
-							<div class="card">
-								<div class="card-body">
-									<div class="row align-items-center flex-row">
-										<div class="col-lg-5">
-											<h2 class="mb-0 d-flex align-items-center">
-												<span>1.724</span><span
-													class="dot bg-violet d-inline-block ml-3"></span>
-											</h2>
-											<span class="text-muted text-uppercase small">Server
-												time</span>
-											<hr>
-											<small class="text-muted">Lorem ipsum dolor sit</small>
-										</div>
-										<div class="col-lg-7">
-											<canvas id="pieChartHome2"></canvas>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-					<div class="row">
-						<div class="col-lg-5 mb-4 mb-lg-0">
-							<div class="card mb-3">
-								<div class="card-body">
-									<div class="row align-items-center mb-3 flex-row">
-										<div class="col-lg-5">
-											<h2 class="mb-0 d-flex align-items-center">
-												<span>86%</span><span
-													class="dot bg-violet d-inline-block ml-3"></span>
-											</h2>
-											<span class="text-muted text-uppercase small">Monthly
-												Usage</span>
-											<hr>
-											<small class="text-muted">Lorem ipsum dolor sit</small>
-										</div>
-										<div class="col-lg-7">
-											<canvas id="pieChartHome3"></canvas>
-										</div>
-									</div>
-								</div>
-							</div>
-							<div class="card">
-								<div class="card-body">
-									<div class="row align-items-center flex-row">
-										<div class="col-lg-5">
-											<h2 class="mb-0 d-flex align-items-center">
-												<span>$126,41</span><span
-													class="dot bg-green d-inline-block ml-3"></span>
-											</h2>
-											<span class="text-muted text-uppercase small">All
-												Income</span>
-											<hr>
-											<small class="text-muted">Lorem ipsum dolor sit</small>
-										</div>
-										<div class="col-lg-7">
-											<canvas id="pieChartHome4"></canvas>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="col-lg-7">
-							<div class="card">
-								<div class="card-header">
-									<h2 class="h6 text-uppercase mb-0">Total Overdue</h2>
-								</div>
-								<div class="card-body">
-									<p class="text-gray">Lorem ipsum dolor sit amet,
-										consectetur adipisicing elit.</p>
-									<div class="chart-holder">
-										<canvas id="lineChart2" style="max-height: 14rem !important;"
-											class="w-100"></canvas>
-									</div>
-								</div>
-							</div>
+							<button class="btn btn-primary btn-login" id="loginbtn">로그인</button>
+							<button class="btn btn-primary btn-login" id="registerbtn">회원가입</button>
 						</div>
 					</div>
 				</section>

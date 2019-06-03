@@ -1,41 +1,129 @@
 package com.plzdaeng.group.controller;
 
-import java.io.IOException;
-import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 
-/**
- * Servlet implementation class GroupController
- */
-@WebServlet("/GroupController")
-public class GroupController extends HttpServlet {
-	private static final long serialVersionUID = 1L;
-       
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public GroupController() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
+import javax.servlet.http.*;
 
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		response.getWriter().append("Served at: ").append(request.getContextPath());
+import com.plzdaeng.dto.UserDto;
+import com.plzdaeng.group.model.GroupCategory;
+import com.plzdaeng.group.model.GroupDto;
+import com.plzdaeng.group.model.dao.GroupDaoImpl;
+
+public class GroupController {
+
+	private static GroupController groupController;
+
+	static {
+		groupController = new GroupController();
 	}
 
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		doGet(request, response);
+	public static GroupController getCreateGroup() {
+		return groupController;
 	}
+
+	
+	
+	
+	public String pageLoaing(HttpServletRequest request, HttpServletResponse response, UserDto user) {
+		// path = "/plzdaengs/template/alert_danger.jsp";
+		//String id = user.getUser_id();
+		user.setUser_id("qwer");
+		String id = user.getUser_id();
+		String type = request.getParameter("type");
+		System.out.println(type);
+		List<GroupDto> list = null;
+		if (type != null && type.equals("mine")) {
+			System.out.println("if type mine");
+			list = GroupDaoImpl.getGroupDaoImpl().myGroup(id);
+		} else if (type != null && type.equals("recommend")) {
+			System.out.println("if type recommend");
+			list = GroupDaoImpl.getGroupDaoImpl().recommendGroup(id);
+		} else {
+			String key = request.getParameter("searchoption");
+			String word = request.getParameter("searchword");
+			System.out.println(key + word);
+			list = GroupDaoImpl.getGroupDaoImpl().searchGroup(key, word);
+		}
+		request.setAttribute("grouplist", list);
+		String path = "/group/result/grouplistresult.jsp";
+		return path;
+	}
+
+	public String create(HttpServletRequest request, HttpServletResponse response, UserDto user) {
+		String path = "/group/groupmain.jsp";
+		//String id = user.getUser_id();
+		user.setUser_id("qwer");
+		String id = user.getUser_id();
+		String name = request.getParameter("groupname");
+		String desc = request.getParameter("groupdescription");
+		String keyword = request.getParameter("groupkeyword");
+		String groupdontselect = request.getParameter("groupdontselect");
+		System.out.println(groupdontselect);
+
+		System.out.println(name + keyword + desc);
+		// 소모임 정보set
+
+		GroupCategory cate = new GroupCategory();
+		cate.setGroup_category_id(keyword);
+		GroupDto dto = new GroupDto();
+		dto.setGroup_leader(id);
+		dto.setGroup_name(name);
+		dto.setGroup_description(desc);
+		if (groupdontselect != "on") {
+			String groupsido = request.getParameter("groupsido");
+			String groupsigungu = request.getParameter("groupsigungu");
+			dto.setAddress_sido(groupsido);
+			dto.setAddress_sigungu(groupsigungu);
+		}
+		dto.setGroupCategory(cate);
+//		group.setGroup_img(group_img);
+
+		int result = GroupDaoImpl.getGroupDaoImpl().createGroup(dto);
+		System.out.println("dao 결과 result : " + result);
+		request.setAttribute("result", result);
+		return path;
+	}
+
+	public String enterorsingup(HttpServletRequest request, HttpServletResponse response, UserDto user) {
+		String path = "";
+		//String id = user.getUser_id();
+		user.setUser_id("qwer");
+		String id = user.getUser_id();
+		int group_id = Integer.parseInt(request.getParameter("group"));
+		System.out.println(group_id);
+		//1 입장
+		//GroupDaoImpl.getGroupDaoImpl().firstpage(group_id);
+		//2 권한에 따라 버튼이 바뀜 ( 리더 : 관리, 일반 : 탈퇴, 요청중 : 대기, 비회원 : 가입 )
+		String result = GroupDaoImpl.getGroupDaoImpl().inquiry(group_id, id);
+		request.setAttribute("authority", result);
+		//3.그룹게시판 로딩
+		GroupDaoImpl.getGroupDaoImpl().boardLoading(group_id);
+		
+		
+		//		if(result != "X") {
+//			//grouppage loading n 가입요청중
+//			
+//			
+//		
+//			
+//		}else if(result == "X") {
+//			//소모임 그룹 가입 모달창으로
+//			
+//			//return;
+//		}
+		
+		
+		
+		
+		
+		return path;
+	}
+
+
+
+
+
+	
+	
 
 }
