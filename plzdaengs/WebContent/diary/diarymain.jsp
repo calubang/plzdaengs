@@ -8,7 +8,7 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 	
 		<script type="text/javascript" src="js/jquery-1.11.1.min.js"></script>
-		<!--script type="text/javascript" src="js/jquery-ui-custom-1.11.2.min.js"></script-->
+		<script type="text/javascript" src="js/jquery-ui-custom-1.11.2.min.js"></script>
     	<link rel="stylesheet" type="text/css" href="css/jquery-ui-custom-1.11.2.min.css" />
     
     	<script type="text/javascript" src="js/bootstrap.diary.min.js"></script>
@@ -21,10 +21,19 @@
 		<link rel="stylesheet" type="text/css" href="css/calenstyle-jquery-ui-override.css" />
 		<link rel="stylesheet" type="text/css" href="css/calenstyle-iconfont.css" />
 		<script type="text/javascript" src="css/calenstyle.js"></script>
+		
 	
 		<script type="text/javascript" src="js/CalJsonGenerator.js"></script>
 	
 <style type="text/css">
+
+#div1 {
+  width: 1000px;
+  height: 100px;
+  padding: 10px;
+  border: 1px solid #aaaaaa;
+}
+
 .calendarContOuterParent {
 	width: 1024px;
 	height: 768px;
@@ -123,7 +132,7 @@ $(document).ready(function() {
 				//calObj1.revertToOriginalEvent(oDraggedEvent, startDateBeforeDrop, endDateBeforeDrop);
 			},
 					
-		cellClicked: 
+		cellClicked: // 셀별로 클릭했을 시 event
 			function(sView, dSelectedDate, bIsAllDay, pClickedAt){
 					console.log("Cell Clicked 1 : " + dSelectedDate);
 					showModal(true, dSelectedDate);						
@@ -154,11 +163,28 @@ $(document).ready(function() {
 	$('#modal-form').on('show.bs.modal', function (e){
 		validateAllDayChecked();
 	});
-				
-	customizeInputs();
-	defineFormEvents();
+	
+	
+	//customizeInputs();
+	//defineFormEvents();
+	
+	//드래그 fun
+	//cmvDay cmvWeekNumber cmvWeekNumberBorderLeft cmvWeekNumberBorderBottom clickableLink ui-droppable cmvThinBorderRight
+	//console.log($(".cmvDay"));
+	$(".cmvDay").on("drop", function(e) {
+		alert("놓음");
+	});
+	
+	$(".cmvDay").on("dragenter", function (e) {
+		alert("들어옴");
+	});
+	
 	
 }); // 1. $(document).ready(function()) 끝
+
+function cmvDayDropDown() {
+	alert("드래그 다운됨");
+}
 		
 function showModal(bIsAllDay, dStartDateTime){
 	console.log("showModal : " + bIsAllDay + " " + dStartDateTime);
@@ -190,14 +216,14 @@ function showModal(bIsAllDay, dStartDateTime){
 function customizeInputs() {
 	console.log("DateTimePicker : ");
 	console.log($(".modal-dtpicker"));
-	$(".modal-dtpicker").DateTimePicker( {
+	/*$(".modal-dtpicker").DateTimePicker( {
 		dateSeparator: oCal1.setting.formatSeparatorDate,
 		timeSeparator: oCal1.setting.formatSeparatorTime,
 		dateTimeSeparator: oCal1.setting.formatSeparatorDateTime,
 		dateFormat: "dd-MM-yyyy",
 		dateTimeFormat: "dd-MM-yyyy HH:mm:ss"
 				
-	});
+	});*/
 } // 3. function customizeInputs() 끝
 		
 		
@@ -319,54 +345,46 @@ function defineFormEvents() {
 
 <!-- 이미지 DRAG & DROP -->
 <script>
-$(function(){
-	$("#images div img").draggable({ // images에 들어있는 div의 img들은 drag가 가능하단댜
-		start: function(event,ui) {
-			$(this).draggable( "option", "revert", true );
-			$("#images div img").css("zIndex",10);
-			$(this).css("zIndex",100);
-		}
+function allowDrop(ev) { ev.preventDefault();} 
+function drag(ev) { ev.dataTransfer.setData("text", ev.target.id); }
+function drop(ev) {
+	ev.preventDefault();
+	var data = ev.dataTransfer.getData("text");
+	//console.log(data);
+	var dataTemp = document.getElementById(data).cloneNode();
+	$(dataTemp).css("width", "20px");
+	$(dataTemp).css("height", "20px");
+	$(dataTemp).click(function(e) {
+		alert("거북이 클릭");
 	});
-	$("#boards div").droppable({
-		drop: function(event,ui) {
-			var droptitle = $(this).attr("title");
-			var drophtml = $(this).html();
-			var dragid = ui.draggable.attr("id");
-			if( dragid == droptitle ) {
-				ui.draggable.draggable( "option", "revert", false );
-				var droppableOffset = $(this).offset();
-				var x = droppableOffset.left + 1;
-				var y = droppableOffset.top + 1;
-				ui.draggable.offset({ top: y, left: x });
-				$(this).appendTo( $(this).parent() );
-			}
-		}
-	});
-});
-
+	ev.target.appendChild(dataTemp);
+	//ddddddasas
+}
 </script>
+
 </head>
 
 <!-- BODY START : /template/default_js_link.jsp를 include 하지 않아서 모달 뜬거였음-->
 <body>
+
 <div class="d-flex align-items-stretch" id ="document">
 	<%@ include file="/template/sidebar.jsp" %>
-<div class="calendarContOuterParent">
-	<div class="calendarContOuter"></div>
-	<div class = "calendarImageDrag" id = "images" margin-top : 50px; width: 1010px; height: 500px;>
-		<div><img src="img/hospital.png" width="50px" > &nbsp;&nbsp; &nbsp;&nbsp;</div>
-		<div><img src="img/bones.png" width="50px" > &nbsp;&nbsp; &nbsp;&nbsp;</div>
-		<div><img src="img/dog.png" width="50px" > &nbsp;&nbsp; &nbsp;&nbsp;</div>
-		<div><img src="img/bath.png" width="50px" > &nbsp;&nbsp; &nbsp;&nbsp;</div>
-		<div><img src="img/facial-treatment.png" width="50px" > &nbsp;&nbsp; &nbsp;&nbsp;</div>
-		<div><img src="img/school.png" width="50px" > &nbsp;&nbsp; &nbsp;&nbsp;</div>
-		<div><img src="img/pet-house.png" width="50px" ></div>
+	<div class="calendarContOuterParent" >
+		<div class="calendarContOuter" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+		<br><br>
+		<img id="drag1" src="img/hospital.png" draggable="true" ondragstart="drag(event)" width="50px" height="50px"> &nbsp;&nbsp;&nbsp;&nbsp;
+		<img id="drag2" src="img/bones.png" draggable="true" ondragstart="drag(event)" width="50px" height="50px"> &nbsp;&nbsp;&nbsp;&nbsp;
+		<img id="drag3" src="img/dog.png" draggable="true" ondragstart="drag(event)" width="50px" height="50px"> &nbsp;&nbsp;&nbsp;&nbsp;
+		<img id="drag4" src="img/bath.png" draggable="true" ondragstart="drag(event)" width="50px" height="50px"> &nbsp;&nbsp;&nbsp;&nbsp;
+		<img id="drag5" src="img/facial-treatment.png" draggable="true" ondragstart="drag(event)" width="50px" height="50px"> &nbsp;&nbsp;&nbsp;&nbsp;
+		<img id="drag6" src="img/school.png" draggable="true" ondragstart="drag(event)" width="50px" height="50px"> &nbsp;&nbsp;&nbsp;&nbsp;
+		<img id="drag7" src="img/pet-house.png" draggable="true" ondragstart="drag(event)" width="50px" height="50px">
+		<br><br>
+		<div id="div1" ondrop="drop(event)" ondragover="allowDrop(event)">테스트용</div>
 	</div>
 </div>
 
-<div class = "drop" id = "boards" margin-top : 50px; width: 1010px; height: 300px;>
-	<div title="sports">sports</div>
-</div>
+
 
 
 <!-- Calendar 날짜 클릭했을시에 모달창 FE -->
@@ -398,7 +416,14 @@ $(function(){
 					</div>
 					<div id="ipDesc-group" class="form-group">
 						<label for="ipDesc">Description : </label>
-						<textarea class="form-control" rows="3" id="ipDesc" placeholder="Description"></textarea>
+						<textarea class="form-control" rows="3" id="ipDesc" placeholder="Description"></textarea><br>
+						<img id="drag1" src="img/hospital.png" draggable="true" ondragstart="drag(event)" width="30px" height="30px"> &nbsp;&nbsp;&nbsp;&nbsp;
+						<img id="drag2" src="img/bones.png" draggable="true" ondragstart="drag(event)" width="30px" height="30px"> &nbsp;&nbsp;&nbsp;&nbsp;
+						<img id="drag3" src="img/dog.png" draggable="true" ondragstart="drag(event)" width="30px" height="30px"> &nbsp;&nbsp;&nbsp;&nbsp;
+						<img id="drag4" src="img/bath.png" draggable="true" ondragstart="drag(event)" width="30px" height="30px"> &nbsp;&nbsp;&nbsp;&nbsp;
+						<img id="drag5" src="img/facial-treatment.png" draggable="true" ondragstart="drag(event)" width="30px" height="30px"> &nbsp;&nbsp;&nbsp;&nbsp;
+						<img id="drag6" src="img/school.png" draggable="true" ondragstart="drag(event)" width="30px" height="30px"> &nbsp;&nbsp;&nbsp;&nbsp;
+						<img id="drag7" src="img/pet-house.png" draggable="true" ondragstart="drag(event)" width="30px" height="30px">
 					</div>					
 				</div>
 				<div class="modal-footer">

@@ -16,6 +16,7 @@ h2 {font-size:.8em; color:#000; font-weight:bold;}
 <script type="text/javascript">
 	// 드래그 시작시 호출 할 함수
 	function drag(target, food) {
+		console.log('여기까지 넘어왔슈');
 		food.dataTransfer.setData('Text', target.id);
 	};
 	
@@ -32,7 +33,7 @@ h2 {font-size:.8em; color:#000; font-weight:bold;}
 <body>
 <div ondrop="drop(this, event);" ondragenter="return false;" ondragover="return false;">
 	<h2>아래 음식이미지를 종류별로 드레그 해서 넣어보세요.</h2>
-	<img src="img/krfood1.jpg" alt="한국음식1" draggable="true" id="kor1" ondragstart="drag(this, event)" />
+	<img src="img/krfood1.jpg" alt="한국음식1" draggable="true" ondragstart="drag(this, event)" />
 	<img src="img/krfood2.jpg" alt="한국음식2" draggable="true" id="kor2" ondragstart="drag(this, event)" />
 	<img src="img/krfood3.jpg" alt="한국음식3" draggable="true" id="kor2" ondragstart="drag(this, event)" />
 	<img src="img/ufood1.jpg" alt="서양음식1" draggable="true" id="u1" ondragstart="drag(this, event)" />
