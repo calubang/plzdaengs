@@ -41,9 +41,11 @@
 				$.ajax({
 					url : '/plzdaengs/groupfront',
 					method : 'POST',
-					data : {act : 'groupmanage'},
-					success : function(result) {
+					data : {act : 'groupmanage',
+						group_id : '<%=group_id%>' },
+					success : function(groupdetail) {
 						alert("Option resultpage");
+						$("section").html(groupdetail);
 					}
 
 				});

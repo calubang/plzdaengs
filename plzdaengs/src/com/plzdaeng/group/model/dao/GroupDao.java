@@ -27,5 +27,7 @@ public interface GroupDao {
 	
 	List<GroupBoard> boardLoading(int group_id);
 	
+	GroupDto groupDetail(int group_id);
+	
 	
 }

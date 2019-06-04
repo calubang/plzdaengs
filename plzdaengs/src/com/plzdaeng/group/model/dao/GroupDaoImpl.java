@@ -51,6 +51,7 @@ public class GroupDaoImpl implements GroupDao {
 
 		try {
 			System.out.println("sql문실행전");
+			System.out.println(dto);
 			conn = DBConnection.makeConnectplzdb();
 			conn.setAutoCommit(false);
 			pstmt = conn.prepareStatement(creatGroupSql.toString());
@@ -106,6 +107,44 @@ public class GroupDaoImpl implements GroupDao {
 	@Override
 	public int changeGroup(GroupDto dto) {
 		int result = -1;
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+
+		String updateGroupSql = "";
+		updateGroupSql = "UPDATE plz_group \r\n" + 
+				"SET DESCRIPTION = ?,\r\n" + 
+				"GROUP_IMG = ?,\r\n" + 
+				"ADDRESS_SIDO = ?,\r\n" + 
+				"ADDRESS_SIGUNGU = ?\r\n" + 
+				"WHERE group_id = ?";
+
+		try {
+		
+			System.out.println("sql문실행전");
+			conn = DBConnection.makeConnectplzdb();
+			pstmt = conn.prepareStatement(updateGroupSql);
+		
+			pstmt.setString(1, dto.getGroup_description());
+			pstmt.setString(2, dto.getGroup_img());
+			pstmt.setString(3, dto.getAddress_sido());
+			pstmt.setString(4, dto.getAddress_sigungu());
+			pstmt.setInt(5, dto.getGroup_id());
+			
+			int r = pstmt.executeUpdate();
+			System.out.println(r);
+			if(r == 1) {
+				result = 1;
+			}
+			System.out.println("sql문실행후");
+
+			DBClose.close(null, pstmt);
+
+		} catch (SQLException e) {
+			System.out.println("groupdetail update fail");
+			e.printStackTrace();
+		} finally {
+			DBClose.close(conn, null);
+		}
 
 		return result;
 	}
@@ -402,6 +441,57 @@ public class GroupDaoImpl implements GroupDao {
 			DBClose.close(conn, pstmt, rs);
 		}
 		return null;
+	}
+
+	@Override
+	public GroupDto groupDetail(int group_id) {
+		System.out.println("Dao메소드입장");
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String groupDetailSQL = "";
+		GroupDto dto = null;
+		groupDetailSQL = "SELECT g.GROUP_ID, t.GROUP_CATEGORY_id, t.GROUP_CATEGORY_NAME, g.GROUP_NAME, g.DESCRIPTION, g.GROUP_img, g.ADDRESS_SIDO, g.ADDRESS_SIGUNGU\r\n" + 
+				"FROM plz_group g inner join plz_group_type t\r\n" + 
+				"ON g.group_category_id = t.group_category_id\r\n" + 
+				"WHERE g.group_id = ?";
+	
+
+		try {
+			//System.out.println("sql문실행전");
+			conn = DBConnection.makeConnectplzdb();
+			
+			pstmt = conn.prepareStatement(groupDetailSQL);
+			pstmt.setInt(1, group_id);
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				dto = new GroupDto();
+				GroupCategory cate = new GroupCategory();
+				cate.setGroup_category_id(rs.getString("GROUP_CATEGORY_id"));
+				cate.setGroup_category_name(rs.getString("GROUP_CATEGORY_name"));
+				dto.setGroupCategory(cate);
+				
+				dto.setGroup_id(rs.getInt("group_id"));
+				dto.setGroup_name(rs.getString("group_name"));
+				dto.setGroup_description(rs.getString("description"));
+//			dto.setGroup_leader(group_leader);
+				dto.setGroup_img(rs.getString("group_img"));
+				dto.setAddress_sido(rs.getString("address_sido"));
+				dto.setAddress_sigungu(rs.getString("address_sigungu"));
+				
+				
+			}
+			
+			//System.out.println("sql문실행후");
+		
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DBClose.close(conn, null);
+		}
+
+		return dto;
 	}
 
 }

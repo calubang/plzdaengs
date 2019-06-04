@@ -51,7 +51,12 @@ public class GroupFrontController extends HttpServlet {
 		}else if("groupmanage".equals(act)) {
 			System.out.println("front enter");
 			path = GroupController.getCreateGroup().entermanege(request, response);
-			MoveUrl.redirect(request, response, path);
+			MoveUrl.forward(request, response, path);
+			System.out.println("go to the groupdetail");
+		}else if("changedetail".equals(act)) {
+			System.out.println("front enter");
+			path = GroupController.getCreateGroup().changeDetail(request, response);
+			MoveUrl.forward(request, response, path);
 		}
 	}
 

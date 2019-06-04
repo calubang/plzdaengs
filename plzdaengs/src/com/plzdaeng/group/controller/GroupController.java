@@ -61,7 +61,7 @@ public class GroupController {
 		String name = request.getParameter("groupname");
 		String desc = request.getParameter("groupdescription");
 		String keyword = request.getParameter("groupkeyword");
-		String groupdontselect = request.getParameter("groupdontselect");
+		String groupdontselect = request.getParameter("groupdontselect");//지역무관
 		System.out.println(groupdontselect);
 
 		System.out.println(name + keyword + desc);
@@ -73,7 +73,7 @@ public class GroupController {
 		dto.setGroup_leader(id);
 		dto.setGroup_name(name);
 		dto.setGroup_description(desc);
-		if (groupdontselect != "on") {
+		if (!groupdontselect.equals("on")){
 			String groupsido = request.getParameter("groupsido");
 			String groupsigungu = request.getParameter("groupsigungu");
 			dto.setAddress_sido(groupsido);
@@ -120,18 +120,7 @@ public class GroupController {
 		//3.그룹 홈페이지 로딩
 		//GroupDaoImpl.getGroupDaoImpl().boardLoading(group_id);
 		path = "/group/groupfirstpage.jsp";
-		System.out.println("그룹페이지가자!");
-		//		if(result != "X") {
-//			//grouppage loading n 가입요청중
-//			
-//			
-//		
-//			
-//		}else if(result == "X") {
-//			//소모임 그룹 가입 모달창으로
-//			
-//			//return;
-//		}
+
 		
 		
 		
@@ -144,8 +133,42 @@ public class GroupController {
 
 
 	public String entermanege(HttpServletRequest request, HttpServletResponse response) {
-		
+		int group_id = Integer.parseInt(request.getParameter("group_id"));
+		GroupDto dto = new GroupDto();
+		dto = GroupDaoImpl.getGroupDaoImpl().groupDetail(group_id);
+		request.setAttribute("groupdetail", dto);
 		path = "/group/managegroupinfo.jsp";
+		return path;
+	}
+
+	public String changeDetail(HttpServletRequest request, HttpServletResponse response) {
+		path = "/group/managegroupinfo.jsp";
+		int group_id = Integer.parseInt(request.getParameter("group_id"));
+		String name = request.getParameter("groupname");
+		String desc = request.getParameter("groupdescription");
+		String keyword = request.getParameter("groupkeyword");
+		String groupdontselect = request.getParameter("groupdontselect");//지역무관
+		String img = request.getParameter("groupimg");
+		System.out.println(groupdontselect);
+
+		System.out.println(name + keyword + desc);
+		// 소모임 정보set
+
+		
+		GroupDto dto = new GroupDto();
+		//dto.setGroup_leader(id);
+		dto.setGroup_name(name);
+		dto.setGroup_description(desc);
+		dto.setGroup_img(img);
+		if (!groupdontselect.equals("on")){
+			String groupsido = request.getParameter("groupsido");
+			String groupsigungu = request.getParameter("groupsigungu");
+			dto.setAddress_sido(groupsido);
+			dto.setAddress_sigungu(groupsigungu);
+		}
+		int result = GroupDaoImpl.getGroupDaoImpl().changeGroup(dto);
+		
+		
 		return path;
 	}
 
