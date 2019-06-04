@@ -8,7 +8,7 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 	
 		<script type="text/javascript" src="js/jquery-1.11.1.min.js"></script>
-		<script type="text/javascript" src="js/jquery-ui-custom-1.11.2.min.js"></script>
+		<!--script type="text/javascript" src="js/jquery-ui-custom-1.11.2.min.js"></script-->
     	<link rel="stylesheet" type="text/css" href="css/jquery-ui-custom-1.11.2.min.css" />
     
     	<script type="text/javascript" src="js/bootstrap.diary.min.js"></script>
@@ -28,7 +28,7 @@
 .calendarContOuterParent {
 	width: 1024px;
 	height: 768px;
-	margin: 0px auto;
+	margin: 70px auto;
 	}
 		
 .calendarContOuter {			
@@ -37,10 +37,23 @@
 	margin: 0px auto;      
 	font-size: 14px;
 	}
+	
+.drop {
+	height : 300px;
+}
+		
+.calendarImageDrag {
+    margin-top: -;
+    border-top-width: 50px;
+    padding-top: 50px;
+
+	}		
 		
 #ipAlertStartEnd, #ipAlertTitle {
 	display:none;
 	}
+	
+#images > div, #boards > div {float:left; width:100px; height:100px; border:1px solid #000; margin:5px;}
 </style>
 	
 	
@@ -303,6 +316,35 @@ function defineFormEvents() {
 	});
 } // 7. function defineFormEvents() 끝
 </script>
+
+<!-- 이미지 DRAG & DROP -->
+<script>
+$(function(){
+	$("#images div img").draggable({ // images에 들어있는 div의 img들은 drag가 가능하단댜
+		start: function(event,ui) {
+			$(this).draggable( "option", "revert", true );
+			$("#images div img").css("zIndex",10);
+			$(this).css("zIndex",100);
+		}
+	});
+	$("#boards div").droppable({
+		drop: function(event,ui) {
+			var droptitle = $(this).attr("title");
+			var drophtml = $(this).html();
+			var dragid = ui.draggable.attr("id");
+			if( dragid == droptitle ) {
+				ui.draggable.draggable( "option", "revert", false );
+				var droppableOffset = $(this).offset();
+				var x = droppableOffset.left + 1;
+				var y = droppableOffset.top + 1;
+				ui.draggable.offset({ top: y, left: x });
+				$(this).appendTo( $(this).parent() );
+			}
+		}
+	});
+});
+
+</script>
 </head>
 
 <!-- BODY START : /template/default_js_link.jsp를 include 하지 않아서 모달 뜬거였음-->
@@ -311,6 +353,19 @@ function defineFormEvents() {
 	<%@ include file="/template/sidebar.jsp" %>
 <div class="calendarContOuterParent">
 	<div class="calendarContOuter"></div>
+	<div class = "calendarImageDrag" id = "images" margin-top : 50px; width: 1010px; height: 500px;>
+		<div><img src="img/hospital.png" width="50px" > &nbsp;&nbsp; &nbsp;&nbsp;</div>
+		<div><img src="img/bones.png" width="50px" > &nbsp;&nbsp; &nbsp;&nbsp;</div>
+		<div><img src="img/dog.png" width="50px" > &nbsp;&nbsp; &nbsp;&nbsp;</div>
+		<div><img src="img/bath.png" width="50px" > &nbsp;&nbsp; &nbsp;&nbsp;</div>
+		<div><img src="img/facial-treatment.png" width="50px" > &nbsp;&nbsp; &nbsp;&nbsp;</div>
+		<div><img src="img/school.png" width="50px" > &nbsp;&nbsp; &nbsp;&nbsp;</div>
+		<div><img src="img/pet-house.png" width="50px" ></div>
+	</div>
+</div>
+
+<div class = "drop" id = "boards" margin-top : 50px; width: 1010px; height: 300px;>
+	<div title="sports">sports</div>
 </div>
 
 
