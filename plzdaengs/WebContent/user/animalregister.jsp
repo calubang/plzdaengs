@@ -1,10 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <script>
+	var petNameCheck = false;
 	$(function() {
 		//파일 업로드시 관련 이벤트 호출
 		$("input[type=file].file-hidden").change(fileUploadChange);
+		
 		$(".kindother").click(kindotherClick);
+		$("#kindothermodal .modal-body input[type=text]").keyup(kindselectKeyup);
 		
 		fileDropDown();
 				
@@ -28,17 +31,42 @@
 		$(".registeranimal input[name=petname]").keyup(petnameKeyup);
 	});
 	
+	function kindselectKeyup() {
+		var text = $(this).val();
+		//console.log(text);
+		var buttons = $("#kindothermodal .kindDiv").find("button");
+		for(var i=0 ; i<buttons.length; i++){
+			var button = $(buttons[i]);
+			if(button.text().indexOf(text) < 0 ){
+				button.hide();
+			}else{
+				button.show();
+			}
+		}
+	}
+	
 	function petnameKeyup() {
 		var input = $(this).val();
 		var label = $(this).parent().siblings("label[role=check]");
+		//console.log(label);
 		
 		$.ajax({
 			url : "petnamecheck"
 			, data : {
 				petname : input
 			}
-			, success: function () {
-				alert("데이터 넘어옴");
+			, success: function (result) {
+				//alert(result);
+				result = result.trim();
+				var msg = "같은 이름으로 등록된 이름이 있습니다";
+				label.css("color", "red");
+				petNameCheck = false;
+				if(result == 0){
+					msg = "사용 가능한 이름입니다";
+					label.css("color", "green");
+					petNameCheck = true;
+				}
+				label.text(msg);
 			}
 		});
 		
@@ -49,6 +77,34 @@
 		//필수값 확인
 		var petname = $(".registeranimal input[name=petname]").val();
 		var breedcode = $(".registeranimal input[name=breedcode]").val();
+		
+		if(petname == null || petname.length == 0){
+			showAlertModal("필수값 입력", "반려동물의 이름을 입력해주세요");
+			return;
+		}
+		if(breedcode == null || breedcode.length == 0){
+			showAlertModal("필수값 입력", "반려동물의 품종을 선택해주세요");
+			return;
+		}
+		
+		var form = $(".registeranimal form")[0];
+		console.log(form);
+		var formData = new FormData(form);
+		console.log(formData);
+		
+		$.ajax({
+			url : "petregister"
+			, method : "post"
+			, processData : false
+			, contentType : false
+			, data : formData
+			, success: function(result) {
+				alert("성공");
+			}
+			, error: function() {
+				
+			}
+		});
 		
 		return false;
 	}
@@ -102,14 +158,32 @@
 		$(this).css("color", "white");
 		$(this).css("background-color", "#4680ff");
 		
-		var text = $(this).text();
+		var text = $(this).attr("data");
 		//클릭한 객체로 hidden input변경
 		$(".dogkinddiv input[type=hidden]").val(text);
 	}
 	
 	function kindotherClick(){
 		$("#kindothermodal").modal("show");
+		selectkind();
 	}
+	
+	function selectkind(name){
+		alert(name);
+		var div = $("#kindothermodal .kindDiv");
+		
+		$.ajax({
+			url : "selectkind"
+			, data : {
+				kind : name
+			}
+			, success : function(result) {
+				div.html(result);
+			}
+		});
+		
+	}
+	
 	
 	function dropdownItemClick() {
 		var text = $(this).text();
@@ -318,51 +392,50 @@
 	padding-right: inherit;
 }
 </style>
-<!-- 강아지 기타 눌렸을 때 모달 -->
-<div id="kindothermodal" class="modal fade" role="dialog">
-	<h5 class="modal-title" id="myModalLabel">강아지 품종 검색</h5>
-	<div class="modal-dialog modal-lg">
-		<div class="modal-content">
-			<div class="modal-header text-center">
-				<label style="margin-left: auto; margin-bottom:auto; margin-top:auto; font-size: 1.5rem">강아지 품종 검색</label>
-				<button type="button" class="close" data-dismiss="modal"
-					aria-label="Close">
-					<span aria-hidden="true">X</span>
-				</button>
-			</div>
-			<div class="modal-body text-center">
-				
-				<div class="input-group" align="left">
-					<input type="text" class="form-control" id="doro" name="doro"
-						placeholder="검색 할 품종명"> <span
-						class="input-group-btn"> <input type="button"
-						class="btn btn-warning" value="검색" id="searchBtn">
-					</span>
+
+<!-- section 1 -->
+<section class="registeranimal">
+	<!-- 강아지 기타 눌렸을 때 모달 -->
+	<div id="kindothermodal" class="modal fade" role="dialog">
+		<h5 class="modal-title" id="myModalLabel">강아지 품종 검색</h5>
+		<div class="modal-dialog modal-lg">
+			<div class="modal-content">
+				<div class="modal-header text-center">
+					<label style="margin-left: auto; margin-bottom:auto; margin-top:auto; font-size: 1.5rem">강아지 품종 검색</label>
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">X</span>
+					</button>
 				</div>
-				<div style="width: 100%; height: 500px; overflow: auto; margin-top: 1%;">
-	
+				<div class="modal-body text-center">
+					
+					<div class="input-group" align="left">
+						<input type="text" class="form-control" id="doro" name="doro"
+							placeholder="검색 할 품종명"> <span
+							class="input-group-btn"> <input type="button"
+							class="btn btn-warning" value="검색" id="searchBtn">
+						</span>
+					</div>
+					<div class="kindDiv" style="width: 100%; height: 500px; overflow: auto; margin-top: 1%;" >
+					</div>
 				</div>
 			</div>
 		</div>
 	</div>
-</div>
-<!-- section 1 -->
-<section class="registeranimal">
 	<div class="col-lg-10 mb-5">
 		<div class="card">
 			<div class="card-header">
 				<h3 class="h6 text-uppercase mb-0">반려동물 등록</h3>
 			</div>
 			<div class="card-body">
-				<form class="form-horizontal">
+				<form class="form-horizontal" enctype="multipart/form-data" method="post">
 					<div class="form-group row">
 						<label class="col-md-3 form-control-label">반려동물 이름(*)</label>
 						<div class="col-md-5">
 							<input type="text" placeholder="반려동물 이름을 입력하세요"
 								class="form-control" name="petname">
 						</div>
-						<label class="col-md-2 form-control-label" role="check">같은 이름으로 등록된
-							펫확인</label>
+						<label class="col-md-4 form-control-label" role="check"></label>
 					</div>
 					<div class="line"></div>
 					<div class="form-group row dogkinddiv">
@@ -370,25 +443,25 @@
 						<div class="col-md-8">
 							<input type="hidden" value="" name="breedcode">
 							<button type="button"
-								class="btn btn-outline-primary col-md-2 dogkind">말티즈</button>
+								class="btn btn-outline-primary col-md-2 dogkind" data="000072">말티즈</button>
 							<button type="button"
-								class="btn btn-outline-primary col-md-2 dogkind">푸들</button>
+								class="btn btn-outline-primary col-md-2 dogkind" data="000128">푸들</button>
 							<button type="button"
-								class="btn btn-outline-primary col-md-2 dogkind">포메</button>
+								class="btn btn-outline-primary col-md-2 dogkind" data="000089">포메</button>
 							<button type="button"
-								class="btn btn-outline-primary col-md-2 dogkind">시츄</button>
+								class="btn btn-outline-primary col-md-2 dogkind" data="000101">시츄</button>
 							<button type="button"
-								class="btn btn-outline-primary col-md-2 dogkind">비숑</button>
+								class="btn btn-outline-primary col-md-2 dogkind" data="000018">비숑</button>
 							<button type="button"
-								class="btn btn-outline-primary col-md-2 dogkind">요크셔</button>
+								class="btn btn-outline-primary col-md-2 dogkind" data="000113">요크셔</button>
 							<button type="button"
-								class="btn btn-outline-primary col-md-2 dogkind">치와와</button>
+								class="btn btn-outline-primary col-md-2 dogkind" data="000032">치와와</button>
 							<button type="button"
-								class="btn btn-outline-primary col-md-2 dogkind">스피츠</button>
+								class="btn btn-outline-primary col-md-2 dogkind" data="000124">스피츠</button>
 							<button type="button"
-								class="btn btn-outline-primary col-md-2 dogkind">믹스</button>
+								class="btn btn-outline-primary col-md-2 dogkind" data="000114">믹스</button>
 							<button type="button"
-								class="btn btn-outline-primary col-md-2 dogkind kindother">기타</button>
+								class="btn btn-outline-primary col-md-2 dogkind kindother" data="">기타</button>
 						</div>
 					</div>
 					<div class="line"></div>
@@ -447,7 +520,7 @@
 						<div class="col-md-9">
 							<label class="form-control-label">최근 6개월이내 예방접종을 입력해주세요.</label>
 							<div class="vaccinlist">
-								<div class="input-group-prepend vaccinlistitem ">
+								<div class="input-group-prepend vaccinlistitem">
 									<input type="hidden" value="" name="vaccincode">
 									<button type="button" data-toggle="dropdown"
 										aria-haspopup="true" aria-expanded="false"
@@ -468,7 +541,7 @@
 					<div class="form-group row">
 						<div class="col-md-9 ml-auto">
 							<button type="reset" class="btn btn-primary">취소</button>
-							<button type="submit" class="btn btn-primary" id="registerBtn">등록</button>
+							<button type="button" class="btn btn-primary" id="registerBtn">등록</button>
 						</div>
 					</div>
 				</form>

@@ -8,6 +8,13 @@ public class BreedDto {
 	public BreedDto() {
 		super();
 	}
+	
+	public BreedDto(AnimalDto animalDto, String breed_code, String breed_name) {
+		super();
+		this.animalDto = animalDto;
+		this.breed_code = breed_code;
+		this.breed_name = breed_name;
+	}
 
 	public AnimalDto getAnimalDto() {
 		return animalDto;

@@ -67,34 +67,6 @@ function initAnimals() {
 <body>
 	<!-- 경고창 모달 -->
 	<%@ include file="/template/alert_danger.jsp"%>
-	<!-- 강아지 기타 눌렸을 때 모달 -->
-	<div id="kindothermodal" class="modal fade" role="dialog">
-		<h5 class="modal-title" id="myModalLabel">강아지 품종 검색</h5>
-		<div class="modal-dialog modal-lg">
-			<div class="modal-content">
-				<div class="modal-header text-center">
-					<label style="margin-left: auto; margin-bottom:auto; margin-top:auto; font-size: 1.5rem">강아지 품종 검색</label>
-					<button type="button" class="close" data-dismiss="modal"
-						aria-label="Close">
-						<span aria-hidden="true">X</span>
-					</button>
-				</div>
-				<div class="modal-body text-center">
-					
-					<div class="input-group" align="left">
-						<input type="text" class="form-control" id="doro" name="doro"
-							placeholder="검색 할 품종명"> <span
-							class="input-group-btn"> <input type="button"
-							class="btn btn-warning" value="검색" id="searchBtn">
-						</span>
-					</div>
-					<div style="width: 100%; height: 500px; overflow: auto; margin-top: 1%;">
-		
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
 	<!-- navbar-->
 	<header class="header">
 		<nav class="navbar navbar-expand-lg px-4 py-2 bg-white shadow">

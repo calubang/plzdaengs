@@ -1,42 +1,46 @@
 package com.plzdaeng.user.controller;
 
 import java.io.IOException;
+import java.util.List;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.plzdaeng.dto.UserDto;
-import com.plzdaeng.user.dao.PetDao;
+import com.plzdaeng.dto.BreedDto;
 import com.plzdaeng.user.service.PetService;
 import com.plzdaeng.util.MoveUrl;
 
-@WebServlet("/petnamecheck")
-public class PetNameCheckServlet extends HttpServlet {
+@WebServlet("/selectkind")
+public class SelectKindServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-    private PetService service;
+	private PetService service;
 	
-    public PetNameCheckServlet() {
-        service = new PetService();
+    public SelectKindServlet() {
+    	service = new PetService();
     }
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String petName = request.getParameter("petname");
-		UserDto user = (UserDto)request.getSession().getAttribute("userInfo");
-		String path = "";
-		if(user == null) {
-			return;
+		String path = "/index.jsp";
+		
+		String name = request.getParameter("kind");
+		String animalCode = request.getParameter("animalcode");
+		if(name == null) {
+			name = "";
 		}
+		if(animalCode == null) {
+			animalCode = "417000";
+		}
+		System.out.println("selectkind : " + name);
+		List<BreedDto> list = service.selectKind(name, animalCode);
+		request.setAttribute("selectkindresult", list);
+		System.out.println(list);
 		
-		System.out.println("petnamecheck : " + petName);
-		
-		//DB 통신
-		int result = service.petNameCheck(petName, user.getUser_id());
-		System.out.println(result);
-		request.setAttribute("result", result);
-		path = "/user/result/petnamecheckresult.jsp";
+		path = "/user/result/selectkindresult.jsp";
 		MoveUrl.forward(request, response, path);
+		
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
