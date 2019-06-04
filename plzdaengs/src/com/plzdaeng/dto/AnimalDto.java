@@ -7,6 +7,10 @@ public class AnimalDto {
 	public AnimalDto() {
 		super();
 	}
+	public AnimalDto(String animal_code) {
+		super();
+		this.animal_code = animal_code;
+	}
 	public String getAnimal_code() {
 		return animal_code;
 	}

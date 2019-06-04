@@ -1,6 +1,9 @@
 package com.plzdaeng.user.controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -9,20 +12,28 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.oreilly.servlet.MultipartRequest;
 import com.plzdaeng.dto.*;
+import com.plzdaeng.user.service.PetService;
 import com.plzdaeng.util.SiteConstance;
 
 @WebServlet("/petregister")
 public class PetRegister extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-
+	private PetService service;
+	
     public PetRegister() {
         super();
-       
+        service = new PetService();
     }
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		System.out.println("petregister");
 		String saveDirectory = SiteConstance.IMG_PATH;
+		UserDto user = (UserDto)request.getSession().getAttribute("userInfo");
+		// 테스트용
+		if(user == null) {
+			user = new UserDto();
+			user.setUser_id("calubang");
+		}
 		
 		MultipartRequest mr = new MultipartRequest(request, saveDirectory, "utf-8");
 		
@@ -31,34 +42,48 @@ public class PetRegister extends HttpServlet {
 		String petgender = mr.getParameter("petgender");
 		String birthdate = mr.getParameter("birthdate");
 		String pettype = mr.getParameter("pettype");
-		String vaccincode = mr.getParameter("vaccincode");
-		String vaccindate = mr.getParameter("vaccindate");
+		String animalcode = mr.getParameter("animalcode");
+		
 		String[] vaccincodes = mr.getParameterValues("vaccincode");
 		String[] vaccindates = mr.getParameterValues("vaccindate");
 		
-		//System.out.println(vaccincodes.length);
-		//System.out.println(vaccindates.length);
-		
 		PetDto pet = new PetDto();
-		UserDto user = (UserDto)request.getSession().getAttribute("userInfo");
-		// 테스트용
-		if(user == null) {
-			user = new UserDto();
-			user.setUser_id("calubang");
-		}
+		
 		pet.setUserDto(user);
 		pet.setPet_name(petName);
-		pet.setBreedDto(new BreedDto(null, breedcode, null));
+		pet.setBreedDto(new BreedDto(new AnimalDto(animalcode), breedcode, null));
 		pet.setPet_gender(petgender);
 		pet.setBirth_date(birthdate);
-		pet.setPet_type(pettype);
-		TakeVaccinDto takeVaccinDto = new TakeVaccinDto();
-		VaccinationDto vaccinationDto = new VaccinationDto();
-		//vaccinationDto.set
+		if(pettype != null) {
+			pet.setPet_type(pettype);
+		}else {
+			pet.setPet_type("F");
+		}
+		//이미지 부분
+		if(mr.getFile("imgdata") == null) {
+			pet.setPet_img("/plzdaengs/template/img/basic_pet_profile");
+		}else {
+			pet.setPet_img("/plzdaengs/img/"+user.getUser_id()+ "/"+pet.getPet_name()+".jpg");
+		}
 		
+		List<TakeVaccinDto> takeVaccinList = new ArrayList<TakeVaccinDto>();
+		for(int i=0; i<vaccincodes.length; i++) {
+			if(vaccincodes[i] != null && !vaccincodes[i].equals("")) {
+				TakeVaccinDto takeVaccinDto = new TakeVaccinDto();
+				VaccinationDto vaccinationDto = new VaccinationDto();
+				vaccinationDto.setVaccin_code(vaccincodes[i]);
+				takeVaccinDto.setVaccinationDto(vaccinationDto);
+				takeVaccinDto.setTakeVaccinDate(vaccindates[i]);
+				takeVaccinList.add(takeVaccinDto);
+			}
+		}
+		pet.setTakeVaccinList(takeVaccinList);
 		
-		//petgender
+		System.out.println(pet.getTakeVaccinList());
+		System.out.println(pet);
 		
+		int result = service.petRegister(pet);
+		System.out.println(result);
 	}
 
 	

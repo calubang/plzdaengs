@@ -3,6 +3,7 @@ package com.plzdaeng.user.service;
 import java.util.List;
 
 import com.plzdaeng.dto.BreedDto;
+import com.plzdaeng.dto.PetDto;
 import com.plzdaeng.user.dao.PetDao;
 
 public class PetService {
@@ -19,6 +20,10 @@ public class PetService {
 	public List<BreedDto> selectKind(String name, String animalCode) {
 		
 		return dao.selectKindByName(name, animalCode);
+	}
+
+	public int petRegister(PetDto pet) {
+		return dao.insert(pet);
 	}
 
 }

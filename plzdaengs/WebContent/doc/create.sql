@@ -101,6 +101,11 @@ COMMENT ON COLUMN PLZ_USER.user_img IS '유저프로필';
 
 COMMENT ON COLUMN PLZ_USER.authority IS '권한';
 
+CREATE UNIQUE INDEX PK_PLZ_USER
+	ON PLZ_USER (
+		user_id ASC
+	);
+
 ALTER TABLE PLZ_USER
 	ADD
 		CONSTRAINT PK_PLZ_USER
@@ -140,6 +145,11 @@ COMMENT ON COLUMN PLZ_GROUP.address_sido IS '주소시도';
 
 COMMENT ON COLUMN PLZ_GROUP.address_sigungu IS '주소시군구';
 
+CREATE UNIQUE INDEX PK_PLZ_GROUP
+	ON PLZ_GROUP (
+		group_id ASC
+	);
+
 ALTER TABLE PLZ_GROUP
 	ADD
 		CONSTRAINT PK_PLZ_GROUP
@@ -166,6 +176,12 @@ COMMENT ON COLUMN PLZ_GROUP_MEMBER.member_status IS '대표        L
 탈퇴        X
 ';
 
+CREATE UNIQUE INDEX PK_PLZ_GROUP_MEMBER
+	ON PLZ_GROUP_MEMBER (
+		group_id ASC,
+		user_id ASC
+	);
+
 ALTER TABLE PLZ_GROUP_MEMBER
 	ADD
 		CONSTRAINT PK_PLZ_GROUP_MEMBER
@@ -191,6 +207,13 @@ COMMENT ON COLUMN PLZ_GROUP_CHAT.user_id IS '유저ID';
 COMMENT ON COLUMN PLZ_GROUP_CHAT.chat_date IS '채팅날짜';
 
 COMMENT ON COLUMN PLZ_GROUP_CHAT.chat_contents IS '채팅내용';
+
+CREATE UNIQUE INDEX PK_PLZ_GROUP_CHAT
+	ON PLZ_GROUP_CHAT (
+		group_id ASC,
+		user_id ASC,
+		chat_date ASC
+	);
 
 ALTER TABLE PLZ_GROUP_CHAT
 	ADD
@@ -234,6 +257,12 @@ F : 비대표
 ';
 
 COMMENT ON COLUMN PLZ_PET.pet_img IS '펫이미지';
+
+CREATE UNIQUE INDEX PK_PLZ_PET
+	ON PLZ_PET (
+		user_id ASC,
+		pet_name ASC
+	);
 
 ALTER TABLE PLZ_PET
 	ADD
@@ -285,6 +314,11 @@ COMMENT ON COLUMN PLZ_DIARY.location_y IS 'y좌표';
 
 COMMENT ON COLUMN PLZ_DIARY.create_date IS '다이어리생성일';
 
+CREATE UNIQUE INDEX PK_PLZ_DIARY
+	ON PLZ_DIARY (
+		diary_number ASC
+	);
+
 ALTER TABLE PLZ_DIARY
 	ADD
 		CONSTRAINT PK_PLZ_DIARY
@@ -307,6 +341,12 @@ COMMENT ON COLUMN PLZ_BREED.breed_code IS '품종코드';
 
 COMMENT ON COLUMN PLZ_BREED.breed_name IS '품종이름';
 
+CREATE UNIQUE INDEX PK_PLZ_BREED
+	ON PLZ_BREED (
+		animal_code ASC,
+		breed_code ASC
+	);
+
 ALTER TABLE PLZ_BREED
 	ADD
 		CONSTRAINT PK_PLZ_BREED
@@ -326,6 +366,11 @@ COMMENT ON TABLE PLZ_ANIMAL IS 'PLZ_ANIMAL';
 COMMENT ON COLUMN PLZ_ANIMAL.animal_code IS '동물코드';
 
 COMMENT ON COLUMN PLZ_ANIMAL.animal_name IS '동물종이름';
+
+CREATE UNIQUE INDEX PK_PLZ_ANIMAL
+	ON PLZ_ANIMAL (
+		animal_code ASC
+	);
 
 ALTER TABLE PLZ_ANIMAL
 	ADD
@@ -352,6 +397,11 @@ COMMENT ON COLUMN PLZ_VACCINATION.animal_code IS '동물코드';
 
 COMMENT ON COLUMN PLZ_VACCINATION.vaccin_cycle IS '일단위로 저장함';
 
+CREATE UNIQUE INDEX PK_PLZ_VACCINATION
+	ON PLZ_VACCINATION (
+		vaccin_code ASC
+	);
+
 ALTER TABLE PLZ_VACCINATION
 	ADD
 		CONSTRAINT PK_PLZ_VACCINATION
@@ -363,7 +413,8 @@ ALTER TABLE PLZ_VACCINATION
 CREATE TABLE PLZ_TAKEVACCIN (
 	user_id VARCHAR2(32) NOT NULL, /* 유저ID */
 	pet_name VARCHAR2(64) NOT NULL, /* 펫이름 */
-	vaccin_code VARCHAR2(32) NOT NULL /* 백신코드 */
+	vaccin_code VARCHAR2(32) NOT NULL, /* 백신코드 */
+	take_vaccin_date DATE /* 백신맞은날짜 */
 );
 
 COMMENT ON TABLE PLZ_TAKEVACCIN IS 'TAKEVACCIN';
@@ -373,6 +424,15 @@ COMMENT ON COLUMN PLZ_TAKEVACCIN.user_id IS '유저ID';
 COMMENT ON COLUMN PLZ_TAKEVACCIN.pet_name IS '펫이름';
 
 COMMENT ON COLUMN PLZ_TAKEVACCIN.vaccin_code IS '백신코드';
+
+COMMENT ON COLUMN PLZ_TAKEVACCIN.take_vaccin_date IS '백신맞은날짜';
+
+CREATE UNIQUE INDEX PK_PLZ_TAKEVACCIN
+	ON PLZ_TAKEVACCIN (
+		user_id ASC,
+		pet_name ASC,
+		vaccin_code ASC
+	);
 
 ALTER TABLE PLZ_TAKEVACCIN
 	ADD
@@ -409,6 +469,11 @@ COMMENT ON COLUMN PLZ_GROUP_MEETING.meeting_date IS '미팅할날짜';
 COMMENT ON COLUMN PLZ_GROUP_MEETING.location_x IS '미팅장소X좌표';
 
 COMMENT ON COLUMN PLZ_GROUP_MEETING.location_y IS '미팅장소Y좌표';
+
+CREATE UNIQUE INDEX PK_PLZ_GROUP_MEETING
+	ON PLZ_GROUP_MEETING (
+		meeting_id ASC
+	);
 
 ALTER TABLE PLZ_GROUP_MEETING
 	ADD
@@ -451,6 +516,12 @@ COMMENT ON COLUMN PLZ_BOARD.views IS '조회수';
 
 COMMENT ON COLUMN PLZ_BOARD.group_id IS '그룹ID';
 
+CREATE UNIQUE INDEX PK_PLZ_BOARD
+	ON PLZ_BOARD (
+		post_id ASC,
+		board_category_id ASC
+	);
+
 ALTER TABLE PLZ_BOARD
 	ADD
 		CONSTRAINT PK_PLZ_BOARD
@@ -484,6 +555,11 @@ COMMENT ON COLUMN PLZ_USER_DETAIL.address IS '주소';
 
 COMMENT ON COLUMN PLZ_USER_DETAIL.address_detail IS '상세주소';
 
+CREATE UNIQUE INDEX PK_PLZ_USER_DETAIL
+	ON PLZ_USER_DETAIL (
+		user_id ASC
+	);
+
 ALTER TABLE PLZ_USER_DETAIL
 	ADD
 		CONSTRAINT PK_PLZ_USER_DETAIL
@@ -515,6 +591,11 @@ COMMENT ON COLUMN PLZ_REPLY.reply_contents IS '리플내용';
 
 COMMENT ON COLUMN PLZ_REPLY.creat_date IS '리플생성일';
 
+CREATE UNIQUE INDEX PK_PLZ_REPLY
+	ON PLZ_REPLY (
+		reply_id ASC
+	);
+
 ALTER TABLE PLZ_REPLY
 	ADD
 		CONSTRAINT PK_PLZ_REPLY
@@ -537,6 +618,11 @@ COMMENT ON COLUMN PLZ_BOARD_CATEGORY.board_category_name IS '보드카테고리�
 
 COMMENT ON COLUMN PLZ_BOARD_CATEGORY.board_category_descripton IS '보드카테고리설명';
 
+CREATE UNIQUE INDEX PK_PLZ_BOARD_CATEGORY
+	ON PLZ_BOARD_CATEGORY (
+		board_category_id ASC
+	);
+
 ALTER TABLE PLZ_BOARD_CATEGORY
 	ADD
 		CONSTRAINT PK_PLZ_BOARD_CATEGORY
@@ -558,6 +644,13 @@ COMMENT ON COLUMN PLZ_LIKES.user_id IS '유저ID';
 COMMENT ON COLUMN PLZ_LIKES.post_id IS '글번호';
 
 COMMENT ON COLUMN PLZ_LIKES.board_category_id IS '보드카테고리ID';
+
+CREATE UNIQUE INDEX PK_PLZ_LIKES
+	ON PLZ_LIKES (
+		user_id ASC,
+		post_id ASC,
+		board_category_id ASC
+	);
 
 ALTER TABLE PLZ_LIKES
 	ADD
@@ -583,6 +676,11 @@ COMMENT ON COLUMN PLZ_DIARY_CATEGORY.category_name IS '카테고리이름';
 
 COMMENT ON COLUMN PLZ_DIARY_CATEGORY.category_description IS '카테고리설명';
 
+CREATE UNIQUE INDEX PK_PLZ_DIARY_CATEGORY
+	ON PLZ_DIARY_CATEGORY (
+		category_id ASC
+	);
+
 ALTER TABLE PLZ_DIARY_CATEGORY
 	ADD
 		CONSTRAINT PK_PLZ_DIARY_CATEGORY
@@ -593,23 +691,25 @@ ALTER TABLE PLZ_DIARY_CATEGORY
 /* GROUP_TYPE */
 CREATE TABLE PLZ_GROUP_TYPE (
 	group_category_id VARCHAR2(1) NOT NULL, /* 그룹카테고리ID */
-	group_category_name VARCHAR2(64), /* 그룹카테고리이름 */
-	group_category_description VARCHAR2(1024) /* 그룹카테고리설명 */
+	group_category_name VARCHAR2(64) /* 그룹카테고리이름 */
 );
 
 COMMENT ON TABLE PLZ_GROUP_TYPE IS 'GROUP_TYPE';
 
-COMMENT ON COLUMN PLZ_GROUP_TYPE.group_category__id IS '그룹카테고리ID';
+COMMENT ON COLUMN PLZ_GROUP_TYPE.group_category_id IS '그룹카테고리ID';
 
-COMMENT ON COLUMN PLZ_GROUP_TYPE.group_category__name IS '그룹카테고리이름';
+COMMENT ON COLUMN PLZ_GROUP_TYPE.group_category_name IS '그룹카테고리이름';
 
-COMMENT ON COLUMN PLZ_GROUP_TYPE.group_category__description IS '그룹카테고리설명';
+CREATE UNIQUE INDEX PK_PLZ_GROUP_TYPE
+	ON PLZ_GROUP_TYPE (
+		group_category_id ASC
+	);
 
 ALTER TABLE PLZ_GROUP_TYPE
 	ADD
 		CONSTRAINT PK_PLZ_GROUP_TYPE
 		PRIMARY KEY (
-			group_category__id
+			group_category_id
 		);
 
 /* MEETING_MEMBER */
@@ -627,6 +727,13 @@ COMMENT ON COLUMN PLZ_MEETING_MEMBER.group_id IS '그룹ID';
 
 COMMENT ON COLUMN PLZ_MEETING_MEMBER.user_id IS '유저ID';
 
+CREATE UNIQUE INDEX PK_PLZ_MEETING_MEMBER
+	ON PLZ_MEETING_MEMBER (
+		meeting_id ASC,
+		group_id ASC,
+		user_id ASC
+	);
+
 ALTER TABLE PLZ_MEETING_MEMBER
 	ADD
 		CONSTRAINT PK_PLZ_MEETING_MEMBER
@@ -643,7 +750,7 @@ ALTER TABLE PLZ_GROUP
 			group_category_id
 		)
 		REFERENCES PLZ_GROUP_TYPE (
-			group_category__id
+			group_category_id
 		);
 
 ALTER TABLE PLZ_GROUP_MEMBER
@@ -867,19 +974,20 @@ ALTER TABLE PLZ_MEETING_MEMBER
 			group_id,
 			user_id
 		);
-
+		
 -- animal 코드 등록
-insert into plz_animal(
-    animal_code
-    , animal_name
-)values(
-    '417000'
-    , '개'
-);
-insert into plz_animal(
-    animal_code
-    , animal_name
-)values(
-    '422400'
-    , '고양이'
-);
+insert into plz_animal( animal_code, animal_name)
+values('417000', '개');
+
+insert into plz_animal(animal_code, animal_name
+)values('422400', '고양이');
+
+-- 백신 데이터 입력
+insert into plz_vaccination(vaccin_code, vaccin_name, animal_code, vaccin_cycle
+)values('1', '종합백신', '417000', 180);
+
+insert into plz_vaccination(vaccin_code, vaccin_name, animal_code, vaccin_cycle
+)values('2', '코로나 장염 예방접종', '417000', 180);
+
+insert into plz_vaccination(vaccin_code, vaccin_name, animal_code, vaccin_cycle
+)values('3', '켄넬코프 예방접종', '417000', 180);

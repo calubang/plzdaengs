@@ -110,8 +110,9 @@
 	}
 	
 	function vaccindropdownitemClick() {
+		var code = $(this).attr("data");
 		var text = $(this).text();
-		$(this).parent().siblings("input[type=hidden]").val(text);
+		$(this).parent().siblings("input[type=hidden]").val(code);
 		$(this).parent().siblings(".dropdown-toggle").text(text);
 	}
 	
@@ -429,6 +430,7 @@
 			</div>
 			<div class="card-body">
 				<form class="form-horizontal" enctype="multipart/form-data" method="post">
+					<input type="hidden" name="animalcode" value="417000">
 					<div class="form-group row">
 						<label class="col-md-3 form-control-label">반려동물 이름(*)</label>
 						<div class="col-md-5">
@@ -471,13 +473,13 @@
 							<div
 								class="custom-control custom-radio custom-control-inline">
 								<input id="genderfemaleradio" type="radio"
-									class="custom-control-input" name="petgender" value="female">
+									class="custom-control-input" name="petgender" value="F">
 								<label for="genderfemaleradio" class="custom-control-label">여아</label>
 							</div>
 							<div
 								class="custom-control custom-radio custom-control-inline">
 								<input id="gendermaleradio" type="radio"
-									class="custom-control-input" name="petgender" value="male">
+									class="custom-control-input" name="petgender" value="M">
 								<label for="gendermaleradio" class="custom-control-label">남아</label>
 							</div>
 						</div>
@@ -507,7 +509,7 @@
 						<div class="col-md-8">
 							<div class="custom-control custom-checkbox">
 								<input id="mainpetCheck" type="checkbox"
-									class="custom-control-input" name="pettype"> 
+									class="custom-control-input" name="pettype" value="T"> 
 									<label
 									for="mainpetCheck" class="custom-control-label">대표
 									펫으로 설정(대표 펫은 좌측의 프로필에 보여집니다.)</label>
@@ -526,9 +528,9 @@
 										aria-haspopup="true" aria-expanded="false"
 										class="btn btn-outline-primary dropdown-toggle col-md-3">예방접종 종류</button>
 									<div class="dropdown-menu">
-										<span class="dropdown-item">종합백신</span> 
-										<span class="dropdown-item">코로나 장염 예방접종</span>
-										<span class="dropdown-item">켄넬코프 예방접종</span>
+										<span class="dropdown-item" data="1">종합백신</span> 
+										<span class="dropdown-item" data="2">코로나 장염 예방접종</span>
+										<span class="dropdown-item" data="3">켄넬코프 예방접종</span>
 									</div>
 									<input type='text' class="form-control datepicker-here col-md-5" name="vaccindate"
 									data-position="right top" data-language='kr' readonly/>

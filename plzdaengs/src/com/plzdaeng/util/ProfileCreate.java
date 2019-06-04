@@ -3,19 +3,15 @@ package com.plzdaeng.util;
 import java.io.*;
 
 public class ProfileCreate {
-	public static void profileRegister(File file,String path, String id, String type) {
+	public static void profileRegister(File file, String path, String id, String petName, String type) {
 		byte[] buf = new byte[1024];
 		FileInputStream fin = null;
 		FileOutputStream fout = null;
 		int read = 0;
+		File temp = null;
 		
 		switch (type) {
 		case "user":
-			path += "/user";
-			File temp = new File(path);
-			if(!temp.exists()) {
-				temp.mkdir();
-			}
 			path += "/"+id;
 			temp = new File(path);
 			if(!temp.exists()) {
@@ -24,7 +20,12 @@ public class ProfileCreate {
 			path += "/user_profile.jpg";
 			break;
 		case "pet":
-			path += "/user/"+id;
+			path += "/"+id;
+			temp = new File(path);
+			if(!temp.exists()) {
+				temp.mkdir();
+			}
+			path += "/"+petName + ".jpg";
 			break;
 		default:
 			break;
