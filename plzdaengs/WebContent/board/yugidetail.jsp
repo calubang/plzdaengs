@@ -106,7 +106,7 @@
 									<tbody>
 											<tr>
 												<th scope="row">
-													<li>공고번호:<%=request.getParameter("desertionNo")%></li>
+													<li>공고번호:<%=request.getParameter("noticeNo")%></li>
 													<li>색상:<%=request.getParameter("colorCd")%></li>
 													<li>나이/체중:<%=request.getParameter("age")%>/<%=request.getParameter("weight")%></li>
 													<li>접수일:<%=request.getParameter("happenDt")%></li>
