@@ -15,7 +15,9 @@ public interface GroupDao {
 	
 	int changeGroup(GroupDto dto);
 	
-	int deleteGroup(GroupDto dto);
+	int deleteGroup(int group_id);
+	
+	int deleteGroupmember(Connection conn, int group_id) throws SQLException;
 	
 	List<GroupDto> myGroup(String user_id);
 	
@@ -28,6 +30,8 @@ public interface GroupDao {
 	List<GroupBoard> boardLoading(int group_id);
 	
 	GroupDto groupDetail(int group_id);
+	
+	int joinGroup(int group_id, String id);
 	
 	
 }

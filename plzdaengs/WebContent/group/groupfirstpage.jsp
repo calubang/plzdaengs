@@ -32,7 +32,6 @@
 				alert("가입 승인대기중입니다.");
 			} else if ('<%=level%>' == 'X') {
 				alert("가입하세요~");
-				
 				$("#joingroupmodal").modal('show');
 			}else if('<%=level%>' == 'M'){
 				alert("탈퇴할꺼야?");
@@ -51,6 +50,32 @@
 				});
 			}
 		});
+		
+		var join = $('#joingroup');
+		$(join).click(function(){
+			$.ajax({
+				url : '/plzdaengs/groupfront',
+				method : 'GET',
+				data : {group_id : '<%=group_id%>'},
+				success : function(result) {
+					var resultB = request.getAttribute('result');
+					if(resultB == 1){
+					alert("join request");
+					$("section").html();
+					//authority = "가입요청중"
+					}else{
+						alert("fail to join group")
+						$("section").html();
+					}
+				}
+			});
+			
+			
+			
+			
+			
+		});
+		
 	});
 </script>
 </head>
@@ -62,7 +87,7 @@
 		<div role="document" class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-header">
-					<h4 id="exampleModalLabel" class="modal-title">소모임 생성</h4>
+					<h4 id="exampleModalLabel" class="modal-title">소모임을 가입하시겠습니까?</h4>
 					<button type="button" data-dismiss="modal" aria-label="Close"
 						class="close">
 						<span aria-hidden="true">×</span>
@@ -71,7 +96,7 @@
 				<div class="modal-body">
 					
 				
-						<input type="hidden" name="act" value="creategroup">
+						<input type="hidden" name="act" value="joingroup">
 						<div class="form-group">
 							<label><%=group_name%></label> 
 						</div>
@@ -91,7 +116,7 @@
 		</div>
 	</div>
 	<!-- 그룹탈퇴 -->
-	<div id="leavegroupmodal" tabindex="-1" role="dialog"
+<!-- 	<div id="leavegroupmodal" tabindex="-1" role="dialog"
 		aria-labelledby="exampleModalLabel" aria-hidden="true"
 		class="modal fade text-left">
 		<div role="document" class="modal-dialog">
@@ -104,7 +129,7 @@
 				</div>
 			</div>
 		</div>
-	</div>
+	</div> -->
 
 	<!-- navbar-->
 	<header class="header">

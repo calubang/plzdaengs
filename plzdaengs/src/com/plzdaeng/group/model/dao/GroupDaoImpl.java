@@ -111,7 +111,7 @@ public class GroupDaoImpl implements GroupDao {
 		PreparedStatement pstmt = null;
 
 		String updateGroupSql = "";
-		updateGroupSql = "UPDATE plz_group \r\n" + 
+		updateGroupSql += "UPDATE plz_group\r\n" + 
 				"SET DESCRIPTION = ?,\r\n" + 
 				"GROUP_IMG = ?,\r\n" + 
 				"ADDRESS_SIDO = ?,\r\n" + 
@@ -123,7 +123,7 @@ public class GroupDaoImpl implements GroupDao {
 			System.out.println("sql문실행전");
 			conn = DBConnection.makeConnectplzdb();
 			pstmt = conn.prepareStatement(updateGroupSql);
-		
+
 			pstmt.setString(1, dto.getGroup_description());
 			pstmt.setString(2, dto.getGroup_img());
 			pstmt.setString(3, dto.getAddress_sido());
@@ -131,29 +131,117 @@ public class GroupDaoImpl implements GroupDao {
 			pstmt.setInt(5, dto.getGroup_id());
 			
 			int r = pstmt.executeUpdate();
-			System.out.println(r);
+			System.out.println("변경된 row : "+r);
 			if(r == 1) {
 				result = 1;
 			}
+			
 			System.out.println("sql문실행후");
 
-			DBClose.close(null, pstmt);
+			DBClose.close(conn, pstmt);
 
 		} catch (SQLException e) {
 			System.out.println("groupdetail update fail");
 			e.printStackTrace();
 		} finally {
-			DBClose.close(conn, null);
+			DBClose.close(conn, pstmt);
 		}
 
 		return result;
 	}
-
+	
 	@Override
-	public int deleteGroup(GroupDto dto) {
+	public int deleteGroupmember(Connection conn, int group_id) throws SQLException {
 		int result = -1;
 
+		System.out.println("Dao메소드입장");
+		
+		
+		PreparedStatement pstmt = null;
+
+		String deleteGroupSql = "";
+		deleteGroupSql += "delete \r\n" + 
+				"FROM plz_group_member\r\n" + 
+				"WHERE group_id = ?;";
+
+		
+			System.out.println("sql문실행전");
+			
+			
+			pstmt = conn.prepareStatement(deleteGroupSql);
+			pstmt.setInt(1, group_id);
+
+			int r = pstmt.executeUpdate();
+			System.out.println("sql문실행후");
+
+			System.out.println("변경된 row : " + r);
+			DBClose.close(null, pstmt);
+
+			if(r>=1) {
+			result = 1;
+			}
+			
+		
+			DBClose.close(null, pstmt);
+	
+
 		return result;
+
+	}
+
+	@Override
+	public int deleteGroup(int group_id) {
+		
+		int result = -1;
+
+		System.out.println("Dao메소드입장");
+		
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+
+		String deleteGroupSql = "";
+		deleteGroupSql += "DELETE\r\n" + 
+				"FROM plz_group\r\n" + 
+				"WHERE group_id = ?;";
+
+		try {
+			System.out.println("sql문실행전");
+			
+			conn = DBConnection.makeConnectplzdb();
+			conn.setAutoCommit(false);
+			deleteGroupmember(conn, group_id);
+			
+			pstmt = conn.prepareStatement(deleteGroupSql);
+			pstmt.setInt(1, group_id);
+
+			int r = pstmt.executeUpdate();
+			System.out.println("sql문실행후");
+
+			System.out.println(r);
+			if(r == 1) {
+				result = 1;
+				conn.commit();
+			}
+
+		} catch (SQLException e) {
+			try {
+				System.out.println("rollback 실행");
+				conn.rollback();
+			} catch (SQLException e1) {
+				System.out.println("rollback fail..관리자에게 문의하세요.");
+				e1.printStackTrace();
+				result = -2;
+				return result;
+			}
+			e.printStackTrace();
+		} finally {
+			DBClose.close(conn, pstmt);
+		}
+
+		return result;
+		
+		
+		
 	}
 
 	@Override
@@ -163,7 +251,8 @@ public class GroupDaoImpl implements GroupDao {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
-		String inGourpSQL = "SELECT g.group_id , g.group_name, g.description "
+		String inGourpSQL = "";
+		inGourpSQL += "SELECT g.group_id , g.group_name, g.description "
 				+ ", t.group_category_id, t.group_category_name, g.group_img "
 				+ ", g.address_sido, g.address_sigungu, m.user_id \r\n"
 				+ "FROM plz_group g inner join plz_group_type t \r\n"
@@ -230,7 +319,8 @@ public class GroupDaoImpl implements GroupDao {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
-		String inGourpSQL = "SELECT g.group_id , g.group_name, g.description \r\n"
+		String inGourpSQL = "";
+		inGourpSQL += "SELECT g.group_id , g.group_name, g.description \r\n"
 				+ ", t.group_category_id, t.group_category_name, g.group_img \r\n"
 				+ ", g.address_sido, g.address_sigungu, m.user_id \r\n"
 				+ "FROM plz_group g inner join plz_group_type t \r\n"
@@ -381,8 +471,8 @@ public class GroupDaoImpl implements GroupDao {
 
 		try {
 			conn = DBConnection.makeConnectplzdb();
-
-			String checkSQL = "SELECT group_id, user_id, member_status \r\n" + 
+			String checkSQL = "";
+			checkSQL += "SELECT group_id, user_id, member_status \r\n" + 
 								"FROM plz_group_member \r\n" +
 								"WHERE group_id = ? and user_id = ? and member_status in('L','M','A')";
 
@@ -493,5 +583,50 @@ public class GroupDaoImpl implements GroupDao {
 
 		return dto;
 	}
+
+	@Override
+	public int joinGroup(int group_id, String id) {
+		int result = -1;
+
+		System.out.println("Dao메소드입장");
+		
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+
+		String joinGroupSql = "";
+		joinGroupSql += "insert into plz_group_member (group_id, user_id, member_status)\r\n" + 
+				"values(?, ?, 'M');";
+
+		
+			System.out.println("sql문실행전");
+			
+			
+			try {
+				pstmt = conn.prepareStatement(joinGroupSql);
+			
+				pstmt.setInt(1, group_id);
+				pstmt.setString(2, id);
+
+			int r = pstmt.executeUpdate();
+			System.out.println("sql문실행후");
+
+			System.out.println("변경된 row : " + r);
+
+			if(r>=1) {
+			result = 1;
+			}
+			
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} finally {
+			DBClose.close(conn, pstmt);
+			}
+
+		return result;
+
+	}
+
+	
 
 }

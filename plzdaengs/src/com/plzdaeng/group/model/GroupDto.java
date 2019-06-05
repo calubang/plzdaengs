@@ -106,6 +106,14 @@ public class GroupDto {
 		this.groupMembers = groupMembers;
 	}
 
+	@Override
+	public String toString() {
+		return "GroupDto [group_id=" + group_id + ", group_leader=" + group_leader + ", group_name=" + group_name
+				+ ", group_description=" + group_description + ", address_sido=" + address_sido + ", address_sigungu="
+				+ address_sigungu + ", group_img=" + group_img + ", groupCategory=" + groupCategory + ", groupMembers="
+				+ groupMembers + "]";
+	}
+
 	
 
 

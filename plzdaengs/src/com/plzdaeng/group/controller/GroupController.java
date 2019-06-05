@@ -145,30 +145,46 @@ public class GroupController {
 		path = "/group/managegroupinfo.jsp";
 		int group_id = Integer.parseInt(request.getParameter("group_id"));
 		String name = request.getParameter("groupname");
-		String desc = request.getParameter("groupdescription");
+		String desc = request.getParameter("group_description");
 		String keyword = request.getParameter("groupkeyword");
 		String groupdontselect = request.getParameter("groupdontselect");//지역무관
 		String img = request.getParameter("groupimg");
-		System.out.println(groupdontselect);
-
-		System.out.println(name + keyword + desc);
-		// 소모임 정보set
-
+		String groupsido = request.getParameter("groupsido");
+		String groupsigungu = request.getParameter("groupsigungu");
+		//String groupCategory = 
 		
+		System.out.println(name + "/" +keyword  + "/" + desc + "/" + groupdontselect);
+		// 소모임 정보set
 		GroupDto dto = new GroupDto();
+		dto.setGroup_id(group_id);
 		//dto.setGroup_leader(id);
 		dto.setGroup_name(name);
 		dto.setGroup_description(desc);
 		dto.setGroup_img(img);
-		if (!groupdontselect.equals("on")){
-			String groupsido = request.getParameter("groupsido");
-			String groupsigungu = request.getParameter("groupsigungu");
-			dto.setAddress_sido(groupsido);
-			dto.setAddress_sigungu(groupsigungu);
-		}
+		dto.setAddress_sido(groupsido);
+		dto.setAddress_sigungu(groupsigungu);
+		
+//		if (!groupdontselect.equals("on")){
+//			System.out.println("지역무관 판단");
+//			String groupsido = request.getParameter("groupsido");
+//			String groupsigungu = request.getParameter("groupsigungu");
+//			dto.setAddress_sido(groupsido);
+//			dto.setAddress_sigungu(groupsigungu);
+//		}
 		int result = GroupDaoImpl.getGroupDaoImpl().changeGroup(dto);
+		//entermanege(request, response);
+		request.setAttribute("groupdetail", dto);
 		
+		return path;
+	}
+
+	public String joinGroup(HttpServletRequest request, HttpServletResponse response, UserDto user) {
+		path = "/group/groupfirstpage.jsp";
+		int group_id = Integer.parseInt(request.getParameter("group_id"));
+		String id = user.getUser_id();
 		
+		int result = GroupDaoImpl.getGroupDaoImpl().joinGroup(group_id, id);
+		request.setAttribute("result", result);
 		return path;
 	}
 

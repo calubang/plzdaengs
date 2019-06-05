@@ -8,7 +8,7 @@
 <title>Insert title here</title>
 <%@ include file="/template/default_link.jsp" %>
 
-<% GroupDto dto = (GroupDto)request.getAttribute("groupdetail"); 
+<% GroupDto dto = (GroupDto)request.getAttribute("groupdetail");
 System.out.println(dto);%>
 <script>
 $(function(){
@@ -21,23 +21,56 @@ $(function(){
 			data:$(this).serialize(),
 			success:function(result){
 				var result = request.getAttribute("result");
-				alert("인포변경");
 				if(result == 1){
+				alert("인포변경");
 				$("section").html();
 				}
 			}
 			
 			
 		});
+		return false;
 	});
 
 
+	var deleteBtn = $('#deletegroup');
+	$(deleteBtn).click(function(){
+		$("#deletegroupmodal").modal('show');
+		
+	});
 
 
 });
 </script>
 </head>
 <body>
+<!-- <div id="deletegroupmodal" tabindex="-1" role="dialog" 
+		aria-labelledby="exampleModalLabel" aria-hidden="true"
+		class="modal fade text-left">
+		<div role="document" class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					
+					<button type="button" data-dismiss="modal" aria-label="Close"
+						class="close">
+						<span aria-hidden="true">×</span>
+					</button>
+				</div>
+				<div class="modal-body">
+				<h4 id="exampleModalLabel" class="modal-title">소모임을 탈퇴하시겠습니까?</h4>
+						<input type="hidden" name="act" value="creategroup">
+					
+				</div>
+				<div class="modal-footer">
+					<input name="joingroup" type="submit" value="탈퇴"
+						class="btn btn-primary"> <input name="modalcancel"
+						type="button" data-dismiss="modal" value="취소"
+						class="btn btn-primary">
+				</div>
+			</div>
+		</div>
+	</div> -->
+
 
           <div>
           <Button>소모임 정보변경</Button>
@@ -75,7 +108,7 @@ $(function(){
                        <div class="form-group row"> 
                                 <label class="col-md-3 form-control-label">소모임 소개</label>
                                 <div class="col-md-9">
-                                <textarea name="group_description" class="form-control" style="width: 70%" placeholder="<%=dto.getGroup_description() %>"></textarea>
+                                <textarea name="group_description" class="form-control" style="width: 70%"><%=dto.getGroup_description() %></textarea>
                             </div>
                               </div>
                       <div class="line"></div>
@@ -99,7 +132,7 @@ $(function(){
                                </div>
                                </div>
                       <div class="line"></div>
-                          <button style="background-color: red;float: left;" type="submit" class="btn btn-secondary">소모임 해체</button>
+                          <button style="background-color: red;float: left;" name="deletegroup" type="button" class="btn btn-secondary">소모임 해체</button>
                           <button style="float: right;" type="submit" class="btn btn-primary">취소</button>
                           <button style="float: right;" type="submit" class="btn btn-primary">변경</button>
                     </form>

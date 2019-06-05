@@ -27,12 +27,23 @@ public class GroupFrontController extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		response.setContentType("text/html;charset=UTF-8");
+		
+		
 		System.out.println("front 도착");
 		String act = request.getParameter("act");
 		//String path = "/group/index.jsp";
 		System.out.println(act);
 		HttpSession session = request.getSession();
 		UserDto user = (UserDto)session.getAttribute("userInfo");
+		
+		//테스트용 코드
+		if(user == null) {
+			user = new UserDto();
+			user.setUser_id("asdf");
+			//user.setUser_id("qwer");
+			request.getSession().setAttribute("userInfo", user);
+		}
+		
 		System.out.println(user);
 		String path = "";
 		if("creategroup".equals(act)) {
@@ -56,6 +67,10 @@ public class GroupFrontController extends HttpServlet {
 		}else if("changedetail".equals(act)) {
 			System.out.println("front enter");
 			path = GroupController.getCreateGroup().changeDetail(request, response);
+			MoveUrl.forward(request, response, path);
+		}else if("joingroup".equals(act)) {
+			System.out.println("front enter");
+			path = GroupController.getCreateGroup().joinGroup(request, response, user);
 			MoveUrl.forward(request, response, path);
 		}
 	}
