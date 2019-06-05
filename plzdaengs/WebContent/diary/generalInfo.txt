@@ -7,3 +7,7 @@
  > 칸칸이는 cTable cmvMonthTable cmvMonthTableMain
  
  3. <script type="text/javascript" src="js/jquery-ui-custom-1.11.2.min.js"> 부분 : customizing!
+ 
+ ★ event 걸려져있는거 삭제할 부분 > 
+ .cdmvEventCont
+ .calendarCont, .calendarCont *
