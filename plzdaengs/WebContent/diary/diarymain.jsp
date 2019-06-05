@@ -3,6 +3,10 @@
 <!DOCTYPE html>
 <html>
 <head>
+		<!-- 
+				js/jquery-ui-custom-1.11.2.min.js : 전체 이벤트
+		 -->
+		 
 		<title>Add Event</title>
 		<%@ include file="/template/default_link.jsp"%>
 		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
@@ -22,7 +26,6 @@
 		<link rel="stylesheet" type="text/css" href="css/calenstyle-iconfont.css" />
 		<script type="text/javascript" src="css/calenstyle.js"></script>
 		
-	
 		<script type="text/javascript" src="js/CalJsonGenerator.js"></script>
 	
 <style type="text/css">
@@ -134,7 +137,7 @@ $(document).ready(function() {
 					
 		cellClicked: // 셀별로 클릭했을 시 event
 			function(sView, dSelectedDate, bIsAllDay, pClickedAt){
-					console.log("Cell Clicked 1 : " + dSelectedDate);
+					console.log("Cell Click했슈 : " + dSelectedDate);
 					showModal(true, dSelectedDate);						
 			},
 					

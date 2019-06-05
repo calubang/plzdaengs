@@ -569,6 +569,7 @@ $(function(){
 						<input type="hidden" id="chargeNm" name="chargeNm">
 						<input type="hidden" id="officetel" name="officetel">
 						<input type="hidden" id="noticeComment" name="noticeComment">
+						<input type="hidden" id="processState" name="processState">
 						
 					</form>
 				</section>

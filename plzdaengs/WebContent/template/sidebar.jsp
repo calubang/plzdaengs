@@ -77,7 +77,6 @@
 				class="o-home-1 mr-3 text-gray"></i> <span>홈으로</span>
 		</a></li>
 
-		<!-- 윤영 PART -->
 		<li class="sidebar-list-item"><a href="/plzdaengs/charts.html"></a>
 
 		<li class="sidebar-list-item"><a href="#" data-toggle="collapse"
