@@ -96,7 +96,7 @@
 			</div></li>
 			
 		<!-- 윤영 PART > 기존의 다이어리 → table 모여있는 화면으로 가려면 tables.html을 보시오 -->
-		<li class="sidebar-list-item"><a href="/plzdaengs/diary/diarymain.jsp"
+		<li class="sidebar-list-item"><a href="/plzdaengs/diary/calendar.jsp"
 			class="sidebar-link text-muted"><i
 				class="o-sales-up-1 mr-3 text-gray"></i><span>다이어리</span></a></li>
 				

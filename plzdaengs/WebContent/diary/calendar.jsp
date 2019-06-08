@@ -7,6 +7,7 @@
 	<title>Calendar</title>
 	<%@ include file="/template/default_link.jsp"%>
 	<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+	<script type="text/javascript" src="js/bootstrap.diary.min.js"></script>
 
 <style type="text/css">
 #div1 {
@@ -41,7 +42,6 @@ table.calendar td{
     vertical-align: top;
     height : 50px;
     width: 150px;
-    border: thin solid white;
 }
 </style>
 
@@ -57,26 +57,37 @@ table.calendar td{
  
     $(document).ready(function() { // 아예 시작할 때
         drawCalendar();
-        initDate();
+        initDate(); // 날짜 초기화할것
         drawDays();
         $("#movePrevMonth").on("click", function(){movePrevMonth();});
         $("#moveNextMonth").on("click", function(){moveNextMonth();});
-        $("table.calendar").on("click", function(){cellClick();}); // 달력별 셀 클릭했을 때 나타나는 event
+        //$("table.calendar").on("click", function(){cellClick();}); // 달력별 셀 클릭했을 때 나타나는 event
+        $("table.calendar").on("click", function(sView, dSelectedDate, bIsAllDay, pClickedAt){
+        	alert('달력클릭');
+        	console.log("Cell Click했슈 : " + dSelectedDate);  // [1]
+			showModal(true, dSelectedDate);		
+        	}); // 달력별 셀 클릭했을 때 나타나는 event
     });
     
-    function cellClick() {
+    /*
+    function cellClick() { // 잠시 block
 		alert('테이블 셀클릭햇쇼');
+		console.log("Cell Click했슈 : " + dSelectedDate);
+		showModal(true, dSelectedDate);	
 		//console.log('완료');
-		//showModal(bIsAllDay, dStartDateTime);
 	}
+    */
+    
     
     function showModal(bIsAllDay, dStartDateTime){
-    	console.log("showModal : " + bIsAllDay + " " + dStartDateTime);
+    	console.log("showModal : " + bIsAllDay + "//" + dStartDateTime); //[2] : 위에서 이미 true라고 하니까 true라고 찍히는거
     	$("#modal-form").modal('show');
+    		
     	$("#ipTitle, #ipDesc").val("");
     	$("#ipAllDay").prop("checked", bIsAllDay);
     			
     	var dEndDateTime, sStartDateTime, sEndDateTime;
+    	/*
     	if(bIsAllDay) {
     		dEndDateTime = new Date(dStartDateTime);
     		dEndDateTime.setDate(dStartDateTime.getDate() + (oCal1.setting.allDayEventDuration - 1));
@@ -89,12 +100,52 @@ table.calendar td{
     		sStartDateTime = oCal1.getDateInFormat({"date": dStartDateTime}, "dd-MM-yyyy HH:mm", oCal1.setting.is24Hour, false);
     		sEndDateTime = oCal1.getDateInFormat({"date": dEndDateTime}, "dd-MM-yyyy HH:mm", oCal1.setting.is24Hour, false);
     	}
+    	*/
     			
-    	console.log(sEndDateTime + "  " + sEndDateTime);
+    	console.log(sEndDateTime + "  " + sEndDateTime); // [3]
     	$("#ipStart").val(sStartDateTime);
     	$("#ipEnd").val(sEndDateTime);
     	validateAllDayChecked();
     }
+    
+    function validateAllDayChecked() {
+    	console.log("validateAllDayChecked " + ($("#ipAllDay").is(':checked')));
+    	if($("#ipAllDay").is(':checked')){
+    		$("#ipStart-group label").html("Start Date : ");
+    		$("#ipEnd-group label").html("End Date : ");
+    				
+    		$("#ipStart, #ipEnd").data("field", "date");
+    				
+    		var sDateTimeRegex = /^([0-3]{1}[0-9]{1})(-([0-1]{1}[0-9]{1}))(-([0-9]{4}))(\s)([0-2]{1}[0-9]{1}):([0-6]{1}[0-9]{1})/;
+    		var sDateTimeStart = $("#ipStart").val(),
+    		sArrDateTimeStart = sDateTimeStart.match(sDateTimeRegex),
+    		sDateTimeEnd = $("#ipEnd").val(),
+    		sArrDateTimeEnd = sDateTimeEnd.match(sDateTimeRegex);
+    		
+    		if(sArrDateTimeStart != null)
+    			$("#ipStart").val(sDateTimeStart.split(" ")[0]);
+    		if(sArrDateTimeEnd != null)
+    			$("#ipEnd").val(sDateTimeEnd.split(" ")[0]);
+    	} else {
+    		$("#ipStart-group label").html("Start Date Time : ");
+    		$("#ipEnd-group label").html("End Date Time : ");
+    				
+    		$("#ipStart, #ipEnd").data("field", "datetime");
+    				
+    		var sDateTimeRegex = /^([0-3]{1}[0-9]{1})(-([0-1]{1}[0-9]{1}))(-([0-9]{4}))(\s)([0-2]{1}[0-9]{1}):([0-6]{1}[0-9]{1})/;
+    		var sDateTimeStart = $("#ipStart").val(),
+    		sArrDateTimeStart = sDateTimeStart.match(sDateTimeRegex),
+    		sDateTimeEnd = $("#ipEnd").val(),
+    		sArrDateTimeEnd = sDateTimeEnd.match(sDateTimeRegex);
+    		console.log("Arrays : " + sDateTimeStart + " " + sDateTimeEnd);
+    		console.log(sArrDateTimeStart);
+    		console.log(sArrDateTimeEnd);
+    			if(sArrDateTimeStart == null)
+    				$("#ipStart").val(sDateTimeStart + " 00:00");
+    			if(sArrDateTimeEnd == null)
+    				$("#ipEnd").val(sDateTimeEnd + " 00:00");
+    			}
+    } 
     
     //calendar 그리기
     function drawCalendar(){
@@ -151,9 +202,11 @@ table.calendar td{
             month=12;
             year--;
         }
+        
         if(month<10){
             month=String("0"+month);
         }
+        
         getNewInfo();
         }
     
@@ -163,9 +216,11 @@ table.calendar td{
             month=1;
             year++;
         }
+        
         if(month<10){
             month=String("0"+month);
         }
+        
         getNewInfo();
     }
 
@@ -178,6 +233,7 @@ table.calendar td{
         firstDay = new Date(year,month-1,1);
         lastDay = new Date(year,month,0);
         drawDays();
+
     }
 </script>
 
@@ -212,22 +268,24 @@ table.calendar td{
         <span id="cal_top_year"></span>
         <span id="cal_top_month"></span>
         <a href="#" id="moveNextMonth">
-        	<span id="nextMonth" class="cal_tit">&gt;</span>
+        <span id="nextMonth" class="cal_tit">&gt;</span>
         </a>
 		<div id="cal_tab" class="cal" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
-		<img id="drag1" src="img/hospital.png" draggable="true" ondragstart="drag(event)" width="50px" height="50px"> &nbsp;&nbsp;&nbsp;&nbsp;
-		<img id="drag2" src="img/bones.png" draggable="true" ondragstart="drag(event)" width="50px" height="50px"> &nbsp;&nbsp;&nbsp;&nbsp;
-		<img id="drag3" src="img/dog.png" draggable="true" ondragstart="drag(event)" width="50px" height="50px"> &nbsp;&nbsp;&nbsp;&nbsp;
-		<img id="drag4" src="img/bath.png" draggable="true" ondragstart="drag(event)" width="50px" height="50px"> &nbsp;&nbsp;&nbsp;&nbsp;
-		<img id="drag5" src="img/facial-treatment.png" draggable="true" ondragstart="drag(event)" width="50px" height="50px"> &nbsp;&nbsp;&nbsp;&nbsp;
-		<img id="drag6" src="img/school.png" draggable="true" ondragstart="drag(event)" width="50px" height="50px"> &nbsp;&nbsp;&nbsp;&nbsp;
-		<img id="drag7" src="img/pet-house.png" draggable="true" ondragstart="drag(event)" width="50px" height="50px">
-		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-		<img id="bin" src="img/bin.png" width="50px" height="50px" ondrop="delete(event)" ondragover="allowDrop(event)">
-		
+		<div id="cal_image" style="margin-left: 200px;">
+			<img id="drag1" src="img/hospital.png" draggable="true" ondragstart="drag(event)" width="50px" height="50px"> &nbsp;&nbsp;&nbsp;&nbsp;
+			<img id="drag2" src="img/bones.png" draggable="true" ondragstart="drag(event)" width="50px" height="50px"> &nbsp;&nbsp;&nbsp;&nbsp;
+			<img id="drag3" src="img/dog.png" draggable="true" ondragstart="drag(event)" width="50px" height="50px"> &nbsp;&nbsp;&nbsp;&nbsp;
+			<img id="drag4" src="img/bath.png" draggable="true" ondragstart="drag(event)" width="50px" height="50px"> &nbsp;&nbsp;&nbsp;&nbsp;
+			<img id="drag5" src="img/facial-treatment.png" draggable="true" ondragstart="drag(event)" width="50px" height="50px"> &nbsp;&nbsp;&nbsp;&nbsp;
+			<img id="drag6" src="img/school.png" draggable="true" ondragstart="drag(event)" width="50px" height="50px"> &nbsp;&nbsp;&nbsp;&nbsp;
+			<img id="drag7" src="img/pet-house.png" draggable="true" ondragstart="drag(event)" width="50px" height="50px">
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			<img id="bin" src="img/bin.png" width="50px" height="50px" ondrop="delete(event)" ondragover="allowDrop(event)">
+		</div>
     </div>
 </section>
  </div>
+ <%@ include file="modal.jsp" %>
  
  
 </body>

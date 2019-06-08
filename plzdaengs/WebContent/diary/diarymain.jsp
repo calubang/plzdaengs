@@ -153,8 +153,7 @@ $(document).ready(function() {
 					var oTooltipContent = $(this).data("tooltipcontent"),
 					sTooltipText = "<div class='cTooltipTitle'>" + oTooltipContent.title + "</div><div class='cTooltipTime'>" + oTooltipContent.startDateTime + "<br/>" + oTooltipContent.endDateTime + "</div>";
 					return sTooltipText;
-						}
-			});
+				}});
 		}
 					
 	});
@@ -341,6 +340,7 @@ function defineFormEvents() {
 			oCal1.refreshView();
 					
 			$("#modal-form").modal("hide");
+			
 					}
 	});
 } // 7. function defineFormEvents() 끝
