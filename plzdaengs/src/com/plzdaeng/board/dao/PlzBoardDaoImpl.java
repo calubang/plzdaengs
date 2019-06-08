@@ -9,6 +9,7 @@ import java.util.List;
 
 import com.plzdaeng.board.model.PlzBoard;
 import com.plzdaeng.board.model.PlzBoardCategory;
+import com.plzdaeng.board.model.PlzReply;
 import com.plzdaeng.util.DBClose;
 import com.plzdaeng.util.DBConnection;
 
@@ -351,8 +352,136 @@ public class PlzBoardDaoImpl implements PlzBoardDao{
 		}
 		return post_id;
 	}
-	
-	
-	
 
+	@Override
+	public int insertReply(PlzReply reply) {
+		// TODO Auto-generated method stub
+		Connection con = null;
+		PreparedStatement pstm = null;
+		ResultSet rs = null;
+		int result = 0;
+		try {
+			con = DBConnection.makeConnection();
+			StringBuffer sql = new StringBuffer();
+			sql.append("INSERT INTO PLZ_REPLY \n");
+			sql.append("VALUES(SEQ_PLZ_REPLY.NEXTVAL,?,?,?,?,SYSDATE)");
+			
+//			SEQ_PLZ_BOARD.NEXTVAL
+			pstm = con.prepareStatement(sql.toString());
+			pstm.setInt(1, reply.getPost_id());
+			pstm.setString(2, reply.getBoard_category_id());
+			pstm.setString(3, reply.getUser_id());
+			pstm.setString(4, reply.getReply_contents());
+			
+			result = pstm.executeUpdate();
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DBClose.close(con, pstm, rs);
+		}
+		
+		return result;
+	}
+
+	@Override
+	public List<PlzReply> getReplyList(PlzReply reply) {
+		// TODO Auto-generated method stub
+		List<PlzReply> list = new ArrayList<PlzReply>();
+		Connection con = null;
+		PreparedStatement pstm = null;
+		ResultSet rs = null;
+		try {
+			con = DBConnection.makeConnection();
+			StringBuffer sql = new StringBuffer();
+			sql.append("SELECT NO \n");
+			sql.append("    , REPLY_ID\n");
+			sql.append("    , POST_ID\n");
+			sql.append("    , USER_ID \n");
+			sql.append("    , NICKNAME \n");
+			sql.append("    , REPLY_CONTENTS \n");
+			sql.append("    , CREAT_DATE  \n");
+			sql.append("FROM( \n");
+			sql.append("    SELECT ROWNUM NO \n");
+			sql.append("        , R.REPLY_ID \n");
+			sql.append("        , R.POST_ID \n");
+			sql.append("        , R.BOARD_CATEGORY_ID \n");
+			sql.append("        , R.USER_ID \n");
+			sql.append("        , U.NICKNAME \n");
+			sql.append("        , R.REPLY_CONTENTS \n");
+			sql.append("        , TO_CHAR(R.CREAT_DATE,'YYYY-MM-DD') AS CREAT_DATE \n");
+			sql.append("    FROM PLZ_REPLY R \n");
+			sql.append("        ,PLZ_USER U \n");
+			sql.append("    WHERE R.POST_ID = ? \n");
+			sql.append("    AND R.USER_ID = U.USER_ID \n");
+			sql.append("	ORDER BY R.REPLY_ID DESC \n");
+			sql.append(") \n");
+			sql.append("WHERE NO BETWEEN (?-1) * ?+1 AND (? * ?)-1 \n");
+			
+			System.out.println(sql.toString());
+			
+			pstm = con.prepareStatement(sql.toString());
+			
+				System.out.println("search gubun in ");
+				pstm.setInt(1, reply.getPost_id());
+				pstm.setInt(2, reply.getrCurPage());
+				pstm.setInt(3, reply.getrPagescale());
+				pstm.setInt(4, reply.getrCurPage());
+				pstm.setInt(5, reply.getrPagescale());
+			
+			
+			rs = pstm.executeQuery();
+			while(rs.next()) {
+				PlzReply resultReply = new PlzReply();
+				
+				resultReply.setNo(rs.getInt("NO"));
+				resultReply.setReply_id(rs.getInt("REPLY_ID"));
+				resultReply.setPost_id(rs.getInt("POST_ID"));
+				resultReply.setUser_id(rs.getString("USER_ID"));
+				resultReply.setUser_name(rs.getString("NICKNAME"));
+				resultReply.setReply_contents(rs.getString("REPLY_CONTENTS"));
+				resultReply.setCreat_date(rs.getString("CREAT_DATE"));
+				
+				list.add(resultReply);
+			}
+			
+			System.out.println(list.size());
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DBClose.close(con, pstm, rs);
+		}
+		return list;
+	}
+
+	@Override
+	public int getReplyTotalCnt(int post_id) {
+		// TODO Auto-generated method stub
+		int ttlCnt = 0;
+		Connection con = null;
+		PreparedStatement pstm = null;
+		ResultSet rs = null;
+		try {
+			con = DBConnection.makeConnection();
+			StringBuffer sql = new StringBuffer();
+			sql.append("SELECT COUNT(*) AS TTLCNT \n");
+			sql.append("FROM PLZ_REPLY \n");
+			sql.append("WHERE POST_ID = ? \n");
+			pstm = con.prepareStatement(sql.toString());
+			pstm.setInt(1, post_id);
+			rs = pstm.executeQuery();
+			while(rs.next()) {
+				ttlCnt = rs.getInt("TTLCNT");
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DBClose.close(con, pstm, rs);
+		}
+		return ttlCnt;
+	}
+	
+	
+	
 }

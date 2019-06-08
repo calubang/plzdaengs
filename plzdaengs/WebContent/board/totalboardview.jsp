@@ -1,9 +1,14 @@
+<%@page import="java.util.List"%>
+<%@page import="com.plzdaeng.board.model.BoardPage"%>
+<%@page import="com.plzdaeng.board.model.PlzReply"%>
 <%@page import="com.plzdaeng.board.model.PlzBoard"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <%
 	PlzBoard board = (PlzBoard) request.getAttribute("detailView");
+	List<PlzReply> reply = (List) request.getAttribute("reply");
+	BoardPage rPage = (BoardPage) request.getAttribute("replyPage");
 %>
 <html>
 <head>
@@ -12,13 +17,14 @@
 <title>Bubbly - Boootstrap 4 Admin template by Bootstrapious.com</title>
 <%@ include file="/template/default_link.jsp"%>
 <!-- include summernote css/js -->
-<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script> 
 <link
 	href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.12/summernote-lite.css"
 	rel="stylesheet">
 <script
 	src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.12/summernote-lite.js"></script>
 <!-- 서머노트 -->
+<script src="/plzdaengs/board/js/httpRequest.js"></script>
 </head>
 <script type="text/javascript">
 	function goModify(post_id){
@@ -26,9 +32,50 @@
 		document.getElementById("modify").action = "/plzdaengs/plzBoard";
 		document.getElementById("modify").submit();
 	}
+	
+	function insertReply(){
+		var textReply = $("#textReply").val();
+		var params = "cmd=reply";
+			params += "&reply_contents="+textReply;
+			params += "&post_id="+<%=board.getPost_id()%>;
+			params += "&board_category_id="+<%=board.getBoard_category_id()%>;
+			
+		sendRequest("/plzdaengs/plzBoard",params,replyResult,"GET");
+	}
+	
+	function replyResult(){
+		if(httpRequest.readyState == 4){
+			if(httpRequest.status == 200){
+				$("#textReply").val('');
+				var result = httpRequest.responseXML;
+				var reply = result.getElementsByTagName("reply");
+				var page = result.getElementsByTagName("page");
+				
+				$("#replyArea").html('');
+				console.log(result);
+				for(var i = 0; i < reply.length; i++) {
+					var option = "<div class='form-group row'>";
+						option += "		<label class='col-md-1 form-control-label'>"+reply[i].getElementsByTagName("user_name")[0].firstChild.data+"</label>";
+						option += "		<label class='col-md-10 form-control-label'>"+reply[i].getElementsByTagName("reply_contents")[0].firstChild.data+"</label>";
+						option += "		<label class='col-md-1 form-control-label'>"+reply[i].getElementsByTagName("create_date")[0].firstChild.data+"</label>";
+						option += "</div>";
+					
+					$("#replyArea").append(option);
+				}
+			}
+		}
+	}
+	
+	function goMovePage(pageNo){
+		var params = "cmd=getReply";
+			params += "&post_id="+<%=board.getPost_id()%>;
+			params += "&curPage="+pageNo;
+			
+		sendRequest("/plzdaengs/plzBoard",params,replyResult,"GET");
+	}
+	
 </script>
 <body>
-
 	<!-- navbar-->
 	<header class="header">
 		<nav class="navbar navbar-expand-lg px-4 py-2 bg-white shadow">
@@ -189,21 +236,55 @@
 								<div class="card-body">
 									<%=board.getPost_contents() %>
 								</div>
-								<div class="card-footer">
+								<div class="card-footer" id="replyArea">
+									<%
+										for(int i=0;i<reply.size();i++){
+									%>
 									<!-- 댓글 내용 들어갈 곳 -->
 									 <div class="form-group row">
-										<label class="col-md-1 form-control-label">작성자아이디</label> <label
-											class="col-md-10 form-control-label">입력폼</label> <label
-											class="col-md-1 form-control-label">작성일</label>
+										<label class="col-md-1 form-control-label"><%=reply.get(i).getUser_name() %></label> <label
+											class="col-md-10 form-control-label"><%=reply.get(i).getReply_contents() %></label> <label
+											class="col-md-1 form-control-label"><%=reply.get(i).getCreat_date() %></label>
 									</div>
+									<%} %>
+									
 								</div>
+								<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" id="pageArea"><!-- 페이징 -->
+									<nav>
+										<ul class="pagination" style="margin-left: 30%;">
+											<% if(rPage.getCurBlock() > 1 ){ %>
+											<li class="page-item">
+												<a class="page-link" href="#">Previous</a>
+											</li>
+											<%} 
+											
+												for(int i = rPage.getBlockBegin(); i <=rPage.getBlockEnd() ; i++){
+													if(i == rPage.getCurPage()){
+											%>
+												<li class="page-item" onclick="goMovePage(<%=i%>)">
+													<a class="page-link"><%=i %></a>
+												</li>
+											<%}else{ %>
+												<li class="page-item" onclick="goMovePage(<%=i%>)">
+													<a class="page-link" href="#"><%=i %></a>
+												</li>
+											<% 
+											}
+												}
+												
+												if(rPage.getCurBlock() <= rPage.getTotalBlock()){ %>
+											<li class="page-item">
+												<a class="page-link" href="#">Next</a>
+											</li>
+											<%} %>
+										</ul>
+									</nav>
+								</div>
+								<!-- 덧글입력란  -->
 								<div class="card-footer">
-									<!-- 댓글 내용 들어갈 곳 -->
-									 <div class="form-group row">
-										<label class="col-md-1 form-control-label">작성자아이디</label> <label
-											class="col-md-10 form-control-label">입력폼</label> <label
-											class="col-md-1 form-control-label">작성일</label>
-									</div>
+									<input type="text" class="form-control col-md-9" id="textReply">
+									<button class="btn btn-primary " type="button"
+								style="background-color: #dc3545; float: right; padding: 0.2rem 0.8rem;" id="reply" onclick="insertReply()">댓글등록버튼</button>
 								</div>
 							</div>
 							<!-- 여기 끝에 글쓰기버튼 -->

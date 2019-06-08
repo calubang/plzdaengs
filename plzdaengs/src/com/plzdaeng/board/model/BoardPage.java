@@ -1,7 +1,6 @@
 package com.plzdaeng.board.model;
 
 public class BoardPage {
-	public static final int PAGE_SCALE = 10;
 	public static final int BLOCK_SCALE = 10;
 	
 	private int curPage;
@@ -17,11 +16,13 @@ public class BoardPage {
 	private int pageEnd;
 	private int blockBegin;
 	private int blockEnd;
+	private int pageScale;
 	
 	//갯수, 현재페이지
-	public BoardPage(int cnt, int curPage) {
+	public BoardPage(int cnt, int curPage, int pageScale) {
 		curBlock = 1;
 		this.curPage = curPage;
+		this.pageScale = pageScale;
 		setTotalPage(cnt);
 		setPageRange();
 		setTotalBlock();
@@ -30,12 +31,12 @@ public class BoardPage {
 	}
 	
 	public void setTotalPage(int cnt) {
-		totalPage = (int) Math.ceil(cnt*1.0 / PAGE_SCALE);
+		totalPage = (int) Math.ceil(cnt*1.0 / pageScale);
 	}
 	
 	public void setPageRange() {
-		pageBegin = (curPage-1)*PAGE_SCALE+1;
-		pageEnd = pageBegin+PAGE_SCALE-1;
+		pageBegin = (curPage-1)*pageScale+1;
+		pageEnd = pageBegin+pageScale-1;
 	}
 	
 	public void setTotalBlock() {

@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.plzdaeng.board.model.PlzBoard;
 import com.plzdaeng.board.model.PlzBoardCategory;
+import com.plzdaeng.board.model.PlzReply;
 
 public interface PlzBoardDao {
 	
@@ -15,4 +16,8 @@ public interface PlzBoardDao {
 	int updateViews(int post_id);
 	int updateBoard(PlzBoard board);		//수정하기
 	int getPostId();
+	int insertReply(PlzReply reply);
+	List<PlzReply> getReplyList(PlzReply reply);
+	int getReplyTotalCnt(int post_id);
+	
 }

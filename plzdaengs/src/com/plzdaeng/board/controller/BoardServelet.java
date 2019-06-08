@@ -1,8 +1,11 @@
 package com.plzdaeng.board.controller;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.sql.Clob;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -14,6 +17,8 @@ import javax.servlet.http.HttpSession;
 import com.plzdaeng.board.dao.PlzBoardDaoImpl;
 import com.plzdaeng.board.model.BoardPage;
 import com.plzdaeng.board.model.PlzBoard;
+import com.plzdaeng.board.model.PlzReply;
+import com.plzdaeng.board.yugi.service.YugiService;
 import com.plzdaeng.dto.UserDto;
 import com.plzdaeng.util.MoveUrl;
 
@@ -23,6 +28,8 @@ import com.plzdaeng.util.MoveUrl;
 @WebServlet("/plzBoard")
 public class BoardServelet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	private static int rPageScale = 5;
+	private static int bPageScale = 10;
        
     /**
      * @see HttpServlet#HttpServlet()
@@ -41,7 +48,7 @@ public class BoardServelet extends HttpServlet {
 		response.setContentType("text/html;charset=utf-8");
 		request.setCharacterEncoding("UTF-8");
 		String cmd = request.getParameter("cmd");
-		System.out.println(request.getParameter("board_category_id"));
+		System.out.println(cmd);
 		String path = "";
 		if("boardWrite".equals(cmd)) {
 			path = "/board/totalboardwrite.jsp";
@@ -67,9 +74,24 @@ public class BoardServelet extends HttpServlet {
 			 
 			 
 			 PlzBoard detailBoard = PlzBoardDaoImpl.getPlzBoardDao().getBoardDetail(post_id);	//게시물 상세조회
+			//리플 리스트 조회 
+			PlzReply reply = new PlzReply();
+			reply.setPost_id(post_id);
+			reply.setrCurPage(1);
+			reply.setrPagescale(rPageScale);
+			 
+			List<PlzReply> list = PlzBoardDaoImpl.getPlzBoardDao().getReplyList(reply);
+			
+			//리플 전체 건수조회
+			int ttlCnt = PlzBoardDaoImpl.getPlzBoardDao().getReplyTotalCnt(reply.getPost_id());
+			BoardPage page = new BoardPage(ttlCnt, 1, rPageScale);
+			
 			 System.out.println(path);
 			 //리플 리스트 조회 
 			 request.setAttribute("detailView", detailBoard);
+			 request.setAttribute("reply", list);
+			 request.setAttribute("replyPage", page);
+			 
 			 MoveUrl.forward(request, response, path);
 			 
 		}else if("boardList".equals(cmd)) {
@@ -83,7 +105,7 @@ public class BoardServelet extends HttpServlet {
 			}
 			
 			ttlCnt = PlzBoardDaoImpl.getPlzBoardDao().getBoardTotalCnt();
-			BoardPage page = new BoardPage(ttlCnt, curPage);
+			BoardPage page = new BoardPage(ttlCnt, curPage, bPageScale);
 			
 			String searchValue = "";
 			String searchGubun = "";
@@ -115,9 +137,23 @@ public class BoardServelet extends HttpServlet {
 			 
 			 PlzBoard board = PlzBoardDaoImpl.getPlzBoardDao().getBoardDetail(post_id);	//게시물 상세조회
 			 
-			 //리플 리스트 조회 
-			 request.setAttribute("detailView", board);
-			 MoveUrl.forward(request, response, path);
+			//리플 리스트 조회 
+			PlzReply reply = new PlzReply();
+			reply.setPost_id(post_id);
+			reply.setrCurPage(1);
+			reply.setrPagescale(rPageScale);
+			 
+			List<PlzReply> list = PlzBoardDaoImpl.getPlzBoardDao().getReplyList(reply);
+			
+			//리플 전체 건수조회
+			int ttlCnt = PlzBoardDaoImpl.getPlzBoardDao().getReplyTotalCnt(reply.getPost_id());
+			BoardPage page = new BoardPage(ttlCnt, 1, rPageScale);
+			
+			request.setAttribute("detailView", board);
+			request.setAttribute("reply", list);
+			request.setAttribute("replyPage", page);
+			
+			MoveUrl.forward(request, response, path);
 		}else if("modify".equals(cmd)) {
 			path = "/board/totalboardwrite.jsp";
 			int post_id = Integer.parseInt(request.getParameter("post_id"));
@@ -137,20 +173,81 @@ public class BoardServelet extends HttpServlet {
 			PlzBoard board = new PlzBoard();
 			board.setBoard_category_id(request.getParameter("board_category_id"));
 			board.setPost_subject(request.getParameter("post_subject"));
-			//board.setUser_id(userDto.getUser_id());
-			board.setUser_id("yaho");
+			board.setUser_id(userDto.getUser_id());
+//			board.setUser_id("yaho");
 			board.setPost_contents(request.getParameter("post_contents"));
 			board.setPost_id(Integer.parseInt(request.getParameter("post_id")));
 			
 			PlzBoardDaoImpl.getPlzBoardDao().updateBoard(board);
 			
 			PlzBoard boardDetail = PlzBoardDaoImpl.getPlzBoardDao().getBoardDetail(board.getPost_id());	//게시물 상세조회
+			
+			//리플 리스트 조회 
+			PlzReply reply = new PlzReply();
+			reply.setPost_id(Integer.parseInt(request.getParameter("post_id")));
+			reply.setrCurPage(1);
+			reply.setrPagescale(rPageScale);
+			 
+			List<PlzReply> list = PlzBoardDaoImpl.getPlzBoardDao().getReplyList(reply);
+			
+			//리플 전체 건수조회
+			int ttlCnt = PlzBoardDaoImpl.getPlzBoardDao().getReplyTotalCnt(reply.getPost_id());
+			BoardPage page = new BoardPage(ttlCnt, 1, rPageScale);
+
 			 
 			 //리플 리스트 조회 
 			 request.setAttribute("detailView", boardDetail);
+
+			request.setAttribute("reply", list);
+			request.setAttribute("replyPage", page);
 			 
 			MoveUrl.forward(request, response, path);
 			
+		}else if("reply".equals(cmd)) {
+			path = "/board/totalboardview.jsp";
+			HttpSession session = request.getSession();
+			UserDto userDto = (UserDto)session.getAttribute("userInfo");
+			PlzReply reply = new PlzReply();
+			reply.setPost_id(Integer.parseInt(request.getParameter("post_id")));
+			reply.setBoard_category_id(request.getParameter("board_category_id"));
+			reply.setReply_contents(request.getParameter("reply_contents"));
+			reply.setUser_id(userDto.getUser_id());
+			reply.setrCurPage(1);
+			reply.setrPagescale(rPageScale);
+			//리플저장
+			PlzBoardDaoImpl.getPlzBoardDao().insertReply(reply);
+			
+			//리플 리스트 조회 
+			List<PlzReply> list = PlzBoardDaoImpl.getPlzBoardDao().getReplyList(reply);
+			
+			//리플 전체 건수조회
+			int ttlCnt = PlzBoardDaoImpl.getPlzBoardDao().getReplyTotalCnt(reply.getPost_id());
+			BoardPage page = new BoardPage(ttlCnt, 1, rPageScale);
+			
+			String resultXML = getPaggingXml(list, page);
+			response.setContentType("text/xml;charset=utf-8");
+			PrintWriter out = response.getWriter();
+			out.print(resultXML);
+		
+		}else if("getReply".equals(cmd)) {
+			path = "/board/totalboardview.jsp";
+			PlzReply reply = new PlzReply();
+			reply.setPost_id(Integer.parseInt(request.getParameter("post_id")));
+			reply.setrCurPage(Integer.parseInt(request.getParameter("curPage")));
+			reply.setrPagescale(rPageScale);
+			
+			//리플 리스트 조회 
+			List<PlzReply> list = PlzBoardDaoImpl.getPlzBoardDao().getReplyList(reply);
+			
+			//리플 전체 건수조회
+			int ttlCnt = PlzBoardDaoImpl.getPlzBoardDao().getReplyTotalCnt(reply.getPost_id());
+			BoardPage page = new BoardPage(ttlCnt, reply.getrCurPage(), rPageScale);
+			
+			String resultXML = getPaggingXml(list, page);
+			response.setContentType("text/xml;charset=utf-8");
+			PrintWriter out = response.getWriter();
+			out.print(resultXML);
+		
 		}
 	}
 
@@ -160,6 +257,32 @@ public class BoardServelet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		doGet(request, response);
+	}
+	
+	
+	public String getPaggingXml(List<PlzReply> list, BoardPage page) {
+		String result = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n";
+		result += "<replyList>";
+		
+		for(PlzReply reply : list) {
+			result += "<reply>\n";
+			result += "		<reply_id>"+reply.getReply_id()+"</reply_id>\n";
+			result += "		<post_id>"+reply.getPost_id()+"</post_id>\n";
+			result += "		<user_id>"+reply.getUser_id()+"</user_id>\n";
+			result += "		<user_name>"+reply.getUser_name()+"</user_name>\n";
+			result += "		<reply_contents><![CDATA["+reply.getReply_contents()+"]]></reply_contents>\n";
+			result += "		<create_date><![CDATA["+reply.getCreat_date()+"]]></create_date>\n";
+			result += "</reply>\n";
+		}
+		result += "<page>";
+		result += "		<curBlock>"+page.getCurBlock()+"</curBlock>";
+		result += "		<blockBegin>"+page.getBlockBegin()+"</blockBegin>";
+		result += "		<curPage>"+page.getCurPage()+"</curPage>";
+		result += "		<blockEnd>"+page.getBlockEnd()+"</blockEnd>";
+		result += "		<totalBlock>"+page.getTotalBlock()+"</totalBlock>";
+		result += "</page>";
+		result += "</replyList>";
+		return result;
 	}
 
 }
