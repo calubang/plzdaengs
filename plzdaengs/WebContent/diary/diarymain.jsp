@@ -361,7 +361,6 @@ function drop(ev) {
 		alert("거북이 클릭");
 	});
 	ev.target.appendChild(dataTemp);
-	//ddddddasas
 }
 </script>
 

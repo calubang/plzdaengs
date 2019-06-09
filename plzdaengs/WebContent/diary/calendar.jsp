@@ -43,6 +43,7 @@ table.calendar td{
     height : 50px;
     width: 150px;
 }
+
 </style>
 
 <script type="text/javascript">
@@ -62,17 +63,54 @@ table.calendar td{
         $("#movePrevMonth").on("click", function(){movePrevMonth();});
         $("#moveNextMonth").on("click", function(){moveNextMonth();});
         //$("table.calendar").on("click", function(){cellClick();}); // 달력별 셀 클릭했을 때 나타나는 event
+        /*
         $("table.calendar").on("click", function(sView, dSelectedDate, bIsAllDay, pClickedAt){
         	alert('달력클릭');
         	console.log("Cell Click했슈 : " + dSelectedDate);  // [1]
 			showModal(true, dSelectedDate);		
         	}); // 달력별 셀 클릭했을 때 나타나는 event
+        */	
+        
+        /*
+        	$("#table tbody tr" + " tr:gt(0)").find("td:eq(3)").mouseover( function() { 
+        		alert("이벤트 실행되었습니다."); alert(this.parentNode.rowIndex - 1); 
+        		});
+		*/
+		
+        $('table tbody td').mouseover(function() {
+        	//alert('올려놨슈');
+            $(this).children().css({
+                'backgroundColor' : '#DCDCDC',
+                'cursor' : 'pointer'
+            });
+        }).mouseout(function() { // 그 순간 움직일 때
+        	//alert('내려놨슈');
+            $(this).children().css({
+                'backgroundColor' : '#FFFFFF',
+                'cursor' : 'default'
+            }); // $(this).children().css끝
+        });
+		$('table tbody td').click(function() { // table td 클릭할 때
+			// 1. 클릭하면 모달나오게 해야함 > 일정 등록하는거
+			
+			
+			var cellText = $(this).text();  
+			alert(cellText + '일 click!'); // 위에 .html하면 관련 식 나오고 text해야 date나옴
+        	//alert(cellText);
+        	var a = document.body.firstChild.nextSibling.nextSibling.nodeName;
+        	//alert(a); // nodeType : 1, nodeName : DIV 뜨는디
+        	
+        	//showModal(true, dSelectedDate);
+        })
+        
+        
+        
     });
     
     /*
     function cellClick() { // 잠시 block
 		alert('테이블 셀클릭햇쇼');
-		console.log("Cell Click했슈 : " + dSelectedDate);
+		console.log("Cell Click했슈 : " + dSelectedDate) 
 		showModal(true, dSelectedDate);	
 		//console.log('완료');
 	}
@@ -87,7 +125,8 @@ table.calendar td{
     	$("#ipAllDay").prop("checked", bIsAllDay);
     			
     	var dEndDateTime, sStartDateTime, sEndDateTime;
-    	/*
+    	
+    	/* 필요없는 기능
     	if(bIsAllDay) {
     		dEndDateTime = new Date(dStartDateTime);
     		dEndDateTime.setDate(dStartDateTime.getDate() + (oCal1.setting.allDayEventDuration - 1));
@@ -150,13 +189,13 @@ table.calendar td{
     //calendar 그리기
     function drawCalendar(){
         var setTableHTML = "";
-        setTableHTML+='<table class="calendar">';
+        setTableHTML+='<table class="calendar" id = "calendar">';
         setTableHTML+='<tr><th>SUN</th><th>MON</th><th>TUE</th><th>WED</th><th>THU</th><th>FRI</th><th>SAT</th></tr>';
         for(var i=0;i<6;i++){
             setTableHTML+='<tr height="100">';
             for(var j=0;j<7;j++){
                 setTableHTML+='<td style="text-overflow:ellipsis;overflow:hidden;white-space:nowrap">';
-                setTableHTML+='    <div class="cal-day"></div>';
+                setTableHTML+='    <div class="cal-day" id = "cal-day" ondrop="drop(event)" ondragover="allowDrop(event)"></div>';
                 setTableHTML+='    <div class="cal-schedule"></div>';
                 setTableHTML+='</td>';
             }
@@ -247,10 +286,10 @@ table.calendar td{
 		//console.log(data);
 		
 		var dataTemp = document.getElementById(data).cloneNode();
-		$(dataTemp).css("width", "50px");
-		$(dataTemp).css("height", "50px");
+		$(dataTemp).css("width", "40px");
+		$(dataTemp).css("height", "40px");
 		$(dataTemp).click(function(e) {
-			alert("거북이 클릭");
+			alert("이모티콘 클릭해또");
 		});
 		ev.target.appendChild(dataTemp); // 이모티콘 붙일 때 없어지지 않고 남아있기
 	}
@@ -270,7 +309,7 @@ table.calendar td{
         <a href="#" id="moveNextMonth">
         <span id="nextMonth" class="cal_tit">&gt;</span>
         </a>
-		<div id="cal_tab" class="cal" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+		<div id="cal_tab" class="cal" ></div>
 		<div id="cal_image" style="margin-left: 200px;">
 			<img id="drag1" src="img/hospital.png" draggable="true" ondragstart="drag(event)" width="50px" height="50px"> &nbsp;&nbsp;&nbsp;&nbsp;
 			<img id="drag2" src="img/bones.png" draggable="true" ondragstart="drag(event)" width="50px" height="50px"> &nbsp;&nbsp;&nbsp;&nbsp;
@@ -285,8 +324,6 @@ table.calendar td{
     </div>
 </section>
  </div>
- <%@ include file="modal.jsp" %>
- 
  
 </body>
 </html>
