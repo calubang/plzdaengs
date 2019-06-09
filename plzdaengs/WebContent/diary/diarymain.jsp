@@ -195,6 +195,7 @@ function showModal(bIsAllDay, dStartDateTime){
 	$("#ipAllDay").prop("checked", bIsAllDay);
 			
 	var dEndDateTime, sStartDateTime, sEndDateTime;
+	//dStartDateTime : in modal
 	if(bIsAllDay) {
 		dEndDateTime = new Date(dStartDateTime);
 		dEndDateTime.setDate(dStartDateTime.getDate() + (oCal1.setting.allDayEventDuration - 1));

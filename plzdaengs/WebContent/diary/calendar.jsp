@@ -8,6 +8,7 @@
 	<%@ include file="/template/default_link.jsp"%>
 	<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 	<script type="text/javascript" src="js/bootstrap.diary.min.js"></script>
+	<script type="text/javascript" src="js/bootstrap.bundle.js"></script>
 
 <style type="text/css">
 #div1 {
@@ -25,6 +26,13 @@
 
 .cal{
     text-align: center;    
+}
+
+table.calendar .cal-schedule{
+/*
+	1. 이 부분이 일정등록 클릭할 부분
+*/
+	height : 55px;
 }
 
 table.calendar{
@@ -47,7 +55,6 @@ table.calendar td{
 </style>
 
 <script type="text/javascript">
-    
     var today = null;
     var year = null;
     var month = null;
@@ -62,21 +69,6 @@ table.calendar td{
         drawDays();
         $("#movePrevMonth").on("click", function(){movePrevMonth();});
         $("#moveNextMonth").on("click", function(){moveNextMonth();});
-        //$("table.calendar").on("click", function(){cellClick();}); // 달력별 셀 클릭했을 때 나타나는 event
-        /*
-        $("table.calendar").on("click", function(sView, dSelectedDate, bIsAllDay, pClickedAt){
-        	alert('달력클릭');
-        	console.log("Cell Click했슈 : " + dSelectedDate);  // [1]
-			showModal(true, dSelectedDate);		
-        	}); // 달력별 셀 클릭했을 때 나타나는 event
-        */	
-        
-        /*
-        	$("#table tbody tr" + " tr:gt(0)").find("td:eq(3)").mouseover( function() { 
-        		alert("이벤트 실행되었습니다."); alert(this.parentNode.rowIndex - 1); 
-        		});
-		*/
-		
         $('table tbody td').mouseover(function() {
         	//alert('올려놨슈');
             $(this).children().css({
@@ -92,19 +84,14 @@ table.calendar td{
         });
 		$('table tbody td').click(function() { // table td 클릭할 때
 			// 1. 클릭하면 모달나오게 해야함 > 일정 등록하는거
-			
-			
-			var cellText = $(this).text();  
+			var cellText = $(this).text().trim(); // ★★★★★★★★★ 
 			alert(cellText + '일 click!'); // 위에 .html하면 관련 식 나오고 text해야 date나옴
-        	//alert(cellText);
-        	var a = document.body.firstChild.nextSibling.nextSibling.nodeName;
-        	//alert(a); // nodeType : 1, nodeName : DIV 뜨는디
+			$("#enroll").modal();
+			//$("#enroll").modal
+        	//showModal(true, cellText);
         	
-        	//showModal(true, dSelectedDate);
-        })
-        
-        
-        
+			
+        }) // td클릭시 function 끝
     });
     
     /*
@@ -114,11 +101,11 @@ table.calendar td{
 		showModal(true, dSelectedDate);	
 		//console.log('완료');
 	}
-    */
+    
     
     
     function showModal(bIsAllDay, dStartDateTime){
-    	console.log("showModal : " + bIsAllDay + "//" + dStartDateTime); //[2] : 위에서 이미 true라고 하니까 true라고 찍히는거
+    	console.log("showModal : " + bIsAllDay + "/" + dStartDateTime); //[2] : 위에서 이미 true라고 하니까 true라고 찍히는거
     	$("#modal-form").modal('show');
     		
     	$("#ipTitle, #ipDesc").val("");
@@ -126,7 +113,7 @@ table.calendar td{
     			
     	var dEndDateTime, sStartDateTime, sEndDateTime;
     	
-    	/* 필요없는 기능
+    	
     	if(bIsAllDay) {
     		dEndDateTime = new Date(dStartDateTime);
     		dEndDateTime.setDate(dStartDateTime.getDate() + (oCal1.setting.allDayEventDuration - 1));
@@ -139,7 +126,7 @@ table.calendar td{
     		sStartDateTime = oCal1.getDateInFormat({"date": dStartDateTime}, "dd-MM-yyyy HH:mm", oCal1.setting.is24Hour, false);
     		sEndDateTime = oCal1.getDateInFormat({"date": dEndDateTime}, "dd-MM-yyyy HH:mm", oCal1.setting.is24Hour, false);
     	}
-    	*/
+    	
     			
     	console.log(sEndDateTime + "  " + sEndDateTime); // [3]
     	$("#ipStart").val(sStartDateTime);
@@ -185,6 +172,7 @@ table.calendar td{
     				$("#ipEnd").val(sDateTimeEnd + " 00:00");
     			}
     } 
+    */
     
     //calendar 그리기
     function drawCalendar(){
@@ -303,6 +291,8 @@ table.calendar td{
 <%@ include file="/template/sidebar.jsp" %>
 <section>
     <div class="cal_top">
+    	<!-- 모달모달 -->
+    	<%@ include file="modal.jsp"%>
         <a href="#" id="movePrevMonth"><span id="prevMonth" class="cal_tit">&lt;</span></a>
         <span id="cal_top_year"></span>
         <span id="cal_top_month"></span>
@@ -324,6 +314,7 @@ table.calendar td{
     </div>
 </section>
  </div>
+
  
 </body>
 </html>
