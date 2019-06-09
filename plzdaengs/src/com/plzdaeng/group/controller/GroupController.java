@@ -17,7 +17,7 @@ public class GroupController {
 		groupController = new GroupController();
 	}
 
-	public static GroupController getCreateGroup() {
+	public static GroupController getGroupController() {
 		return groupController;
 	}
 
@@ -136,7 +136,9 @@ public class GroupController {
 
 
 	public String entermanege(HttpServletRequest request, HttpServletResponse response) {
+		HttpSession session = request.getSession();
 		int group_id = Integer.parseInt(request.getParameter("group_id"));
+		session.setAttribute("group_id", group_id);
 		GroupDto dto = new GroupDto();
 		dto = GroupDaoImpl.getGroupDaoImpl().groupDetail(group_id);
 		request.setAttribute("groupdetail", dto);
@@ -190,6 +192,16 @@ public class GroupController {
 		int result = GroupDaoImpl.getGroupDaoImpl().joinGroup(group_id, id);
 		request.setAttribute("result", result);
 		return path;
+	}
+
+	public String memberlist(HttpServletRequest request, HttpServletResponse response) {
+		HttpSession session = request.getSession();
+		int group_id = Integer.parseInt(String.valueOf(session.getAttribute("group_id")));
+		System.out.println(group_id);
+		//path = GroupDaoImpl.getGroupDaoImpl().memberlist(group_id);
+		
+		
+		return null;
 	}
 
 

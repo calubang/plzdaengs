@@ -48,30 +48,33 @@ public class GroupFrontController extends HttpServlet {
 		String path = "";
 		if("creategroup".equals(act)) {
 			System.out.println("front create");
-			path = GroupController.getCreateGroup().create(request, response, user);
+			path = GroupController.getGroupController().create(request, response, user);
 			MoveUrl.forward(request, response, path);
 		}else if("loading".equals(act)) {
 			System.out.println("front loading");
-			path = GroupController.getCreateGroup().pageLoaing(request, response, user);
+			path = GroupController.getGroupController().pageLoaing(request, response, user);
 			MoveUrl.forward(request, response, path);
 			System.out.println(path);
 		}else if("enter".equals(act)) {
 			System.out.println("front enter");
-			path = GroupController.getCreateGroup().enterorsingup(request, response, user);
+			path = GroupController.getGroupController().enterorsingup(request, response, user);
 			MoveUrl.forward(request, response, path);
 		}else if("groupmanage".equals(act)) {
 			System.out.println("front enter");
-			path = GroupController.getCreateGroup().entermanege(request, response);
+			path = GroupController.getGroupController().entermanege(request, response);
 			MoveUrl.forward(request, response, path);
 			System.out.println("go to the groupdetail");
 		}else if("changedetail".equals(act)) {
 			System.out.println("front enter");
-			path = GroupController.getCreateGroup().changeDetail(request, response);
+			path = GroupController.getGroupController().changeDetail(request, response);
 			MoveUrl.forward(request, response, path);
 		}else if("joingroup".equals(act)) {
 			System.out.println("front enter");
-			path = GroupController.getCreateGroup().joinGroup(request, response, user);
+			path = GroupController.getGroupController().joinGroup(request, response, user);
 			MoveUrl.forward(request, response, path);
+		}else if("memberlist".equals(act)) {
+			System.out.println("front enter");
+			path = GroupController.getGroupController().memberlist(request, response);
 		}
 	}
 

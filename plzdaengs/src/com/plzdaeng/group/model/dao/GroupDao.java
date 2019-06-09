@@ -33,5 +33,7 @@ public interface GroupDao {
 	
 	int joinGroup(int group_id, String id);
 	
+	//List<> result = memberlist(int group_id);
+	
 	
 }

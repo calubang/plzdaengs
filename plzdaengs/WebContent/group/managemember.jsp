@@ -6,7 +6,28 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <%@ include file="/template/default_link.jsp" %>
+<script>
+$(function(){
+	
+	
 
+	 $.ajax({
+			url: '/plzdaengs/groupfront',
+			method:'POST',
+			data:{
+				act:"memberlist"
+			},
+			success:function(result){
+				alert("enter resultpage");
+				//$("#grouplist").html(result);	
+				//$(".card").click(divClick);
+				
+			} 
+	
+	});
+});
+
+</script>
 </head>
 <body>
 <!-- navbar-->	
@@ -105,6 +126,7 @@
 			<div class="container-fluid" id="contents">
 
 				 <section class="py-5">
+				 
 				<div>
           <Button onclick="location.href='group/managegroupinfo.jsp'">소모임 정보변경</Button>
           <Button onclick="location.href='group/managemeeting.jsp'">소모임 일정관리</Button>
