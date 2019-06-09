@@ -1,17 +1,17 @@
-<%@page import="javafx.scene.control.Alert"%>
 <%@page import="com.plzdaeng.group.model.GroupDto"%>
 <%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 
 
-<%!List<GroupDto> list;%>
+<%-- <%!List<GroupDto> list;%> --%>
 
 <%
-	
-	list = (List) request.getAttribute("grouplist");
+	List<GroupDto> list = (List) request.getAttribute("grouplist");
 
 	for (GroupDto dto : list) {
+		System.out.println(dto.getGroup_id() + dto.getGroup_name());
+		System.out.println("result에 왜 안오냐?");
 %>
 
 <div class="card" id="<%=dto.getGroup_id()%>">

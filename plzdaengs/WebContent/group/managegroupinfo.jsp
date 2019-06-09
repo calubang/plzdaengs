@@ -73,9 +73,9 @@ $(function(){
 
 
           <div>
-          <Button>소모임 정보변경</Button>
-          <Button>소모임 일정관리</Button>
-          <Button>소모임원 관리</Button>
+          <Button onclick="location.href='group/managegroupinfo.jsp'">소모임 정보변경</Button>
+          <Button onclick="location.href='group/managemeeting.jsp'">소모임 일정관리</Button>
+          <Button onclick="location.href='group/managemember.jsp'">소모임원 관리</Button>
           </div>
             <div class="row">
               <!-- Form Elements -->

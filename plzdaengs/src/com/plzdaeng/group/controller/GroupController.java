@@ -27,6 +27,7 @@ public class GroupController {
 	public String pageLoaing(HttpServletRequest request, HttpServletResponse response, UserDto user) {
 		// path = "/plzdaengs/template/alert_danger.jsp";
 		String id = user.getUser_id();
+		System.out.println(id);
 		//user.setUser_id("qwer");
 		String type = request.getParameter("type");
 		System.out.println(type);
@@ -48,8 +49,10 @@ public class GroupController {
 		//차후 로그인에서 넣어주면 지워도 되는 부분.
 		//HttpSession session = request.getSession();
 		//session.setAttribute("mygrouplist", list); 
-		
-		
+		for(GroupDto dto : list) {
+			System.out.println(dto.toString());
+		}
+		System.out.println(list.size());
 		path = "/group/result/grouplistresult.jsp";
 		return path;
 	}
@@ -73,7 +76,7 @@ public class GroupController {
 		dto.setGroup_leader(id);
 		dto.setGroup_name(name);
 		dto.setGroup_description(desc);
-		if (!groupdontselect.equals("on")){
+		if (groupdontselect == null || !groupdontselect.equals("on") ){
 			String groupsido = request.getParameter("groupsido");
 			String groupsigungu = request.getParameter("groupsigungu");
 			dto.setAddress_sido(groupsido);
@@ -173,8 +176,9 @@ public class GroupController {
 //		}
 		int result = GroupDaoImpl.getGroupDaoImpl().changeGroup(dto);
 		//entermanege(request, response);
-		request.setAttribute("groupdetail", dto);
-		
+		request.setAttribute("group_id", group_id);
+		entermanege(request, response);
+//		request.setAttribute("groupdetail", dto);
 		return path;
 	}
 

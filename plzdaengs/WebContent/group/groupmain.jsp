@@ -52,7 +52,6 @@ $(function(){
 			success:function(result){
 				alert("enter resultpage");
 				$("#grouplist").html(result);	
-				alert("dfdf");
 				$(".card").click(divClick);
 				
 			} 
@@ -341,7 +340,7 @@ function divClick(){
                              		<option>강서구</option>
                              		<option>구로구</option>
                                 </select>
-                                <label><input name="groupdontselect" type="checkbox">지역무관</label>
+                                <label><input name="groupdontselect" type="checkbox" checked="">지역무관</label>
                                 </div>
                                 
                               </div>
