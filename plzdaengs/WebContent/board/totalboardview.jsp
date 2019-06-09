@@ -23,12 +23,12 @@
 <title>Bubbly - Boootstrap 4 Admin template by Bootstrapious.com</title>
 <%@ include file="/template/default_link.jsp"%>
 <!-- include summernote css/js -->
-<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script> 
+<!-- <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script> 
 <link
 	href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.12/summernote-lite.css"
 	rel="stylesheet">
 <script
-	src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.12/summernote-lite.js"></script>
+	src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.12/summernote-lite.js"></script> -->
 <!-- 서머노트 -->
 <script src="/plzdaengs/board/js/httpRequest.js"></script>
 </head>
@@ -81,25 +81,60 @@
 			if(httpRequest.status == 200){
 				$("#textReply").val('');
 				var result = httpRequest.responseXML;
-				var reply = result.getElementsByTagName("reply");
-				var page = result.getElementsByTagName("page");
+				var reply1 = result.getElementsByTagName("reply");
 				
 				$("#replyArea").html('');
 				var seUser_id = '<%=userId%>';
-					
-					
-				for(var i = 0; i < reply.length; i++) {
+				
+				for(var i = 0; i < reply1.length; i++) {
 					var option = "<div class='form-group row'>";
-						option += "		<label class='col-md-2 form-control-label'>"+reply[i].getElementsByTagName("user_name")[0].firstChild.data+"</label>";
-						option += "		<label class='col-md-7 form-control-label'>"+reply[i].getElementsByTagName("reply_contents")[0].firstChild.data+"</label>";
-						option += "		<label class='col-md-2 form-control-label'>"+reply[i].getElementsByTagName("create_date")[0].firstChild.data+"</label>";
-						if(seUser_id == reply[i].getElementsByTagName("user_id")[0].firstChild.data){
-							option += "<button class='btn btn-primary ' type='button' style='background-color: #dc3545; float: left; padding: 0.2rem 0.8rem;' onclick='removeReply("+reply[i].getElementsByTagName("reply_id")[0].firstChild.data+")'>삭제</button>";
+						option += "		<label class='col-md-2 form-control-label'>"+reply1[i].getElementsByTagName("user_name")[0].firstChild.data+"</label>";
+						option += "		<label class='col-md-7 form-control-label'>"+reply1[i].getElementsByTagName("reply_contents")[0].firstChild.data+"</label>";
+						option += "		<label class='col-md-2 form-control-label'>"+reply1[i].getElementsByTagName("create_date")[0].firstChild.data+"</label>";
+						if(seUser_id == reply1[i].getElementsByTagName("user_id")[0].firstChild.data){
+							option += "<button class='btn btn-primary ' type='button' style='background-color: #dc3545; float: left; padding: 0.2rem 0.8rem;' onclick='removeReply("+reply1[i].getElementsByTagName("reply_id")[0].firstChild.data+")'>삭제</button>";
 						}
 						option += "</div>";
 					
 					$("#replyArea").append(option);
 				}
+				
+				$("#pageArea").html('');
+				
+				var blockBegin = result.getElementsByTagName("blockBegin")[0].firstChild.data;
+				var blockEnd = result.getElementsByTagName("blockEnd")[0].firstChild.data;
+				var pageHtml = "<nav>";
+					pageHtml += "	<ul class='pagination' style='margin-left: 30%;'>";
+					if(result.getElementsByTagName("curBlock")[0].firstChild.data > 1){
+						pageHtml += "		<li class='page-item'>";
+						pageHtml += "			<a class='page-link' href='#'>Previous</a>";
+						pageHtml += "		</li>";
+					}
+					
+					for(var i =blockBegin; i <=blockEnd ; i++){
+						if(i == result.getElementsByTagName("curPage")[0].firstChild.data){
+							pageHtml += "<li class='page-item' onclick='goMovePage("+i+")'>";
+							pageHtml += "<a class='page-link'>"+i+"</a>"
+							pageHtml += "</li>";
+						}else{
+							pageHtml += "<li class='page-item' onclick='goMovePage("+i+")'>";
+							pageHtml += "<a class='page-link' href='#'>"+i+"</a>"
+							pageHtml += "</li>";
+						}
+					}
+					
+					if(result.getElementsByTagName("curBlock")[0].firstChild.data <= result.getElementsByTagName("totalBlock")[0].firstChild.data){
+						pageHtml += "		<li class='page-item'>";
+						pageHtml += "			<a class='page-link' href='#'>Next</a>";
+						pageHtml += "		</li>";
+					}
+					
+					pageHtml += "	</ul>";
+					pageHtml += "<nav>";
+				
+				
+				$("#pageArea").html(pageHtml);	
+				
 			}
 		}
 	}

@@ -417,7 +417,7 @@ public class PlzBoardDaoImpl implements PlzBoardDao{
 			sql.append("    AND R.USER_ID = U.USER_ID \n");
 			sql.append("	ORDER BY R.REPLY_ID DESC \n");
 			sql.append(") \n");
-			sql.append("WHERE NO BETWEEN (?-1) * ?+1 AND (? * ?)-1 \n");
+			sql.append("WHERE NO BETWEEN (?-1) * ?+1 AND (? * ?) \n");
 			
 			System.out.println(sql.toString());
 			

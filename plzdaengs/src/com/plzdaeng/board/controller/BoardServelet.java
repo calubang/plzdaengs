@@ -226,6 +226,8 @@ public class BoardServelet extends HttpServlet {
 			
 			String resultXML = getPaggingXml(list, page);
 			response.setContentType("text/xml;charset=utf-8");
+			
+			System.out.println(resultXML);
 			PrintWriter out = response.getWriter();
 			out.print(resultXML);
 		
@@ -244,6 +246,7 @@ public class BoardServelet extends HttpServlet {
 			BoardPage page = new BoardPage(ttlCnt, reply.getrCurPage(), rPageScale);
 			
 			String resultXML = getPaggingXml(list, page);
+			System.out.println(resultXML);
 			response.setContentType("text/xml;charset=utf-8");
 			PrintWriter out = response.getWriter();
 			out.print(resultXML);
@@ -277,7 +280,7 @@ public class BoardServelet extends HttpServlet {
 	
 	public String getPaggingXml(List<PlzReply> list, BoardPage page) {
 		String result = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n";
-		result += "<replyList>";
+		result += "<replyList>\n";
 		
 		for(PlzReply reply : list) {
 			result += "<reply>\n";
@@ -289,13 +292,13 @@ public class BoardServelet extends HttpServlet {
 			result += "		<create_date><![CDATA["+reply.getCreat_date()+"]]></create_date>\n";
 			result += "</reply>\n";
 		}
-		result += "<page>";
-		result += "		<curBlock>"+page.getCurBlock()+"</curBlock>";
-		result += "		<blockBegin>"+page.getBlockBegin()+"</blockBegin>";
-		result += "		<curPage>"+page.getCurPage()+"</curPage>";
-		result += "		<blockEnd>"+page.getBlockEnd()+"</blockEnd>";
-		result += "		<totalBlock>"+page.getTotalBlock()+"</totalBlock>";
-		result += "</page>";
+		result += "<page>\n";
+		result += "		<curBlock>"+page.getCurBlock()+"</curBlock>\n";
+		result += "		<blockBegin>"+page.getBlockBegin()+"</blockBegin>\n";
+		result += "		<curPage>"+page.getCurPage()+"</curPage>\n";
+		result += "		<blockEnd>"+page.getBlockEnd()+"</blockEnd>\n";
+		result += "		<totalBlock>"+page.getTotalBlock()+"</totalBlock>\n";
+		result += "</page>\n";
 		result += "</replyList>";
 		return result;
 	}
