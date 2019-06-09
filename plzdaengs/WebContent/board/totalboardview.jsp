@@ -1,3 +1,4 @@
+<%@page import="com.plzdaeng.dto.UserDto"%>
 <%@page import="java.util.List"%>
 <%@page import="com.plzdaeng.board.model.BoardPage"%>
 <%@page import="com.plzdaeng.board.model.PlzReply"%>
@@ -9,6 +10,11 @@
 	PlzBoard board = (PlzBoard) request.getAttribute("detailView");
 	List<PlzReply> reply = (List) request.getAttribute("reply");
 	BoardPage rPage = (BoardPage) request.getAttribute("replyPage");
+	UserDto userDto = (UserDto)request.getSession().getAttribute("userInfo");
+	String userId = "";
+	if(userDto != null){
+		userId = userDto.getUser_id();
+	}
 %>
 <html>
 <head>
@@ -29,9 +35,36 @@
 <script type="text/javascript">
 	function goModify(post_id){
 		$("#post_id").val(post_id);
+		$("#cmd").val("modify");
 		document.getElementById("modify").action = "/plzdaengs/plzBoard";
 		document.getElementById("modify").submit();
 	}
+	
+	function goRemove(post_id){
+		var flag = confirm("게시물을 삭제하시겠습니까??");
+		if(flag == true){
+			var params = "cmd=remove";
+			params += "&post_id="+post_id;
+			
+			sendRequest("/plzdaengs/plzBoard",params,removeResult,"POST");
+		}
+	}
+	
+	function removeResult(){
+		if(httpRequest.readyState == 4){
+			if(httpRequest.status == 200){
+				var result = httpRequest.responseXML;
+				var msg = result.getElementsByTagName("msg")[0].firstChild.data;
+				var removeResult = result.getElementsByTagName("result")[0].firstChild.data;
+				
+				alert(msg);
+				if(removeResult == 1){
+					document.location.href = "/plzdaengs/plzBoard?cmd=boardList&curPage=1";					
+				}
+			}
+		}
+	}
+	
 	
 	function insertReply(){
 		var textReply = $("#textReply").val();
@@ -52,12 +85,17 @@
 				var page = result.getElementsByTagName("page");
 				
 				$("#replyArea").html('');
-				console.log(result);
+				var seUser_id = '<%=userId%>';
+					
+					
 				for(var i = 0; i < reply.length; i++) {
 					var option = "<div class='form-group row'>";
-						option += "		<label class='col-md-1 form-control-label'>"+reply[i].getElementsByTagName("user_name")[0].firstChild.data+"</label>";
-						option += "		<label class='col-md-10 form-control-label'>"+reply[i].getElementsByTagName("reply_contents")[0].firstChild.data+"</label>";
-						option += "		<label class='col-md-1 form-control-label'>"+reply[i].getElementsByTagName("create_date")[0].firstChild.data+"</label>";
+						option += "		<label class='col-md-2 form-control-label'>"+reply[i].getElementsByTagName("user_name")[0].firstChild.data+"</label>";
+						option += "		<label class='col-md-7 form-control-label'>"+reply[i].getElementsByTagName("reply_contents")[0].firstChild.data+"</label>";
+						option += "		<label class='col-md-2 form-control-label'>"+reply[i].getElementsByTagName("create_date")[0].firstChild.data+"</label>";
+						if(seUser_id == reply[i].getElementsByTagName("user_id")[0].firstChild.data){
+							option += "<button class='btn btn-primary ' type='button' style='background-color: #dc3545; float: left; padding: 0.2rem 0.8rem;' onclick='removeReply("+reply[i].getElementsByTagName("reply_id")[0].firstChild.data+")'>삭제</button>";
+						}
 						option += "</div>";
 					
 					$("#replyArea").append(option);
@@ -66,6 +104,22 @@
 		}
 	}
 	
+	
+	function removeReply(reply_id){
+		var params = "cmd=removeReply";
+			params += "&reply_id="+reply_id;
+			
+		sendRequest("/plzdaengs/plzBoard",params,reRemoveResult,"GET");
+	}
+	
+	function reRemoveResult(){
+		if(httpRequest.readyState == 4){
+			if(httpRequest.status == 200){
+				
+				goMovePage(1);
+			}
+		}
+	}
 	function goMovePage(pageNo){
 		var params = "cmd=getReply";
 			params += "&post_id="+<%=board.getPost_id()%>;
@@ -164,60 +218,9 @@
 		</nav>
 	</header>
 	<div class="d-flex align-items-stretch" id="document">
-		<div id="sidebar" class="sidebar py-3">
-			<div
-				class="text-gray-400 text-uppercase px-3 px-lg-4 py-4 font-weight-bold small headings-font-family">MAIN</div>
-			<ul class="sidebar-menu list-unstyled">
-				<li class="sidebar-list-item"><a href="index.html"
-					class="sidebar-link text-muted"><i
-						class="o-home-1 mr-3 text-gray"></i><span>Home</span></a></li>
-				<li class="sidebar-list-item"><a href="charts.html"
-					class="sidebar-link text-muted"><i
-						class="o-sales-up-1 mr-3 text-gray"></i><span>Charts</span></a></li>
-				<li class="sidebar-list-item"><a href="tables.html"
-					class="sidebar-link text-muted active"><i
-						class="o-table-content-1 mr-3 text-gray"></i><span>Tables</span></a></li>
-				<li class="sidebar-list-item"><a href="forms.html"
-					class="sidebar-link text-muted"><i
-						class="o-survey-1 mr-3 text-gray"></i><span>Forms</span></a></li>
-				<li class="sidebar-list-item"><a href="#"
-					data-toggle="collapse" data-target="#pages" aria-expanded="false"
-					aria-controls="pages" class="sidebar-link text-muted"><i
-						class="o-wireframe-1 mr-3 text-gray"></i><span>Pages</span></a>
-					<div id="pages" class="collapse">
-						<ul
-							class="sidebar-menu list-unstyled border-left border-primary border-thick">
-							<li class="sidebar-list-item"><a href="#"
-								class="sidebar-link text-muted pl-lg-5">Page one</a></li>
-							<li class="sidebar-list-item"><a href="#"
-								class="sidebar-link text-muted pl-lg-5">Page two</a></li>
-							<li class="sidebar-list-item"><a href="#"
-								class="sidebar-link text-muted pl-lg-5">Page three</a></li>
-							<li class="sidebar-list-item"><a href="#"
-								class="sidebar-link text-muted pl-lg-5">Page four</a></li>
-						</ul>
-					</div></li>
-				<li class="sidebar-list-item"><a href="login.html"
-					class="sidebar-link text-muted"><i
-						class="o-exit-1 mr-3 text-gray"></i><span>Login</span></a></li>
-			</ul>
-			<div
-				class="text-gray-400 text-uppercase px-3 px-lg-4 py-4 font-weight-bold small headings-font-family">EXTRAS</div>
-			<ul class="sidebar-menu list-unstyled">
-				<li class="sidebar-list-item"><a href="#"
-					class="sidebar-link text-muted"><i
-						class="o-database-1 mr-3 text-gray"></i><span>Demo</span></a></li>
-				<li class="sidebar-list-item"><a href="#"
-					class="sidebar-link text-muted"><i
-						class="o-imac-screen-1 mr-3 text-gray"></i><span>Demo</span></a></li>
-				<li class="sidebar-list-item"><a href="#"
-					class="sidebar-link text-muted"><i
-						class="o-paperwork-1 mr-3 text-gray"></i><span>Demo</span></a></li>
-				<li class="sidebar-list-item"><a href="#"
-					class="sidebar-link text-muted"><i
-						class="o-wireframe-1 mr-3 text-gray"></i><span>Demo</span></a></li>
-			</ul>
-		</div>
+		<!-- 사이드 sidebar -->
+		<%@ include file="/template/sidebar.jsp" %>
+		<!-- 사이드 sidebar -->
 		<div class="page-holder w-100 d-flex flex-wrap">
 			<div class="container-fluid px-xl-5" id="contents">
 				<section class="py-5" style="max-height: none;">
@@ -242,9 +245,16 @@
 									%>
 									<!-- 댓글 내용 들어갈 곳 -->
 									 <div class="form-group row">
-										<label class="col-md-1 form-control-label"><%=reply.get(i).getUser_name() %></label> <label
-											class="col-md-10 form-control-label"><%=reply.get(i).getReply_contents() %></label> <label
-											class="col-md-1 form-control-label"><%=reply.get(i).getCreat_date() %></label>
+										<label class="col-md-2 form-control-label"><%=reply.get(i).getUser_name() %></label>
+										<label	class="col-md-7 form-control-label"><%=reply.get(i).getReply_contents() %></label>
+										<label	class="col-md-2 form-control-label"><%=reply.get(i).getCreat_date() %></label>
+										<%if(userDto != null){
+											if(reply.get(i).getUser_id().equals(userDto.getUser_id())){
+										%> 
+										<button class="btn btn-primary " type="button"
+										style="background-color: #dc3545; float: left; padding: 0.2rem 0.8rem;" onclick="removeReply(<%=reply.get(i).getReply_id() %>)">삭제</button>
+								<%		}
+									}%>
 									</div>
 									<%} %>
 									
@@ -281,25 +291,34 @@
 									</nav>
 								</div>
 								<!-- 덧글입력란  -->
+								<%if(userDto != null){ %>
 								<div class="card-footer">
 									<input type="text" class="form-control col-md-9" id="textReply">
 									<button class="btn btn-primary " type="button"
 								style="background-color: #dc3545; float: right; padding: 0.2rem 0.8rem;" id="reply" onclick="insertReply()">댓글등록버튼</button>
 								</div>
+								<%} %>
 							</div>
 							<!-- 여기 끝에 글쓰기버튼 -->
+							
 							<button class="btn btn-primary " type="button"
-								style="background-color: #dc3545; float: left; padding: 0.2rem 0.8rem;">목록가기</button>
+								style="background-color: #dc3545; float: left; padding: 0.2rem 0.8rem;"><a href="/plzdaengs/plzBoard?cmd=boardList&curPage=1"
+						class="sidebar-link pl-lg-5">목록가기</a></button>
+							<%if(userDto != null){ 
+								if(board.getUser_id().equals(userDto.getUser_id())){
+							%>
 							<button class="btn btn-primary " type="button"
 								style="background-color: #dc3545; float: right; padding: 0.2rem 0.8rem;" onclick="goModify(<%=board.getPost_id()%>)">수정하기</button>
 							<button class="btn btn-primary " type="button"
-								style="background-color: #dc3545; float: right; padding: 0.2rem 0.8rem;">등록하기</button>
+								style="background-color: #dc3545; float: right; padding: 0.2rem 0.8rem;" onclick="goRemove(<%=board.getPost_id()%>)">삭제하기</button>
+							<%	}
+							}%>
 						</div>
 					</div>
 					
 					<form id="modify" method="post" action="">
 						<input type="hidden" name="post_id" id="post_id" value="">
-						<input type="hidden" name="cmd" id="cmd" value="modify">
+						<input type="hidden" name="cmd" id="cmd" value="">
 					</form>
 				</section>
 			</div>

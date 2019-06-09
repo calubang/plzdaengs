@@ -991,3 +991,20 @@ insert into plz_vaccination(vaccin_code, vaccin_name, animal_code, vaccin_cycle
 
 insert into plz_vaccination(vaccin_code, vaccin_name, animal_code, vaccin_cycle
 )values('3', '켄넬코프 예방접종', '417000', 180);
+
+-- 게시판 시퀀스 추가
+INSERT INTO PLZ_BOARD_CATEGORY VALUES ('1','FREE','자유');
+INSERT INTO PLZ_BOARD_CATEGORY VALUES ('2','NANUM','나눔');
+
+
+CREATE SEQUENCE SEQ_PLZ_BOARD
+START WITH 1
+INCREMENT BY 1
+MAXVALUE 9999999
+MINVALUE 1
+NOCYCLE;
+
+create SEQUENCE SEQ_PLZ_REPLY
+start with 1
+increment by 1
+nocycle;

@@ -248,6 +248,21 @@ public class BoardServelet extends HttpServlet {
 			PrintWriter out = response.getWriter();
 			out.print(resultXML);
 		
+		}else if("remove".equals(cmd)) {
+			int result = PlzBoardDaoImpl.getPlzBoardDao().deleteBoard(Integer.parseInt(request.getParameter("post_id")));
+			
+			String resultXML = getRemoveXml(result);
+			response.setContentType("text/xml;charset=utf-8");
+			PrintWriter out = response.getWriter();
+			out.print(resultXML);
+			
+		}else if("removeReply".equals(cmd)) {
+			int result = PlzBoardDaoImpl.getPlzBoardDao().deleteRelply(Integer.parseInt(request.getParameter("reply_id")));
+			
+			String resultXML = getRemoveXml(result);
+			response.setContentType("text/xml;charset=utf-8");
+			PrintWriter out = response.getWriter();
+			out.print(resultXML);
 		}
 	}
 
@@ -282,6 +297,22 @@ public class BoardServelet extends HttpServlet {
 		result += "		<totalBlock>"+page.getTotalBlock()+"</totalBlock>";
 		result += "</page>";
 		result += "</replyList>";
+		return result;
+	}
+	
+	
+	public String getRemoveXml(int removeResult) {
+		String result = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n";
+		result += "<removeList>";
+		result += "		<remove>\n";
+		result += "			<result>"+removeResult+"</result>\n";
+		if(1 == removeResult) {
+			result += "			<msg>삭제되었습니다.</msg>\n";
+		}else {
+			result += "			<msg>삭제실패하였습니다. 관리자에게 문의하세요.</msg>\n";
+		}
+		result += "		</remove>\n";
+		result += "</removeList>";
 		return result;
 	}
 

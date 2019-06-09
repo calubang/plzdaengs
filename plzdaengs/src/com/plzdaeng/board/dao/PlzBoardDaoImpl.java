@@ -138,6 +138,7 @@ public class PlzBoardDaoImpl implements PlzBoardDao{
 			
 			sql.append(") \n");
 			sql.append("WHERE NO BETWEEN (?-1) * ?+1 AND (? * ?)-1 \n");
+			sql.append("ORDER BY NO DESC");
 			
 			System.out.println(sql.toString());
 			
@@ -481,6 +482,71 @@ public class PlzBoardDaoImpl implements PlzBoardDao{
 		}
 		return ttlCnt;
 	}
+
+	@Override
+	public int deleteBoard(int post_id) {
+		// TODO Auto-generated method stub
+		Connection con = null;
+		PreparedStatement pstm = null;
+		ResultSet rs = null;
+		int result = 0;
+		try {
+			con = DBConnection.makeConnection();
+			StringBuffer sql = new StringBuffer();
+			sql.append("DELETE PLZ_REPLY \n");
+			sql.append("WHERE POST_ID=?");
+			
+			pstm = con.prepareStatement(sql.toString());
+			pstm.setInt(1, post_id);
+			
+			result = pstm.executeUpdate();
+			
+			sql.setLength(0);
+			sql.append("DELETE PLZ_BOARD \n");
+			sql.append("WHERE POST_ID=?");
+			
+			pstm = con.prepareStatement(sql.toString());
+			pstm.setInt(1, post_id);
+			
+			result = pstm.executeUpdate();
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DBClose.close(con, pstm, rs);
+		}
+		
+		return result;
+	}
+
+	@Override
+	public int deleteRelply(int reply_id) {
+		// TODO Auto-generated method stub
+		Connection con = null;
+		PreparedStatement pstm = null;
+		ResultSet rs = null;
+		int result = 0;
+		try {
+			con = DBConnection.makeConnection();
+			StringBuffer sql = new StringBuffer();
+			sql.append("DELETE PLZ_REPLY \n");
+			sql.append("WHERE REPLY_ID=?");
+			
+			System.out.println(sql.toString());
+			pstm = con.prepareStatement(sql.toString());
+			pstm.setInt(1, reply_id);
+			
+			result = pstm.executeUpdate();
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DBClose.close(con, pstm, rs);
+		}
+		
+		return result;
+	}
+	
 	
 	
 	

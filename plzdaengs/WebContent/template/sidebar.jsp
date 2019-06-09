@@ -120,7 +120,7 @@
 						class="sidebar-link pl-lg-5">사진게시판</a></li>
 				</ul>
 			</div></li>
-		<li class="sidebar-list-item"><a href="/plzdaengs/forms.html"
+		<li class="sidebar-list-item"><a href="/plzdaengs/board/yugi.jsp"
 			class="sidebar-link text-muted"><i
 				class="o-survey-1 mr-3 text-gray"></i><span>유기견</span></a></li>
 		<li class="sidebar-list-item"><a href="#" data-toggle="collapse"

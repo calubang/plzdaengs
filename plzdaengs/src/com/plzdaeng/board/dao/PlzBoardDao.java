@@ -19,5 +19,7 @@ public interface PlzBoardDao {
 	int insertReply(PlzReply reply);
 	List<PlzReply> getReplyList(PlzReply reply);
 	int getReplyTotalCnt(int post_id);
+	int deleteBoard(int post_id);	//게시물삭제
+	int deleteRelply(int reply_id); //리플 삭제
 	
 }
