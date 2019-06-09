@@ -1,20 +1,27 @@
 package com.plzdaeng.user.controller;
 
 import java.io.IOException;
+import java.util.List;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
+import com.plzdaeng.dto.PetDto;
+import com.plzdaeng.dto.UserDto;
+import com.plzdaeng.user.service.PetService;
 import com.plzdaeng.util.MoveUrl;
 
 @WebServlet("/animal")
 public class AnimalFrontController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	private PetService service;
   
     public AnimalFrontController() {
-       
+       service = new PetService();
     }
 
 
@@ -23,9 +30,22 @@ public class AnimalFrontController extends HttpServlet {
 		String path = "/index.jsp";
 		
 		System.out.println("animal : " + act);
-		
 		if(act == null)
 			return;
+		//로그인 확인
+		UserDto user = (UserDto)request.getSession().getAttribute("userInfo");
+		if(user == null) {
+			MoveUrl.forward(request, response, path);
+			return;
+		}
+		
+		//세션에 펫리스트 세팅해두기		
+		HttpSession session = request.getSession();
+		if(session.getAttribute("petList") != null) {
+			session.removeAttribute("petlist");
+		}
+		List<PetDto> petList = service.petList(user);
+		session.setAttribute("petList", petList);
 		
 		switch (act) {
 		case "animalregister":
@@ -38,7 +58,7 @@ public class AnimalFrontController extends HttpServlet {
 		default:
 			break;
 		}
-		
+		System.out.println(petList);
 		MoveUrl.forward(request, response, path);
 	}
 

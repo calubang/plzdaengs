@@ -4250,7 +4250,7 @@ section{
 .py-5{
 	padding: 3rem;
 	min-height: 93vh;
-	max-height: 93vh;
+	/* max-height: 93vh; */
 	max-width: 85rem;
 	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }

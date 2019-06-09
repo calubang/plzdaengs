@@ -29,6 +29,12 @@
 		
 		//펫이름 중복 확인
 		$(".registeranimal input[name=petname]").keyup(petnameKeyup);
+	
+		//완료 모달의 확인 선택시
+		$("#alertSuccess button").click(function() {
+			$("#alertSuccess").modal("hide");
+			document.location.href="/plzdaengs/menu?act=animals";
+		});
 	});
 	
 	function kindselectKeyup() {
@@ -99,7 +105,12 @@
 			, contentType : false
 			, data : formData
 			, success: function(result) {
-				alert("성공");
+				result = result.trim();
+				if(result == "1"){
+					showSuccessAlertModal("반려동물 등록", "등록되었습니다");
+				}else{
+					showAlertModal("시스템 에러", "관리자에게 문의하세요");
+				}
 			}
 			, error: function() {
 				
@@ -122,23 +133,36 @@
 		var vaccinlistitemlast = $(vaccinlistitems[vaccinlistitems.length-1]);
 		var newvaccinlistitem = vaccinlistitemlast.clone();
 		
-		vaccinlistitemlast.find(".plus").remove();		
-		//
+				
+		//기존  item 플러스단추 제거
+		vaccinlistitemlast.find(".plus").remove();
+		
+		//기존 item 에 x버튼 달기
+		var xButton = '<button type="button" class="btn btn-outline-primary delete">x</button>';
+		vaccinlistitemlast.append(xButton);
+		vaccinlistitemlast.find(".delete").click(vaccindeleteClick);
+		
+		//새로 추가될 element 초기화
 		newvaccinlistitem.find(".dropdown-toggle").text("예방접종 종류");
 		newvaccinlistitem.find("input[type=hidden]").val("");
 		newvaccinlistitem.find("input[type=text]").val("");
-		
 		
 		newvaccinlistitem.find("input[type=text]").datepicker({
 		    language: 'kr'
 		    , autoClose: true
 		});
 		
+		//이벤트 추가
 		newvaccinlistitem.find(".dropdown-menu>.dropdown-item").click(vaccindropdownitemClick);
 		newvaccinlistitem.find(".plus").click(vaccinplusClick);
 		vaccinlist.append(newvaccinlistitem);
 		
 		return false;
+	}
+	
+	function vaccindeleteClick() {
+		var item = $(this).parent();
+		item.remove();
 	}
 	
 	function dogkindClick(){
@@ -191,41 +215,23 @@
 		$(this).parent().siblings("button").text(text);
 	}
 
-	function zipModalPopUp() {
-		$("#doro").val("");
-		$("#zipModal").modal("show");
-	}
-
 	function fileUploadChange() {
-		var filename = $(this)[0].files[0].name;
+		var filename = this.files[0].name;
 		var imgtag = $(this).siblings("img");
 		imgtag.prop("src", "/plzdaengs/template/img/basic_pet_profile.jpg");
 		
-		if (!($(this)[0].type.startsWith('image/'))) {
-			$(this)[0].value = "";
+		if (!this.files[0].type.startsWith("image/")) {
+			this.files[0].value = "";
 			showAlertModal("이미지 업로드 경고", "올릴수 없는 확장자입니다.");
 			return;
 		}
 		
-		$(this).siblings("input[type=text]").val(filename);
-
-		
-		
-		if (window.FileReader) {
-
-			var reader = new FileReader();
-			reader.onload = function(e) {
-				var src = e.target.result;
-				imgtag.prop("src", src);
-			}
-			reader.readAsDataURL($(this)[0].files[0]);
-		} else {
-			$(this)[0].select();
-			$(this)[0].blur();
-			var imgSrc = document.selection.createRange().text;
-			imgtag.style.filter = "progid:DXImageTransform.Microsoft.AlphaImageLoader(enable='true',sizingMethod='scale',src=\""
-					+ imgSrc + "\")";
+		var reader =new FileReader();
+		reader.onload = function (e) {
+			imgtag.prop("src", e.target.result);
 		}
+		reader.readAsDataURL(this.files[0]);
+		$(this).siblings("input[type=text]").val(filename);
 	}
 
 	function fileDropDown() {
@@ -283,8 +289,10 @@
 		var imgtag = $(".registerfileupload img");
 
 		var fileName = files[0].name;
-
+		imgtag.prop("src", "/plzdaengs/template/img/basic_pet_profile.jpg");
+		
 		if (!(files[0].type.startsWith('image/'))) {
+			alert(files[0].type);
 			showAlertModal("이미지 업로드 경고", "올릴수 없는 확장자입니다.");
 			return;
 		}
@@ -292,23 +300,13 @@
 		fileInput[0].files = files;
 		fileName = fileInput[0].files[0].name;
 		$(fileInputText[0]).val(fileName);
-		//
-
-		imgtag.prop("src", "/plzdaengs/template/img/basic_pet_profile.jpg");
-		if (window.FileReader) {
-			var reader = new FileReader();
-			reader.onload = function(e) {
-				var src = e.target.result;
-				imgtag.prop("src", src);
-			}
-			reader.readAsDataURL(fileInput[0].files[0]);
-		} else {
-			fileInput[0].select();
-			fileInput[0].blur();
-			var imgSrc = document.selection.createRange().text;
-			imgtag.style.filter = "progid:DXImageTransform.Microsoft.AlphaImageLoader(enable='true',sizingMethod='scale',src=\""
-					+ imgSrc + "\")";
+		
+		var reader =new FileReader();
+		reader.onload = function (e) {
+			imgtag.prop("src", e.target.result);
 		}
+		reader.readAsDataURL(fileInput[0].files[0]);
+		
 	}
 </script>
 <style>
@@ -383,6 +381,18 @@
 	line-height: 1.2;
 	text-align: center;
 } 
+
+.registeranimal .vaccinlistitem>.delete{
+	/* background-image: url("/plzdaengs/template/img/plus.png");
+	background-position: center;
+	background-repeat: no-repeat;
+	background-size: cover; */
+	font-size: 1.5rem;
+	font-weight: 600;
+	line-height: 1.2;
+	text-align: center;
+} 
+
 .registeranimal .dogkind{
 	padding-left: inherit;
 	padding-right: inherit;

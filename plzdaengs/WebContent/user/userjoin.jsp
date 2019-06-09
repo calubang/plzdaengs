@@ -327,7 +327,7 @@ function fileUploadChange() {
 		return;
 	}
 
-	imgtag.prop("src", "/plzdaengs/template/img/basic_user_profile.png");
+	//imgtag.prop("src", "/plzdaengs/template/img/basic_user_profile.png");
 	var reader =new FileReader();
 	reader.onload = function (e) {
 		imgtag.prop("src", e.target.result);

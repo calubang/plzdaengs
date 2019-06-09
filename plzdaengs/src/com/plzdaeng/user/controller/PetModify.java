@@ -11,23 +11,28 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.oreilly.servlet.MultipartRequest;
-import com.plzdaeng.dto.*;
+import com.plzdaeng.dto.AnimalDto;
+import com.plzdaeng.dto.BreedDto;
+import com.plzdaeng.dto.PetDto;
+import com.plzdaeng.dto.TakeVaccinDto;
+import com.plzdaeng.dto.UserDto;
+import com.plzdaeng.dto.VaccinationDto;
 import com.plzdaeng.user.service.PetService;
 import com.plzdaeng.util.MoveUrl;
 import com.plzdaeng.util.SiteConstance;
 
-@WebServlet("/petregister")
-public class PetRegister extends HttpServlet {
+@WebServlet("/petmodify")
+public class PetModify extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private PetService service;
+    private PetService service;
 	
-    public PetRegister() {
-        super();
-        service = new PetService();
+    public PetModify() {
+       service = new PetService();
     }
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		System.out.println("petregister");
+		System.out.println("petmodify");
+		
 		String saveDirectory = SiteConstance.IMG_PATH;
 		UserDto user = (UserDto)request.getSession().getAttribute("userInfo");
 		// 테스트용
@@ -55,15 +60,9 @@ public class PetRegister extends HttpServlet {
 		pet.setBreedDto(new BreedDto(new AnimalDto(animalcode), breedcode, null));
 		pet.setPet_gender(petgender);
 		pet.setBirth_date(birthdate);
-		if(pettype != null) {
-			pet.setPet_type(pettype);
-		}else {
-			pet.setPet_type("F");
-		}
+		
 		//이미지 부분
-		if(mr.getFile("imgdata") == null) {
-			pet.setPet_img("/plzdaengs/template/img/basic_pet_profile.jpg");
-		}else {
+		if(mr.getFile("imgdata") != null) {
 			pet.setPet_img("/plzdaengs/img/"+user.getUser_id()+ "/"+pet.getPet_name()+".jpg");
 		}
 		
@@ -80,10 +79,16 @@ public class PetRegister extends HttpServlet {
 		}
 		pet.setTakeVaccinList(takeVaccinList);
 		
+		if(pettype != null) {
+			pet.setPet_type(pettype);
+		}else {
+			pet.setPet_type("F");
+		}
+		
 		//System.out.println(pet.getTakeVaccinList());
 		//System.out.println(pet);
 		
-		int result = service.petRegister(pet);
+		int result = service.petModify(pet);
 		request.setAttribute("result", result);
 		//System.out.println(result);
 		
@@ -91,7 +96,6 @@ public class PetRegister extends HttpServlet {
 		MoveUrl.forward(request, response, path);
 	}
 
-	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("utf-8");
 		doGet(request, response);
