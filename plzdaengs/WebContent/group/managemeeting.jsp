@@ -128,9 +128,9 @@ table.calendar td {
 
 				<section class="py-5">
 				<div>
-          <Button onclick="location.href='group/managegroupinfo.jsp'">소모임 정보변경</Button>
-          <Button onclick="location.href='group/managemeeting.jsp'">소모임 일정관리</Button>
-          <Button onclick="location.href='group/managemember.jsp'">소모임원 관리</Button>
+          <Button onclick="location.href='/plzdaengs/group/managegroupinfo.jsp'">소모임 정보변경</Button>
+          <Button onclick="location.href='/plzdaengs/group/managemeeting.jsp'">소모임 일정관리</Button>
+          <Button onclick="location.href='/plzdaengs/group/managemember.jsp'">소모임원 관리</Button>
           </div>
 					<div class="row">
 					<div class="col-lg-8 mb-4 mb-lg-0" style="padding-right: 0">

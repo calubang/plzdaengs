@@ -5,8 +5,7 @@ import java.util.List;
 import javax.servlet.http.*;
 
 import com.plzdaeng.dto.UserDto;
-import com.plzdaeng.group.model.GroupCategory;
-import com.plzdaeng.group.model.GroupDto;
+import com.plzdaeng.group.model.*;
 import com.plzdaeng.group.model.dao.GroupDaoImpl;
 
 public class GroupController {
@@ -195,13 +194,36 @@ public class GroupController {
 	}
 
 	public String memberlist(HttpServletRequest request, HttpServletResponse response) {
+		path = "/group/result/memberlistresult.jsp";
 		HttpSession session = request.getSession();
+		List<GroupMember> list = null;
 		int group_id = Integer.parseInt(String.valueOf(session.getAttribute("group_id")));
 		System.out.println(group_id);
-		//path = GroupDaoImpl.getGroupDaoImpl().memberlist(group_id);
+		list = GroupDaoImpl.getGroupDaoImpl().memberlist(group_id);
+		request.setAttribute("memberlist", list);
 		
-		
-		return null;
+		return path;
+	}
+
+	public String managemember(HttpServletRequest request, HttpServletResponse response) {
+		System.out.println("들어는오나?");
+		path = "/group/result/memberlistresult.jsp";
+		HttpSession session = request.getSession();
+		int group_id = Integer.parseInt(String.valueOf(session.getAttribute("group_id")));
+		String user_id = request.getParameter("member_id");
+		String member_status = request.getParameter("member_status");
+		GroupMember member = new GroupMember();
+		member.setGroup_id(group_id);
+		member.setUser_id(user_id);
+		member.setMember_status(member_status);
+		if(member_status.equals("A")) {
+			
+		}else if(member_status.equals("M")) {
+			
+		}else if(member_status.equals("L")){
+			
+		}
+		return path;
 	}
 
 

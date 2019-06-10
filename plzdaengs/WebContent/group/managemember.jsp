@@ -9,8 +9,6 @@
 <script>
 $(function(){
 	
-	
-
 	 $.ajax({
 			url: '/plzdaengs/groupfront',
 			method:'POST',
@@ -19,12 +17,35 @@ $(function(){
 			},
 			success:function(result){
 				alert("enter resultpage");
-				//$("#grouplist").html(result);	
-				//$(".card").click(divClick);
+				$("#memberlist").html(result);	
+				var bArr = $('tbody#memberlist>tr>td>button');
+				$(bArr).click(btnClick);
 				
 			} 
 	
 	});
+	 
+	 
+	
+ function btnClick(){
+		 alert('button clicked');
+		 
+		$.ajax({
+		 url: '/plzdaengs/groupfront',
+		 method:'POST',
+		 data:{ act:'managemember',
+			 member_id:$('.member_id').text,
+			 member_status:$('input[name=member_status]').val()},
+			 success:function(result){
+				 alert("enter resultpage");
+			 }
+		});
+		 
+		 
+		 
+	 }
+	 
+	 
 });
 
 </script>
@@ -128,9 +149,9 @@ $(function(){
 				 <section class="py-5">
 				 
 				<div>
-          <Button onclick="location.href='group/managegroupinfo.jsp'">소모임 정보변경</Button>
-          <Button onclick="location.href='group/managemeeting.jsp'">소모임 일정관리</Button>
-          <Button onclick="location.href='group/managemember.jsp'">소모임원 관리</Button>
+          <Button onclick="location.href='/plzdaengs/group/managegroupinfo.jsp'">소모임 정보변경</Button>
+          <Button onclick="location.href='/plzdaengs/group/managemeeting.jsp'">소모임 일정관리</Button>
+          <Button onclick="location.href='/plzdaengs/group/managemember.jsp'">소모임원 관리</Button>
           </div>
             <div class="row">
            
@@ -148,13 +169,12 @@ $(function(){
                           <th>타입</th>
                           <th>아이디</th>
                           <th>닉네임</th>
-                          <th>최근접속</th>
                           <th>가입일</th>
                           <th>관리</th>
                         </tr>
                       </thead>
-                      <tbody>
-                        <tr>
+                      <tbody id="memberlist">
+                   <!--      <tr>
                           <th scope="row">1</th>
                           <td>모임장</td>
                           <td>kitri</td>
@@ -181,7 +201,7 @@ $(function(){
                           <td>2019.05.19</td>
                           <td><button>승인</button></td>
                         </tr>
-                       
+                        -->
                       </tbody>
                     </table>
                      <div>페이징처리영역</div>

@@ -60,7 +60,7 @@
 				success : function(result) {
 					var resultB = request.getAttribute('result');
 					if(resultB == 1){
-					alert("join request");
+					alert("succeed to request join");
 					$("section").html();
 					//authority = "가입요청중"
 					}else{

@@ -4,8 +4,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
 
-import com.plzdaeng.group.model.GroupBoard;
-import com.plzdaeng.group.model.GroupDto;
+import com.plzdaeng.group.model.*;
 
 public interface GroupDao {
 
@@ -33,7 +32,13 @@ public interface GroupDao {
 	
 	int joinGroup(int group_id, String id);
 	
-	//List<> result = memberlist(int group_id);
+	List<GroupMember> memberlist(int group_id);
 	
+	int kickMember(GroupMember member);
 	
+	int permitMember(GroupMember member);
+	
+	int passAuthority(Connection conn, GroupMember member) throws SQLException;
+	
+	int removeAuthority(GroupMember member);
 }

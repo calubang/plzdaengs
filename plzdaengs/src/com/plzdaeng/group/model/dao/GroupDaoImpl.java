@@ -595,7 +595,7 @@ public class GroupDaoImpl implements GroupDao {
 
 		String joinGroupSql = "";
 		joinGroupSql += "insert into plz_group_member (group_id, user_id, member_status)\r\n" + 
-				"values(?, ?, 'M');";
+				"values(?, ?, 'A');";
 
 		
 			System.out.println("sql문실행전");
@@ -627,6 +627,186 @@ public class GroupDaoImpl implements GroupDao {
 
 	}
 
+
+
+	public List<GroupMember> memberlist(int group_id) {
+		
+		List<GroupMember> list = null;
+		GroupMember member = null;
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String memberListSQL = "";
+		memberListSQL += "SELECT m.group_id, m.user_id, u.nickname , m.member_status, m.group_joindate \r\n"
+				+ "FROM plz_group_member m inner join plz_user u \r\n"
+				+ "ON m.user_id = u.user_id \r\n"
+				+ "WHERE group_id = ?";
+				
+		try {
+			conn = DBConnection.makeConnectplzdb();
+			pstmt = conn.prepareStatement(memberListSQL);
+			
+			pstmt.setInt(1, group_id);
+			rs = pstmt.executeQuery();
+			
+			list = new ArrayList<>();
+			
+			while(rs.next()) {
+				member = new GroupMember();
+				member.setGroup_id(rs.getInt("group_id"));
+				member.setUser_id(rs.getString("user_id"));
+				member.setNickName("nickname");
+				member.setMember_status(rs.getString("member_status"));
+				member.setGroup_joindate(String.valueOf(rs.getDate("group_joindate")));
+				
+				list.add(member);
+			}
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			DBClose.close(conn, pstmt, rs);
+		}
+		
+		return list;
+	}
+
+	@Override
+	public int kickMember(GroupMember member) {
+		int result = -1;		
+
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		
+		String memberListSQL = "update plz_group_member\r\n" + 
+				"set member_status = 'X'\r\n" + 
+				"where group_id = ? and user_id = ?";
+		
+				
+		try {
+			conn = DBConnection.makeConnectplzdb();
+			pstmt = conn.prepareStatement(memberListSQL);
+			
+			pstmt.setInt(1, member.getGroup_id());
+			pstmt.setString(2, member.getUser_id());
+			int r = pstmt.executeUpdate();
+			if(r > 0) {
+				result = 1;
+			}
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			DBClose.close(conn, pstmt, null);
+		}
+		return result;
+	}
+
+	@Override
+	public int permitMember(GroupMember member) {
+		int result = -1;		
+
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		
+		String memberListSQL = "update plz_group_member\r\n" + 
+				"set member_status = 'M'\r\n" + 
+				"where group_id = ? and user_id = ?";
+		
+				
+		try {
+			conn = DBConnection.makeConnectplzdb();
+			pstmt = conn.prepareStatement(memberListSQL);
+			
+			pstmt.setInt(1, member.getGroup_id());
+			pstmt.setString(2, member.getUser_id());
+			int r = pstmt.executeUpdate();
+			if(r > 0) {
+				result = 1;
+			}
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			DBClose.close(conn, pstmt, null);
+		}
+		return result;
+	}
+
+	@Override
+	public int passAuthority(Connection conn, GroupMember member) throws SQLException {
+		int result = -1;
+		PreparedStatement pstmt = null;
+		
+		String memberListSQL = "update plz_group_member\r\n" + 
+				"set member_status = 'L'\r\n" + 
+				"where group_id = ? and user_id = ?";
+		
+				
+		try {
+			conn = DBConnection.makeConnectplzdb();
+			
+			pstmt = conn.prepareStatement(memberListSQL);
+			
+			pstmt.setInt(1, member.getGroup_id());
+			pstmt.setString(2, member.getUser_id());
+			int r = pstmt.executeUpdate();
+			if(r == 1) {
+				System.out.println("권한 이동 성공");
+				result = 1;
+			}
+		}finally {
+			DBClose.close(null, pstmt, null);
+		}
+		return result;
+	}
+
+	@Override
+	public int removeAuthority(GroupMember member) {
+		int result = -1;		
+
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		
+		String memberListSQL = "update plz_group_member\r\n" + 
+				"set member_status = 'M'\r\n" + 
+				"where group_id = ? and member_status = 'L'";
+		
+				
+		try {
+			conn = DBConnection.makeConnectplzdb();
+			conn.setAutoCommit(false);
+			pstmt = conn.prepareStatement(memberListSQL);
+			
+			pstmt.setInt(1, member.getGroup_id());
+			int r2 = pstmt.executeUpdate();
+			
+			int r1 = passAuthority(conn, member);
+			if(r1 == 1 && r2 == 1) {
+				result = 1;
+				conn.commit();
+			}
+
+			
+			} catch (SQLException e) {
+				try {
+				System.out.println("rollback 실행");
+				conn.rollback();
+			} catch (SQLException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			
+		} finally {
+			DBClose.close(conn, pstmt, null);
+		}
+		return result;
+	}
+
 	
+		
 
 }

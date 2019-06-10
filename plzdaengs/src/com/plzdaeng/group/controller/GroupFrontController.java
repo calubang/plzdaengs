@@ -75,6 +75,11 @@ public class GroupFrontController extends HttpServlet {
 		}else if("memberlist".equals(act)) {
 			System.out.println("front enter");
 			path = GroupController.getGroupController().memberlist(request, response);
+			MoveUrl.forward(request, response, path);
+		}else if("managemember".equals(act)) {
+			System.out.println("front enter");
+			path = GroupController.getGroupController().managemember(request, response);
+			MoveUrl.forward(request, response, path);
 		}
 	}
 
