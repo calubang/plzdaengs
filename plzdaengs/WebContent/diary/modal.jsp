@@ -29,18 +29,7 @@
 </style>
 
 <script type="text/javascript">
-	/*
-	function view() {
-	    var f = document.getElementById("file").files[0];
-	    var reader = new FileReader();
-	    reader.onload = (function(evt) {  //evt get all value
-	        document.getElementById('div').innerHTML = 
-	            "PIC :<img src=" +
-	            evt.target.result + "/>" ;
-	    });
-	    reader.readAsDataURL(f);
-	}
-	
+/*
 	 MODAL 위치 설정
 	$("#realmodal").modal('show').css({
 	    'margin-top': function () { //vertical centering
@@ -50,7 +39,17 @@
 	        return -($(this).width() / 2);
 	    }
 	});
-	*/
+*/
+
+	$(document).ready(function() { // 아예 시작할 때
+        $("#submit").on("click", function(){
+        	alert('보냈어요');
+        	var input = document.getElementById('title').value;
+        	alert(input);
+
+        });
+	});
+	
 </script>
 </head>
 <body>
@@ -58,12 +57,11 @@
 	Calendar 날짜 클릭했을시에 모달창 FE 
 	original : <form method = "get" action = "/plzdaengs/diary/mparam.jsp">
 -->
-<form method = "get" action = "/plzdaengs/diary/calendar.jsp">
+
 <div id="enroll" class="modal fade">
-	<div class="modal-dtpicker"></div>
 	<div id = "realmodal" class="modal-dialog" width = "800">
 		<div class="modal-content">
-			<form>
+			<form method = "get" action = "/plzdaengs/diary/calendar.jsp">
 				<div class="modal-header">다이어리 추가</div>
 				<div class="modal-body">
 					<!--div id="ipAlertTitle" class="alert alert-danger" role="alert">다이어리를 입력해주세요. </div-->
@@ -79,12 +77,11 @@
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="button" data-dismiss="modal">Close</button>
-					<button type="submit" class="button" id="submit" onclick="viewAttr()">Submit</button>
+					<button type="submit" class="button" id="submit">Submit</button>
 				</div>
 			</form>
 		</div>
 	</div>
 </div>
-</form>
 </body>
 </html>

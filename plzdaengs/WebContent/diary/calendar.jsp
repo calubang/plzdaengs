@@ -3,7 +3,6 @@
 <%
 	String title = request.getParameter("title");
 	String description = request.getParameter("description");
-	
 %>
 <!DOCTYPE html>
 <html>
@@ -78,6 +77,12 @@ table.calendar td{
         drawCalendar();
         initDate(); // 날짜 초기화할것
         drawDays();
+        
+        var a = $("#attr").html();
+    	console.log(a);
+    	//$(".cal-schedule").html('<div>'+ a + '</div>');
+    	//alert('가져온 값 : ' + a);
+    	
         $("#movePrevMonth").on("click", function(){movePrevMonth();});
         $("#moveNextMonth").on("click", function(){moveNextMonth();});
         $('table tbody td').mouseover(function() {
@@ -99,21 +104,18 @@ table.calendar td{
 			var cellText = $(this).text().trim(); // ★★★★★★★★★ 
 			console.log(cellText);
 			
-			
 			alert(cellText + '일 click!'); // 위에 .html하면 관련 식 나오고 text해야 date나옴
-			//$("#enroll").modal();
-			//$("#enroll").modal
-        	//showModal(true, cellText);
-        	
-			
+			$("#enroll").modal();
         }) // td클릭시 function 끝
         
         $('table tbody td div.cal-schedule').click(function() {
         	// 2. 밑에 스케줄쪽 클릭하면 편집할 수 있어야
-			alert('div.cal-schedule 클릭 > modal 연결');
-			$("#enroll").modal();
-			console.log('<%=title%>');
+			//alert('div.cal-schedule 클릭 > modal 연결');
+			//$("#enroll").modal(); // 근데 이거 submit하기 전이얌 그니까 당연히 null이뜸
+			//console.log('[1] modal창 넘어감');
         })
+        
+        
     });
     
     /*
@@ -199,6 +201,10 @@ table.calendar td{
     //calendar 그리기
     function drawCalendar(){
         var setTableHTML = "";
+        
+        var a = $("#attr").html();
+    	console.log('[2] '+ a);
+    	
         setTableHTML+='<table class="calendar" id = "calendar">';
         setTableHTML+='<tr><th>SUN</th><th>MON</th><th>TUE</th><th>WED</th><th>THU</th><th>FRI</th><th>SAT</th></tr>';
         for(var i=0;i<6;i++){
@@ -206,13 +212,14 @@ table.calendar td{
             for(var j=0;j<7;j++){
                 setTableHTML+='<td style="text-overflow:ellipsis;overflow:hidden;white-space:nowrap">';
                 setTableHTML+='    <div class="cal-day" id = "cal-day" ondrop="drop(event)" ondragover="allowDrop(event)"></div>';
-                setTableHTML+='    <div class="cal-schedule"></div>';
+                setTableHTML+='    <div class="cal-schedule"><%=title%></div>';
                 setTableHTML+='</td>';
             }
             setTableHTML+='</tr>';
         }
         setTableHTML+='</table>';
         $("#cal_tab").html(setTableHTML);
+        
     }
  
 	//날짜 초기화
@@ -286,17 +293,23 @@ table.calendar td{
     }
 </script>
 
+<!-- DRAG & DROP -->
 <script>
-	// DRAG & DROP 오예!
 	function allowDrop(ev) { 
 		ev.preventDefault();
 	} 
 	
 	function drag(ev) { 
-		ev.dataTransfer.setData("text", ev.target.id); 
+		//var a = $('#attr').text();
+		//console.log(a);
+		ev.dataTransfer.setData("text", ev.target.id); // img용
+		
 	}
 	
 	function drop(ev) {
+		var a = $('#attr').text();
+		console.log('1!!!' + a);
+		
 		ev.preventDefault();
 		var data = ev.dataTransfer.getData("text");
 		console.log(data);
@@ -311,9 +324,8 @@ table.calendar td{
 		});
 		ev.target.appendChild(dataTemp); // 이모티콘 붙일 때 없어지지 않고 남아있기
 	}
-	
-	
 </script>
+
 </head>
 
 <body>
@@ -341,7 +353,7 @@ table.calendar td{
 			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 			<img id="bin" src="img/bin.png" width="50px" height="50px" ondrop="delete(event)" ondragover="allowDrop(event)">
 		</div>
-		<div id = "attr" draggable="true" ondragstart="drag(event)" > 제목 : <%=title %> &nbsp;&nbsp; 내용 : <%=description %></div>
+		<div id = "attr" draggable="true" ondragstart="drag(event)" ><%=title %></div>
     </div>
 </section>
  </div>

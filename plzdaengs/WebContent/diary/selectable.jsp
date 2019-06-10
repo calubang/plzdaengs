@@ -15,6 +15,7 @@
 
   document.addEventListener('DOMContentLoaded', function() {
     var calendarEl = document.getElementById('calendar');
+    console.log('1 '+calendarEl);
 
     var calendar = new FullCalendar.Calendar(calendarEl, {
       plugins: [ 'interaction', 'dayGrid', 'timeGrid' ],
@@ -23,12 +24,12 @@
         center: 'title',
         right: 'dayGridMonth,timeGridWeek,timeGridDay'
       },
-      defaultDate: '2019-04-12',
+      defaultDate: '2019-06-12',
       navLinks: true, // can click day/week names to navigate views
       selectable: true,
       selectMirror: true,
       select: function(arg) {
-        var title = prompt('Event Title:');
+        var title = prompt('Event Title:', 'oh no : ');
         if (title) {
           calendar.addEvent({
             title: title,
@@ -44,59 +45,59 @@
       events: [
         {
           title: 'All Day Event',
-          start: '2019-04-01',
+          start: '2019-06-01',
           color: "red"
         },
         {
           title: 'Long Event',
-          start: '2019-04-07',
-          end: '2019-04-10',
+          start: '2019-06-07',
+          end: '2019-06-10',
           color: "green"
         },
         {
           groupId: 999,
           title: 'Repeating Event',
-          start: '2019-04-09T16:00:00'
+          start: '2019-06-09T16:00:00'
         },
         {
           groupId: 999,
           title: 'Repeating Event',
-          start: '2019-04-16T16:00:00'
+          start: '2019-06-16T16:00:00'
         },
         {
           title: 'Conference',
-          start: '2019-04-11',
-          end: '2019-04-13'
+          start: '2019-06-11',
+          end: '2019-06-13'
         },
         {
           title: 'Meeting',
-          start: '2019-04-12T10:30:00',
-          end: '2019-04-12T12:30:00'
+          start: '2019-06-12T10:30:00',
+          end: '2019-06-12T12:30:00'
         },
         {
           title: 'Lunch',
-          start: '2019-04-12T12:00:00'
+          start: '2019-06-12T12:00:00'
         },
         {
           title: 'Meeting',
-          start: '2019-04-12T14:30:00'
+          start: '2019-06-12T14:30:00'
         },
         {
           title: 'Happy Hour',
-          start: '2019-04-12T17:30:00'
+          start: '2019-06-12T17:30:00'
         },
         {
           title: 'Dinner',
-          start: '2019-04-12T20:00:00'
+          start: '2019-06-12T20:00:00'
         },
         {
           title: 'Birthday Party',
-          start: '2019-04-13T07:00:00'
+          start: '2019-06-13T07:00:00'
         },
         {
           title: 'Click for Google',
           url: 'http://google.com/',
-          start: '2019-04-28'
+          start: '2019-06-28'
         }
       ]
     });
@@ -116,43 +117,45 @@
 		ev.preventDefault();
 		var data = ev.dataTransfer.getData("text");
 		//alert('drop 하였소');
-		//console.log(data);
+		console.log('1 ' + data);
 		
 		var dataTemp = document.getElementById(data).cloneNode();
-		$(dataTemp).css("width", "40px");
-		$(dataTemp).css("height", "40px");
-		$(dataTemp).click(function(e) {
-			alert("이모티콘 클릭해또");
-		});
+		console.log('2 ' + dataTemp);
+		//$(dataTemp).css("width", "40px");
+		//$(dataTemp).css("height", "40px");
+		//$(dataTemp).click(function(e) {
+		//	alert("이모티콘 클릭해또");
+		//});
 		ev.target.appendChild(dataTemp); // 이모티콘 붙일 때 없어지지 않고 남아있기
 	}
 </script>
+
 <style type="text/css">
- #div1 {
-  width: 1000px;
-  height: 100px;
-  padding: 10px;
-  border: 1px solid #aaaaaa;
-  margin-left: 500px;
-}
-
-  body {
-    margin: 40px 10px;
-    padding: 0;
-    font-family: Arial, Helvetica Neue, Helvetica, sans-serif;
-    font-size: 14px;
-  }
-
-  #calendar {
-    max-width: 900px;
-    margin: 0 auto;
-  }
-
+	 #div1 {
+	  width: 1000px;
+	  height: 100px;
+	  padding: 10px;
+	  border: 1px solid #aaaaaa;
+	  margin-left: 500px;
+	}
+	
+	  body {
+	    margin: 40px 10px;
+	    padding: 0;
+	    font-family: Arial, Helvetica Neue, Helvetica, sans-serif;
+	    font-size: 14px;
+	  }
+	
+	  #calendar {
+	    max-width: 900px;
+	    margin: 0 auto;
+	  }
 </style>
+
 </head>
+
 <body>
-<!-- ondrop="drop(event)" ondragover="allowDrop(event)" -->
-	<div id='calendar'></div>
+	<div id='calendar' ondrop="drop(event)" ondragover="allowDrop(event)"></div>
 	<div id="cal_image" style="margin-left: 200px;">
 			<img id="drag1" src="img/hospital.png" draggable="true" ondragstart="drag(event)" width="50px" height="50px"> &nbsp;&nbsp;&nbsp;&nbsp;
 			<img id="drag2" src="img/bones.png" draggable="true" ondragstart="drag(event)" width="50px" height="50px"> &nbsp;&nbsp;&nbsp;&nbsp;
