@@ -1,5 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%
+	String title = request.getParameter("title");
+	String description = request.getParameter("description");
+	
+%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -19,6 +24,11 @@
   margin-left: 500px;
 }
 
+.cal-day{
+/*
+	background-color: black;
+*/
+}
 .cal_top{
     text-align: center;
     font-size: 30px;
@@ -33,6 +43,7 @@ table.calendar .cal-schedule{
 	1. 이 부분이 일정등록 클릭할 부분
 */
 	height : 55px;
+	font-size: medium;
 }
 
 table.calendar{
@@ -78,20 +89,31 @@ table.calendar td{
         }).mouseout(function() { // 그 순간 움직일 때
         	//alert('내려놨슈');
             $(this).children().css({
-                'backgroundColor' : '#FFFFFF',
+                'backgroundColor' : '#F8F9FB',
                 'cursor' : 'default'
             }); // $(this).children().css끝
         });
-		$('table tbody td').click(function() { // table td 클릭할 때
+        
+		$('table tbody td div.cal-day').click(function() { // table td 클릭할 때
 			// 1. 클릭하면 모달나오게 해야함 > 일정 등록하는거
 			var cellText = $(this).text().trim(); // ★★★★★★★★★ 
+			console.log(cellText);
+			
+			
 			alert(cellText + '일 click!'); // 위에 .html하면 관련 식 나오고 text해야 date나옴
-			$("#enroll").modal();
+			//$("#enroll").modal();
 			//$("#enroll").modal
         	//showModal(true, cellText);
         	
 			
         }) // td클릭시 function 끝
+        
+        $('table tbody td div.cal-schedule').click(function() {
+        	// 2. 밑에 스케줄쪽 클릭하면 편집할 수 있어야
+			alert('div.cal-schedule 클릭 > modal 연결');
+			$("#enroll").modal();
+			console.log('<%=title%>');
+        })
     });
     
     /*
@@ -266,16 +288,24 @@ table.calendar td{
 
 <script>
 	// DRAG & DROP 오예!
-	function allowDrop(ev) { ev.preventDefault();} 
-	function drag(ev) { ev.dataTransfer.setData("text", ev.target.id); }
+	function allowDrop(ev) { 
+		ev.preventDefault();
+	} 
+	
+	function drag(ev) { 
+		ev.dataTransfer.setData("text", ev.target.id); 
+	}
+	
 	function drop(ev) {
 		ev.preventDefault();
 		var data = ev.dataTransfer.getData("text");
-		//console.log(data);
+		console.log(data);
 		
 		var dataTemp = document.getElementById(data).cloneNode();
+		console.log(dataTemp);
 		$(dataTemp).css("width", "40px");
 		$(dataTemp).css("height", "40px");
+		$(dataTemp).css("font-size", "small");
 		$(dataTemp).click(function(e) {
 			alert("이모티콘 클릭해또");
 		});
@@ -311,6 +341,7 @@ table.calendar td{
 			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 			<img id="bin" src="img/bin.png" width="50px" height="50px" ondrop="delete(event)" ondragover="allowDrop(event)">
 		</div>
+		<div id = "attr" draggable="true" ondragstart="drag(event)" > 제목 : <%=title %> &nbsp;&nbsp; 내용 : <%=description %></div>
     </div>
 </section>
  </div>
