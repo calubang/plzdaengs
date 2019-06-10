@@ -2,7 +2,8 @@
 	pageEncoding="UTF-8"%>
 <div id="sidebar" class="sidebar py-3">
 	<a href="#" class="sidebar-toggler text-gray-500 mr-4 mr-lg-5 lead"><i
-		class="fas fa-align-left" id="toggle"></i></a><a href="index.html"
+		class="fas fa-align-left" id="toggle"></i></a>
+	<a href="index.html"
 		class="navbar-brand font-weight-bold text-uppercase"></a>
 	<div
 		class="text-gray-400 text-uppercase px-3 px-lg-4 py-4 font-weight-bold small headings-font-family"
@@ -79,19 +80,18 @@
 
 		<li class="sidebar-list-item"><a href="/plzdaengs/charts.html"></a>
 
-		<li class="sidebar-list-item"><a href="#" data-toggle="collapse"
-			data-target="#pages" aria-expanded="false" aria-controls="pages"
+		<li class="sidebar-list-item">
+			<a href="#" data-toggle="collapse" data-target="#info" aria-expanded="false" aria-controls="info"
 			class="sidebar-link text-muted"><i
 				class="o-wireframe-1 mr-3 text-gray"></i><span>마이페이지</span></a>
-			<div id="pages" class="collapse">
-				<ul
-					class="sidebar-menu list-unstyled border-left border-primary border-thick">
-					<li class="sidebar-list-item"><a
-						href="/plzdaengs/menu?act=usermodify"
-						class="sidebar-link pl-lg-5">회원정보</a></li>
-					<li class="sidebar-list-item"><a
-						href="/plzdaengs/menu?act=animals" class="sidebar-link pl-lg-5">반려동물
-							정보</a></li>
+			<div id="info" class="collapse">
+				<ul class="sidebar-menu list-unstyled border-left border-primary border-thick">
+					<li class="sidebar-list-item">
+						<a href="/plzdaengs/menu?act=usermodify" class="sidebar-link pl-lg-5">회원정보</a>
+					</li>
+					<li class="sidebar-list-item">
+						<a href="/plzdaengs/menu?act=animals" class="sidebar-link pl-lg-5">반려동물 정보</a>
+					</li>
 				</ul>
 			</div></li>
 			
@@ -107,10 +107,10 @@
 		<li class="sidebar-list-item"><a href="/plzdaengs/tables.html"></a>
 
 		<li class="sidebar-list-item"><a href="#" data-toggle="collapse"
-			data-target="#pages" aria-expanded="false" aria-controls="pages"
+			data-target="#group" aria-expanded="false" aria-controls="group"
 			class="sidebar-link text-muted"><i
 				class="o-wireframe-1 mr-3 text-gray"></i><span>소모임</span></a>
-			<div id="pages" class="collapse">
+			<div id="group" class="collapse">
 				<ul
 					class="sidebar-menu list-unstyled border-left border-primary border-thick">
 					<li class="sidebar-list-item"><a href="/plzdaengs/group/groupmain.jsp"
