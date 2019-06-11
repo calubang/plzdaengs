@@ -12,6 +12,7 @@ import javax.websocket.server.ServerEndpoint;
 import org.json.JSONObject;
 
 import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.plzdaeng.chat.service.ChatService;
@@ -20,7 +21,6 @@ import com.plzdaeng.util.ChatMap;
 
 @ServerEndpoint("/chatserver")
 public class ChatServerServlet{
-	private List<Session> list = new ArrayList<Session>();
 	private Map<Integer, List<Session>> chatMap;
 	private ChatService service;
 	
@@ -41,6 +41,7 @@ public class ChatServerServlet{
 			if(result == 1) {
 				//정상작동
 				List<Session> list = chatMap.get(chatDto.getGroup_id());
+				System.out.println(list);
 				String sendMsg = mapper.writeValueAsString(chatDto);
 				for(Session client : list) {
 					client.getBasicRemote().sendText(sendMsg);
@@ -61,26 +62,41 @@ public class ChatServerServlet{
 	public void handleOpen(Session session) {
 		System.out.println("클라이언트 입장 : " + session);
 		String groupId = session.getRequestParameterMap().get("groupid").get(0);
-		System.out.println("chatmap : " + chatMap);
+		//System.out.println("chatmap : " + chatMap);
 		List<Session> sessionList = chatMap.get(Integer.parseInt(groupId));
-		System.out.println("sessionList : " + sessionList);
+		//System.out.println("sessionList : " + sessionList);
 		if(sessionList == null) {
-			System.out.println("재생성");
 			sessionList = new ArrayList<Session>();
 			chatMap.put(Integer.parseInt(groupId), sessionList);
 		}
 		sessionList.add(session);
 		
-		System.out.println("chatMap : " + chatMap);
-		
+		//System.out.println("chatMap : " + chatMap);
 		//System.out.println("session groupid : " + session.getQueryString());
+		
+		//시작할때 기존의 대화를 불러온다
+		List<ChatDto> chatHistory = service.chatHistory(groupId);
+		ObjectMapper mapper = new ObjectMapper();
+		try {
+			String historyJSON = mapper.writeValueAsString(chatHistory);
+			System.out.println(historyJSON);
+			session.getBasicRemote().sendText(historyJSON);
+			
+		} catch (JsonProcessingException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	
 	}
 	
 	@OnClose
 	public void handleClose(Session session) {
 		System.out.println("클라이언트 퇴장 : "+session);
 		String groupId = session.getRequestParameterMap().get("groupid").get(0);
-		System.out.println("그룹id : " + groupId);
+		//System.out.println("그룹id : " + groupId);
+		List<Session> list = chatMap.get(Integer.parseInt(groupId));
+		list.remove(session);
 	}
 	
 	

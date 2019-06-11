@@ -60,14 +60,18 @@ public class PetRegister extends HttpServlet {
 		}else {
 			pet.setPet_type("F");
 		}
+		//첫번째 펫이라면.. 자동 대표펫
+		List<PetDto> petList = (List<PetDto>)request.getSession().getAttribute("petList");
+		if(petList == null || petList.size() == 0) {
+			pet.setPet_type("T");
+		}
+		
 		//이미지 부분
 		File profileFile = mr.getFile("imgdata");
 		if(profileFile == null) {
 			pet.setPet_img("/plzdaengs/template/img/basic_pet_profile.jpg");
 		}else {
 			pet.setPet_img("/plzdaengs/img/"+user.getUser_id()+ "/"+pet.getPet_name()+".jpg");
-			String path = request.getServletContext().getRealPath("/img");
-			ProfileCreate.profileRegister(profileFile, path , user.getUser_id(), pet.getPet_name() , "pet");
 		}
 		
 		List<TakeVaccinDto> takeVaccinList = new ArrayList<TakeVaccinDto>();
@@ -86,7 +90,12 @@ public class PetRegister extends HttpServlet {
 		//System.out.println(pet.getTakeVaccinList());
 		//System.out.println(pet);
 		
+		
 		int result = service.petRegister(pet);
+		if(result == 1) {
+			String path = request.getServletContext().getRealPath("/img");
+			ProfileCreate.profileRegister(profileFile, path , user.getUser_id(), pet.getPet_name() , "pet");
+		}
 		request.setAttribute("result", result);
 		//System.out.println(result);
 		

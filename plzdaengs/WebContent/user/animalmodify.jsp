@@ -41,10 +41,18 @@ document.location.href="/plzdaengs/menu?act=animals";
 			document.location.href="/plzdaengs/menu?act=animals";
 		});
 		
+		//취소
+		$("#cancelBtn").click(cancelBtnClick);
+		
 		//데이터세팅
 		initPetInfo();
 		
 	});
+	
+	function cancelBtnClick(){
+		document.location.href = "/plzdaengs/menu?act=animals";
+		return false;
+	}
 	
 	function initPetInfo(){
 		var petName = "${petinfo.pet_name}";
@@ -575,10 +583,11 @@ document.location.href="/plzdaengs/menu?act=animals";
 						</div>
 					</div>
 					<div class="line"></div>
-					<div class="form-group row">
+					<div class="form-group row button-group">
 						<div class="col-md-9 ml-auto">
-							<button type="reset" class="btn btn-primary">취소</button>
+							<button type="reset" class="btn btn-primary" id="cancelBtn">취소</button>
 							<button type="button" class="btn btn-primary" id="registerBtn">수정</button>
+							<button type="button" class="btn btn-danger delete" id="deleteBtn">삭제</button>
 						</div>
 					</div>
 				</form>

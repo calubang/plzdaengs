@@ -67,12 +67,13 @@ public class UserJoinServlet extends HttpServlet {
 			userDto.setUser_img("/template/img/basic_user_profile.png");
 		}else {
 			userDto.setUser_img("/plzdaengs/img/"+userDto.getUser_id()+"/user_profile.jpg");
+		}
+		
+		int result = service.userJoin(userDto);
+		if(result == 1) {
 			String path = request.getServletContext().getRealPath("/img");
-			//System.out.println(path);
 			ProfileCreate.profileRegister(profileFile, path , userDto.getUser_id(), null , "user");
 		}
-		//프로필 등록시작
-		int result = service.userJoin(userDto);
 		request.setAttribute("userjoinresult", result);
 		MoveUrl.forward(request, response, "/user/userjoinresult.jsp");
 	}

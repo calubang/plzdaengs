@@ -84,10 +84,18 @@ $(function() {
 	//수정버튼 이벤트
 	$(".usermodify #usermodifyBtn").click(userModifyClick);
 	
+	//취소
+	$("#cancelBtn").click(cancelBtnClick);
+	
 	initData();
 	
 	
 });
+
+function cancelBtnClick(){
+	document.location.href = "/plzdaengs/menu?act=home";
+	return false;
+}
 
 function passwordCheck(){
 	var password = $("input[name=password]").val();
@@ -135,8 +143,14 @@ function initData() {
 	}
 	
 	var zipcodeInput = $("input[name=zipcode]");
+	var zipcodeStr = "${userDetail.userDetailDto.zipcode}";
 	var zipcode = zipcodeInput.val("${userDetail.userDetailDto.zipcode}");
-	zipcodeInput.siblings("button").text("${userDetail.userDetailDto.zipcode}");
+	if(zipcodeStr == null || zipcodeStr.length == 0){
+		zipcodeInput.siblings("button").text("우편번호");
+	}else{
+		zipcodeInput.siblings("button").text("${userDetail.userDetailDto.zipcode}");
+	}
+	
 	
 	var address = $("input[name=address]").val("${userDetail.userDetailDto.address}");
 	var addressdetail = $("input[name=addressdetail]").val("${userDetail.userDetailDto.address_detail}");
@@ -545,11 +559,12 @@ function fileUploadChange() {
 										</div>
 									</div>
 									<div class="line"></div>
-									<div class="form-group row">
+									<div class="form-group row button-group">
 										<div class="col-md-9 ml-auto">
-											<button type="reset" class="btn btn-primary">취소</button>
+											<button type="reset" class="btn btn-primary" id="cancelBtn">취소</button>
 											<button type="submit" class="btn btn-primary"
 												id="usermodifyBtn">회원수정</button>
+											<button type="button" class="btn btn-danger delete" id="deleteBtn">탈퇴</button>
 										</div>
 									</div>
 								</form>

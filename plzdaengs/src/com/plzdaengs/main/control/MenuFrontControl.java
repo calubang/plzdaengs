@@ -38,7 +38,14 @@ public class MenuFrontControl extends HttpServlet {
 				path = "usermodify";
 			}
 			break;
+		case "home":
+			path = "/index.jsp";
+			break;
 		
+		case "admin":
+			path = "/admin";
+			break;
+			
 		default:
 			break;
 		}

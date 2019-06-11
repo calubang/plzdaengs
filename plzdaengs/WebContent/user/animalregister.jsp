@@ -35,7 +35,15 @@
 			$("#alertSuccess").modal("hide");
 			document.location.href="/plzdaengs/menu?act=animals";
 		});
+		
+		//취소
+		$("#cancelBtn").click(cancelBtnClick);
 	});
+	
+	function cancelBtnClick(){
+		document.location.href = "/plzdaengs/menu?act=animals";
+		return false;
+	}
 	
 	function kindselectKeyup() {
 		var text = $(this).val();
@@ -550,9 +558,9 @@
 						</div>
 					</div>
 					<div class="line"></div>
-					<div class="form-group row">
+					<div class="form-group row button-group">
 						<div class="col-md-9 ml-auto">
-							<button type="reset" class="btn btn-primary">취소</button>
+							<button type="reset" class="btn btn-primary" id="cancelBtn">취소</button>
 							<button type="button" class="btn btn-primary" id="registerBtn">등록</button>
 						</div>
 					</div>

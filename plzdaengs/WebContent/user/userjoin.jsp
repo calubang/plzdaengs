@@ -49,6 +49,11 @@
 .register h3 {
 	font-size: 1.5rem;
 }
+
+.button-group button{
+	width: 6rem;
+	padding: 0.4rem;
+}
 </style>
 <script>
 //아이디 중복검사용
@@ -80,7 +85,15 @@ $(function() {
 	//회원가입 성공시 뜨는 모달
 	$("#alertSuccess button").click(successAlertOkClick);
 	
+	//회원가입 취소
+	$("#cancelBtn").click(cancelBtnClick);
+	
 });
+
+function cancelBtnClick(){
+	document.location.href = "/plzdaengs/menu?act=home";
+	return false;
+}
 
 function passwordCheck(){
 	var password = $("input[name=password]").val();
@@ -462,9 +475,9 @@ function fileUploadChange() {
 						</div>
 					</div>
 					<div class="line"></div>
-					<div class="form-group row">
+					<div class="form-group row button-group">
 						<div class="col-md-9 ml-auto">
-							<button type="reset" class="btn btn-primary">취소</button>
+							<button type="reset" class="btn btn-primary" id="cancelBtn">취소</button>
 							<button type="submit" class="btn btn-primary" id="registerBtn">회원가입</button>
 						</div>
 					</div>

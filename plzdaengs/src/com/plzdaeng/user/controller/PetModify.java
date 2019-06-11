@@ -65,8 +65,6 @@ public class PetModify extends HttpServlet {
 		File profileFile = mr.getFile("imgdata");
 		if(profileFile != null) {
 			pet.setPet_img("/plzdaengs/img/"+user.getUser_id()+ "/"+pet.getPet_name()+".jpg");
-			String path = request.getServletContext().getRealPath("/img");
-			ProfileCreate.profileRegister(profileFile, path , user.getUser_id(), pet.getPet_name() , "pet");
 		}
 		
 		List<TakeVaccinDto> takeVaccinList = new ArrayList<TakeVaccinDto>();
@@ -92,6 +90,10 @@ public class PetModify extends HttpServlet {
 		//System.out.println(pet);
 		
 		int result = service.petModify(pet);
+		if(result == 1) {
+			String path = request.getServletContext().getRealPath("/img");
+			ProfileCreate.profileRegister(profileFile, path , user.getUser_id(), pet.getPet_name() , "pet");
+		}
 		request.setAttribute("result", result);
 		//System.out.println(result);
 		

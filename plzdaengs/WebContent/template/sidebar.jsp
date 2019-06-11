@@ -70,7 +70,7 @@
 				<a href="#" class="dropdown-item">회원 정보</a><a href="#"
 					class="dropdown-item"> 활동 내역 </a>
 				<div class="dropdown-divider"></div>
-				<a href="login.html" class="dropdown-item">로그아웃</a>
+				<a href="/plzdaengs/userlogout" class="dropdown-item">로그아웃</a>
 			</div></li>
 
 		<li class="sidebar-list-item"><a href="/plzdaengs/index.jsp"
@@ -91,6 +91,9 @@
 					</li>
 					<li class="sidebar-list-item">
 						<a href="/plzdaengs/menu?act=animals" class="sidebar-link pl-lg-5">반려동물 정보</a>
+					</li>
+					<li class="sidebar-list-item">
+						<a href="/plzdaengs/menu?act=admin" class="sidebar-link pl-lg-5">관리자 페이지</a>
 					</li>
 				</ul>
 			</div></li>
@@ -129,8 +132,8 @@
 		class="o-survey-1 mr-3 text-gray"></i><span>게시판</span></a></li>
 	
 		<li class="sidebar-list-item"><a
-			href="/plzdaengs/template/login.html" class="sidebar-link text-muted"><i
-				class="o-exit-1 mr-3 text-gray"></i><span>Logout</span></a></li>
+			href="/plzdaengs/userlogout" class="sidebar-link text-muted"><i
+				class="o-exit-1 mr-3 text-gray"></i><span>로그아웃</span></a></li>
 	</ul>
 
 	<!--

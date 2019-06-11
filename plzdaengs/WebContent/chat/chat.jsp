@@ -1,11 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
-<%@ include file="/template/default_link.jsp" %>
 <style type="text/css">
 /* chatting */
 .chat{
@@ -20,8 +14,7 @@
 	position: absolute;
 	height: 93vh;
 	top : 0px;
-	right : 0px;
-	width : 5rem;
+	right : -12rem;
 }
 
 #chat>.chatheader{
@@ -41,6 +34,12 @@
 	height : 90%;
 	width: 100%;
 	resize: none;
+	background-color: white;
+	border-radius: 0.5rem;
+	margin-bottom: 0.3rem;
+	line-height: 1.2rem;
+	font-weight: 100;
+	padding: 5%;
 }
 
 #chat>.chatfooter{
@@ -51,59 +50,115 @@
 #chat>.chatfooter>input{
 	height : 100%;
 	width: 70%;
+	display: inline;
+	border-radius: 0.5rem;
 }
 #chat>.chatfooter>button{
 	height : 100%;
-	width: 25%;
+	width: 28%;
+	border-radius: 0.5rem;
 }
 
 #chat>.chat-toggle{
 }
 </style>
+	<div id="chat" class="chat">
+		<div class="chatheader">
+			<a href="#" class="text-gray-500 mr-4 mr-lg-5 lead chat-toggle">
+				<i class="fas fa-align-left" id="togglechat"></i>
+			</a>
+			<label>채팅창</label>
+		</div>
+		<textarea class="chatMsgArea form-control" readonly="readonly"></textarea>
+		<div class="chatfooter">
+			<input class="form-control msgInput" type="text" placeholder="입력해주세요">
+			<button class="btn btn-info sendBtn">전송</button>
+		</div>
+	</div>
 <script type="text/javascript">
 var groupId = "1";
 var userId = "calubang";
-var serverUrl = "ws://192.168.14.53:80/plzdaengs/chatserver?groupid="+groupId;
-var websocket = new WebSocket(serverUrl);
-
-websocket.onopen = function(message) {
-	console.log("서버와 연결됨 : " + message);
+//var serverUrl = "ws://192.168.14.53:80/plzdaengs/chatserver?groupid="+groupId;
+var serverUrl = "ws://localhost:8080/plzdaengs/chatserver?groupid="+groupId;
+var websocket; 
+chatInit();
+function chatInit() {
+	websocket = new WebSocket(serverUrl);
+	websocket.onopen = webSocketOpen;
+	websocket.onclose = webSocketClose;
+	websocket.onerror = webSocketError;
+	websocket.onmessage = webSocketMessage;
+		
+	$("#chat .sendBtn").click(msgSend);
+	$("#chat #togglechat").click(chatToggle);
+	$("#chat .msgInput").keyup(msgInputKeyUp);
+}
+function msgInputKeyUp(e){
+	if(e.keyCode == 13){
+		$("#chat .sendBtn").trigger("click");
+	}
+}
+function chatToggle(){
+	var chat = $("#chat");
+	var chatClass = chat.attr("class");
+	if(chatClass == "chat"){
+		chat.attr("class", "chatSmall");
+	}else{
+		chat.attr("class", "chat");
+	}
+	return false;
 }
 
-websocket.onclose = function(message) {
-	console.log("서버와 연결 끊김 : " + message);
+function webSocketOpen(message){
+	console.log("서버와 연결 : " + message.data);
+};
+
+function webSocketClose(message){
+	console.log("서버와 연결 끊김 : " + message.data);
+};
+
+function webSocketError(message) {
+	console.log("에러남 : " + message.data);
 }
 
-websocket.onerror = function(message) {
-	console.log("에러남 : " + message);
-}
-
-websocket.onmessage = function(message) {
+function webSocketMessage(message) {
 	//console.log("메시지 옴 :" + message.data);
-	//JSON으로 변환
+	//JSON으로 변환	
+	//console.log(msgJSON.length);
 	var msgJSON = JSON.parse(message.data);
+	
+	var length = msgJSON.length;
+	if(length == null || length == 0){
+		appendMsg(msgJSON);
+		return;
+	}
+	for(var i = 0 ; i<msgJSON.length ; i++){
+		appendMsg(msgJSON[i]);
+	}
+	
+}
+function appendMsg(msgJSON){
 	var userid = msgJSON.user_id;
 	var groupid = msgJSON.group_id;
 	var nickname = msgJSON.nickname;
 	var chatContents = msgJSON.chat_contents;
 	var chatDate = msgJSON.chat_date;
-	
-	var result = nickname + "(" + userid + ")" + charDate + " : <br>" + chatContents;
+	chatDate = chatDate.substr(11, 8);
+	var result = "\n" + nickname + "(" + userid + ") " + chatDate + " : \n" + chatContents + "\n";
 	//console.log(chatDate);
 	var chatTextArea = $("#chat .chatMsgArea");
 	chatTextArea.append(result);
+	chatTextArea.scrollTop(chatTextArea.prop("scrollHeight"));
+	var msgInput = $("#chat .msgInput");
+	msgInput.val("");
 	
 }
 
-$(function() {
-	//클릭시 메시지 전송
-	$(".sendBtn").click(msgSend);
-});
 function msgSend(){
 	var input = $(".chat .msgInput").val();
 	
 	if(input == null || input.length == 0){
-		alert("입력해주세요.");
+		//alert("입력해주세요.");
 		return;
 	}
 	
@@ -152,20 +207,3 @@ function nowDate(){
 	
 }
 </script>
-</head>
-<body>
-	<div id="chat" class="chat">
-		<div class="chatheader">
-			<a href="#" class="text-gray-500 mr-4 mr-lg-5 lead chat-toggle">
-				<i class="fas fa-align-left" id="togglechat"></i>
-			</a>
-			<label>채팅창</label>
-		</div>
-		<textarea class="chatMsgArea" readonly="readonly"></textarea>
-		<div class="chatfooter">
-			<input class="msgInput" type="text">
-			<button class="sendBtn">전송</button>
-		</div>
-	</div>
-</body>
-</html>
