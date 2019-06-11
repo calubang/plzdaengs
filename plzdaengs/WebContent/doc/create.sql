@@ -194,7 +194,7 @@ ALTER TABLE PLZ_GROUP_MEMBER
 CREATE TABLE PLZ_GROUP_CHAT (
 	group_id NUMBER NOT NULL, /* 그룹ID */
 	user_id VARCHAR2(32) NOT NULL, /* 유저ID */
-	chat_date DATE NOT NULL, /* 채팅날짜 */
+	chat_date TIMESTAMP NOT NULL, /* 채팅날짜 */
 	chat_contents VARCHAR2(256) /* 채팅내용 */
 );
 

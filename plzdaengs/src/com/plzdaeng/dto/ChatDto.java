@@ -4,6 +4,7 @@ public class ChatDto {
 	private String type;
 	private int group_id;
 	private String user_id;
+	private String nickname;
 	private String chat_date;
 	private String chat_contents;
 	
@@ -31,6 +32,14 @@ public class ChatDto {
 
 	public void setUser_id(String user_id) {
 		this.user_id = user_id;
+	}
+	
+	public String getNickname() {
+		return nickname;
+	}
+
+	public void setNickname(String nickname) {
+		this.nickname = nickname;
 	}
 
 	public String getChat_date() {
