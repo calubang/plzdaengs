@@ -28,8 +28,6 @@
 }
 </style>
 <script type="text/javascript">
-/*
-	 MODAL 위치 설정
 	$("#realmodal").modal('show').css({
 	    'margin-top': function () { //vertical centering
 	        return -($(this).height() / 2);
@@ -38,10 +36,29 @@
 	        return -($(this).width() / 2);
 	    }
 	});
-*/
+
 
 	$(document).ready(function() { // 아예 시작할 때
         $("#submit").on("click", function(){
+        	// [1] servlet 이동 : 해결
+            var str = $("#form").serialize();
+            alert('str : ' + str);
+			// file은 직렬화 안됨.. 
+            $.ajax({
+              type:"POST",
+              url:"/plzdaengs/diary",
+              contentType: "application/x-www-form-urlencoded; charset=utf-8",
+              data: str,
+              datatype:"json",
+              success: function(data) {
+                alert("ajax 성공 : " + data.result);			
+              },
+              error: function(e) {
+                alert("ajax 실패 : 에러가 발생하였습니다.");
+              }			
+            });
+        	
+        	// [2]
         	var input1 = document.getElementById('title').value;
         	
         	var schedule = cell.siblings(".cal-schedule")[0];
@@ -71,10 +88,7 @@
 			$('#enroll').modal("show");
 			return;
 		} else {
-			console.log('왔니');
-			document.getElementById("diaryform").action = "plzdaengs/plzDiary";
-			document.getElementById("diaryform").submit;
-			console.log('왔니2');
+			
 		}
 	}
 	
@@ -89,7 +103,7 @@
 <div id="enroll" class="modal fade">
 	<div id = "realmodal" class="modal-dialog" width = "800">
 		<div class="modal-content">
-			<form method = "get" action = "/plzdaengs/diary/calendar.jsp">
+			<form id = "form">
 				<div class="modal-header">다이어리 추가</div>
 				<div class="modal-body">
 					<!--div id="ipAlertTitle" class="alert alert-danger" role="alert">다이어리를 입력해주세요. </div-->
@@ -100,7 +114,7 @@
 					<div id="ipDesc-group" class="form-group" align="left">
 						<label for="ipDesc">Description : </label>
 						<textarea class="form-control" rows="3" id="ipDesc" placeholder="Description" name="description"></textarea><br>
-						<input type="file" name="imgdata" accept=".jpg,.jpeg,.png,.gif,.bmp">
+						<input type="file" id = "imgdata" name="imgdata" accept=".jpg,.jpeg,.png,.gif,.bmp">
 					</div>					
 				</div>
 				<div class="modal-footer">
