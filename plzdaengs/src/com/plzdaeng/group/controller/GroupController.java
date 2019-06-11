@@ -11,7 +11,7 @@ import com.plzdaeng.group.model.dao.GroupDaoImpl;
 public class GroupController {
 
 	private static GroupController groupController;
-
+	private HttpSession session;
 	static {
 		groupController = new GroupController();
 		
@@ -100,6 +100,8 @@ public class GroupController {
 		int group_id = Integer.parseInt(request.getParameter("group"));
 		String group_name = request.getParameter("group_name");
 		System.out.println(group_id + group_name);
+		session = request.getSession();
+		session.setAttribute("group_id", group_id);
 		//1 입장
 		//GroupDaoImpl.getGroupDaoImpl().firstpage(group_id);
 		
@@ -138,9 +140,9 @@ public class GroupController {
 
 
 	public String entermanege(HttpServletRequest request, HttpServletResponse response) {
-		HttpSession session = request.getSession();
-		int group_id = Integer.parseInt(request.getParameter("group_id"));
-		session.setAttribute("group_id", group_id);
+		session = request.getSession();
+		
+		int group_id = (int)session.getAttribute("group_id");
 		GroupDto dto = new GroupDto();
 		dto = GroupDaoImpl.getGroupDaoImpl().groupDetail(group_id);
 		request.setAttribute("groupdetail", dto);
@@ -198,7 +200,7 @@ public class GroupController {
 
 	public String memberlist(HttpServletRequest request, HttpServletResponse response) {
 		path = "/group/result/memberlistresult.jsp";
-		HttpSession session = request.getSession();
+		session = request.getSession();
 		List<GroupMember> list = null;
 		int group_id = Integer.parseInt(String.valueOf(session.getAttribute("group_id")));
 		System.out.println(group_id);
@@ -211,7 +213,7 @@ public class GroupController {
 	public String managemember(HttpServletRequest request, HttpServletResponse response) {
 		System.out.println("들어는오나?");
 		path = "/group/result/memberlistresult.jsp";
-		HttpSession session = request.getSession();
+		session = request.getSession();
 		int group_id = Integer.parseInt(String.valueOf(session.getAttribute("group_id")));
 		String user_id = request.getParameter("member_id");
 		String member_status = request.getParameter("member_status");

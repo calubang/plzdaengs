@@ -643,7 +643,7 @@ public class GroupDaoImpl implements GroupDao {
 		memberListSQL += "SELECT m.group_id, m.user_id, u.nickname , m.member_status, m.group_joindate \r\n"
 				+ "FROM plz_group_member m inner join plz_user u \r\n"
 				+ "ON m.user_id = u.user_id \r\n"
-				+ "WHERE group_id = ?";
+				+ "WHERE group_id = ? and m.member_status != 'X'";
 				
 		try {
 			conn = DBConnection.makeConnectplzdb();
@@ -658,7 +658,7 @@ public class GroupDaoImpl implements GroupDao {
 				member = new GroupMember();
 				member.setGroup_id(rs.getInt("group_id"));
 				member.setUser_id(rs.getString("user_id"));
-				member.setNickName("nickname");
+				member.setNickName(rs.getString("nickname"));
 				member.setMember_status(rs.getString("member_status"));
 				member.setGroup_joindate(String.valueOf(rs.getDate("group_joindate")));
 				

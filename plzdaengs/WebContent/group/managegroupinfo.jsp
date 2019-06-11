@@ -33,6 +33,20 @@ $(function(){
 
 
 });
+
+function moveManagegroupinfo(){
+	$.ajax({
+		url : '/plzdaengs/groupfront',
+		method : 'POST',
+		data : {act : 'groupmanage',
+			group_id : '<%=dto.getGroup_id()%>' },
+		success : function(groupdetail) {
+			alert("Option resultpage");
+			$("section").html(groupdetail);
+		}
+
+	});
+}
 </script>
 <!-- <div id="deletegroupmodal" tabindex="-1" role="dialog" 
 		aria-labelledby="exampleModalLabel" aria-hidden="true"
@@ -61,7 +75,7 @@ $(function(){
 		</div>
 	</div> -->
           <div>
-          <Button onclick="location.href='/plzdaengs/group/managegroupinfo.jsp'">소모임 정보변경</Button>
+          <Button onclick="moveManagegroupinfo()">소모임 정보변경</Button>
           <Button onclick="location.href='/plzdaengs/group/managemeeting.jsp'">소모임 일정관리</Button>
           <Button onclick="location.href='/plzdaengs/group/managemember.jsp'">소모임원 관리</Button>
           </div>

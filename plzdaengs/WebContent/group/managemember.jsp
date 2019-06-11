@@ -43,6 +43,7 @@ $(function(){
 			 member_status:$('input[name=member_status]').val()},
 		 success:function(result){
 			 alert("enter resultpage");
+			 document.location.href='/plzdaengs/group/managemember.jsp';
 		 }
 		});
 
@@ -50,6 +51,20 @@ $(function(){
 	 
 	 
 });
+
+function moveManagegroupinfo(){
+	$.ajax({
+		url : '/plzdaengs/groupfront',
+		method : 'POST',
+		data : {act : 'groupmanage',
+			group_id : <%-- '<%=dto.getGroup_id()%>' --%> },
+		success : function(groupdetail) {
+			alert("Option resultpage");
+			$("section").html(groupdetail);
+		}
+
+	});
+}
 
 </script>
 </head>
@@ -152,7 +167,7 @@ $(function(){
 				 <section class="py-5">
 				 
 				<div>
-          <Button onclick="location.href='/plzdaengs/group/managegroupinfo.jsp'">소모임 정보변경</Button>
+          <Button onclick="moveManagegroupinfo()">소모임 정보변경</Button>
           <Button onclick="location.href='/plzdaengs/group/managemeeting.jsp'">소모임 일정관리</Button>
           <Button onclick="location.href='/plzdaengs/group/managemember.jsp'">소모임원 관리</Button>
           </div>
