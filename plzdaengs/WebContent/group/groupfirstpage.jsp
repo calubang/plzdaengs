@@ -8,7 +8,7 @@
 <%@ include file="/template/default_link.jsp"%>
 <%
 	String level = (String) request.getAttribute("authority");
-	int group_id = Integer.parseInt(request.getParameter("group"));
+	int groupId = Integer.parseInt(request.getParameter("group"));
 	String group_name = (String) request.getAttribute("group_name");
 	String authority = "";
 	if (level == "L") {
@@ -26,7 +26,9 @@ $(function() {
 		var authority = $("#groupoptbtn").text();
 		var Obtn = $("#groupoptbtn");
 		$(Obtn).click(function() {
+			var groupId = <%=String.valueOf(groupId)%>;
 			alert('<%=level%>');
+			alert('group_id= '+<%=groupId%>);
 			if ('<%=level%>' == 'A') {
 				alert("가입 승인대기중입니다.");
 			} else if ('<%=level%>' == 'X') {
@@ -42,7 +44,7 @@ $(function() {
 					url : '/plzdaengs/groupfront',
 					method : 'POST',
 					data : {act : 'groupmanage',
-						group_id : '<%=group_id%>' },
+						group_id : groupId },
 					success : function(groupdetail) {
 						alert("Option resultpage");
 						$("section").html(groupdetail);
@@ -57,7 +59,7 @@ function groupJoinProcess(){
 			$.ajax({
 				url : '/plzdaengs/groupfront',
 				method : 'GET',
-				data : {group_id : '<%=group_id%>',
+				data : {group_id : '<%=groupId%>',
 						act : 'joingroup'},
 				success : function(result) {
 					//var resultB = request.getAttribute('result');

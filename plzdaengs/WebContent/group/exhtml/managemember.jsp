@@ -12,8 +12,7 @@ $(function(){
 	 $.ajax({
 			url: '/plzdaengs/groupfront',
 			method:'POST',
-			data:{
-				act:"memberlist"},
+			data:{act:"memberlist"},
 			success:function(result){
 				alert("enter resultpage");
 				$("#memberlist").html(result);	

@@ -596,8 +596,8 @@ public class GroupDaoImpl implements GroupDao {
 		PreparedStatement pstmt = null;
 
 		String joinGroupSql = "";
-		joinGroupSql += "insert into plz_group_member (group_id, user_id, member_status)\r\n" + 
-						"values(?, ?, 'A')";
+		joinGroupSql += "insert into plz_group_member (group_id, user_id, member_status, group_joindate)\r\n" + 
+						"values(?, ?, 'A', sysdate)";
 
 		
 			System.out.println("sql문실행전");

@@ -100,8 +100,8 @@ public class GroupController {
 		int group_id = Integer.parseInt(request.getParameter("group"));
 		String group_name = request.getParameter("group_name");
 		System.out.println(group_id + group_name);
-		session = request.getSession();
-		session.setAttribute("group_id", group_id);
+		//session = request.getSession();
+		//session.setAttribute("group_id", group_id);
 		//1 입장
 		//GroupDaoImpl.getGroupDaoImpl().firstpage(group_id);
 		
@@ -141,49 +141,61 @@ public class GroupController {
 
 	public String entermanege(HttpServletRequest request, HttpServletResponse response) {
 		session = request.getSession();
-		
-		int group_id = (int)session.getAttribute("group_id");
 		GroupDto dto = new GroupDto();
+		int group_id = 0;
+		if(request.getParameter("group_id") != null) {
+			group_id = Integer.parseInt(request.getParameter("group_id"));
+		}else {
+			dto = (GroupDto)session.getAttribute("groupdetail");
+			group_id = dto.getGroup_id();
+		}
+		System.out.println(group_id);
 		dto = GroupDaoImpl.getGroupDaoImpl().groupDetail(group_id);
-		request.setAttribute("groupdetail", dto);
+//		request.setAttribute("groupdetail", dto);
+		session.setAttribute("groupdetail", dto);
 		path = "/group/managegroupinfo.jsp";
 		return path;
 	}
 
 	public String changeDetail(HttpServletRequest request, HttpServletResponse response) {
+		session = request.getSession();
+		GroupDto dto = new GroupDto();
+		dto = (GroupDto)session.getAttribute("groupdetail");
 		path = "/group/managegroupinfo.jsp";
 		int group_id = Integer.parseInt(request.getParameter("group_id"));
-		String name = request.getParameter("groupname");
+		String name = request.getParameter("group_name");
 		String desc = request.getParameter("group_description");
-		String keyword = request.getParameter("groupkeyword");
+		String keyword = request.getParameter("group_cate");
 		String groupdontselect = request.getParameter("groupdontselect");//지역무관
-		String img = request.getParameter("groupimg");
-		String groupsido = request.getParameter("groupsido");
-		String groupsigungu = request.getParameter("groupsigungu");
-		//String groupCategory = 
+		String img = request.getParameter("group_img");
+		String groupsido = request.getParameter("group_sido");
+		String groupsigungu = request.getParameter("group_sigungu");
+
+//		if (!groupdontselect.equals("on")){
+//			System.out.println("지역무관 판단");
+//			String group_sido = request.getParameter("groupsido");
+//			String group_sigungu = request.getParameter("groupsigungu");
+//			dto.setAddress_sido(groupsido);
+//			dto.setAddress_sigungu(groupsigungu);
+//		}
 		
 		System.out.println(name + "/" +keyword  + "/" + desc + "/" + groupdontselect);
 		// 소모임 정보set
-		GroupDto dto = new GroupDto();
 		dto.setGroup_id(group_id);
 		//dto.setGroup_leader(id);
 		dto.setGroup_name(name);
 		dto.setGroup_description(desc);
+		dto.getGroupCategory().setGroup_category_name(keyword);;
 		dto.setGroup_img(img);
 		dto.setAddress_sido(groupsido);
 		dto.setAddress_sigungu(groupsigungu);
 		
-//		if (!groupdontselect.equals("on")){
-//			System.out.println("지역무관 판단");
-//			String groupsido = request.getParameter("groupsido");
-//			String groupsigungu = request.getParameter("groupsigungu");
-//			dto.setAddress_sido(groupsido);
-//			dto.setAddress_sigungu(groupsigungu);
-//		}
+		
 		int result = GroupDaoImpl.getGroupDaoImpl().changeGroup(dto);
 		//entermanege(request, response);
-		request.setAttribute("group_id", group_id);
+		request.setAttribute("result", result);
 		entermanege(request, response);
+		session.setAttribute("groupdetail", dto);
 //		request.setAttribute("groupdetail", dto);
 		return path;
 	}
@@ -201,8 +213,10 @@ public class GroupController {
 	public String memberlist(HttpServletRequest request, HttpServletResponse response) {
 		path = "/group/result/memberlistresult.jsp";
 		session = request.getSession();
+		GroupDto dto = (GroupDto)session.getAttribute("groupdetail");
 		List<GroupMember> list = null;
-		int group_id = Integer.parseInt(String.valueOf(session.getAttribute("group_id")));
+		int group_id = dto.getGroup_id();
+		//Integer.parseInt(String.valueOf(session.getAttribute("group_id")));
 		System.out.println(group_id);
 		list = GroupDaoImpl.getGroupDaoImpl().memberlist(group_id);
 		request.setAttribute("memberlist", list);
@@ -214,7 +228,9 @@ public class GroupController {
 		System.out.println("들어는오나?");
 		path = "/group/result/memberlistresult.jsp";
 		session = request.getSession();
-		int group_id = Integer.parseInt(String.valueOf(session.getAttribute("group_id")));
+		GroupDto dto = (GroupDto)session.getAttribute("groupdetail");
+		int group_id = dto.getGroup_id();
+		//Integer.parseInt(String.valueOf(session.getAttribute("group_id")));
 		String user_id = request.getParameter("member_id");
 		String member_status = request.getParameter("member_status");
 		System.out.println(user_id +"/" + member_status);

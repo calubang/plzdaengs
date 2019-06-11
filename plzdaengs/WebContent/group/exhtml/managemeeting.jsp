@@ -10,7 +10,7 @@
 <script>
 $(function(){
 	
-});
+
 function moveManagegroupinfo(){
 	$.ajax({
 		url : '/plzdaengs/groupfront',
@@ -24,7 +24,7 @@ function moveManagegroupinfo(){
 	});
 }
 
-
+});
 </script>
 <style type="text/css">
 .cal_top {

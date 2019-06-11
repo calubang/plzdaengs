@@ -1,7 +1,7 @@
 <%@page import="com.plzdaeng.group.model.GroupDto"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<% GroupDto dto = (GroupDto)request.getAttribute("groupdetail");
+<% GroupDto dto = (GroupDto)session.getAttribute("groupdetail");
 System.out.println(dto);%>
 <script>
 $(function(){
@@ -12,11 +12,13 @@ $(function(){
 			method:"POST",
 			data:$(this).serialize(),
 			success:function(result){
-				var result = request.getAttribute("result");
-				if(result == 1){
+				alert(result);
+				//var result = request.getAttribute("result");
+				//if(result == 1){
 				alert("인포변경");
+				//moveManagegroupinfo()
 				$("section").html();
-				}
+				//}
 			}
 			
 			
@@ -130,7 +132,7 @@ function moveManagegroupinfo(){
                        <div class="form-group row">
                                <label class="col-md-3 form-control-label">소모임 대표이미지</label>
                                <div class="col-md-9">
-                               <input name="groupimg" type="file" value="<%=dto.getGroup_img() %>">
+                               <input name="group_img" type="file" value="<%=dto.getGroup_img() %>">
                                </div>
                                </div>
                       <div class="line"></div>
