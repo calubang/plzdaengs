@@ -39,8 +39,8 @@ public class GroupFrontController extends HttpServlet {
 		//테스트용 코드
 		if(user == null) {
 			user = new UserDto();
-			user.setUser_id("asdf");
-			//user.setUser_id("qwer");
+			//user.setUser_id("asdf");
+			user.setUser_id("qwer");
 			request.getSession().setAttribute("userInfo", user);
 		}
 		
@@ -60,24 +60,24 @@ public class GroupFrontController extends HttpServlet {
 			path = GroupController.getGroupController().enterorsingup(request, response, user);
 			MoveUrl.forward(request, response, path);
 		}else if("groupmanage".equals(act)) {
-			System.out.println("front enter");
+			System.out.println("front groupmanage");
 			path = GroupController.getGroupController().entermanege(request, response);
 			MoveUrl.forward(request, response, path);
 			System.out.println("go to the groupdetail");
 		}else if("changedetail".equals(act)) {
-			System.out.println("front enter");
+			System.out.println("front changedetail");
 			path = GroupController.getGroupController().changeDetail(request, response);
 			MoveUrl.forward(request, response, path);
 		}else if("joingroup".equals(act)) {
-			System.out.println("front enter");
+			System.out.println("front joingroup");
 			path = GroupController.getGroupController().joinGroup(request, response, user);
 			MoveUrl.forward(request, response, path);
 		}else if("memberlist".equals(act)) {
-			System.out.println("front enter");
+			System.out.println("front memberlist");
 			path = GroupController.getGroupController().memberlist(request, response);
 			MoveUrl.forward(request, response, path);
 		}else if("managemember".equals(act)) {
-			System.out.println("front enter");
+			System.out.println("front managemember");
 			path = GroupController.getGroupController().managemember(request, response);
 			MoveUrl.forward(request, response, path);
 		}

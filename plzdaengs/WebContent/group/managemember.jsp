@@ -29,20 +29,23 @@ $(function(){
 	
  function btnClick(){
 		 alert('button clicked');
+		  var rowOfBtn = $(this);
+		  var tr = rowOfBtn.parent().parent();
+		  var memberId = tr.children('.member_id').text();
 		 
+		 
+		 alert(memberId);
 		$.ajax({
 		 url: '/plzdaengs/groupfront',
 		 method:'POST',
 		 data:{ act:'managemember',
-			 member_id:$('.member_id').text,
+			 member_id : memberId,
 			 member_status:$('input[name=member_status]').val()},
-			 success:function(result){
-				 alert("enter resultpage");
-			 }
+		 success:function(result){
+			 alert("enter resultpage");
+		 }
 		});
-		 
-		 
-		 
+
 	 }
 	 
 	 

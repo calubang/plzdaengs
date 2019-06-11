@@ -30,6 +30,12 @@ public class GroupCategory {
 		this.group_category_name = group_category_name;
 	}
 
+	@Override
+	public String toString() {
+		return "GroupCategory [group_category_id=" + group_category_id + ", group_category_name=" + group_category_name
+				+ "]";
+	}
+
 	
 	
 	

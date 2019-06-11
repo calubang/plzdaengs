@@ -9,7 +9,7 @@
 <%
 	String level = (String) request.getAttribute("authority");
 	int group_id = Integer.parseInt(request.getParameter("group"));
-	String group_name = "한강산책 가즈아!";
+	String group_name = (String) request.getAttribute("group_name");
 	String authority = "";
 	if (level == "L") {
 		authority = "소모임관리";
@@ -22,8 +22,7 @@
 	}
 %>
 <script>
-	$(function() {
-
+$(function() {
 		var authority = $("#groupoptbtn").text();
 		var Obtn = $("#groupoptbtn");
 		$(Obtn).click(function() {
@@ -33,6 +32,8 @@
 			} else if ('<%=level%>' == 'X') {
 				alert("가입하세요~");
 				$("#joingroupmodal").modal('show');
+				var join = $('input[name=joingroup]');
+				$(join).click(groupJoinProcess);
 			}else if('<%=level%>' == 'M'){
 				alert("탈퇴할꺼야?");
 				$("#leavegroupmodal").modal('show');
@@ -51,32 +52,35 @@
 			}
 		});
 		
-		var join = $('#joingroup');
-		$(join).click(function(){
+		
+function groupJoinProcess(){
 			$.ajax({
 				url : '/plzdaengs/groupfront',
 				method : 'GET',
-				data : {group_id : '<%=group_id%>'},
+				data : {group_id : '<%=group_id%>',
+						act : 'joingroup'},
 				success : function(result) {
-					var resultB = request.getAttribute('result');
-					if(resultB == 1){
+					//var resultB = request.getAttribute('result');
+					if(result == 1){
 					alert("succeed to request join");
-					$("section").html();
+						$("section").html();
 					//authority = "가입요청중"
 					}else{
 						alert("fail to join group")
 						$("section").html();
 					}
 				}
-			});
-			
-			
-			
-			
-			
-		});
+			});	
+			return false;
+		}
 		
-	});
+
+	
+	
+
+		
+		
+});
 </script>
 </head>
 <body>
@@ -96,7 +100,7 @@
 				<div class="modal-body">
 					
 				
-						<input type="hidden" name="act" value="joingroup">
+						<!-- <input type="hidden" name="act" value="joingroup"> -->
 						<div class="form-group">
 							<label><%=group_name%></label> 
 						</div>
@@ -107,9 +111,9 @@
 						</div>
 				</div>
 				<div class="modal-footer">
-					<input name="joingroup" type="submit" value="가입신청"
-						class="btn btn-primary"> <input name="modalcancel"
-						type="button" data-dismiss="modal" value="취소"
+					<input name="joingroup" type="button" value="가입신청"
+						class="btn btn-primary"> 
+					<input name="modalcancel" type="button" data-dismiss="modal" value="취소"
 						class="btn btn-primary">
 				</div>
 			</div>

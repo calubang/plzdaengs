@@ -320,13 +320,15 @@ public class GroupDaoImpl implements GroupDao {
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		String inGourpSQL = "";
-		inGourpSQL += "SELECT g.group_id , g.group_name, g.description \r\n"
-				+ ", t.group_category_id, t.group_category_name, g.group_img \r\n"
-				+ ", g.address_sido, g.address_sigungu, m.user_id \r\n"
-				+ "FROM plz_group g inner join plz_group_type t \r\n"
-				+ "on g.group_category_id = t.group_category_id \r\n" + "inner join plz_group_member m \r\n"
-				+ "on g.group_id = m.group_id \r\n" + "WHERE m.member_status = 'A' or m.user_id != ? \r\n"
-				+ "ORDER BY g.group_id, m.user_id DESC";
+		inGourpSQL += "SELECT g.group_id , g.group_name, g.description , g.group_category_id\r\n" + 
+				", t.group_category_name, g.group_img , g.address_sido, g.address_sigungu\r\n" + 
+				"FROM plz_group g inner join plz_group_type t\r\n" + 
+				"ON g.group_category_id = t.group_category_id\r\n" + 
+				"WHERE g.group_id not in((select mm.group_id\r\n" + 
+				"from (Select m.group_id, m.user_id, m.member_status\r\n" + 
+				"from plz_group_member m\r\n" + 
+				"where m.user_id = ?) mm\r\n" + 
+				"where mm.member_status not in('A', 'X')))";
 
 		try {
 			conn = DBConnection.makeConnectplzdb();
@@ -363,10 +365,10 @@ public class GroupDaoImpl implements GroupDao {
 
 				}
 
-				member = new GroupMember();
-				member.setUser_id(rs.getString("user_id"));
-				// member.setMember_status(rs.getString("member_status"));
-				memberList.add(member);
+//				member = new GroupMember();
+//				member.setUser_id(rs.getString("user_id"));
+//				// member.setMember_status(rs.getString("member_status"));
+//				memberList.add(member);
 			}
 
 		} catch (SQLException e) {
@@ -595,13 +597,14 @@ public class GroupDaoImpl implements GroupDao {
 
 		String joinGroupSql = "";
 		joinGroupSql += "insert into plz_group_member (group_id, user_id, member_status)\r\n" + 
-				"values(?, ?, 'A');";
+						"values(?, ?, 'A')";
 
 		
 			System.out.println("sql문실행전");
 			
 			
 			try {
+				conn = DBConnection.makeConnection();
 				pstmt = conn.prepareStatement(joinGroupSql);
 			
 				pstmt.setInt(1, group_id);

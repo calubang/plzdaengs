@@ -14,6 +14,7 @@ public class GroupController {
 
 	static {
 		groupController = new GroupController();
+		
 	}
 
 	public static GroupController getGroupController() {
@@ -91,12 +92,14 @@ public class GroupController {
 	}
 
 	public String enterorsingup(HttpServletRequest request, HttpServletResponse response, UserDto user) {
+		response.setContentType("text/html;charset=UTF-8");
 		path = "";
 		String id = user.getUser_id();
 		String result = "";
 		//user.setUser_id("qwer");
 		int group_id = Integer.parseInt(request.getParameter("group"));
-		System.out.println(group_id);
+		String group_name = request.getParameter("group_name");
+		System.out.println(group_id + group_name);
 		//1 입장
 		//GroupDaoImpl.getGroupDaoImpl().firstpage(group_id);
 		
@@ -115,7 +118,7 @@ public class GroupController {
 		//2 권한에 따라 버튼이 바뀜 ( 리더 : 관리, 일반 : 탈퇴, 요청중 : 대기, 비회원 : 가입 )
 		result = GroupDaoImpl.getGroupDaoImpl().inquiry(group_id, id);
 		request.setAttribute("authority", result);
-		
+		request.setAttribute("group_name", group_name);
 		
 		System.out.println(result);
 		
@@ -212,17 +215,21 @@ public class GroupController {
 		int group_id = Integer.parseInt(String.valueOf(session.getAttribute("group_id")));
 		String user_id = request.getParameter("member_id");
 		String member_status = request.getParameter("member_status");
+		System.out.println(user_id +"/" + member_status);
 		GroupMember member = new GroupMember();
 		member.setGroup_id(group_id);
 		member.setUser_id(user_id);
 		member.setMember_status(member_status);
+		System.out.println(member);
+		int result = -1;
 		if(member_status.equals("A")) {
-			
+			result = GroupDaoImpl.getGroupDaoImpl().permitMember(member);
 		}else if(member_status.equals("M")) {
-			
+			result = GroupDaoImpl.getGroupDaoImpl().kickMember(member);
 		}else if(member_status.equals("L")){
-			
+			result = GroupDaoImpl.getGroupDaoImpl().removeAuthority(member);
 		}
+		request.setAttribute("result", result);
 		return path;
 	}
 

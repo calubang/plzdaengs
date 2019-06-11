@@ -151,8 +151,11 @@ $(function(){
 function divClick(){
 	alert("some groupclick");
 	var groupid = $(this).attr("id");
+	var groupn = $(this).children()[0];
+	var groupname = $(groupn).attr("id");
 	alert(groupid);
-	document.location.href="/plzdaengs/groupfront?act=enter&group=" + groupid;
+	alert(groupname);
+	document.location.href="/plzdaengs/groupfront?act=enter&group=" + groupid+"&group_name="+groupname;
 	
 	/* $.ajax({
 		url: '/plzdaengs/groupfront',
