@@ -63,7 +63,7 @@
 <script type="text/javascript">
 var groupId = "1";
 var userId = "calubang";
-var serverUrl = "ws://localhost:8080/plzdaengs/chatserver?groupid="+groupId;
+var serverUrl = "ws://192.168.14.53:80/plzdaengs/chatserver?groupid="+groupId;
 var websocket = new WebSocket(serverUrl);
 
 websocket.onopen = function(message) {
@@ -79,9 +79,19 @@ websocket.onerror = function(message) {
 }
 
 websocket.onmessage = function(message) {
-	console.log("메시지 옴 :" + message.data);
+	//console.log("메시지 옴 :" + message.data);
+	//JSON으로 변환
+	var msgJSON = JSON.parse(message.data);
+	var userid = msgJSON.user_id;
+	var groupid = msgJSON.group_id;
+	var nickname = msgJSON.nickname;
+	var chatContents = msgJSON.chat_contents;
+	var chatDate = msgJSON.chat_date;
+	
+	var result = nickname + "(" + userid + ")" + charDate + " : <br>" + chatContents;
+	//console.log(chatDate);
 	var chatTextArea = $("#chat .chatMsgArea");
-	chatTextArea.append(message.data);
+	chatTextArea.append(result);
 	
 }
 
@@ -101,18 +111,20 @@ function msgSend(){
 	var type = "message";
 	var groupid = parseInt(groupId);
 	var userid = userId;
-	var msg = makeMsg(type, userid, groupid, input);
+	var nickname = "댕댕이주인";
+	var msg = makeMsg(type, userid, nickname, groupid, input);
 	
 	websocket.send(JSON.stringify(msg));
 }
 
-function makeMsg(type, userid, groupid, text) {
+function makeMsg(type, userid, nickname, groupid, text) {
 	var nowdate = nowDate();
-	console.log(nowdate);
+	//console.log(nowdate);
 	var msg = {
 		type : type
 		, group_id : groupid
 		, user_id : userid
+		, nickname : nickname
 		, chat_contents : text
 		, chat_date : nowdate
 	};
@@ -127,6 +139,7 @@ function nowDate(){
 	var hour = date.getHours();
 	var minute = date.getMinutes();
 	var second = date.getSeconds();
+	var miliSecond = date.getMilliseconds();
 	
 	//변환
 	month = (month < 10 ? "0" + month : month);
@@ -135,7 +148,7 @@ function nowDate(){
 	minute = (minute < 10 ? "0" + minute : minute);
 	second = (second < 10 ? "0" + second : second);
 	
-	return year + "/" + month + "/" + day + " " + hour + ":" + minute + ":" + second;
+	return year + "/" + month + "/" + day + " " + hour + ":" + minute + ":" + second + ":" + miliSecond;
 	
 }
 </script>

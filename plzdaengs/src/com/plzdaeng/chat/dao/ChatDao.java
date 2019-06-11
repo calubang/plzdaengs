@@ -24,7 +24,7 @@ public class ChatDao {
 				")values(\r\n" + 
 				"    ?	\r\n" + 
 				"    , ?	\r\n" + 
-				"    , to_date(? , 'yyyy/mm/dd hh24:mi:ss')\r\n" + 
+				"    , to_timestamp(? , 'yyyy/mm/dd hh24:mi:ss:ff3')\r\n" + 
 				"    , ?	\r\n" + 
 				")";
 		try {
