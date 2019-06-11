@@ -1,5 +1,6 @@
 package com.plzdaeng.user.controller;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,8 +19,7 @@ import com.plzdaeng.dto.TakeVaccinDto;
 import com.plzdaeng.dto.UserDto;
 import com.plzdaeng.dto.VaccinationDto;
 import com.plzdaeng.user.service.PetService;
-import com.plzdaeng.util.MoveUrl;
-import com.plzdaeng.util.SiteConstance;
+import com.plzdaeng.util.*;
 
 @WebServlet("/petmodify")
 public class PetModify extends HttpServlet {
@@ -62,8 +62,11 @@ public class PetModify extends HttpServlet {
 		pet.setBirth_date(birthdate);
 		
 		//이미지 부분
-		if(mr.getFile("imgdata") != null) {
+		File profileFile = mr.getFile("imgdata");
+		if(profileFile != null) {
 			pet.setPet_img("/plzdaengs/img/"+user.getUser_id()+ "/"+pet.getPet_name()+".jpg");
+			String path = request.getServletContext().getRealPath("/img");
+			ProfileCreate.profileRegister(profileFile, path , user.getUser_id(), pet.getPet_name() , "pet");
 		}
 		
 		List<TakeVaccinDto> takeVaccinList = new ArrayList<TakeVaccinDto>();

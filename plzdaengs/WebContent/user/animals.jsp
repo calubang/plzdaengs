@@ -52,8 +52,9 @@ function registerAnimal() {
 }
 </script>
 <c:set var="petlist" value="${sessionScope.petList}"></c:set>
+<c:set var="user" value="${sessionScope.userInfo}"></c:set>
 <c:choose>
-	<c:when test="${empty petlist}">
+	<c:when test="${empty user}">
 	<script>document.location.href="/plzdaengs/index.jsp"</script>
 	</c:when>
 	<c:otherwise>

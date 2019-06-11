@@ -1,5 +1,6 @@
 package com.plzdaeng.user.controller;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -13,8 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.oreilly.servlet.MultipartRequest;
 import com.plzdaeng.dto.*;
 import com.plzdaeng.user.service.PetService;
-import com.plzdaeng.util.MoveUrl;
-import com.plzdaeng.util.SiteConstance;
+import com.plzdaeng.util.*;
 
 @WebServlet("/petregister")
 public class PetRegister extends HttpServlet {
@@ -61,10 +61,13 @@ public class PetRegister extends HttpServlet {
 			pet.setPet_type("F");
 		}
 		//이미지 부분
-		if(mr.getFile("imgdata") == null) {
+		File profileFile = mr.getFile("imgdata");
+		if(profileFile == null) {
 			pet.setPet_img("/plzdaengs/template/img/basic_pet_profile.jpg");
 		}else {
 			pet.setPet_img("/plzdaengs/img/"+user.getUser_id()+ "/"+pet.getPet_name()+".jpg");
+			String path = request.getServletContext().getRealPath("/img");
+			ProfileCreate.profileRegister(profileFile, path , user.getUser_id(), pet.getPet_name() , "pet");
 		}
 		
 		List<TakeVaccinDto> takeVaccinList = new ArrayList<TakeVaccinDto>();
