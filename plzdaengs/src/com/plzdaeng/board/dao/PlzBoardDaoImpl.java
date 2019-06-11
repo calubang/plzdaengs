@@ -13,7 +13,6 @@ import com.plzdaeng.board.model.PlzReply;
 import com.plzdaeng.util.DBClose;
 import com.plzdaeng.util.DBConnection;
 
-import oracle.net.aso.p;
 
 public class PlzBoardDaoImpl implements PlzBoardDao{
 

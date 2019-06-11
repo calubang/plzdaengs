@@ -11,7 +11,7 @@ public class DiaryDto {
 	private Date diary_date; // 좀더 정확하게 표현하고자 util의 date 사용
 	private String diary_subject;
 	private String hashtag;
-	private Clob diary_contents; // ??
+	private String diary_contents; // ??
 	private String diary_img;
 	private String location_x;
 	private String location_y;
@@ -63,10 +63,10 @@ public class DiaryDto {
 	public void setHashtag(String hashtag) {
 		this.hashtag = hashtag;
 	}
-	public Clob getDiary_contents() {
+	public String getDiary_contents() {
 		return diary_contents;
 	}
-	public void setDiary_contents(Clob diary_contents) {
+	public void setDiary_contents(String diary_contents) {
 		this.diary_contents = diary_contents;
 	}
 	public String getDiary_img() {

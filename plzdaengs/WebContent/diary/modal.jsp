@@ -41,9 +41,12 @@
 	$(document).ready(function() { // 아예 시작할 때
         $("#submit").on("click", function(){
         	// [1] servlet 이동 : 해결
-            var str = $("#form").serialize();
+        	
+            var str = $("#form").serialize(); // file은 직렬화 안됨.. > form으로 ㄱㄱ
             alert('str : ' + str);
-			// file은 직렬화 안됨.. 
+			
+			//var form = $("#form")[0];
+			//var formData = new FormData(form);
             $.ajax({
               type:"POST",
               url:"/plzdaengs/diary",
