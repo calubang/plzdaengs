@@ -27,7 +27,6 @@
 		font-size: medium;
 }
 </style>
-
 <script type="text/javascript">
 /*
 	 MODAL 위치 설정
@@ -43,12 +42,41 @@
 
 	$(document).ready(function() { // 아예 시작할 때
         $("#submit").on("click", function(){
-        	alert('보냈어요');
-        	var input = document.getElementById('title').value;
-        	alert(input);
-
+        	var input1 = document.getElementById('title').value;
+        	
+        	var schedule = cell.siblings(".cal-schedule")[0];
+        	var element = $(document.createElement("div")); // div element 만들꺼얌
+        	
+        	element.attr("class", "schedule");
+        	element.text(input1);
+        	element.click(scheduleClick);
+        	
+        	$(schedule).append(element);
+        	alert('등록되었습니다 : ' + input1);
+        	
+        	$("#enroll #title").val("");
+        	$("#enroll #ipDesc").val("");
+			$('#enroll').modal("hide");
         });
 	});
+	
+	function scheduleClick() {
+		$('#enroll').modal("show");
+		$("#enroll #title").val($(this).text());
+	}
+	
+	function register() {
+		if(document.getElementById("title").value == "") {
+			alert("다이어리 제목을 입력하세요.");
+			$('#enroll').modal("show");
+			return;
+		} else {
+			console.log('왔니');
+			document.getElementById("diaryform").action = "plzdaengs/plzDiary";
+			document.getElementById("diaryform").submit;
+			console.log('왔니2');
+		}
+	}
 	
 </script>
 </head>
@@ -77,7 +105,7 @@
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="button" data-dismiss="modal">Close</button>
-					<button type="submit" class="button" id="submit">Submit</button>
+					<button type=button class="button" id="submit">Submit</button>
 				</div>
 			</form>
 		</div>

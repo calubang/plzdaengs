@@ -15,53 +15,57 @@
 	<script type="text/javascript" src="js/bootstrap.bundle.js"></script>
 
 <style type="text/css">
-#div1 {
-  width: 1000px;
-  height: 100px;
-  padding: 10px;
-  border: 1px solid #aaaaaa;
-  margin-left: 500px;
-}
-
-.cal-day{
-/*
-	background-color: black;
-*/
-}
-.cal_top{
-    text-align: center;
-    font-size: 30px;
-}
-
-.cal{
-    text-align: center;    
-}
-
-table.calendar .cal-schedule{
-/*
-	1. 이 부분이 일정등록 클릭할 부분
-*/
-	height : 55px;
-	font-size: medium;
-}
-
-table.calendar{
-/*
-	1. 캘린더 위치설정
-	2. 달력 칸칸별 넓혀놓고 > border: thin solid black; 지워놓기
-*/
-    margin-left: 500px; 
-    margin-top: 100px;
-    display: inline-table;
-    text-align: left;
-}
-
-table.calendar td{
-    vertical-align: top;
-    height : 50px;
-    width: 150px;
-}
-
+	#div1 {
+	  width: 1000px;
+	  height: 100px;
+	  padding: 10px;
+	  border: 1px solid #aaaaaa;
+	  margin-left: 500px;
+	}
+	
+	.cal-day{
+	/*
+		background-color: black;
+	*/
+	}
+	.cal_top{
+	    text-align: center;
+	    font-size: 30px;
+	}
+	
+	.cal{
+	    text-align: center;    
+	}
+	
+	table.calendar .cal-schedule{
+	/*
+		1. 이 부분이 일정등록 클릭할 부분
+	*/
+		min-height : 55px;
+		font-size: medium;
+	}
+	
+	table.calendar{
+	/*
+		1. 캘린더 위치설정
+		2. 달력 칸칸별 넓혀놓고 > border: thin solid black; 지워놓기
+	*/
+	    margin-left: 500px; 
+	    margin-top: 100px;
+	    display: inline-table;
+	    text-align: left;
+	}
+	
+	table.calendar td{
+	    vertical-align: top;
+	    height : 50px;
+	    width: 150px;
+	}
+	
+	.schedule:hover{
+		border: 1px solid black;
+		cursor: pointer;
+	}
 </style>
 
 <script type="text/javascript">
@@ -72,8 +76,12 @@ table.calendar td{
     var lastDay = null;
     var $tdDay = null;
     var $tdSche = null;
+    var cellText = null;
+    var cell = null;
  
     $(document).ready(function() { // 아예 시작할 때
+    	//sendRequest("/plzdaengs/plzDiary", params, callback, "GET");
+
         drawCalendar();
         initDate(); // 날짜 초기화할것
         drawDays();
@@ -99,12 +107,20 @@ table.calendar td{
             }); // $(this).children().css끝
         });
         
-		$('table tbody td div.cal-day').click(function() { // table td 클릭할 때
+		$('table tbody td div.cal-day').click(function(e) { // table td 클릭할 때
+			
 			// 1. 클릭하면 모달나오게 해야함 > 일정 등록하는거
-			var cellText = $(this).text().trim(); // ★★★★★★★★★ 
+			cellText = $(this).text().trim(); // ★★★★★★★★★ 몇번째 꺼인지 
+			cell = $(this);
+			console.log(cell);
 			console.log(cellText);
 			
 			alert(cellText + '일 click!'); // 위에 .html하면 관련 식 나오고 text해야 date나옴
+			//request.setAttribute("cellText", cellText);
+			
+			// 보내야함.. https://codeday.me/ko/qa/20190321/115067.html
+			//e.originalEvent.dataTransfer.setData("cellText", cellText);
+			
 			$("#enroll").modal();
         }) // td클릭시 function 끝
         
@@ -200,10 +216,14 @@ table.calendar td{
     
     //calendar 그리기
     function drawCalendar(){
+    	
         var setTableHTML = "";
         
-        var a = $("#attr").html();
-    	console.log('[2] '+ a);
+        //var a = $("#attr").html();
+    	//console.log('drawCalendar()에서 받아옴 : '+ a);
+    	//var insert = '<div>'+ a +'</div>'
+    	//console.log(insert);
+    	//console.log(cellText);
     	
         setTableHTML+='<table class="calendar" id = "calendar">';
         setTableHTML+='<tr><th>SUN</th><th>MON</th><th>TUE</th><th>WED</th><th>THU</th><th>FRI</th><th>SAT</th></tr>';
@@ -211,8 +231,8 @@ table.calendar td{
             setTableHTML+='<tr height="100">';
             for(var j=0;j<7;j++){
                 setTableHTML+='<td style="text-overflow:ellipsis;overflow:hidden;white-space:nowrap">';
-                setTableHTML+='    <div class="cal-day" id = "cal-day" ondrop="drop(event)" ondragover="allowDrop(event)"></div>';
-                setTableHTML+='    <div class="cal-schedule"><%=title%></div>';
+                setTableHTML+='    <div class="cal-day" id = "cal-day" ondrop="drop(event)" ondragover="allowDrop(event)"></div>'; // day 써있는곳에 놓기
+                setTableHTML+='    <div class="cal-schedule"></div>';
                 setTableHTML+='</td>';
             }
             setTableHTML+='</tr>';
@@ -353,7 +373,6 @@ table.calendar td{
 			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 			<img id="bin" src="img/bin.png" width="50px" height="50px" ondrop="delete(event)" ondragover="allowDrop(event)">
 		</div>
-		<div id = "attr" draggable="true" ondragstart="drag(event)" ><%=title %></div>
     </div>
 </section>
  </div>
