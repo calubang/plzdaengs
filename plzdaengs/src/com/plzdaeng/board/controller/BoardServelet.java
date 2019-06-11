@@ -66,8 +66,8 @@ public class BoardServelet extends HttpServlet {
 			board.setPost_id(post_id);
 			board.setBoard_category_id(request.getParameter("board_category_id"));
 			board.setPost_subject(request.getParameter("post_subject"));
-			//board.setUser_id(userDto.getUser_id());
-			board.setUser_id("yaho");
+			board.setUser_id(userDto.getUser_id());
+			//board.setUser_id("yaho");
 			board.setPost_contents(request.getParameter("post_contents"));
 			
 			PlzBoardDaoImpl.getPlzBoardDao().insertBoard(board);

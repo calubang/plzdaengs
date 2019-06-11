@@ -93,7 +93,7 @@ public class GroupDaoImpl implements GroupDao {
 	public void applyGroupCategory(Connection conn, GroupDto dto) throws SQLException {
 		PreparedStatement pstmt = null;
 		StringBuffer applyCategorySql = new StringBuffer("");
-		applyCategorySql.append("insert into PLZ_GROUP_MEMBER values(group_id_seq.CURRVAL, ?, 'L')");
+		applyCategorySql.append("insert into PLZ_GROUP_MEMBER values(group_id_seq.CURRVAL, ?, 'L', sysdate)");
 		try {
 			pstmt = conn.prepareStatement(applyCategorySql.toString());
 			pstmt.setString(1, dto.getGroup_leader());

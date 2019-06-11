@@ -119,33 +119,18 @@
 						class="sidebar-link pl-lg-5">소모임일정</a></li>
 					<li class="sidebar-list-item"><a href="#"
 						class="sidebar-link pl-lg-5">공지?게시판?</a></li>
-					<li class="sidebar-list-item"><a href="#"
-						class="sidebar-link pl-lg-5">사진게시판</a></li>
 				</ul>
 			</div></li>
 		<li class="sidebar-list-item"><a href="/plzdaengs/board/yugi.jsp"
 			class="sidebar-link text-muted"><i
 				class="o-survey-1 mr-3 text-gray"></i><span>유기견</span></a></li>
-		<li class="sidebar-list-item"><a href="#" data-toggle="collapse"
-			data-target="#pages" aria-expanded="false" aria-controls="pages"
+		<li class="sidebar-list-item"><a href="/plzdaengs/plzBoard?cmd=boardList&curPage=1"
 			class="sidebar-link text-muted"><i
-				class="o-wireframe-1 mr-3 text-gray"></i><span>게시판</span></a>
-			<div id="pages" class="collapse">
-				<ul
-					class="sidebar-menu list-unstyled border-left border-primary border-thick">
-					<li class="sidebar-list-item"><a href="/plzdaengs/plzBoard?cmd=boardList&curPage=1"
-						class="sidebar-link pl-lg-5">게시판1</a></li>
-					<li class="sidebar-list-item"><a href="#"
-						class="sidebar-link pl-lg-5">Page two</a></li>
-					<li class="sidebar-list-item"><a href="#"
-						class="sidebar-link pl-lg-5">Page three</a></li>
-					<li class="sidebar-list-item"><a href="#"
-						class="sidebar-link pl-lg-5">Page four</a></li>
-				</ul>
-			</div></li>
+		class="o-survey-1 mr-3 text-gray"></i><span>게시판</span></a></li>
+	
 		<li class="sidebar-list-item"><a
 			href="/plzdaengs/template/login.html" class="sidebar-link text-muted"><i
-				class="o-exit-1 mr-3 text-gray"></i><span>Login</span></a></li>
+				class="o-exit-1 mr-3 text-gray"></i><span>Logout</span></a></li>
 	</ul>
 
 	<!--

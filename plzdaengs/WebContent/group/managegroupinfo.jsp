@@ -1,18 +1,10 @@
 <%@page import="com.plzdaeng.group.model.GroupDto"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
-<%@ include file="/template/default_link.jsp" %>
-
 <% GroupDto dto = (GroupDto)request.getAttribute("groupdetail");
 System.out.println(dto);%>
 <script>
 $(function(){
-
 	var form = $('form');
 	form.submit(function(){
 		$.ajax({
@@ -42,8 +34,6 @@ $(function(){
 
 });
 </script>
-</head>
-<body>
 <!-- <div id="deletegroupmodal" tabindex="-1" role="dialog" 
 		aria-labelledby="exampleModalLabel" aria-hidden="true"
 		class="modal fade text-left">
@@ -70,8 +60,6 @@ $(function(){
 			</div>
 		</div>
 	</div> -->
-
-
           <div>
           <Button onclick="location.href='/plzdaengs/group/managegroupinfo.jsp'">소모임 정보변경</Button>
           <Button onclick="location.href='/plzdaengs/group/managemeeting.jsp'">소모임 일정관리</Button>
@@ -140,7 +128,3 @@ $(function(){
                 </div>
               </div>
             </div>
-
-	<%@ include file="/template/default_js_link.jsp" %>
-</body>
-</html>

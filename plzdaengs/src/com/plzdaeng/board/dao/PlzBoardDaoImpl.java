@@ -75,6 +75,7 @@ public class PlzBoardDaoImpl implements PlzBoardDao{
 			sql.append("INSERT INTO PLZ_BOARD \n");
 			sql.append("VALUES(?,?,?,?,?,SYSDATE,NULL,0,NULL)");
 			
+			System.out.println(board);
 //			SEQ_PLZ_BOARD.NEXTVAL
 			pstm = con.prepareStatement(sql.toString());
 			pstm.setInt(1, board.getPost_id());
