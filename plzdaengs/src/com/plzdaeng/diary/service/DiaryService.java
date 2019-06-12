@@ -1,17 +1,11 @@
 package com.plzdaeng.diary.service;
 
-<<<<<<< HEAD
 import java.util.Date;
-=======
 import java.util.List;
->>>>>>> refs/remotes/origin/master
 
 import com.plzdaeng.diary.dao.diaryDao;
 import com.plzdaeng.dto.DiaryDto;
-<<<<<<< HEAD
-=======
 import com.plzdaeng.dto.UserDto;
->>>>>>> refs/remotes/origin/master
 
 public class DiaryService {
 	private diaryDao dao;
