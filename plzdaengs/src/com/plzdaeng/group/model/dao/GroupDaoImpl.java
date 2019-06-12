@@ -45,7 +45,7 @@ public class GroupDaoImpl implements GroupDao {
 		creatGroupSql.append(", ?\r\n");
 		creatGroupSql.append(", ?\r\n");
 		creatGroupSql.append(", ?\r\n");
-		creatGroupSql.append(", null\r\n");
+		creatGroupSql.append(", ?\r\n");
 		creatGroupSql.append(", ?\r\n");
 		creatGroupSql.append(", ?)\r\n");
 
@@ -58,9 +58,9 @@ public class GroupDaoImpl implements GroupDao {
 			pstmt.setString(1, dto.getGroupCategory().getGroup_category_id());
 			pstmt.setString(2, dto.getGroup_name());
 			pstmt.setString(3, dto.getGroup_description());
-//			pstmt.setString(4, dto.getGroup_img());
-			pstmt.setString(4, dto.getAddress_sido());
-			pstmt.setString(5, dto.getAddress_sigungu());
+			pstmt.setString(4, dto.getGroup_img());
+			pstmt.setString(5, dto.getAddress_sido());
+			pstmt.setString(6, dto.getAddress_sigungu());
 			int r = pstmt.executeUpdate();
 			System.out.println("sql문실행후");
 
@@ -807,6 +807,39 @@ public class GroupDaoImpl implements GroupDao {
 			DBClose.close(conn, pstmt, null);
 		}
 		return result;
+	}
+
+	@Override
+	public GroupDto groupPageLoading(int group_id) {
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		GroupDto dto = new GroupDto();
+		String pageLoadingSQL = "";
+		pageLoadingSQL = "SELECT group_id, group_name, description\r\n" + 
+				"FROM plz_group\r\n" + 
+				"WHERE group_id = ?";
+		
+		try {
+			conn = DBConnection.makeConnectplzdb();
+			
+			pstmt = conn.prepareStatement(pageLoadingSQL);
+			pstmt.setInt(1, group_id);
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				dto.setGroup_id(rs.getInt("group_id"));
+				dto.setGroup_name(rs.getString("group_name"));
+				dto.setGroup_description(rs.getString("description"));
+			}
+		
+		
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			DBClose.close(conn, pstmt, rs);
+		}
+		return dto;
 	}
 
 	

@@ -1,3 +1,5 @@
+
+<%@page import="com.plzdaeng.group.model.GroupDto"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -8,31 +10,36 @@
 <%@ include file="/template/default_link.jsp"%>
 <%
 	String level = (String) request.getAttribute("authority");
-	int groupId = Integer.parseInt(request.getParameter("group"));
-	String group_name = (String) request.getAttribute("group_name");
+	int groupId = Integer.parseInt(request.getParameter("group_id"));
+	GroupDto group = (GroupDto)request.getAttribute("group");
+
 	String authority = "";
-	if (level == "L") {
-		authority = "소모임관리";
-	} else if (level == "M") {
-		authority = "소모임탈퇴";
-	} else if (level == "A") {
-		authority = "가입요청중";
-	} else if (level == "X") {
-		authority = "소모임가입";
+	if (level.equals("L")) {
+		authority += "소모임관리";
+	} else if (level.equals("M")) {
+		authority += "소모임탈퇴";
+	} else if (level.equals("A")) {
+		authority += "가입요청중";
+	} else if (level.equals("X")) {
+		authority += "소모임가입";
 	}
+	
+	String group_name = group.getGroup_name();
+	String group_description = group.getGroup_description();
 %>
 <script>
+
 $(function() {
+		groupfirstpageLoding();
 		var authority = $("#groupoptbtn").text();
 		var Obtn = $("#groupoptbtn");
+		
+		
 		$(Obtn).click(function() {
 			var groupId = <%=String.valueOf(groupId)%>;
-			alert('<%=level%>');
-			alert('group_id= '+<%=groupId%>);
 			if ('<%=level%>' == 'A') {
 				alert("가입 승인대기중입니다.");
 			} else if ('<%=level%>' == 'X') {
-				alert("가입하세요~");
 				$("#joingroupmodal").modal('show');
 				var join = $('input[name=joingroup]');
 				$(join).click(groupJoinProcess);
@@ -46,7 +53,6 @@ $(function() {
 					data : {act : 'groupmanage',
 						group_id : groupId },
 					success : function(groupdetail) {
-						alert("Option resultpage");
 						$("section").html(groupdetail);
 					}
 
@@ -55,26 +61,7 @@ $(function() {
 		});
 		
 		
-function groupJoinProcess(){
-			$.ajax({
-				url : '/plzdaengs/groupfront',
-				method : 'GET',
-				data : {group_id : '<%=groupId%>',
-						act : 'joingroup'},
-				success : function(result) {
-					//var resultB = request.getAttribute('result');
-					if(result == 1){
-					alert("succeed to request join");
-						$("section").html();
-					//authority = "가입요청중"
-					}else{
-						alert("fail to join group")
-						$("section").html();
-					}
-				}
-			});	
-			return false;
-		}
+
 		
 
 	
@@ -83,6 +70,45 @@ function groupJoinProcess(){
 		
 		
 });
+
+function groupJoinProcess(){
+	$.ajax({
+		url : '/plzdaengs/groupfront',
+		method : 'GET',
+		data : {group_id : '<%=groupId%>',
+				act : 'joingroup'},
+		success : function(result) {
+			//var resultB = request.getAttribute('result');
+			if(result == 1){
+			alert("succeed to request join");
+			$("#joingroupmodal").modal('hide');
+			var join = $('input[name=joingroup]');
+
+				//$("section").html();
+			//authority = "가입요청중"
+			}else{
+				alert("fail to join group")
+				$("section").html();
+			}
+		}
+	});	
+	return false;
+}
+
+function groupfirstpageLoding(){
+	$.ajax({
+		url : '/plzdaengs/groupfront',
+		method : 'GET',
+		data : {group_id : '<%=groupId%>',
+				act : 'firstPageLoding'},
+		success : function(result) {
+		
+		}
+	});	
+	return false;
+	
+	
+}
 </script>
 </head>
 <body>
@@ -104,7 +130,7 @@ function groupJoinProcess(){
 				
 						<!-- <input type="hidden" name="act" value="joingroup"> -->
 						<div class="form-group">
-							<label><%=group_name%></label> 
+							<h1><%=group_name%></h1> 
 						</div>
 						<div class="line"></div>
 
@@ -149,15 +175,29 @@ function groupJoinProcess(){
 			<div class="container-fluid" id="contents">
 
 				<section class="py-5">
-					<div name="title">
-						<h2 style="display: inline;"><%=group_name%></h2>
-						<Button id="groupoptbtn"><%=authority%></Button>
+					<div class="row button-group" id="title">
+						<div class="col-lg-10">
+							<h1 style="display: inline;"><%=group_name%></h1>
+							<%if(authority.equals("M")){%>
+							<Button class="btn btn-danger" style="margin-bottom: 1em;float:right;" id="groupoptbtn"><%	
+							}else{%>
+							<Button class="btn btn-info" style="margin-bottom: 1em;float:right;" id="groupoptbtn"><%
+							} %><%=authority%></Button>
+						</div>
 					</div>
 					<div class="row">
-						<div class="col-lg-8 mb-4 mb-lg-0">
+						<div class="col-lg-10">
 							<div class="card">
 								<div class="card-header">
-									<h5 class="text-uppercase mb-0">사진 게시판</h5>
+									<h5 class="text-uppercase mb-0">소모임 소개글</h5>
+								</div>
+								<div class="card-body">
+								<h5><%=group_description%></h5>
+									</div>
+							</div>
+							<div class="card">
+								<div class="card-header">
+									<h5 class="text-uppercase mb-0">일반 게시판</h5>
 								</div>
 								<div class="card-body">
 									<table class="table card-text">
@@ -196,45 +236,31 @@ function groupJoinProcess(){
 												<td>40</td>
 												<td>20</td>
 											</tr>
-										</tbody>
-									</table>
-								</div>
-								<div style="text-align: center;">더보기</div>
-							</div>
-							<div class="card">
-								<div class="card-header">
-									<h5 class="text-uppercase mb-0">일반 게시판</h5>
-								</div>
-								<div class="card-body">
-									<table class="table card-text">
-										<thead>
-											<tr>
-												<th>#</th>
-												<th>제목</th>
-												<th>작성자</th>
-												<th>작성일자</th>
-												<th>조회수</th>
-												<th>추천수</th>
-											</tr>
-										</thead>
-										<tbody>
-											<tr>
-												<th scope="row">1</th>
+												<tr>
+												<th scope="row">3</th>
 												<td>우리 댕댕이가 아파요ㅜㅜ</td>
 												<td>댕맘</td>
 												<td>2019.05.19</td>
 												<td>40</td>
 												<td>20</td>
 											</tr>
-											<tr>
-												<th scope="row">2</th>
+												<tr>
+												<th scope="row">3</th>
 												<td>우리 댕댕이가 아파요ㅜㅜ</td>
 												<td>댕맘</td>
 												<td>2019.05.19</td>
 												<td>40</td>
 												<td>20</td>
 											</tr>
-											<tr>
+												<tr>
+												<th scope="row">3</th>
+												<td>우리 댕댕이가 아파요ㅜㅜ</td>
+												<td>댕맘</td>
+												<td>2019.05.19</td>
+												<td>40</td>
+												<td>20</td>
+											</tr>
+												<tr>
 												<th scope="row">3</th>
 												<td>우리 댕댕이가 아파요ㅜㅜ</td>
 												<td>댕맘</td>

@@ -41,4 +41,6 @@ public interface GroupDao {
 	int passAuthority(Connection conn, GroupMember member) throws SQLException;
 	
 	int removeAuthority(GroupMember member);
+	
+	GroupDto groupPageLoading(int group_id);
 }

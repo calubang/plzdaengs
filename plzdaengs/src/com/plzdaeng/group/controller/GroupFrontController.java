@@ -7,6 +7,7 @@ import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 
+import com.oreilly.servlet.MultipartRequest;
 import com.plzdaeng.dto.UserDto;
 import com.plzdaeng.util.MoveUrl;
 import com.plzdaeng.util.SiteConstance;
@@ -80,12 +81,17 @@ public class GroupFrontController extends HttpServlet {
 			System.out.println("front managemember");
 			path = GroupController.getGroupController().managemember(request, response);
 			MoveUrl.forward(request, response, path);
+//		}else if("firstPageLoding".equals(act)) {
+//			System.out.println("front firstPageLoding");
+//			path = GroupController.getGroupController().descriptLoding(request,response);
+//			MoveUrl.forward(request, response, path);
 		}
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding(SiteConstance.ENCODE);
 		doGet(request, response);
+		
 	}
 
 

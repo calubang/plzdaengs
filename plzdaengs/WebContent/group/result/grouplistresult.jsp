@@ -16,7 +16,7 @@
 
 <div class="card" id="<%=dto.getGroup_id()%>">
 
-	<div class="card-header" id="<%=dto.getGroup_name()%>">
+	<div class="card-header"<%--  id="<%=dto.getGroup_name()%>" --%>>
 		<h2 class="h6 text-uppercase mb-0" style="font-size: large;"><%=dto.getGroup_name() %></h2>
 	</div>
 	<div class="card-body" style="padding: 10;">

@@ -33,6 +33,16 @@ public class ProfileCreate {
 		case "diary":
 			path += "/" + id + "." + file.getName().split("\\.")[1];
 			break;
+		
+		case "group":
+			path += "/group";
+			temp = new File(path);
+			if(!temp.exists()) {
+				temp.mkdir();
+			}
+			path += "/" + id  + "." + file.getName().split("\\.")[1];
+			break;
+			
 		default:
 			break;
 		}

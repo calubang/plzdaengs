@@ -1,16 +1,23 @@
 package com.plzdaeng.group.controller;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
+import java.util.UUID;
 
 import javax.servlet.http.*;
 
+import com.oreilly.servlet.MultipartRequest;
 import com.plzdaeng.dto.UserDto;
 import com.plzdaeng.group.model.*;
 import com.plzdaeng.group.model.dao.GroupDaoImpl;
+import com.plzdaeng.util.ProfileCreate;
+import com.plzdaeng.util.SiteConstance;
 
 public class GroupController {
-
+	
 	private static GroupController groupController;
+	GroupDto dto;
 	private HttpSession session;
 	static {
 		groupController = new GroupController();
@@ -27,10 +34,8 @@ public class GroupController {
 	public String pageLoaing(HttpServletRequest request, HttpServletResponse response, UserDto user) {
 		// path = "/plzdaengs/template/alert_danger.jsp";
 		String id = user.getUser_id();
-		System.out.println(id);
 		//user.setUser_id("qwer");
 		String type = request.getParameter("type");
-		System.out.println(type);
 		List<GroupDto> list = null;
 		if (type != null && type.equals("mine")) {
 			System.out.println("if type mine");
@@ -58,34 +63,66 @@ public class GroupController {
 	}
 
 	public String create(HttpServletRequest request, HttpServletResponse response, UserDto user) {
+		System.out.println("create들어옴");
+		//image
+		String saveDirectory = SiteConstance.IMG_PATH;
+		MultipartRequest multipartRequest = null;
+		try {
+			multipartRequest = new MultipartRequest(request, saveDirectory, "UTF-8");
+					
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		String name = multipartRequest.getParameter("groupname");
+		String desc = multipartRequest.getParameter("groupdescription");
+		String keyword = multipartRequest.getParameter("groupkeyword");
+		String groupdontselect = multipartRequest.getParameter("groupdontselect");	
+		
+		
+		
 		path = "/group/groupmain.jsp";
 		String id = user.getUser_id();
 		//user.setUser_id("qwer");
-		String name = request.getParameter("groupname");
-		String desc = request.getParameter("groupdescription");
-		String keyword = request.getParameter("groupkeyword");
-		String groupdontselect = request.getParameter("groupdontselect");//지역무관
-		System.out.println(groupdontselect);
-
-		System.out.println(name + keyword + desc);
+		//지역무관
+		System.out.println(name + keyword + desc + "location : " + groupdontselect);
+		
+		
 		// 소모임 정보set
-
 		GroupCategory cate = new GroupCategory();
 		cate.setGroup_category_id(keyword);
-		GroupDto dto = new GroupDto();
+		dto = new GroupDto();
 		dto.setGroup_leader(id);
 		dto.setGroup_name(name);
 		dto.setGroup_description(desc);
 		if (groupdontselect == null || !groupdontselect.equals("on") ){
-			String groupsido = request.getParameter("groupsido");
-			String groupsigungu = request.getParameter("groupsigungu");
+			String groupsido = multipartRequest.getParameter("groupsido");
+			String groupsigungu = multipartRequest.getParameter("groupsigungu");
 			dto.setAddress_sido(groupsido);
 			dto.setAddress_sigungu(groupsigungu);
 		}
 		dto.setGroupCategory(cate);
-//		group.setGroup_img(group_img);
+		
+		//file upload
+		File file = multipartRequest.getFile("imgdata");
+		String fileName = UUID.randomUUID().toString();
+		if(file == null) {
+			//디폴트 그룹이미지
+			dto.setGroup_img("/plzdanegs/template/img/siba.jpg");
+		}else {
+			
+			dto.setGroup_img("/plzdanegs/img/group/" + fileName + "." + file.getName().split("\\.")[1]);
+		}
+		System.out.println(dto);
+		
 
 		int result = GroupDaoImpl.getGroupDaoImpl().createGroup(dto);
+		if(result == 1) {
+			String path = request.getServletContext().getRealPath("/img");
+			System.out.println(path);
+			ProfileCreate.profileRegister(file, path, fileName, null, "group");
+		}
+		
 		System.out.println("dao 결과 result : " + result);
 		request.setAttribute("result", result);
 		return path;
@@ -97,9 +134,9 @@ public class GroupController {
 		String id = user.getUser_id();
 		String result = "";
 		//user.setUser_id("qwer");
-		int group_id = Integer.parseInt(request.getParameter("group"));
-		String group_name = request.getParameter("group_name");
-		System.out.println(group_id + group_name);
+		int group_id = Integer.parseInt(request.getParameter("group_id"));
+		//String group_name = request.getParameter("group_name");
+		//System.out.println(group_id + group_name);
 		//session = request.getSession();
 		//session.setAttribute("group_id", group_id);
 		//1 입장
@@ -119,9 +156,9 @@ public class GroupController {
 		
 		//2 권한에 따라 버튼이 바뀜 ( 리더 : 관리, 일반 : 탈퇴, 요청중 : 대기, 비회원 : 가입 )
 		result = GroupDaoImpl.getGroupDaoImpl().inquiry(group_id, id);
-		request.getSession().setAttribute("groupId", group_id);
+		request.getSession().setAttribute("group_id", group_id);
 		request.setAttribute("authority", result);
-		request.setAttribute("group_name", group_name);
+		descriptLoding(request, response, group_id);
 		
 		System.out.println(result);
 		
@@ -142,7 +179,7 @@ public class GroupController {
 
 	public String entermanege(HttpServletRequest request, HttpServletResponse response) {
 		session = request.getSession();
-		GroupDto dto = new GroupDto();
+		dto = new GroupDto();
 		int group_id = 0;
 		if(request.getParameter("group_id") != null) {
 			group_id = Integer.parseInt(request.getParameter("group_id"));
@@ -160,7 +197,7 @@ public class GroupController {
 
 	public String changeDetail(HttpServletRequest request, HttpServletResponse response) {
 		session = request.getSession();
-		GroupDto dto = new GroupDto();
+		dto = new GroupDto();
 		dto = (GroupDto)session.getAttribute("groupdetail");
 		path = "/group/managegroupinfo.jsp";
 		int group_id = Integer.parseInt(request.getParameter("group_id"));
@@ -214,7 +251,7 @@ public class GroupController {
 	public String memberlist(HttpServletRequest request, HttpServletResponse response) {
 		path = "/group/result/memberlistresult.jsp";
 		session = request.getSession();
-		GroupDto dto = (GroupDto)session.getAttribute("groupdetail");
+		dto = (GroupDto)session.getAttribute("groupdetail");
 		List<GroupMember> list = null;
 		int group_id = dto.getGroup_id();
 		//Integer.parseInt(String.valueOf(session.getAttribute("group_id")));
@@ -229,7 +266,7 @@ public class GroupController {
 		System.out.println("들어는오나?");
 		path = "/group/result/memberlistresult.jsp";
 		session = request.getSession();
-		GroupDto dto = (GroupDto)session.getAttribute("groupdetail");
+		dto = (GroupDto)session.getAttribute("groupdetail");
 		int group_id = dto.getGroup_id();
 		//Integer.parseInt(String.valueOf(session.getAttribute("group_id")));
 		String user_id = request.getParameter("member_id");
@@ -250,6 +287,17 @@ public class GroupController {
 		}
 		request.setAttribute("result", result);
 		return path;
+	}
+
+	public void descriptLoding(HttpServletRequest request, HttpServletResponse response, int group_id) {
+		//path = "/group/groupfirstpage.jsp";
+		//int group_id = (int)request.getAttribute("group_id");
+		System.out.println(group_id);
+		dto = GroupDaoImpl.getGroupDaoImpl().groupPageLoading(group_id);
+		System.out.println(dto.getGroup_name());
+		request.setAttribute("group", dto);
+		
+		//return path;
 	}
 
 
