@@ -8,7 +8,10 @@ public class ProfileCreate {
 		FileInputStream fin = null;
 		FileOutputStream fout = null;
 		int read = 0;
-		File temp = null;
+		File temp = new File(path);
+		if(!temp.exists()) {
+			temp.mkdir();
+		}
 		
 		switch (type) {
 		case "user":
@@ -26,6 +29,9 @@ public class ProfileCreate {
 				temp.mkdir();
 			}
 			path += "/"+petName + ".jpg";
+			break;
+		case "diary":
+			path += "/" + id + "." + file.getName().split("\\.")[1];
 			break;
 		default:
 			break;

@@ -80,7 +80,6 @@
     var cell = null;
  
     $(document).ready(function() { // 아예 시작할 때
-    	//sendRequest("/plzdaengs/plzDiary", params, callback, "GET");
 
         drawCalendar();
         initDate(); // 날짜 초기화할것
@@ -331,7 +330,7 @@
 		console.log('1!!!' + a);
 		
 		ev.preventDefault();
-		var data = ev.dataTransfer.getData("text");
+		var data = ev.dataTransfer.getData("text"); // img의 id
 		console.log(data);
 		
 		var dataTemp = document.getElementById(data).cloneNode();
@@ -344,6 +343,14 @@
 		});
 		ev.target.appendChild(dataTemp); // 이모티콘 붙일 때 없어지지 않고 남아있기
 	}
+	
+	function bin(ev) { // 쓰레기통 오예
+		ev.preventDefault();
+		var data = ev.dataTransfer.getData("text");
+		ev.target.appendChild(document.getElementById(data));
+	}
+	
+
 </script>
 
 </head>
@@ -362,7 +369,7 @@
         <span id="nextMonth" class="cal_tit">&gt;</span>
         </a>
 		<div id="cal_tab" class="cal" ></div>
-		<div id="cal_image" style="margin-left: 200px;">
+		<div id="cal_image" style="margin-left: 200px;" >
 			<img id="drag1" src="img/hospital.png" draggable="true" ondragstart="drag(event)" width="50px" height="50px"> &nbsp;&nbsp;&nbsp;&nbsp;
 			<img id="drag2" src="img/bones.png" draggable="true" ondragstart="drag(event)" width="50px" height="50px"> &nbsp;&nbsp;&nbsp;&nbsp;
 			<img id="drag3" src="img/dog.png" draggable="true" ondragstart="drag(event)" width="50px" height="50px"> &nbsp;&nbsp;&nbsp;&nbsp;
@@ -371,7 +378,7 @@
 			<img id="drag6" src="img/school.png" draggable="true" ondragstart="drag(event)" width="50px" height="50px"> &nbsp;&nbsp;&nbsp;&nbsp;
 			<img id="drag7" src="img/pet-house.png" draggable="true" ondragstart="drag(event)" width="50px" height="50px">
 			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-			<img id="bin" src="img/bin.png" width="50px" height="50px" ondrop="delete(event)" ondragover="allowDrop(event)">
+			<img id="bin" src="img/bin.png" width="50px" height="50px" ondrop="bin(event)" ondragover="allowDrop(event)">
 		</div>
     </div>
 </section>

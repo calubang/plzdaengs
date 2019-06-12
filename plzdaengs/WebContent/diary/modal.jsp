@@ -40,13 +40,25 @@
 
 	$(document).ready(function() { // 아예 시작할 때
         $("#submit").on("click", function(){
-        	// [1] servlet 이동 : 해결
+			
+			sendDiaryInfo();
+			
+			/* 망쳐버린 나의 ajax......
+			
+			// [1] servlet 이동 : 해결
+        	$("#result").text($("#form").serialize());
+            //var str = $("#filetext").serialize(); 
+            var path = document.getElementById('filetext').value;
+            //alert('string : ' + path);
+        	//console.log(aaa);
         	
             var str = $("#form").serialize(); // file은 직렬화 안됨.. > form으로 ㄱㄱ
-            alert('str : ' + str);
+            //alert('str : ' + );
+            
 			
 			//var form = $("#form")[0];
 			//var formData = new FormData(form);
+			
             $.ajax({
               type:"POST",
               url:"/plzdaengs/diary",
@@ -60,6 +72,7 @@
                 alert("ajax 실패 : 에러가 발생하였습니다.");
               }			
             });
+			*/
         	
         	// [2]
         	var input1 = document.getElementById('title').value;
@@ -77,8 +90,29 @@
         	$("#enroll #title").val("");
         	$("#enroll #ipDesc").val("");
 			$('#enroll').modal("hide");
+			
         });
 	});
+	
+	function sendDiaryInfo() {
+		var form = $("#form")[0];
+		var formData = new FormData(form);
+		
+		$.ajax({
+			url : "/plzdaengs/diary",
+			method : "post",
+			processData : false,
+			contentType : false,
+			data : formData,
+			success : function (result) {
+				if(formData != null) {
+					console.log('formData 넘어가염 '+formData);
+				}
+			}
+		});
+		
+		return false;
+	}
 	
 	function scheduleClick() {
 		$('#enroll').modal("show");
@@ -96,6 +130,36 @@
 	}
 	
 </script>
+<script>
+$(function() {
+	// [3]
+	$("#imgdata").change(fileUploadChange);
+});
+
+
+function fileUploadChange() {
+	alert('들어왔담');
+	var filename = this.files[0].name;
+	var imgtag = $(this).siblings("img");
+	imgtag.prop("src", "/plzdaengs/template/img/basic_user_profile.png");
+	
+	
+	if (!this.files[0].type.startsWith("image/")) {
+		this.files[0].value = "";
+		showAlertModal("이미지 업로드 경고", "올릴수 없는 확장자입니다.");
+		return;
+	}
+
+	//imgtag.prop("src", "/plzdaengs/template/img/basic_user_profile.png");
+	var reader =new FileReader();
+	reader.onload = function (e) {
+		imgtag.prop("src", e.target.result);
+	}
+	reader.readAsDataURL(this.files[0]);
+	//$(this).siblings("input[type=text]").val(filename);
+
+}
+</script>
 </head>
 <body>
 <!-- 
@@ -106,7 +170,7 @@
 <div id="enroll" class="modal fade">
 	<div id = "realmodal" class="modal-dialog" width = "800">
 		<div class="modal-content">
-			<form id = "form">
+			<form id = "form" enctype="multipart/form-data">
 				<div class="modal-header">다이어리 추가</div>
 				<div class="modal-body">
 					<!--div id="ipAlertTitle" class="alert alert-danger" role="alert">다이어리를 입력해주세요. </div-->
@@ -118,6 +182,7 @@
 						<label for="ipDesc">Description : </label>
 						<textarea class="form-control" rows="3" id="ipDesc" placeholder="Description" name="description"></textarea><br>
 						<input type="file" id = "imgdata" name="imgdata" accept=".jpg,.jpeg,.png,.gif,.bmp">
+						<img alt="" class="col-md-2 fileuploadimg" src="/plzdaengs/template/img/basic_user_profile.png">
 					</div>					
 				</div>
 				<div class="modal-footer">
