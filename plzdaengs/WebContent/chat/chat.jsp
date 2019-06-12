@@ -2,7 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <c:set var="user" value="${sessionScope.userInfo}"></c:set>
-<c:set var="groupid" value="${sessionScope.groupId}"></c:set>
+<c:set var="groupid" value="${sessionScope.group_id}"></c:set>
 <c:set var="chatserver" value="${applicationScope.chatServerUrl}"></c:set>
 <c:set var="authority" value="${requestScope.authority}"></c:set>
 <c:if test="${authority == 'L' || authority == 'M'}">
