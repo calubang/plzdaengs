@@ -33,8 +33,8 @@ public class DiaryServlet extends HttpServlet {
 		 * 1. servlet 들어왔는지 확인
 		 * 2. dto에 넘어온 정보 set > img also > userjoinservlet 참고
 		 */
-		
-		System.out.println("/diary Servlet으로 이동 >>");
+		System.out.println();
+		System.out.println("---------------SERVLET 이동OK");
 		
 		String saveDirectory = SiteConstance.IMG_PATH;
 		MultipartRequest mr = new MultipartRequest(request, saveDirectory, "utf-8");
@@ -42,26 +42,30 @@ public class DiaryServlet extends HttpServlet {
 		String title = mr.getParameter("title");
 		String description = mr.getParameter("description");
 		File imgdata = mr.getFile("imgdata");
+		//String temp = imgdata.toString();
 		
-		System.out.println(title + "/"+ description + imgdata);
+		System.out.println("> 전송된 DATA : [제목> " + title + "] [내용> "+ description + "] [이미지> " + imgdata + "]");
 		
-		System.out.println(UUID.randomUUID());
-		String filename = UUID.randomUUID().toString();
+		System.out.println("> 임의로 생성되는 ID : " + UUID.randomUUID());
+		String filename = UUID.randomUUID().toString(); // 원래 string 형태 아니여서 toString 처리
 		String path = request.getServletContext().getRealPath("/img");
-		System.out.println(path);
+		System.out.println("> 따로 저장되는 공간 : " + path);
 		
+		// DTO에다 받아온 정보들 저장
 		DiaryDto dto = new DiaryDto();
+		dto.setDiary_subject(title);
+		dto.setDiary_contents(description);
 		dto.setDiary_img("/plzdaengs/img/"+filename + "." + imgdata.getName().split("\\.")[1]);
-		System.out.println(dto);
-		
-		if(imgdata !=  null) {
-			ProfileCreate.profileRegister(imgdata, path, filename , null, "diary");
-		}
-		
+		System.out.println("> DTO결과 불러오기 : " + dto);
 		
 		//db 저장하는 로직
 		//성공 : 1
 		//실패 : -1
+		if(imgdata !=  null) { // 성공할 때 넣어야함
+			ProfileCreate.profileRegister(imgdata, path, filename , null, "diary");
+		}
+		
+		
 		
 		
 		
@@ -94,7 +98,9 @@ public class DiaryServlet extends HttpServlet {
 		dto.setDiary_subject(diary_subject);
 		dto.setDiary_contents(diary_contents);
 		**/
-		
+		System.out.println("---------------SERVLET BYE");
+		System.out.println();
+
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

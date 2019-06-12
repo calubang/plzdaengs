@@ -74,7 +74,7 @@ public class diaryDao {
 	}
 	
 	//월이 바뀌면 호출되는 메소드
-	//yyyy/dd 형태로 온다고 생각하겠음
+	//yyyy/mm 형태로 온다고 생각하겠음
 	public List<DiaryDto> selectAllByMonth(String date, UserDto user) {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
@@ -135,7 +135,7 @@ public class diaryDao {
 	public static void main(String[] args) throws ParseException {
 		DiaryDto dto = new DiaryDto();
 		UserDto user = new UserDto();
-		user.setUser_id("calubang");
+		user.setUser_id("mnmm97");
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 		
 		dto.setCategory_id("1");
