@@ -24,7 +24,7 @@ public class diaryDao {
 		int result = -1;
 		String selectDiaryNumberSQL = 
 				"select \r\n" + 
-				"    diary_number_seq.currval as diary_number\r\n" + 
+				"    SEQ_PLZ_DIARY.currval as diary_number\r\n" + 
 				"from dual";
 		
 		pstmt = conn.prepareStatement(selectDiaryNumberSQL);
@@ -54,19 +54,15 @@ public class diaryDao {
 				"insert into plz_diary(	\r\n" + 
 				"    diary_number	\r\n" + 
 				"    , user_id	\r\n" + 
-				"    , category_id	\r\n" + 
-				"    , diary_date	\r\n" + 
+				//"    , category_id	\r\n" + 
 				"    , diary_subject	\r\n" + 
-				"    , hashtag	\r\n" + 
 				"    , diary_contents	\r\n" + 
 				"    , diary_img	\r\n" + 
 				"    , create_date	\r\n" + 
 				")values(	\r\n" + 
-				"    diary_number_seq.nextval	\r\n" + 
+				"    SEQ_PLZ_DIARY.nextval	\r\n" + 
 				"    , ?	\r\n" + 
-				"    , ?	\r\n" + 
-				"    , ?	\r\n" + 
-				"    , ?	\r\n" + 
+				//"    , ?	\r\n" + 
 				"    , ?	\r\n" + 
 				"    , ?	\r\n" + 
 				"    , ?	\r\n" + 
@@ -79,15 +75,12 @@ public class diaryDao {
 			
 			pstmt = conn.prepareStatement(insertDiarySQL);
 			int index = 0;
+			dto.setUser_id("mnmm97");
 			pstmt.setString(++index, dto.getUser_id());
-			pstmt.setString(++index, dto.getCategory_id());
 			
-			Date date = new Date(dto.getDiary_date().getTime());
-			//Date date = new Date(dto.getDiary_date().getTime());
-			// System.out.println(date);
-			pstmt.setDate(++index, date);
+			//Date date = new Date(dto.getDiary_date().getTime()); > nullpointer뜸ㅠㅠ
+			
 			pstmt.setString(++index, dto.getDiary_subject());
-			pstmt.setString(++index, dto.getHashtag());
 			pstmt.setString(++index, dto.getDiary_contents());
 			pstmt.setString(++index, dto.getDiary_img());
 			
@@ -217,6 +210,7 @@ public class diaryDao {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
+			System.out.println(dto);
 			DBClose.close(conn, pstmt, rs);
 		}
 		
@@ -224,6 +218,7 @@ public class diaryDao {
 	}
 	
 	public static void main(String[] args) throws ParseException {
+		/*
 		System.out.println("★★★★★★★★DAO★★★★★★★★★★");
 		DiaryDto dto = new DiaryDto();
 		UserDto user = new UserDto();
@@ -242,6 +237,7 @@ public class diaryDao {
 		System.out.println(dto.getDiary_date().toString());
 		//List<DiaryDto>list = dao.selectAllByMonth("2019/06", user);
 		System.out.println(result);
+		*/
 		
 	}
 }

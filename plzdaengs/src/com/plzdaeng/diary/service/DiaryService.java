@@ -16,7 +16,7 @@ public class DiaryService {
 		date = new Date();
 	}
 	
-	public int enrollDiary(DiaryDto dto) {
+	public int enrollDiary(DiaryDto dto) { // 다이어리 등록용
 		System.out.println();
 		System.out.println("★ DiaryService 이동OK");
 		
@@ -33,13 +33,13 @@ public class DiaryService {
 			//System.out.println(dto);
 		}
 		
-		result = dao.insertDiary(dto);
+		//result = dao.insertDiary(dto);
 		
 		System.out.println("	> DB에 등록 완료!!");
 		System.out.println("★ DiaryService BYE");
 		System.out.println();
 		
-		return result;
+		return dao.insertDiary(dto);
 	}
 
 	public List<DiaryDto> initDataByMonth(String date, UserDto user) {
