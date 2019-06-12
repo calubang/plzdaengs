@@ -119,6 +119,7 @@ public class GroupController {
 		
 		//2 권한에 따라 버튼이 바뀜 ( 리더 : 관리, 일반 : 탈퇴, 요청중 : 대기, 비회원 : 가입 )
 		result = GroupDaoImpl.getGroupDaoImpl().inquiry(group_id, id);
+		request.getSession().setAttribute("groupId", group_id);
 		request.setAttribute("authority", result);
 		request.setAttribute("group_name", group_name);
 		

@@ -78,6 +78,9 @@ public class ChatServer{
 		List<ChatDto> chatHistory = service.chatHistory(groupId);
 		ObjectMapper mapper = new ObjectMapper();
 		try {
+			if(chatHistory.size() == 0) {
+				return;
+			}
 			String historyJSON = mapper.writeValueAsString(chatHistory);
 			System.out.println(historyJSON);
 			session.getBasicRemote().sendText(historyJSON);
@@ -87,7 +90,6 @@ public class ChatServer{
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-	
 	}
 	
 	@OnClose

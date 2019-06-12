@@ -2,8 +2,10 @@
     pageEncoding="UTF-8"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <c:set var="user" value="${sessionScope.userInfo}"></c:set>
-<c:set var="group" value="${sessionScope.groupdetail}"></c:set>
+<c:set var="groupid" value="${sessionScope.groupId}"></c:set>
 <c:set var="chatserver" value="${applicationScope.chatServerUrl}"></c:set>
+<c:set var="authority" value="${requestScope.authority}"></c:set>
+<c:if test="${authority == 'L' || authority == 'M'}">
 <style type="text/css">
 /* chatting */
 .chat{
@@ -79,12 +81,10 @@
 			<button class="btn btn-info sendBtn">전송</button>
 		</div>
 	</div>
-<c:if test="${empty group}">
-
-</c:if>
 <script type="text/javascript">
-var groupId = ${group.group_id};
-var userId = ${user.user_id};
+var groupId = ${groupid};
+var userId = "${user.user_id}";
+var nickName = "${user.nickname}";
 //var serverUrl = "ws://192.168.14.53:80/plzdaengs/chatserver?groupid="+groupId;
 //var serverUrl = "ws://localhost:8080/plzdaengs/chatserver?groupid="+groupId;
 var serverUrl = "${chatserver}" + "?groupid="+groupId;
@@ -100,6 +100,9 @@ function chatInit() {
 	$("#chat .sendBtn").click(msgSend);
 	$("#chat #togglechat").click(chatToggle);
 	$("#chat .msgInput").keyup(msgInputKeyUp);
+	
+	//content영역 조절
+	$("#contents").css("margin-right", "17rem");
 }
 function msgInputKeyUp(e){
 	if(e.keyCode == 13){
@@ -111,8 +114,10 @@ function chatToggle(){
 	var chatClass = chat.attr("class");
 	if(chatClass == "chat"){
 		chat.attr("class", "chatSmall");
+		$("#contents").css("margin-right", "3rem");
 	}else{
 		chat.attr("class", "chat");
+		$("#contents").css("margin-right", "17rem");
 	}
 	return false;
 }
@@ -136,6 +141,10 @@ function webSocketMessage(message) {
 	var msgJSON = JSON.parse(message.data);
 	
 	var length = msgJSON.length;
+	if(msgJSON == null){
+		return;
+	}
+	console.log(length);
 	if(length == null || length == 0){
 		appendMsg(msgJSON);
 		return;
@@ -146,6 +155,9 @@ function webSocketMessage(message) {
 	
 }
 function appendMsg(msgJSON){
+	if(msgJSON){
+		
+	}
 	var userid = msgJSON.user_id;
 	var groupid = msgJSON.group_id;
 	var nickname = msgJSON.nickname;
@@ -174,7 +186,7 @@ function msgSend(){
 	var type = "message";
 	var groupid = parseInt(groupId);
 	var userid = userId;
-	var nickname = "댕댕이주인";
+	var nickname = nickName;
 	var msg = makeMsg(type, userid, nickname, groupid, input);
 	
 	websocket.send(JSON.stringify(msg));
@@ -215,3 +227,4 @@ function nowDate(){
 	
 }
 </script>
+</c:if>
