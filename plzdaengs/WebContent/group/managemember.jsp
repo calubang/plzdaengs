@@ -8,6 +8,9 @@
 <%@ include file="/template/default_link.jsp" %>
 <script>
 $(function(){
+	$('#gMember').attr("class", "nav-link active");
+	$('#gInfo').removeClass("active");
+	$('#gMeet').removeClass("active");
 	
 	 $.ajax({
 			url: '/plzdaengs/groupfront',
@@ -15,7 +18,6 @@ $(function(){
 			data:{
 				act:"memberlist"},
 			success:function(result){
-				alert("enter resultpage");
 				$("#memberlist").html(result);	
 				var bArr = $('tbody#memberlist>tr>td>button');
 				$(bArr).click(btnClick);
@@ -41,7 +43,6 @@ $(function(){
 			 member_id : memberId,
 			 member_status:$('input[name=member_status]').val()},
 		 success:function(result){
-			 alert("enter resultpage");
 			 document.location.href='/plzdaengs/group/managemember.jsp';
 		 }
 		});
@@ -57,7 +58,6 @@ function moveManagegroupinfo(){
 		method : 'POST',
 		data : {act : 'groupmanage'},
 		success : function(groupdetail) {
-			alert("Option resultpage");
 			$("section").html(groupdetail);
 		}
 
@@ -164,14 +164,18 @@ function moveManagegroupinfo(){
 
 				 <section class="py-5">
 				 
-				<div>
-          <Button onclick="moveManagegroupinfo()">소모임 정보변경</Button>
-          <Button onclick="location.href='/plzdaengs/group/managemeeting.jsp'">소모임 일정관리</Button>
-          <Button onclick="location.href='/plzdaengs/group/managemember.jsp'">소모임원 관리</Button>
-          </div>
+		        <ul style="display: inline-block" class="nav nav-tabs nav-pills nav-justified grouplisttype">
+				    <li class="nav-item" style="float:left;margin-right: 0.5rem;border-radius:0.5rem;" >
+				      <a id=gInfo class="nav-link" style="border-radius:0.5rem;" href='#' onclick="moveManagegroupinfo()">소모임 정보변경</a>
+				    </li>
+				    <li class="nav-item" style="float:left;border-radius:0.5rem;">
+				      <a id=gMeet class="nav-link" style="border-radius:0.5rem;" href='/plzdaengs/group/managemeeting.jsp'>소모임 일정관리</a>
+				    </li>
+				    <li class="nav-item" style="float:left;border-radius:0.5rem;">
+				      <a id=gMember class="nav-link" style="border-radius:0.5rem;" href='/plzdaengs/group/managemember.jsp'>소모임원 관리</a>
+				    </li>
+				 </ul>
             <div class="row">
-           
-            
               <div class="col-lg-12 mb-5">
                 <div class="card">
                   <div class="card-header">
@@ -190,46 +194,22 @@ function moveManagegroupinfo(){
                         </tr>
                       </thead>
                       <tbody id="memberlist">
-                   <!--      <tr>
-                          <th scope="row">1</th>
-                          <td>모임장</td>
-                          <td>kitri</td>
-                          <td>댕맘</td>
-                          <td>2019.05.19</td>
-                          <td>2019.01.01</td>
-                          <td><button>모임장위임</button></td>
-                        </tr>
-                        <tr>
-                          <th scope="row">2</th>
-                        <td>일반</td>
-                          <td>uri</td>
-                          <td>우리</td>
-                          <td>2019.05.18</td>
-                          <td>2019.03.03</td>
-                          <td><button>추방</button></td>
-                        </tr>
-                        <tr>
-                          <th scope="row">3</th>
-                        <td>요청</td>
-                          <td>duri</td>
-                          <td>두리</td>
-                          <td>2019.05.19</td>
-                          <td>2019.05.19</td>
-                          <td><button>승인</button></td>
-                        </tr>
-                        -->
+
                       </tbody>
                     </table>
-                     <div>페이징처리영역</div>
-               <div class="searchgroupboard">
+                    <!--  <div>페이징처리영역</div> -->
+                    <div class="col-lg-8 mb-4 mb-lg-0" style="padding-left:0px;">
+               <div class="searchgroup button-group">
 	             	 <form>
-		             	 <select name="searchoption">
+		             	 <select class="form-control col-md-3" name="searchoption" style="float: left;">
 		             	 <option>아이디</option>
 		             	 <option>닉네임</option>
 		             	 <option>타입</option>
 		             	 </select>
-		             	 <input type="text" name="searchword" size="50"><button type="submit" class="btn btn-secondary">검색</button>
+		             	 <input class="form-control col-md-6" type="text" name="searchword" size="50" style="float: left;">
+		             	 <button type="submit" class="btn btn-info">검색</button>
 	             	 </form>
+	             	 </div>
 	             	 </div>
                   </div>
                 </div>

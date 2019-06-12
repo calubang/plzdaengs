@@ -10,8 +10,9 @@
 	List<GroupDto> list = (List) request.getAttribute("grouplist");
 
 	for (GroupDto dto : list) {
-		System.out.println(dto.getGroup_id() + dto.getGroup_name());
-		System.out.println("result에 왜 안오냐?");
+		System.out.println(dto.getGroup_img() + "//" + dto.getGroup_id()+ "//" + dto.getGroup_name());
+		System.out.println(dto.getGroup_img());
+
 %>
 
 <div class="card" id="<%=dto.getGroup_id()%>">
@@ -21,7 +22,7 @@
 	</div>
 	<div class="card-body" style="padding: 10;">
 		<img style="display: inline; float: left;"
-			src="/plzdaengs/group/img/001.jpg" width="80" height="80">
+			src="<%=dto.getGroup_img() %>" width="80" height="80">
 		<p class="mb-5 text-gray" style="display: inline; float: left"><%=dto.getGroup_description() %></p>
 		<div style="display: inline; float: right">
 			<div>

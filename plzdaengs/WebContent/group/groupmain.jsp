@@ -1,6 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+
+<!-- 파일업로드 경로 반영 관련 정보가 들어있는 것 같은 문서
+ https://docs.google.com/document/d/1fYoWD_0-3sGxHjHNHKgGNLmONVTQ9DmaLwO-MSXVCHU/edit -->
 <%-- <%@page import="com.plzdaeng.dto.UserDto"%> --%>
 <%-- 
 <c:set var="userInfo" value="${sessionScope.userInfo}"></c:set>
@@ -157,7 +160,6 @@ $(function(){
 				, contentType : false,
 				data : formData,
 			success:function(result){
-				alert(result);
 				document.location.href ='groupmain.jsp?groupid=';
 			}
 		});
@@ -284,7 +286,6 @@ function fileUploadChange() {
 }
 
 function divClick(){
-	alert("some groupclick");
 	var groupid = $(this).attr("id");
 	//var groupn = $(this).children()[0];
 	//var groupname = $(groupn).attr("id");
@@ -466,13 +467,13 @@ function divClick(){
                               <div class="form-group">       
                                 <div ><label>지역</label></div>
                                 <div style="inline:right;">
-                                <select name="groupsido">
+                                <select class="form-control col-md-3" style="float:left" name="groupsido">
                              		<option>서울</option>
                              		<option>경기</option>
                              		<option>부산</option>
                              		<option>대구</option>
                                 </select>
-                                <select name="groupsigungu">
+                                <select class="form-control col-md-3" style="float:left" name="groupsigungu">
                              		<option>강북구</option>
                              		<option>중구</option>
                              		<option>강서구</option>

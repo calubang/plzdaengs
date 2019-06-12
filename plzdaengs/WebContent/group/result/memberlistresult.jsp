@@ -27,15 +27,15 @@ int x = 1;
 	                      <td><%= member.getNickName() %></td>
                           
                           <td><%=member.getGroup_joindate() %></td>
-                          <td><button type="button">
+                          <td class="button-group">
                           <%if(member.getMember_status().equals("M")){
-                        	  %>추방<%
+                        	  %><button class="btn btn-danger" type="button"> </button>추방<%
                           }else if(member.getMember_status().equals("L")){
-                        	  %>모임장위임<%
+                        	  %><button class="btn btn-success" type="button">모임장위임 </button><%
                           }else if(member.getMember_status().equals("A")){
-                        	  %>가입승인<%
+                        	  %><button class="btn btn-info" type="button">가입승인 </button><%
                           }%>
-                          </button></td>
+                         </td>
                         </tr>
                         
 <%x++; }%>

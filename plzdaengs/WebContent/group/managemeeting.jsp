@@ -9,7 +9,9 @@
 <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 <script>
 $(function(){
-	
+	$('#gMeet').attr("class", "nav-link active");
+	$('#gInfo').removeClass("active");
+	$('#gMember').removeClass("active");
 });
 function moveManagegroupinfo(){
 	$.ajax({
@@ -17,7 +19,6 @@ function moveManagegroupinfo(){
 		method : 'POST',
 		data : {act : 'groupmanage'},
 		success : function(groupdetail) {
-			alert("Option resultpage");
 			$("section").html(groupdetail);
 		}
 
@@ -146,11 +147,17 @@ table.calendar td {
 			<div class="container-fluid" id="contents">
 
 				<section class="py-5">
-				<div>
-          <Button onclick="moveManagegroupinfo()">소모임 정보변경</Button>
-          <Button onclick="location.href='/plzdaengs/group/managemeeting.jsp'">소모임 일정관리</Button>
-          <Button onclick="location.href='/plzdaengs/group/managemember.jsp'">소모임원 관리</Button>
-          </div>
+			 		<ul style="display: inline-block" class="nav nav-tabs nav-pills nav-justified grouplisttype">
+					    <li class="nav-item" style="float:left;margin-right: 0.5rem;border-radius:0.5rem;" >
+					      <a id=gInfo class="nav-link" style="border-radius:0.5rem;" href='#' onclick="moveManagegroupinfo()">소모임 정보변경</a>
+					    </li>
+					    <li class="nav-item" style="float:left;border-radius:0.5rem;">
+					      <a id=gMeet class="nav-link" style="border-radius:0.5rem;" href='/plzdaengs/group/managemeeting.jsp'>소모임 일정관리</a>
+					    </li>
+					    <li class="nav-item" style="float:left;border-radius:0.5rem;">
+					      <a id=gMember class="nav-link" style="border-radius:0.5rem;" href='/plzdaengs/group/managemember.jsp'>소모임원 관리</a>
+					    </li>
+					 </ul>
 					<div class="row">
 					<div class="col-lg-8 mb-4 mb-lg-0" style="padding-right: 0">
 					<div class="card">

@@ -5,6 +5,11 @@
 System.out.println(dto);%>
 <script>
 $(function(){
+	$('#gInfo').attr("class", "nav-link active");
+	$('#gMeet').removeClass("active");
+	$('#gMember').removeClass("active");
+	
+	
 	var form = $('form');
 	form.submit(function(){
 		$.ajax({
@@ -12,10 +17,9 @@ $(function(){
 			method:"POST",
 			data:$(this).serialize(),
 			success:function(result){
-				alert(result);
 				//var result = request.getAttribute("result");
 				//if(result == 1){
-				alert("인포변경");
+				alert("소모임 정보가 변경되었습니다.");
 				//moveManagegroupinfo()
 				$("section").html();
 				//}
@@ -43,7 +47,6 @@ function moveManagegroupinfo(){
 		data : {act : 'groupmanage',
 			group_id : '<%=dto.getGroup_id()%>' },
 		success : function(groupdetail) {
-			alert("Option resultpage");
 			$("section").html(groupdetail);
 		}
 
@@ -76,11 +79,20 @@ function moveManagegroupinfo(){
 			</div>
 		</div>
 	</div> -->
-          <div>
-          <Button onclick="moveManagegroupinfo()">소모임 정보변경</Button>
-          <Button onclick="location.href='/plzdaengs/group/managemeeting.jsp'">소모임 일정관리</Button>
-          <Button onclick="location.href='/plzdaengs/group/managemember.jsp'">소모임원 관리</Button>
-          </div>
+     
+          
+          <ul style="display: inline-block" class="nav nav-tabs nav-pills nav-justified grouplisttype">
+		    <li class="nav-item" style="float:left;margin-right: 0.5rem;border-radius:0.5rem;" >
+		      <a id=gInfo class="nav-link" style="border-radius:0.5rem;" href='#' onclick="moveManagegroupinfo()">소모임 정보변경</a>
+		    </li>
+		    <li class="nav-item" style="float:left;border-radius:0.5rem;">
+		      <a id=gMeet class="nav-link" style="border-radius:0.5rem;" href='/plzdaengs/group/managemeeting.jsp'>소모임 일정관리</a>
+		    </li>
+		    <li class="nav-item" style="float:left;border-radius:0.5rem;">
+		      <a id=gMember class="nav-link" style="border-radius:0.5rem;" href='/plzdaengs/group/managemember.jsp'>소모임원 관리</a>
+		    </li>
+		 </ul>
+          
             <div class="row">
               <!-- Form Elements -->
               <div class="col-lg-12 mb-5">
@@ -119,13 +131,13 @@ function moveManagegroupinfo(){
                    <div class="form-group row">       
                                 <label class="col-md-3 form-control-label">지역</label>
 							<div class="col-md-9">
-                                <select name="group_sido">
+                                <select class="form-control col-md-3" style="float:left" name="group_sido">
                              		<option ><%=dto.getAddress_sido() %></option>
                                 </select>
-                                <select name="group_sigungu">
+                                <select class="form-control col-md-3" style="float:left" name="group_sigungu">
                              		<option ><%=dto.getAddress_sigungu() %></option>
                                 </select>
-                                <label><input name="groupdontselect" type="checkbox">지역무관</label>
+                                <label style="position: absolute;"><input name="groupdontselect" type="checkbox">지역무관</label>
                                </div>
                               </div>
                       <div class="line"></div>
