@@ -18,14 +18,18 @@
 		font-size : large;
 	    background-color: lightcoral;
 	    border-color: #ccc;
-}
+	}
 	.modal-dialog {
 	    max-width: 800px;
 	    margin: 1.75rem auto;
-}
+	}
 	.form-group {
 		font-size: medium;
-}
+	}
+	.realimage {
+	
+	}
+	
 </style>
 <script type="text/javascript">
 	$("#realmodal").modal('show').css({
@@ -182,7 +186,7 @@ function fileUploadChange() {
 						<label for="ipDesc">Description : </label>
 						<textarea class="form-control" rows="3" id="ipDesc" placeholder="Description" name="description"></textarea><br>
 						<input type="file" id = "imgdata" name="imgdata" accept=".jpg,.jpeg,.png,.gif,.bmp">
-						<img alt="" class="col-md-2 fileuploadimg" src="/plzdaengs/template/img/basic_user_profile.png">
+						<img alt="" class="realimage" src="/plzdaengs/template/img/profile.jpg">
 					</div>					
 				</div>
 				<div class="modal-footer">
