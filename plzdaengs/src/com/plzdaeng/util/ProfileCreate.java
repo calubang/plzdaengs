@@ -20,7 +20,7 @@ public class ProfileCreate {
 			if(!temp.exists()) {
 				temp.mkdir();
 			}
-			path += "/user_profile.jpg";
+			path += "/user_profile."+file.getName().split("\\.")[1];
 			break;
 		case "pet":
 			path += "/"+id;
@@ -28,7 +28,7 @@ public class ProfileCreate {
 			if(!temp.exists()) {
 				temp.mkdir();
 			}
-			path += "/"+petName + ".jpg";
+			path += "/"+petName + "."+file.getName().split("\\.")[1];
 			break;
 		case "diary":
 			path += "/" + id + "." + file.getName().split("\\.")[1];

@@ -81,8 +81,7 @@
   -webkit-font-smoothing: antialiased;
   font-smoothing: antialiased;
   }
-
-  .o-app-layout-1::before { content: "\f300"; }
+.o-app-layout-1::before { content: "\f300"; }
 .o-archive-1::before { content: "\f301"; }
 .o-archive-folder-1::before { content: "\f302"; }
 .o-bookmark-archive-1::before { content: "\f303"; }
