@@ -81,8 +81,11 @@ public class diaryDao {
 			int index = 0;
 			pstmt.setString(++index, dto.getUser_id());
 			pstmt.setString(++index, dto.getCategory_id());
+			
 			Date date = new Date(dto.getDiary_date().getTime());
-			pstmt.setDate(++index, date);;
+			//Date date = new Date(dto.getDiary_date().getTime());
+			// System.out.println(date);
+			pstmt.setDate(++index, date);
 			pstmt.setString(++index, dto.getDiary_subject());
 			pstmt.setString(++index, dto.getHashtag());
 			pstmt.setString(++index, dto.getDiary_contents());
@@ -221,6 +224,7 @@ public class diaryDao {
 	}
 	
 	public static void main(String[] args) throws ParseException {
+		System.out.println("★★★★★★★★DAO★★★★★★★★★★");
 		DiaryDto dto = new DiaryDto();
 		UserDto user = new UserDto();
 		user.setUser_id("mnmm97");
@@ -231,11 +235,11 @@ public class diaryDao {
 		dto.setDiary_date(sdf.parse("2019/06/12 16:24:33"));
 		dto.setDiary_subject("오늘의 댕댕이 산책");
 		dto.setHashtag("#산책#개꿀");
-		dto.setUser_id("calubang");
+		dto.setUser_id("mnmm97");
 		
 		diaryDao dao = new diaryDao();
 		int result = dao.insertDiary(dto);
-		
+		System.out.println(dto.getDiary_date().toString());
 		//List<DiaryDto>list = dao.selectAllByMonth("2019/06", user);
 		System.out.println(result);
 		

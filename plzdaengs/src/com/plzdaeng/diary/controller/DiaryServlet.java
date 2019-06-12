@@ -14,18 +14,21 @@ import javax.servlet.http.HttpServletResponse;
 import org.json.JSONObject;
 
 import com.oreilly.servlet.MultipartRequest;
+import com.plzdaeng.diary.service.DiaryService;
 import com.plzdaeng.dto.DiaryDto;
 import com.plzdaeng.util.ProfileCreate;
 import com.plzdaeng.util.SiteConstance;
 
-
+// groupfrontcontroller 참고 > 세션
 
 @WebServlet("/diary")
 public class DiaryServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
+    private DiaryService service;
+	
     public DiaryServlet() {
         super();
+        service = new DiaryService();
     }
     
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -34,7 +37,7 @@ public class DiaryServlet extends HttpServlet {
 		 * 2. dto에 넘어온 정보 set > img also > userjoinservlet 참고
 		 */
 		System.out.println();
-		System.out.println("---------------SERVLET 이동OK");
+		System.out.println("--------------- SERVLET 이동OK");
 		
 		String saveDirectory = SiteConstance.IMG_PATH;
 		MultipartRequest mr = new MultipartRequest(request, saveDirectory, "utf-8");
@@ -50,17 +53,28 @@ public class DiaryServlet extends HttpServlet {
 		String filename = UUID.randomUUID().toString(); // 원래 string 형태 아니여서 toString 처리
 		String path = request.getServletContext().getRealPath("/img");
 		System.out.println("> 따로 저장되는 공간 : " + path);
+		// 왜 이거 넘어가면 NullPointer 뜰까 > img 첨부안하면 뜸!
 		
 		// DTO에다 받아온 정보들 저장
 		DiaryDto dto = new DiaryDto();
 		dto.setDiary_subject(title);
 		dto.setDiary_contents(description);
-		dto.setDiary_img("/plzdaengs/img/"+filename + "." + imgdata.getName().split("\\.")[1]);
+		if(dto.getDiary_img() != null) {
+			dto.setDiary_img("/plzdaengs/img/"+ filename + "." + imgdata.getName().split("\\.")[1]);
+			System.out.println("	> 사진이 있네!");
+		} else {
+			System.out.println("	> 사진이 없네ㅡㅡ");
+			dto.setDiary_img(" ");
+		}
 		System.out.println("> DTO결과 불러오기 : " + dto);
 		
 		//db 저장하는 로직
 		//성공 : 1
 		//실패 : -1
+		
+		System.out.println("> DB에 넣는 시도 ing...");
+		
+		int result = service.enrollDiary(dto); // in DB
 		if(imgdata !=  null) { // 성공할 때 넣어야함
 			ProfileCreate.profileRegister(imgdata, path, filename , null, "diary");
 		}
@@ -98,7 +112,7 @@ public class DiaryServlet extends HttpServlet {
 		dto.setDiary_subject(diary_subject);
 		dto.setDiary_contents(diary_contents);
 		**/
-		System.out.println("---------------SERVLET BYE");
+		System.out.println("--------------- SERVLET BYE");
 		System.out.println();
 
 	}
