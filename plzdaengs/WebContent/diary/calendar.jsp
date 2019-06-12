@@ -15,6 +15,13 @@
 	<script type="text/javascript" src="js/bootstrap.bundle.js"></script>
 
 <style type="text/css">
+
+	#imgdata {
+		inline-size: 750px;
+		inline-height: 51px;
+		font-size: small;
+	}
+	
 	#div1 {
 	  width: 1000px;
 	  height: 100px;

@@ -23,7 +23,7 @@ import com.plzdaeng.util.SiteConstance;
 
 // groupfrontcontroller 참고 > 세션
 
-@WebServlet("/diary")
+@WebServlet("/enrolldiary")
 public class DiaryServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
     private DiaryService service;
@@ -68,7 +68,9 @@ public class DiaryServlet extends HttpServlet {
 		dto.setDiary_img("/plzdaengs/img/"+ filename + "." + imgdata.getName().split("\\.")[1]);
 		if(dto.getDiary_img() != null) {
 			System.out.println("	> 사진이 있네!");
-		} else {
+		} 
+		
+		if(dto.getDiary_img() == null){
 			System.out.println("	> 사진이 없네ㅡㅡ");
 			dto.setDiary_img(" ");
 		}

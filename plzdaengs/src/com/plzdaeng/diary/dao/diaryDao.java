@@ -111,7 +111,7 @@ public class diaryDao {
 	
 	// 월이 바뀌면 호출되는 메소드
 	// yyyy/mm 형태로 온다고 생각하겠음
-	public List<DiaryDto> selectAllByMonth(String date, UserDto user) {
+	public List<DiaryDto> selectAllByMonth(String month, UserDto user) {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -141,8 +141,8 @@ public class diaryDao {
 			pstmt = conn.prepareStatement(selectAllByMonthSQL);
 			int index = 0;
 			pstmt.setString(++index, user.getUser_id());
-			pstmt.setString(++index, date);
-			pstmt.setString(++index, date);
+			pstmt.setString(++index, month);
+			pstmt.setString(++index, month);
 			rs = pstmt.executeQuery();
 			
 			while(rs.next()) {

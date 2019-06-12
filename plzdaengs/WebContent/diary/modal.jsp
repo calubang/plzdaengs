@@ -26,9 +26,6 @@
 	.form-group {
 		font-size: medium;
 	}
-	.realimage {
-	
-	}
 	
 </style>
 <script type="text/javascript">
@@ -45,7 +42,24 @@
 	$(document).ready(function() { // 아예 시작할 때
         $("#submit").on("click", function(){
 			
-			sendDiaryInfo();
+			sendDiaryInfo(); // servlet으로 form의 정보 전송
+			
+        	var input1 = document.getElementById('title').value;
+			var input2 = document.getElementById('description').value;
+			
+        	var schedule = cell.siblings(".cal-schedule")[0];
+        	var element = $(document.createElement("div")); // div element 만들꺼얌
+        	
+        	element.attr("class", "schedule");
+        	element.text(input1);
+        	element.click(scheduleClick); // 생성된 일정 클릭하면 썼던 내용 그대로 있도록
+        	
+        	$(schedule).append(element);
+        	alert('등록되었습니다 : ' + input1);
+        	
+        	$("#enroll #title").val("");
+        	$("#description").val("");
+			$('#enroll').modal("hide");
 			
 			/* 망쳐버린 나의 ajax......
 			
@@ -77,24 +91,6 @@
               }			
             });
 			*/
-        	
-        	// [2]
-        	var input1 = document.getElementById('title').value;
-        	
-        	var schedule = cell.siblings(".cal-schedule")[0];
-        	var element = $(document.createElement("div")); // div element 만들꺼얌
-        	
-        	element.attr("class", "schedule");
-        	element.text(input1);
-        	element.click(scheduleClick);
-        	
-        	$(schedule).append(element);
-        	alert('등록되었습니다 : ' + input1);
-        	
-        	$("#enroll #title").val("");
-        	$("#enroll #ipDesc").val("");
-			$('#enroll').modal("hide");
-			
         });
 	});
 	
@@ -103,7 +99,7 @@
 		var formData = new FormData(form);
 		
 		$.ajax({
-			url : "/plzdaengs/diary",
+			url : "/plzdaengs/enrolldiary",
 			method : "post",
 			processData : false,
 			contentType : false,
@@ -121,6 +117,13 @@
 	function scheduleClick() {
 		$('#enroll').modal("show");
 		$("#enroll #title").val($(this).text());
+		$("#enroll #description").val($(this).text());
+		$("#enroll #imgdata").val($(this).text());
+		console.log('여기까진 와');
+		// 그리고 버튼도 submit이 아니라 modify로 바꿔야함
+		//if($(this).html() == 'submit') {
+		//	$("#enroll #submit").html('modify');
+		//}
 	}
 	
 	function register() {
@@ -136,7 +139,7 @@
 </script>
 <script>
 $(function() {
-	// [3]
+	// 모달에서 사진 클릭하고 바뀔 때
 	$("#imgdata").change(fileUploadChange);
 });
 
@@ -184,10 +187,12 @@ function fileUploadChange() {
 					</div>
 					<div id="ipDesc-group" class="form-group" align="left">
 						<label for="ipDesc">Description : </label>
-						<textarea class="form-control" rows="3" id="ipDesc" placeholder="Description" name="description"></textarea><br>
+						<textarea class="form-control" rows="3" id="description" placeholder="Description" name="description"></textarea><br>
+					</div>		
+					<div>			
 						<input type="file" id = "imgdata" name="imgdata" accept=".jpg,.jpeg,.png,.gif,.bmp">
-						<img alt="" class="realimage" src="/plzdaengs/template/img/profile.jpg">
-					</div>					
+						<img alt="" class="realimage" src="/plzdaengs/template/img/profile.jpg" width="200px" height="200px">
+					</div>	
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="button" data-dismiss="modal">Close</button>
