@@ -17,7 +17,31 @@ import com.plzdaeng.util.DBConnection;
  */
 public class diaryDao {
 	
+	//다이어리 인설트하고 현재 넣은 다이어리 key값을 가져오는 부분
+	public int selectDiaryNumber(Connection conn) throws SQLException {
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		int result = -1;
+		String selectDiaryNumberSQL = 
+				"select \r\n" + 
+				"    diary_number_seq.currval as diary_number\r\n" + 
+				"from dual";
+		
+		pstmt = conn.prepareStatement(selectDiaryNumberSQL);
+		rs = pstmt.executeQuery();
+		
+		if(rs.next()) {
+			result = rs.getInt("diary_number");
+		}
+		
+		DBClose.close(null, pstmt, rs);
+		
+		return result;
+	}
+	
 	//다이어리에 일정 등록하는 부분
+	//return : insert 된 다이어리 객체의 DB상 KEY값
+	// 이 값을 통해 다시 조회할 때 사용
 	public int insertDiary(DiaryDto dto) {
 		/*
 		 * insert into plz_diary(diary_number, user_id, diary_date, diary_subject, diary_contents, diary_img, create_Date)
@@ -51,6 +75,8 @@ public class diaryDao {
 		
 		try {
 			conn = DBConnection.makeConnection();
+			conn.setAutoCommit(false);
+			
 			pstmt = conn.prepareStatement(insertDiarySQL);
 			int index = 0;
 			pstmt.setString(++index, dto.getUser_id());
@@ -62,9 +88,17 @@ public class diaryDao {
 			pstmt.setString(++index, dto.getDiary_contents());
 			pstmt.setString(++index, dto.getDiary_img());
 			
-			result = pstmt.executeUpdate();
+			pstmt.executeUpdate();
+			result = selectDiaryNumber(conn);
+			
+			conn.commit();
 			
 		} catch (SQLException e) {
+			try {
+				conn.rollback();
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
 			e.printStackTrace();
 		} finally {
 			DBClose.close(conn, pstmt, null);
@@ -93,11 +127,12 @@ public class diaryDao {
 				"    , diary.diary_img	\r\n" + 
 				"from \r\n" + 
 				"    plz_diary diary	\r\n" + 
-				"    inner join plz_diary_category category	\r\n" + 
+				"    left outer join plz_diary_category category	\r\n" + 
 				"        on diary.category_id = category.category_id	\r\n" + 
 				"where \r\n" + 
 				"    diary.user_id = ?	\r\n" + 
-				"    and diary.diary_date BETWEEN to_date(?, 'yyyy/mm') and add_months(to_date(?, 'yyyy/mm'), 1)";
+				"    and diary.diary_date BETWEEN to_date(?, 'yyyy/mm') and add_months(to_date(?, 'yyyy/mm'), 1) \r\n"+
+				"order by diary_date";
 		
 		try {
 			conn = DBConnection.makeConnection();
@@ -132,6 +167,59 @@ public class diaryDao {
 		return list;
 	}
 	
+	//diary_number 값을 이용해서 다이어리 전체 내용을 불러오는 부분
+	//정상이면 객체, 비정상이면 null
+	public DiaryDto selectById(int diaryNumber) {
+		DiaryDto dto = null;
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String selectByIdSQL = 
+				"select 	\r\n" + 
+				"    diary.diary_number	\r\n" + 
+				"    , diary.user_id	\r\n" + 
+				"    , diary.category_id	\r\n" + 
+				"    , cate.category_name	\r\n" + 
+				"    , diary.diary_date	\r\n" + 
+				"    , diary.diary_subject	\r\n" + 
+				"    , diary.hashtag	\r\n" + 
+				"    , diary.diary_contents	\r\n" + 
+				"    , diary.diary_img	\r\n" + 
+				"from \r\n" + 
+				"    plz_diary diary\r\n" + 
+				"    left outer join plz_diary_category cate\r\n" + 
+				"        on diary.category_id = cate.category_id\r\n" + 
+				"where \r\n" + 
+				"    diary.diary_number = ?";
+		
+		try {
+			conn = DBConnection.makeConnection();
+			pstmt = conn.prepareStatement(selectByIdSQL);
+			pstmt.setInt(1, diaryNumber);
+			rs = pstmt.executeQuery();
+			if(rs.next()) {
+				dto = new DiaryDto();
+				dto.setDiary_number(rs.getInt("diary_number"));
+				dto.setUser_id(rs.getString("user_id"));
+				dto.setCategory_id(rs.getString("category_id"));
+				dto.setCategory_name(rs.getString("category_name"));
+				dto.setDiary_date(rs.getDate("diary_date"));
+				dto.setDiary_subject(rs.getString("diary_subject"));
+				dto.setHashtag(rs.getString("hashtag"));
+				dto.setDiary_contents(rs.getString("diary_contents"));
+				dto.setDiary_img(rs.getString("diary_img"));
+			}
+			
+		
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DBClose.close(conn, pstmt, rs);
+		}
+		
+		return dto;
+	}
+	
 	public static void main(String[] args) throws ParseException {
 		DiaryDto dto = new DiaryDto();
 		UserDto user = new UserDto();
@@ -146,9 +234,10 @@ public class diaryDao {
 		dto.setUser_id("calubang");
 		
 		diaryDao dao = new diaryDao();
-		//dao.insertDiary(dto);
-		List<DiaryDto>list = dao.selectAllByMonth("2019/06", user);
-		System.out.println(list);
+		int result = dao.insertDiary(dto);
+		
+		//List<DiaryDto>list = dao.selectAllByMonth("2019/06", user);
+		System.out.println(result);
 		
 	}
 }
