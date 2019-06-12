@@ -5,6 +5,8 @@ import java.text.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import com.plzdaeng.dto.DiaryDto;
 import com.plzdaeng.dto.UserDetailDto;
 import com.plzdaeng.dto.UserDto;
@@ -42,11 +44,12 @@ public class diaryDao {
 	//다이어리에 일정 등록하는 부분
 	//return : insert 된 다이어리 객체의 DB상 KEY값
 	// 이 값을 통해 다시 조회할 때 사용
-	public int insertDiary(DiaryDto dto) {
+	public int insertDiary(UserDto user, DiaryDto dto) {
 		/*
 		 * insert into plz_diary(diary_number, user_id, diary_date, diary_subject, diary_contents, diary_img, create_Date)
 		 * VALUES (SEQ_PLZ_DIARY.nextval,'meme',sysdate, '오늘 댕댕이랑','댕이이','5.jpg',sysdate);
 		 */
+		System.out.println("> 다이어리 생성 관련 DB 접근 성공!");
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		int result = -1;
@@ -75,7 +78,8 @@ public class diaryDao {
 			
 			pstmt = conn.prepareStatement(insertDiarySQL);
 			int index = 0;
-			dto.setUser_id("mnmm97");
+			//dto.setUser_id("mnmm97");
+			dto.setUser_id(user.getUser_id());
 			pstmt.setString(++index, dto.getUser_id());
 			
 			//Date date = new Date(dto.getDiary_date().getTime()); > nullpointer뜸ㅠㅠ
@@ -88,6 +92,7 @@ public class diaryDao {
 			result = selectDiaryNumber(conn);
 			
 			conn.commit();
+			System.out.println("	> [성공] DTO결과 불러오기 : " + dto);
 			
 		} catch (SQLException e) {
 			try {
@@ -98,13 +103,14 @@ public class diaryDao {
 			e.printStackTrace();
 		} finally {
 			DBClose.close(conn, pstmt, null);
+			System.out.println("> DB를 종료합니다.");
 		}
 		
 		return result;
 	}
 	
-	//월이 바뀌면 호출되는 메소드
-	//yyyy/mm 형태로 온다고 생각하겠음
+	// 월이 바뀌면 호출되는 메소드
+	// yyyy/mm 형태로 온다고 생각하겠음
 	public List<DiaryDto> selectAllByMonth(String date, UserDto user) {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
@@ -238,6 +244,5 @@ public class diaryDao {
 		//List<DiaryDto>list = dao.selectAllByMonth("2019/06", user);
 		System.out.println(result);
 		*/
-		
 	}
 }

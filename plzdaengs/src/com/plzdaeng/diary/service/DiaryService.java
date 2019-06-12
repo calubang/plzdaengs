@@ -3,43 +3,24 @@ package com.plzdaeng.diary.service;
 import java.util.Date;
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import com.plzdaeng.diary.dao.diaryDao;
 import com.plzdaeng.dto.DiaryDto;
 import com.plzdaeng.dto.UserDto;
 
 public class DiaryService {
 	private diaryDao dao;
-	Date date;
 	
 	public DiaryService() {
 		dao = new diaryDao();
-		date = new Date();
 	}
 	
-	public int enrollDiary(DiaryDto dto) { // 다이어리 등록용
+	public int enrollDiary(UserDto user, DiaryDto dto) { // 다이어리 등록용
 		System.out.println();
-		System.out.println("★ DiaryService 이동OK");
-		
-		String id = dto.getUser_id();
-		date = dto.getCreate_date();
-		
-		System.out.println("	> [Diary Servlet] 과연 userID는? : " + id);
-		int result = -1;
-		
-		if(date == null) {
-			System.out.println("	> NULL지옥 퐁당");
-			dto.setCreate_date(new Date());
-			System.out.println("	> 일단 가상으로 현재시간 넣기 : " + dto.getCreate_date());
-			//System.out.println(dto);
-		}
-		
-		//result = dao.insertDiary(dto);
-		
-		System.out.println("	> DB에 등록 완료!!");
-		System.out.println("★ DiaryService BYE");
-		System.out.println();
-		
-		return dao.insertDiary(dto);
+		System.out.println("> " + user.getUser_id() + "님 접속!");
+		System.out.println("> DiaryService 이동OK > DAO로 접근합니다.");
+		return dao.insertDiary(user, dto);
 	}
 
 	public List<DiaryDto> initDataByMonth(String date, UserDto user) {

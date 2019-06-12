@@ -10,12 +10,14 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.json.JSONObject;
 
 import com.oreilly.servlet.MultipartRequest;
 import com.plzdaeng.diary.service.DiaryService;
 import com.plzdaeng.dto.DiaryDto;
+import com.plzdaeng.dto.UserDto;
 import com.plzdaeng.util.ProfileCreate;
 import com.plzdaeng.util.SiteConstance;
 
@@ -36,8 +38,12 @@ public class DiaryServlet extends HttpServlet {
 		 * 1. servlet 들어왔는지 확인
 		 * 2. dto에 넘어온 정보 set > img also > userjoinservlet 참고
 		 */
+		
+		HttpSession session = request.getSession();
+		UserDto user = (UserDto)session.getAttribute("userInfo");
+		
 		System.out.println();
-		System.out.println("--------------- SERVLET 이동OK");
+		System.out.println("------------------------------> diary 생성 SERVLET 이동 OK");
 		
 		String saveDirectory = SiteConstance.IMG_PATH;
 		MultipartRequest mr = new MultipartRequest(request, saveDirectory, "utf-8");
@@ -59,14 +65,14 @@ public class DiaryServlet extends HttpServlet {
 		DiaryDto dto = new DiaryDto();
 		dto.setDiary_subject(title);
 		dto.setDiary_contents(description);
+		dto.setDiary_img("/plzdaengs/img/"+ filename + "." + imgdata.getName().split("\\.")[1]);
 		if(dto.getDiary_img() != null) {
-			dto.setDiary_img("/plzdaengs/img/"+ filename + "." + imgdata.getName().split("\\.")[1]);
 			System.out.println("	> 사진이 있네!");
 		} else {
 			System.out.println("	> 사진이 없네ㅡㅡ");
 			dto.setDiary_img(" ");
 		}
-		System.out.println("> DTO결과 불러오기 : " + dto);
+		System.out.println("	> DTO결과 불러오기 : " + dto);
 		
 		//db 저장하는 로직
 		//성공 : 1
@@ -74,7 +80,7 @@ public class DiaryServlet extends HttpServlet {
 		
 		System.out.println("> DB에 넣는 시도 ing...");
 		
-		int result = service.enrollDiary(dto); // in DB
+		int result = service.enrollDiary(user, dto); // in DB
 		if(imgdata !=  null) { // 성공할 때 넣어야함
 			ProfileCreate.profileRegister(imgdata, path, filename , null, "diary");
 		}
@@ -112,7 +118,7 @@ public class DiaryServlet extends HttpServlet {
 		dto.setDiary_subject(diary_subject);
 		dto.setDiary_contents(diary_contents);
 		**/
-		System.out.println("--------------- SERVLET BYE");
+		System.out.println("------------------------------> SERVLET BYE");
 		System.out.println();
 
 	}
