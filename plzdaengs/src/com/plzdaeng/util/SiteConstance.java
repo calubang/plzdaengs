@@ -12,4 +12,7 @@ public class SiteConstance {
  //Image Path 
  public static final String IMG_PATH = "C:\\fileupload";
  
+ //chatServer URL
+ public static final String CHAT_SERVER_URL = "ws://192.168.14.53:80/plzdaengs/chatserver";
+ 
 }

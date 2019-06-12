@@ -20,11 +20,11 @@ import com.plzdaeng.dto.ChatDto;
 import com.plzdaeng.util.ChatMap;
 
 @ServerEndpoint("/chatserver")
-public class ChatServerServlet{
+public class ChatServer{
 	private Map<Integer, List<Session>> chatMap;
 	private ChatService service;
 	
-    public ChatServerServlet() {
+    public ChatServer() {
         super();
         service = new ChatService();
         chatMap = ChatMap.getChaMap();
