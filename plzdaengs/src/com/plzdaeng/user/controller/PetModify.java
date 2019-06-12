@@ -64,7 +64,7 @@ public class PetModify extends HttpServlet {
 		//이미지 부분
 		File profileFile = mr.getFile("imgdata");
 		if(profileFile != null) {
-			pet.setPet_img("/plzdaengs/img/"+user.getUser_id()+ "/"+pet.getPet_name()+".jpg");
+			pet.setPet_img("/plzdaengs/img/"+user.getUser_id()+ "/"+pet.getPet_name()+ "." + profileFile.getName().split("\\.")[1]);
 		}
 		
 		List<TakeVaccinDto> takeVaccinList = new ArrayList<TakeVaccinDto>();

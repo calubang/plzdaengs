@@ -8,6 +8,7 @@ public class DiaryDto {
 	private String user_id;
 	private String category_id;
 	private String category_id2;
+	private String category_name;
 	private Date diary_date; // 좀더 정확하게 표현하고자 util의 date 사용
 	private String diary_subject;
 	private String hashtag;
@@ -94,11 +95,20 @@ public class DiaryDto {
 		this.create_date = create_date;
 	}
 
+	public String getCategory_name() {
+		return category_name;
+	}
+
+	public void setCategory_name(String category_name) {
+		this.category_name = category_name;
+	}
+
 	@Override
 	public String toString() {
-		return "DiaryDto [diary_number=" + diary_number + ", user_id=" + user_id + ", category_id=" + category_id + ", category_id2=" + category_id2
-				+ ", diary_date=" + diary_date + ", diary_subject=" + diary_subject + ", hashtag=" + hashtag +", diary_contents=" + diary_contents
-				+", diary_img=" + diary_img +", location_x=" + location_x +", location_y=" + location_y +", create_date=" + create_date +"]";
-	}
-	
+		return "DiaryDto [diary_number=" + diary_number + ", user_id=" + user_id + ", category_id=" + category_id
+				+ ", category_id2=" + category_id2 + ", category_name=" + category_name + ", diary_date=" + diary_date
+				+ ", diary_subject=" + diary_subject + ", hashtag=" + hashtag + ", diary_contents=" + diary_contents
+				+ ", diary_img=" + diary_img + ", location_x=" + location_x + ", location_y=" + location_y
+				+ ", create_date=" + create_date + "]";
+	}	
 }

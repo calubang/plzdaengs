@@ -1049,4 +1049,21 @@ insert into plz_group_type values('2', '지식공유');
 insert into plz_group_type values('3', '모임');
 insert into plz_group_type values('4', '기타');
 
+-- 다이어리 카테고리
+insert into plz_diary_category values('1', '병원', '동물병원');
+insert into plz_diary_category values('2', '식사', '반려동물 사료구입');
+insert into plz_diary_category values('3', '미용', '반려동물 미용');
+insert into plz_diary_category values('4', '목욕', '반려동물 목욕');
+insert into plz_diary_category values('5', '산책', '산책');
+insert into plz_diary_category values('6', '학교', '훈련 or 교육');
+insert into plz_diary_category values('7', '용품구입', '용품구입');
+
+drop SEQUENCE diary_number_seq;
+CREATE SEQUENCE diary_number_seq
+START WITH 0
+INCREMENT BY 1
+MAXVALUE 9999999
+MINVALUE 0
+NOCYCLE;
+
 commit;

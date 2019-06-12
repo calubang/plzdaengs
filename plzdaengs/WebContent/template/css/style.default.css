@@ -2878,6 +2878,7 @@ a {
 
 .sidebar-list-item>a{
 	color: white;
+	height: 52px;
 }
 
 a:hover, a:focus {

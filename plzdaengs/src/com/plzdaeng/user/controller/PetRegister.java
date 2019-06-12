@@ -71,7 +71,7 @@ public class PetRegister extends HttpServlet {
 		if(profileFile == null) {
 			pet.setPet_img("/plzdaengs/template/img/basic_pet_profile.jpg");
 		}else {
-			pet.setPet_img("/plzdaengs/img/"+user.getUser_id()+ "/"+pet.getPet_name()+".jpg");
+			pet.setPet_img("/plzdaengs/img/"+user.getUser_id()+ "/"+pet.getPet_name() + "." + profileFile.getName().split("\\.")[1]);
 		}
 		
 		List<TakeVaccinDto> takeVaccinList = new ArrayList<TakeVaccinDto>();

@@ -10,14 +10,10 @@
 <%@ include file="/template/default_link.jsp" %>
 <c:if test="${!empty userInfo}">
 <script>
-$(function(){
-	//로그인 한 유저에 대해서 반영할 내용
-	loginSuccessProcess();
-});
-
+document.location.href = "/plzdaengs/diary/calendar.jsp";
 function loginSuccessProcess(){
-	var profilePath = "${userInfo.user_img}";
-	$("#profile").css("background-image", "url('"+profilePath + "')");
+	//var profilePath = "${userInfo.user_img}";
+	//$("#profile").css("background-image", "url('"+profilePath + "')");
 	mainSectionChange();
 }
 function mainSectionChange() {
@@ -44,7 +40,14 @@ $(function() {
 		$("body").prop("class", "modal-open");
 	  });
 	
+	//로그인시 패스워드 엔터처리
+	$("#loginmodal input[type=password]").keyup(passwordKeyUp);
 });
+function passwordKeyUp(e) {
+	if(e.keyCode == 13){
+		$("#loginmodal .modal-success").trigger("click");
+	}
+}
 
 function registerbtnClick() {
 	$.ajax({
@@ -97,7 +100,8 @@ function login(){
 				//$("#loginalert p").html(result);
 				showAlertModal("로그인 경고", result);
 			}else{
-				location.href = "/plzdaengs/menu?act=main";
+				//location.href = "/plzdaengs/menu?act=main";
+				location.href = "/plzdaengs/diary/calendar.jsp";
 			}
 		}
 	});
@@ -169,6 +173,8 @@ function login(){
 				</div>
 				<!-- 로그인 시 뜨는 경고창 -->
 				<%@ include file="/template/alert_danger.jsp" %>
+				
+				
 				<!-- section 1 -->
 				<section class="py-5" id="mainSection">
 				

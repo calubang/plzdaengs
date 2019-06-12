@@ -67,7 +67,8 @@ public class UserUpdateServlet extends HttpServlet {
 		if(profileFile  == null) {
 			userDto.setUser_img(user.getUser_img());
 		}else {
-			userDto.setUser_img("/plzdaengs/img/user/"+userDto.getUser_id()+"/user_profile.jpg");
+			String[] fileNames = profileFile.getName().split("\\.");
+			userDto.setUser_img("/plzdaengs/img/user/"+userDto.getUser_id()+"/user_profile." + fileNames[1]);
 		}
 		
 		int result = service.userUpdate(userDto);
