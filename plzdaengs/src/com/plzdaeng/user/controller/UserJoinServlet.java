@@ -71,7 +71,7 @@ public class UserJoinServlet extends HttpServlet {
 		}
 		
 		int result = service.userJoin(userDto);
-		if(result == 1) {
+		if(result == 1 && profileFile  != null) {
 			String path = request.getServletContext().getRealPath("/img");
 			ProfileCreate.profileRegister(profileFile, path , userDto.getUser_id(), null , "user");
 		}

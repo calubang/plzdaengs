@@ -90,7 +90,7 @@ public class PetModify extends HttpServlet {
 		//System.out.println(pet);
 		
 		int result = service.petModify(pet);
-		if(result == 1) {
+		if(result == 1 && profileFile != null) {
 			String path = request.getServletContext().getRealPath("/img");
 			ProfileCreate.profileRegister(profileFile, path , user.getUser_id(), pet.getPet_name() , "pet");
 		}

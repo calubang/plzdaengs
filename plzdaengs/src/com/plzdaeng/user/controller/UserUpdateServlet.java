@@ -72,14 +72,17 @@ public class UserUpdateServlet extends HttpServlet {
 		}
 		
 		int result = service.userUpdate(userDto);
-		if(result == 1) {
+		if(result == 1 ) {
 			//세션 변경
 			request.getSession().removeAttribute("userInfo");
 			request.getSession().setAttribute("userInfo", userDto);
+			
 			//프로필 등록시작
-			String path = request.getServletContext().getRealPath("/img");
-			//System.out.println(path);
-			ProfileCreate.profileRegister(profileFile, path , userDto.getUser_id(), null , "user");
+			if(profileFile  != null) {
+				String path = request.getServletContext().getRealPath("/img");
+				//System.out.println(path);
+				ProfileCreate.profileRegister(profileFile, path , userDto.getUser_id(), null , "user");
+			}
 		}		
 		request.setAttribute("userupdateresult", result);
 		MoveUrl.forward(request, response, "/user/result/userupdateresult.jsp");
