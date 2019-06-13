@@ -10,8 +10,11 @@
 <%@ include file="/template/default_link.jsp"%>
 <%
 	String level = (String) request.getAttribute("authority");
-	int groupId = Integer.parseInt(request.getParameter("group_id"));
+	int groupId = (int)request.getSession().getAttribute("group_id");
 	GroupDto group = (GroupDto)request.getAttribute("group");
+	//System.out.println("에러 잡는중 level: " + level);
+	//System.out.println("에러 잡는중 groupId: " + groupId);
+	//System.out.println("에러 잡는중 group: " + group);
 
 	String authority = "";
 	if (level.equals("L")) {
@@ -53,22 +56,14 @@ $(function() {
 					data : {act : 'groupmanage',
 						group_id : groupId },
 					success : function(groupdetail) {
+						$("#joingroupmodal").modal("hide");
 						$("section").html(groupdetail);
 					}
 
 				});
 			}
+			return false;
 		});
-		
-		
-
-		
-
-	
-	
-
-		
-		
 });
 
 function groupJoinProcess(){
@@ -80,12 +75,12 @@ function groupJoinProcess(){
 		success : function(result) {
 			//var resultB = request.getAttribute('result');
 			if(result == 1){
-			alert("succeed to request join");
-			$("#joingroupmodal").modal('hide');
-			var join = $('input[name=joingroup]');
+				alert("succeed to request join");
+				$("#joingroupmodal").modal('hide');
+				var join = $('input[name=joingroup]');
 
 				//$("section").html();
-			//authority = "가입요청중"
+				authority = "가입요청중"
 			}else{
 				alert("fail to join group")
 				$("section").html();

@@ -45,7 +45,6 @@ public class GroupDaoImpl implements GroupDao {
 		creatGroupSql.append(", ?\r\n");
 		creatGroupSql.append(", ?\r\n");
 		creatGroupSql.append(", ?\r\n");
-		creatGroupSql.append(", ?\r\n");
 		creatGroupSql.append(", ?)\r\n");
 
 		try {

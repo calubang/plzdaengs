@@ -99,8 +99,8 @@ if(user == null){
 		var tArr = $("ul.grouplisttype>li>a");
 		$(tArr).click(function() {
 
-			alert($(this).text());
-			alert($(this).attr("id"));
+			//alert($(this).text());
+			//alert($(this).attr("id"));
 
 			if ($(this).attr("id") == "mygroup") {
 				$('#mygroup').attr("class", "nav-link active");
@@ -123,7 +123,7 @@ if(user == null){
 			} else if ($(this).attr("id") == "recommendgroup") {
 				$('#recommendgroup').attr("class", "nav-link active");
 				$('#mygroup').removeClass("active");
-				alert("good,too");
+				//alert("good,too");
 				$.ajax({
 					url : '/plzdaengs/groupfront',
 					method : 'GET',
@@ -145,10 +145,10 @@ if(user == null){
 		var createBtn = $('input[name=creategroup]');
 
 		$(createBtn).click(function() {
-			alert("소모임생성");
+			//alert("소모임생성");
 			var form = $('#creategroup')[0];
 			var formData = new FormData(form);
-			console.log(form);
+			//console.log(form);
 			$.ajax({
 				url : '/plzdaengs/groupfront?act=creategroup',
 				method : 'post',
@@ -164,7 +164,7 @@ if(user == null){
 		});
 
 		$("#searchgroup").submit(function() {
-			alert("검색버튼클릭");
+			//alert("검색버튼클릭");
 			$.ajax({
 				url : '/plzdaengs/groupfront',
 				method : 'GET',
@@ -179,8 +179,8 @@ if(user == null){
 
 	});
 	function pagemove(url, currentpage) {
-		console.log("url : " + url);
-		console.log("currentpage : " + currentpage);
+		//console.log("url : " + url);
+		//console.log("currentpage : " + currentpage);
 		
 		$.ajax({
 			url : url
@@ -204,7 +204,7 @@ if(user == null){
 		imgtag.prop("src", "/plzdaengs/template/img/basic_user_profile.png");
 
 		if (!(files[0].type.startsWith('image/'))) {
-			alert(files[0].type);
+			//alert(files[0].type);
 			showAlertModal("이미지 업로드 경고", "올릴수 없는 확장자입니다.");
 			return;
 		}

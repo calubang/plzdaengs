@@ -183,7 +183,10 @@ public class GroupController {
 //		}
 		
 		//2 권한에 따라 버튼이 바뀜 ( 리더 : 관리, 일반 : 탈퇴, 요청중 : 대기, 비회원 : 가입 )
+		//System.out.println("cont group_id : "+group_id);
+		//System.out.println("cont id : "+id);
 		result = GroupDaoImpl.getGroupDaoImpl().inquiry(group_id, id);
+		//System.out.println(result);
 		request.getSession().setAttribute("group_id", group_id);
 		request.setAttribute("authority", result);
 		descriptLoading(request, response, group_id);
@@ -265,6 +268,7 @@ public class GroupController {
 		String id = user.getUser_id();
 		
 		int result = GroupDaoImpl.getGroupDaoImpl().joinGroup(group_id, id);
+		enterorsingup(request, response, user);
 		request.setAttribute("result", result);
 		return path;
 	}

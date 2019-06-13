@@ -135,6 +135,7 @@ public class PlzBoardDaoImpl implements PlzBoardDao{
 					sql.append("	AND U.NICKNAME LIKE '%' || ? || '%'\n");
 				}
 			}
+			sql.append("	ORDER BY POST_ID DESC \n");
 			
 			sql.append(") \n");
 			sql.append("WHERE NO BETWEEN (?-1) * ?+1 AND (? * ?)-1 \n");

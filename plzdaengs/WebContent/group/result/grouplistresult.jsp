@@ -26,7 +26,7 @@
 		<p class="mb-5 text-gray" style="display: inline; float: left"><%=dto.getGroup_description() %></p>
 		<div style="display: inline; float: right">
 			<div>
-				<label>지역 : </label><%=dto.getAddress_sido() %> <%=dto.getAddress_sigungu() %>
+				<label>지역 : </label><%=dto.getAddress_sido() %>
 			</div>
 			<div>
 				<label>인원 : </label><%=dto.getGroupMembers().size() %>
