@@ -57,15 +57,17 @@ public class diaryDao {
 				"insert into plz_diary(	\r\n" + 
 				"    diary_number	\r\n" + 
 				"    , user_id	\r\n" + 
-				//"    , category_id	\r\n" + 
+				"    , category_id	\r\n" + 
 				"    , diary_subject	\r\n" + 
 				"    , diary_contents	\r\n" + 
+				"	 , diary_date		\r\n" +
 				"    , diary_img	\r\n" + 
 				"    , create_date	\r\n" + 
 				")values(	\r\n" + 
 				"    SEQ_PLZ_DIARY.nextval	\r\n" + 
 				"    , ?	\r\n" + 
-				//"    , ?	\r\n" + 
+				"    , ?	\r\n" + 
+				"    , ?	\r\n" + 
 				"    , ?	\r\n" + 
 				"    , ?	\r\n" + 
 				"    , ?	\r\n" + 
@@ -80,12 +82,15 @@ public class diaryDao {
 			int index = 0;
 			//dto.setUser_id("mnmm97");
 			dto.setUser_id(user.getUser_id());
+			Date date = new Date(dto.getDiary_date().getTime()); 
+			//> nullpointer뜸ㅠㅠ
+			System.out.println(dto);
+			
 			pstmt.setString(++index, dto.getUser_id());
-			
-			//Date date = new Date(dto.getDiary_date().getTime()); > nullpointer뜸ㅠㅠ
-			
+			pstmt.setString(++index, dto.getCategory_id());
 			pstmt.setString(++index, dto.getDiary_subject());
 			pstmt.setString(++index, dto.getDiary_contents());
+			pstmt.setDate(++index, date);
 			pstmt.setString(++index, dto.getDiary_img());
 			
 			pstmt.executeUpdate();

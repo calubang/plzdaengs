@@ -91,6 +91,7 @@
               }			
             });
 			*/
+			return false;
         });
 	});
 	
@@ -178,6 +179,7 @@ function fileUploadChange() {
 	<div id = "realmodal" class="modal-dialog" width = "800">
 		<div class="modal-content">
 			<form id = "form" enctype="multipart/form-data">
+				<input type="hidden" name="date" value="">
 				<div class="modal-header">다이어리 추가</div>
 				<div class="modal-body">
 					<!--div id="ipAlertTitle" class="alert alert-danger" role="alert">다이어리를 입력해주세요. </div-->

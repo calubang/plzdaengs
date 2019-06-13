@@ -1,8 +1,13 @@
+<%@page import="com.plzdaeng.dto.UserDto"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%
 	String title = request.getParameter("title");
 	String description = request.getParameter("description");
+	UserDto user = (UserDto)request.getSession().getAttribute("userInfo");
+	if(user == null){
+	%><script>document.location.href = "/plzdaengs/index.jsp";</script><%
+	}
 %>
 <!DOCTYPE html>
 <html>
@@ -70,7 +75,7 @@
 	}
 	
 	.schedule:hover{
-		border: 1px solid black;
+		background-color : lime;
 		cursor: pointer;
 	}
 </style>
@@ -118,15 +123,18 @@
 			// 1. 클릭하면 모달나오게 해야함 > 일정 등록하는거
 			cellText = $(this).text().trim(); // ★★★★★★★★★ 몇번째 꺼인지 
 			cell = $(this);
+			cellText = (cellText < 10 ? "0" + cellText : cellText);
 			console.log(cell);
 			console.log(cellText);
 			
-			alert(cellText + '일 click!'); // 위에 .html하면 관련 식 나오고 text해야 date나옴
+			//alert(cellText + '일 click!'); // 위에 .html하면 관련 식 나오고 text해야 date나옴
 			//request.setAttribute("cellText", cellText);
 			
 			// 보내야함.. https://codeday.me/ko/qa/20190321/115067.html
 			//e.originalEvent.dataTransfer.setData("cellText", cellText);
-			
+			var date = year + "/" + month + "/" + cellText;
+			console.log(date);
+			$("#enroll input[type=hidden]").val(date);
 			$("#enroll").modal();
         }) // td클릭시 function 끝
         
@@ -179,6 +187,10 @@
         firstDay = new Date(year,month-1,1);
         lastDay = new Date(year,month,0);
         
+        if(month<10){
+            month=String("0"+month);
+        }
+        
     }
     
 	//calendar 날짜표시
@@ -195,6 +207,8 @@
         for(var i=6;i<42;i+=7){
             $tdDay.eq(i).css("color","blue");
         }
+        
+        initData();
     }
  
     //calendar 월 이동
@@ -210,6 +224,8 @@
         }
         
         getNewInfo();
+        $("#movePrevMonth").css("color", "#4680ff");
+        return false;
         }
     
     function moveNextMonth(){
@@ -224,6 +240,8 @@
         }
         
         getNewInfo();
+        $("#moveNextMonth").css("color", "#4680ff");
+		return false;
     }
 
     
@@ -237,6 +255,63 @@
         drawDays();
 
     }
+    
+    function initData() {
+        //console.log("year :" + year);
+        //console.log("month :" + month);
+        var date = year + "/" + month;
+    	$.ajax({
+        	url : "/plzdaengs/diaryinit"
+        	, data : {
+        		date : date
+        	}
+        	, success : function(result) {
+				//초기화
+				$(".cal-schedule").html("");
+				var resultJSON = JSON.parse(result);
+				if(resultJSON.length == 0){
+					return;
+				}
+				for(var i=0 ; i<resultJSON.length ; i++){
+					var diaryDate = new Date(resultJSON[i].diary_date);	
+					var diaryDay = diaryDate.getDate();
+					var diaryNumber = resultJSON[i].diary_number;
+					var diarySubject = resultJSON[i].diary_subject;
+					var diaryContents = resultJSON[i].diary_contents;
+					var diaryImg = resultJSON[i].diary_img;	
+					makeSchedule(diaryDay, diaryNumber, diarySubject, diaryContents, diaryImg);
+				}
+			}
+        }); 
+	}
+    
+    function makeSchedule(diaryDay, diaryNumber, diarySubject, diaryContents, diaryImg) {
+    	var dayDivs = $(".cal-day");
+    	var dayDiv;
+    	for(var i=0 ; i<dayDivs.length ; i++){
+    		var text = $(dayDivs[i]).text();
+    		if(text.trim() == diaryDay){
+    			dayDiv = $(dayDivs[i]);
+    			break;
+    		}
+    	}
+
+    	var schedule = dayDiv.siblings(".cal-schedule");
+    	//기본 div 생성
+    	var element = $("<div/>", {
+    		class : "schedule", 
+    		text : diarySubject
+    	});
+    	var hidden = $("<input/>", {
+    		type : "hidden"
+    		, name : "diarynumber"
+    		, value : diaryNumber
+    	});
+    	element.append(hidden);
+    	element.click(scheduleClick);
+    	schedule.append(element);
+    	
+	}
 </script>
 
 <!-- DRAG & DROP -->

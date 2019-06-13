@@ -3,6 +3,9 @@ package com.plzdaeng.diary.controller;
 import java.io.File;
 import java.io.IOException;
 import java.sql.Clob;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.UUID;
 
 import javax.servlet.ServletException;
@@ -50,9 +53,10 @@ public class DiaryServlet extends HttpServlet {
 		
 		String title = mr.getParameter("title");
 		String description = mr.getParameter("description");
-		File imgdata = mr.getFile("imgdata");
-		//String temp = imgdata.toString();
+		String date = mr.getParameter("date");
 		
+		File imgdata = mr.getFile("imgdata");
+		System.out.println("date : "+date);
 		System.out.println("> 전송된 DATA : [제목> " + title + "] [내용> "+ description + "] [이미지> " + imgdata + "]");
 		
 		System.out.println("> 임의로 생성되는 ID : " + UUID.randomUUID());
@@ -65,9 +69,16 @@ public class DiaryServlet extends HttpServlet {
 		DiaryDto dto = new DiaryDto();
 		dto.setDiary_subject(title);
 		dto.setDiary_contents(description);
-		dto.setDiary_img("/plzdaengs/img/"+ filename + "." + imgdata.getName().split("\\.")[1]);
-		if(dto.getDiary_img() != null) {
+		Date diaryDate = null;
+		try {
+			diaryDate = new SimpleDateFormat("yyyy/MM/dd").parse(date);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		dto.setDiary_date(diaryDate);
+		if(imgdata != null) {
 			System.out.println("	> 사진이 있네!");
+			dto.setDiary_img("/plzdaengs/img/"+ filename + "." + imgdata.getName().split("\\.")[1]);
 		} 
 		
 		if(dto.getDiary_img() == null){
@@ -83,7 +94,7 @@ public class DiaryServlet extends HttpServlet {
 		System.out.println("> DB에 넣는 시도 ing...");
 		
 		int result = service.enrollDiary(user, dto); // in DB
-		if(imgdata !=  null) { // 성공할 때 넣어야함
+		if(result > 0 && imgdata !=  null) { // 성공할 때 넣어야함
 			ProfileCreate.profileRegister(imgdata, path, filename , null, "diary");
 		}
 		
