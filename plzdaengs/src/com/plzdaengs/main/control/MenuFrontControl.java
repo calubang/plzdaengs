@@ -45,7 +45,10 @@ public class MenuFrontControl extends HttpServlet {
 		case "admin":
 			path = "/admin";
 			break;
-			
+		
+		case "chart":
+			path = "/chart";
+			break;
 		default:
 			break;
 		}
