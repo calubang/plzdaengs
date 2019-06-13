@@ -99,19 +99,17 @@
         
         var a = $("#attr").html();
     	console.log(a);
-    	//$(".cal-schedule").html('<div>'+ a + '</div>');
-    	//alert('가져온 값 : ' + a);
     	
         $("#movePrevMonth").on("click", function(){movePrevMonth();});
         $("#moveNextMonth").on("click", function(){moveNextMonth();});
         $('table tbody td').mouseover(function() {
-        	//alert('올려놨슈');
+        	
             $(this).children().css({
                 'backgroundColor' : '#DCDCDC',
                 'cursor' : 'pointer'
             });
         }).mouseout(function() { // 그 순간 움직일 때
-        	//alert('내려놨슈');
+        	
             $(this).children().css({
                 'backgroundColor' : '#F8F9FB',
                 'cursor' : 'default'
@@ -256,12 +254,13 @@
 
     }
     
+    // 등록한 DB받아오기
     function initData() {
         //console.log("year :" + year);
         //console.log("month :" + month);
         var date = year + "/" + month;
     	$.ajax({
-        	url : "/plzdaengs/diaryinit"
+        	url : "/plzdaengs/diaryinit" 
         	, data : {
         		date : date
         	}
@@ -312,6 +311,28 @@
     	schedule.append(element);
     	
 	}
+    
+    function initImg(image) {
+    	alert('initImg 들어옴');
+    	$("#temp").html();
+    	var img = image;
+    	console.log('initImg 들어옴 ' + img);
+    	
+        $.ajax({
+            type:"POST",
+            url:"/plzdaengs/imginit",
+            //contentType: "application/x-www-form-urlencoded; charset=utf-8",
+            data: img,
+            //datatype:"json",
+            success: function(data) {
+              alert("ajax 성공 : " + data.result);			
+            },
+            error: function(e) {
+              alert("ajax 실패 : 에러가 발생하였습니다.");
+            }			
+          }); 
+    	
+	}
 </script>
 
 <!-- DRAG & DROP -->
@@ -344,6 +365,7 @@
 			alert("이모티콘 클릭해또");
 		});
 		ev.target.appendChild(dataTemp); // 이모티콘 붙일 때 없어지지 않고 남아있기
+		initImg(data);
 	}
 	
 	function bin(ev) { // 쓰레기통 오예
@@ -381,6 +403,7 @@
 			<img id="drag7" src="img/pet-house.png" draggable="true" ondragstart="drag(event)" width="50px" height="50px">
 			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 			<img id="bin" src="img/bin.png" width="50px" height="50px" ondrop="bin(event)" ondragover="allowDrop(event)">
+			<div id="temp"></div>
 		</div>
     </div>
 </section>
