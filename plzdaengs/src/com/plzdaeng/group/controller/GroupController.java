@@ -2,12 +2,12 @@ package com.plzdaeng.group.controller;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 import javax.servlet.http.*;
 
 import com.oreilly.servlet.MultipartRequest;
+import com.plzdaeng.dto.PageBean;
 import com.plzdaeng.dto.UserDto;
 import com.plzdaeng.group.model.*;
 import com.plzdaeng.group.model.dao.GroupDaoImpl;
@@ -49,7 +49,7 @@ public class GroupController {
 			System.out.println(key + word);
 			list = GroupDaoImpl.getGroupDaoImpl().searchGroup(key, word);
 		}
-		request.setAttribute("grouplist", list);
+		
 		
 		//차후 로그인에서 넣어주면 지워도 되는 부분.
 		//HttpSession session = request.getSession();
@@ -58,6 +58,36 @@ public class GroupController {
 			System.out.println(dto.toString());
 		}
 		System.out.println(list.size());
+		
+		//페이지 처리로직
+		String currentPageStr = request.getParameter("currentpage");
+		int currentPage = 1;
+		int listSize = list.size();
+		if(currentPageStr != null) {
+			currentPage = Integer.parseInt(currentPageStr);
+		}
+		String url = "";
+		if (type != null && type.equals("mine")) {
+			url = "/plzdaengs/groupfront?act=loading&type=mine";
+		} else if (type != null && type.equals("recommend")) {
+			url = "/plzdaengs/groupfront?act=loading&type=recommend";
+		} else {
+			url = "/plzdaengs/groupfront?act=loading&searchoption=key&searchword=word";
+		}
+		PageBean<GroupDto> pageBean 
+			= new PageBean<GroupDto>(4, 5, currentPage, listSize, url);
+		List<GroupDto> pageList = null;
+		if(listSize > 0) {
+			pageList = list.subList(pageBean.getStartRow()-1, pageBean.getEndRow());
+		}else {
+			pageList = new ArrayList<GroupDto>();
+		}
+		System.out.println(pageBean);
+		System.out.println(pageList);
+		
+		request.setAttribute("pageBean", pageBean);
+		request.setAttribute("grouplist", pageList);
+		
 		path = "/group/result/grouplistresult.jsp";
 		return path;
 	}

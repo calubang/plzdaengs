@@ -148,6 +148,7 @@ public class UserDao {
 				"    , emaildomain\r\n" + 
 				"    , nickname\r\n" + 
 				"    , user_img\r\n" + 
+				"	 , authority\r\n" + 
 				"from plz_user\r\n" + 
 				"where \r\n" + 
 				"    user_id = ?\r\n" + 
@@ -169,6 +170,7 @@ public class UserDao {
 				loginUser.setEmaildomain(rs.getString("emaildomain"));
 				loginUser.setNickname(rs.getString("nickname"));
 				loginUser.setUser_img(rs.getString("user_img"));
+				loginUser.setAuthority(rs.getString("authority"));
 			}
 		
 		} catch (SQLException e) {

@@ -37,7 +37,7 @@
 		</div>
 	</div>
 </div>
-
 <%
 	}
 %>
+<%@ include file="/template/page.jsp"%>

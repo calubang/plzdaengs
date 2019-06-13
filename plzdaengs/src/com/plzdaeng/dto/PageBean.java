@@ -35,9 +35,17 @@ public PageBean() {
 	//값 세팅
 	private void excute() {
 		//현재 입력받은 페이지당 뿌려줄 글번호
-		startRow = (currentPage-1)*cntPerPage + 1;
-		endRow = currentPage*cntPerPage;
 
+		startRow = (currentPage-1)*cntPerPage + 1;
+		if(startRow > totalRow) {
+			startRow = totalRow;
+		}
+		
+		endRow = currentPage*cntPerPage;
+		if(endRow > totalRow) {
+			endRow = totalRow;
+		}
+		
 		//총페이지수 계산
 		maxPage = (int)Math.ceil((double)totalRow/cntPerPage);
 		
