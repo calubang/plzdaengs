@@ -108,10 +108,10 @@ public class GroupController {
 		String fileName = UUID.randomUUID().toString();
 		if(file == null) {
 			//디폴트 그룹이미지
-			dto.setGroup_img("/plzdanegs/template/img/siba.jpg");
+			dto.setGroup_img("/plzdaengs/template/img/siba.jpg");
 		}else {
 			
-			dto.setGroup_img("/plzdanegs/img/group/" + fileName + "." + file.getName().split("\\.")[1]);
+			dto.setGroup_img("/plzdaengs/img/group/" + fileName + "." + file.getName().split("\\.")[1]);
 		}
 		System.out.println(dto);
 		

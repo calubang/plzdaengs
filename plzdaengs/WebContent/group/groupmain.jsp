@@ -160,7 +160,7 @@ $(function(){
 				, contentType : false,
 				data : formData,
 			success:function(result){
-				document.location.href ='groupmain.jsp?groupid=';
+				
 			}
 		});
 		return false;
@@ -266,7 +266,7 @@ function fileDropDown() {
 function fileUploadChange() {
 	var filename = this.files[0].name;
 	var imgtag = $(this).siblings("img");
-	imgtag.prop("src", "/plzdaengs/template/img/basic_user_profile.png");
+	imgtag.prop("src", "${pageContext.request.contextPath}/plzdaengs/template/img/basic_user_profile.png");
 	
 	
 	if (!this.files[0].type.startsWith("image/")) {

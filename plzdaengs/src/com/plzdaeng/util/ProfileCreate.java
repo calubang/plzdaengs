@@ -52,7 +52,7 @@ public class ProfileCreate {
 				//기본 프로필로 설정
 				return;
 			}
-			
+			System.out.println(path);
 			fin = new FileInputStream(file);
 			fout = new FileOutputStream(path);
 			
