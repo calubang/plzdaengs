@@ -38,8 +38,7 @@ public class GroupDaoImpl implements GroupDao {
 		creatGroupSql.append(",GROUP_NAME\r\n");
 		creatGroupSql.append(",DESCRIPTION\r\n");
 		creatGroupSql.append(",GROUP_IMG\r\n");
-		creatGroupSql.append(",ADDRESS_SIDO\r\n");
-		creatGroupSql.append(",ADDRESS_SIGUNGU)\r\n");
+		creatGroupSql.append(",ADDRESS_SIDO)\r\n");
 		creatGroupSql.append("values(\r\n");
 		creatGroupSql.append("group_id_seq.NEXTVAL\r\n");
 		creatGroupSql.append(", ?\r\n");
@@ -60,7 +59,6 @@ public class GroupDaoImpl implements GroupDao {
 			pstmt.setString(3, dto.getGroup_description());
 			pstmt.setString(4, dto.getGroup_img());
 			pstmt.setString(5, dto.getAddress_sido());
-			pstmt.setString(6, dto.getAddress_sigungu());
 			int r = pstmt.executeUpdate();
 			System.out.println("sql문실행후");
 
@@ -114,8 +112,7 @@ public class GroupDaoImpl implements GroupDao {
 		updateGroupSql += "UPDATE plz_group\r\n" + 
 				"SET DESCRIPTION = ?,\r\n" + 
 				"GROUP_IMG = ?,\r\n" + 
-				"ADDRESS_SIDO = ?,\r\n" + 
-				"ADDRESS_SIGUNGU = ?\r\n" + 
+				"ADDRESS_SIDO = ?\r\n" + 
 				"WHERE group_id = ?";
 
 		try {
@@ -127,8 +124,7 @@ public class GroupDaoImpl implements GroupDao {
 			pstmt.setString(1, dto.getGroup_description());
 			pstmt.setString(2, dto.getGroup_img());
 			pstmt.setString(3, dto.getAddress_sido());
-			pstmt.setString(4, dto.getAddress_sigungu());
-			pstmt.setInt(5, dto.getGroup_id());
+			pstmt.setInt(4, dto.getGroup_id());
 			
 			int r = pstmt.executeUpdate();
 			System.out.println("변경된 row : "+r);
@@ -254,7 +250,7 @@ public class GroupDaoImpl implements GroupDao {
 		String inGourpSQL = "";
 		inGourpSQL += "SELECT g.group_id , g.group_name, g.description "
 				+ ", t.group_category_id, t.group_category_name, g.group_img "
-				+ ", g.address_sido, g.address_sigungu, m.user_id \r\n"
+				+ ", g.address_sido, m.user_id \r\n"
 				+ "FROM plz_group g inner join plz_group_type t \r\n"
 				+ "on g.group_category_id = t.group_category_id \r\n" + "inner join plz_group_member m \r\n"
 				+ "on g.group_id = m.group_id \r\n" + "WHERE m.user_id = ? and m.member_status != all('X', 'A')"
@@ -288,7 +284,7 @@ public class GroupDaoImpl implements GroupDao {
 //				dto.setGroup_leader(group_leader);
 					dto.setGroup_img(rs.getString("group_img"));
 					dto.setAddress_sido(rs.getString("address_sido"));
-					dto.setAddress_sigungu(rs.getString("address_sigungu"));
+					
 
 					memberList = new ArrayList<GroupMember>();
 					dto.setGroupMembers(memberList);
@@ -321,7 +317,7 @@ public class GroupDaoImpl implements GroupDao {
 		ResultSet rs = null;
 		String inGourpSQL = "";
 		inGourpSQL += "SELECT g.group_id , g.group_name, g.description , g.group_category_id\r\n" + 
-				", t.group_category_name, g.group_img , g.address_sido, g.address_sigungu\r\n" + 
+				", t.group_category_name, g.group_img , g.address_sido\r\n" + 
 				"FROM plz_group g inner join plz_group_type t\r\n" + 
 				"ON g.group_category_id = t.group_category_id\r\n" + 
 				"WHERE g.group_id not in((select mm.group_id\r\n" + 
@@ -358,7 +354,6 @@ public class GroupDaoImpl implements GroupDao {
 //				dto.setGroup_leader(group_leader);
 					dto.setGroup_img(rs.getString("group_img"));
 					dto.setAddress_sido(rs.getString("address_sido"));
-					dto.setAddress_sigungu(rs.getString("address_sigungu"));
 
 					memberList = new ArrayList<GroupMember>();
 					dto.setGroupMembers(memberList);
@@ -394,7 +389,7 @@ public class GroupDaoImpl implements GroupDao {
 
 			String inGroupSQL = "SELECT g.group_id , g.group_name, g.description \r\n"
 					+ ", t.group_category_id, t.group_category_name, g.group_img \r\n"
-					+ ", g.address_sido, g.address_sigungu, m.user_id \r\n"
+					+ ", g.address_sido, m.user_id \r\n"
 					+ "FROM plz_group g inner join plz_group_type t \r\n"
 					+ "on g.group_category_id = t.group_category_id \r\n" + "inner join plz_group_member m \r\n"
 					+ "on g.group_id = m.group_id \r\n";
@@ -440,7 +435,6 @@ public class GroupDaoImpl implements GroupDao {
 //				dto.setGroup_leader(group_leader);
 					dto.setGroup_img(rs.getString("group_img"));
 					dto.setAddress_sido(rs.getString("address_sido"));
-					dto.setAddress_sigungu(rs.getString("address_sigungu"));
 
 					memberList = new ArrayList<GroupMember>();
 					dto.setGroupMembers(memberList);
@@ -543,7 +537,7 @@ public class GroupDaoImpl implements GroupDao {
 		ResultSet rs = null;
 		String groupDetailSQL = "";
 		GroupDto dto = null;
-		groupDetailSQL = "SELECT g.GROUP_ID, t.GROUP_CATEGORY_id, t.GROUP_CATEGORY_NAME, g.GROUP_NAME, g.DESCRIPTION, g.GROUP_img, g.ADDRESS_SIDO, g.ADDRESS_SIGUNGU\r\n" + 
+		groupDetailSQL = "SELECT g.GROUP_ID, t.GROUP_CATEGORY_id, t.GROUP_CATEGORY_NAME, g.GROUP_NAME, g.DESCRIPTION, g.GROUP_img, g.ADDRESS_SIDO\r\n" + 
 				"FROM plz_group g inner join plz_group_type t\r\n" + 
 				"ON g.group_category_id = t.group_category_id\r\n" + 
 				"WHERE g.group_id = ?";
@@ -570,7 +564,6 @@ public class GroupDaoImpl implements GroupDao {
 //			dto.setGroup_leader(group_leader);
 				dto.setGroup_img(rs.getString("group_img"));
 				dto.setAddress_sido(rs.getString("address_sido"));
-				dto.setAddress_sigungu(rs.getString("address_sigungu"));
 				
 				
 			}

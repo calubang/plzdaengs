@@ -132,11 +132,26 @@ function moveManagegroupinfo(){
                                 <label class="col-md-3 form-control-label">지역</label>
 							<div class="col-md-9">
                                 <select class="form-control col-md-3" style="float:left" name="group_sido">
-                             		<option ><%=dto.getAddress_sido() %></option>
+                             		<option><%=dto.getAddress_sido() %></option>
+                             		<option>서울특별시</option>
+									<option>경기도</option>
+									<option>강원도</option>
+									<option>광주광역시</option>
+									<option>대구광역시</option>
+									<option>대전광역시</option>
+									<option>부산광역시</option>
+									<option>인천광역시</option>
+									<option>울산광역시</option>
+									<option>세종특별자치시</option>
+									<option>전라북도</option>
+									<option>전라남도</option>
+									<option>충청북도</option>
+									<option>충청남도</option>
+									<option>경상북도</option>
+									<option>경상남도</option>
+									<option>제주특별자치도</option>
                                 </select>
-                                <select class="form-control col-md-3" style="float:left" name="group_sigungu">
-                             		<option ><%=dto.getAddress_sigungu() %></option>
-                                </select>
+                             
                                 <label style="position: absolute;"><input name="groupdontselect" type="checkbox">지역무관</label>
                                </div>
                               </div>
