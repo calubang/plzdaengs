@@ -56,8 +56,7 @@ public class DiaryServlet extends HttpServlet {
 		String date = mr.getParameter("date");
 		
 		File imgdata = mr.getFile("imgdata");
-		System.out.println("date : "+date);
-		System.out.println("> 전송된 DATA : [제목> " + title + "] [내용> "+ description + "] [이미지> " + imgdata + "]");
+		System.out.println("> 전송된 DATA : [제목> " + title + "] [내용> "+ description + "] [이미지> " + imgdata + "] [날짜> "+ date +"]");
 		
 		System.out.println("> 임의로 생성되는 ID : " + UUID.randomUUID());
 		String filename = UUID.randomUUID().toString(); // 원래 string 형태 아니여서 toString 처리
@@ -69,6 +68,7 @@ public class DiaryServlet extends HttpServlet {
 		DiaryDto dto = new DiaryDto();
 		dto.setDiary_subject(title);
 		dto.setDiary_contents(description);
+		
 		Date diaryDate = null;
 		try {
 			diaryDate = new SimpleDateFormat("yyyy/MM/dd").parse(date);
@@ -98,39 +98,6 @@ public class DiaryServlet extends HttpServlet {
 			ProfileCreate.profileRegister(imgdata, path, filename , null, "diary");
 		}
 		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		/*
-		// return type은 json으로
-		JSONObject obj = new JSONObject();
-		obj.put("result", "OK");
-		
-		response.setContentType("application/x-json; charset=UTF-8");
-		response.getWriter().print(obj);
-		
-		System.out.println("/diary Servlet으로 이동 >>");
-		
-		//String val = request.getParameter("val");
-		//String num = request.getParameter("num");
-		
-		String diary_subject = request.getParameter("title");
-		String diary_contents = request.getParameter("description");
-				System.out.print("DIARY[제목 : " + diary_subject + ", ");
-		System.out.println("내용 : " + diary_contents + "]");
-		// 아직 img는 못넘어왔음
-		
-		DiaryDto dto = new DiaryDto();
-		dto.setDiary_subject(diary_subject);
-		dto.setDiary_contents(diary_contents);
-		**/
 		System.out.println("------------------------------> SERVLET BYE");
 		System.out.println();
 
@@ -140,5 +107,28 @@ public class DiaryServlet extends HttpServlet {
 		request.setCharacterEncoding("utf-8");
 		doGet(request, response);
 	}
+	/*
+	// return type은 json으로
+	JSONObject obj = new JSONObject();
+	obj.put("result", "OK");
+	
+	response.setContentType("application/x-json; charset=UTF-8");
+	response.getWriter().print(obj);
+	
+	System.out.println("/diary Servlet으로 이동 >>");
+	
+	//String val = request.getParameter("val");
+	//String num = request.getParameter("num");
+	
+	String diary_subject = request.getParameter("title");
+	String diary_contents = request.getParameter("description");
+			System.out.print("DIARY[제목 : " + diary_subject + ", ");
+	System.out.println("내용 : " + diary_contents + "]");
+	// 아직 img는 못넘어왔음
+	
+	DiaryDto dto = new DiaryDto();
+	dto.setDiary_subject(diary_subject);
+	dto.setDiary_contents(diary_contents);
+	**/
 
 }

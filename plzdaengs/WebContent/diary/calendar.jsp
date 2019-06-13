@@ -313,22 +313,24 @@
 	}
     
     function initImg(image) {
-    	alert('initImg 들어옴');
-    	$("#temp").html();
-    	var img = image;
-    	console.log('initImg 들어옴 ' + img);
+    	//var date = $('table tbody td div.cal-day').text().trim();
+    	//alert('initImg 들어옴 : ' + image + ', ' + date);
     	
+    	//var str = $("#temp").serialize();
+    	//alert('>>>' + str);
+    	var date = year + "/" + month+ "/18";
         $.ajax({
             type:"POST",
-            url:"/plzdaengs/imginit",
-            //contentType: "application/x-www-form-urlencoded; charset=utf-8",
-            data: img,
-            //datatype:"json",
+            url:"/plzdaengs/enrollimage",
+            data: {
+            	image : image,
+            	date : date	
+            },
             success: function(data) {
-              alert("ajax 성공 : " + data.result);			
+              alert("SERVLET O : " + data.result);			
             },
             error: function(e) {
-              alert("ajax 실패 : 에러가 발생하였습니다.");
+              alert("SERVLET X : 에러가 발생하였습니다.");
             }			
           }); 
     	

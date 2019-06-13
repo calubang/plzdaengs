@@ -8,6 +8,7 @@ import java.util.List;
 import javax.servlet.http.HttpSession;
 
 import com.plzdaeng.dto.DiaryDto;
+import com.plzdaeng.dto.DiaryImgDto;
 import com.plzdaeng.dto.UserDetailDto;
 import com.plzdaeng.dto.UserDto;
 import com.plzdaeng.util.DBClose;
@@ -83,7 +84,6 @@ public class diaryDao {
 			//dto.setUser_id("mnmm97");
 			dto.setUser_id(user.getUser_id());
 			Date date = new Date(dto.getDiary_date().getTime()); 
-			//> nullpointer뜸ㅠㅠ
 			System.out.println(dto);
 			
 			pstmt.setString(++index, dto.getUser_id());
@@ -111,7 +111,7 @@ public class diaryDao {
 			System.out.println("> DB를 종료합니다.");
 		}
 		
-		return result;
+		return result;							
 	}
 	
 	// 월이 바뀌면 호출되는 메소드
@@ -161,6 +161,44 @@ public class diaryDao {
 				dto.setHashtag(rs.getString("hashtag"));
 				dto.setDiary_contents(rs.getString("diary_contents"));
 				dto.setDiary_img(rs.getString("diary_img"));
+				
+				list.add(dto);
+			}
+		
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DBClose.close(conn, pstmt, rs);
+		}
+		
+		return list;
+	}
+	
+	public List<DiaryImgDto> selectAllByMonth2(String month, UserDto user) {
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		List<DiaryImgDto> list = new ArrayList<DiaryImgDto>();
+		String selectAllByMonthSQL = 
+				"select *\r\n" + 
+				"from plz_diary_img\r\n" + 
+				"where diary.user_id = ?\r\n" + 
+				"and diary_date BETWEEN to_date(?, 'yyyy/mm') and add_months(to_date(?, 'yyyy/mm'), 1) \r\n"+
+				"order by diary_date";
+		
+		try {
+			conn = DBConnection.makeConnection();
+			pstmt = conn.prepareStatement(selectAllByMonthSQL);
+			int index = 0;
+			pstmt.setString(++index, month);
+			pstmt.setString(++index, month);
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				DiaryImgDto dto = new DiaryImgDto();
+				dto.setUser_id(rs.getString("user_id"));
+				dto.setDiary_date(rs.getDate("diary_date"));
+				dto.setImage_name(rs.getString("image_name"));
 				
 				list.add(dto);
 			}
@@ -228,6 +266,9 @@ public class diaryDao {
 		return dto;
 	}
 	
+
+	
+	
 	public static void main(String[] args) throws ParseException {
 		/*
 		System.out.println("★★★★★★★★DAO★★★★★★★★★★");
@@ -248,6 +289,53 @@ public class diaryDao {
 		System.out.println(dto.getDiary_date().toString());
 		//List<DiaryDto>list = dao.selectAllByMonth("2019/06", user);
 		System.out.println(result);
-		*/
+		 */
 	}
+
+	public int insertImage(UserDto user, DiaryImgDto diaryImgDto) {
+		// userID, diary_Date, img_name	
+				System.out.println("> Img 저장 관련 DB 접근 성공!");
+				Connection conn = null;
+				PreparedStatement pstmt = null;
+				int result = -1;
+				String insertDiarySQL = 
+						"insert into plz_diary_img \r\n" + 
+						"values(?,?,?)";
+				
+				try {
+					conn = DBConnection.makeConnection();
+					conn.setAutoCommit(false);
+					
+					pstmt = conn.prepareStatement(insertDiarySQL);
+					int index = 0;
+					
+					diaryImgDto.setUser_id(user.getUser_id());
+					Date date = new Date(diaryImgDto.getDiary_date().getTime()); 
+					System.out.println("	> " + diaryImgDto);
+					
+					pstmt.setString(++index, diaryImgDto.getUser_id());
+					pstmt.setDate(++index, date);
+					pstmt.setString(++index, diaryImgDto.getImage_name());
+					
+					pstmt.executeUpdate();
+					//result = selectDiaryNumber(conn);
+					
+					conn.commit();
+					System.out.println("	> [성공] DTO결과 불러오기 : " + diaryImgDto);
+					
+				} catch (SQLException e) {
+					try {
+						conn.rollback();
+					} catch (SQLException e1) {
+						e1.printStackTrace();
+					}
+					e.printStackTrace();
+				} finally {
+					DBClose.close(conn, pstmt, null);
+					System.out.println("> DB를 종료합니다.");
+				}
+				
+				return result;	
+	}
+
 }
