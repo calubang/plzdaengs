@@ -142,6 +142,9 @@
 		<li class="sidebar-list-item"><a href="/plzdaengs/plzBoard?cmd=boardList&curPage=1"
 			class="sidebar-link text-muted"><i
 		class="far fa-comment-dots mr-3 text-gray"></i><span>게시판</span></a></li>
+		<li class="sidebar-list-item">
+			<a href="/plzdaengs/menu?act=chart" class="sidebar-link text-muted active">
+			<i class="o-sales-up-1 mr-3 text-gray"></i><span>통계</span></a></li>
 	
 		<c:if test="${!empty user}">
 		<li class="sidebar-list-item"><a
