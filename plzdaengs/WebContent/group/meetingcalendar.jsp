@@ -161,19 +161,19 @@ table.calendar td {
                       </thead>
                       <tbody>
                         <tr>
-                          <td>Mark</td>
-                          <td>Otto</td>
-                          <td>@mdo</td>
+                          <td>2019.06.15</td>
+                          <td>2019.06.22</td>
+                          <td>2019.06.29</td>
                         </tr>
                         <tr>
-                          <td>Jacob</td>
-                          <td>Thornton</td>
-                          <td>@fat</td>
+                          <td>7PM</td>
+                          <td>2PM</td>
+                          <td>7PM</td>
                         </tr>
                         <tr>
-                          <td>Larry</td>
-                          <td>the Bird</td>
-                          <td>@twitter</td>
+                          <td>한강산책</td>
+                          <td>마라톤</td>
+                          <td>한강산책</td>
                         </tr>
                       </tbody>
                     </table>
@@ -188,9 +188,9 @@ table.calendar td {
                   <div class="card-body" id="meetingdetail">
                    <label id="">2019.05.22</label><label id="">오후 07:00</label><label id="">정기 한강산책</label><br>
                    <textarea class="form-control" rows="4" cols="3" contenteditable="false">내용상세</textarea>
-                   <div>
-                   <button>참가</button>
-                   <button>불참?</button>
+                   <div class="button-group">
+                   <button class="btn btn-success">참가</button>
+                   <button class="btn btn-danger">불참</button>
                    </div>
                   </div>
                 </div>
