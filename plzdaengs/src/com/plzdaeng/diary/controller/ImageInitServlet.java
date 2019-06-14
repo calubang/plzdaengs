@@ -27,6 +27,7 @@ public class ImageInitServlet extends HttpServlet {
     }
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		System.out.println("여기까지 들어왔소");
 		String date = request.getParameter("date");
 		String path = "/index.jsp";
 		System.out.println("diaryinit : " + date);

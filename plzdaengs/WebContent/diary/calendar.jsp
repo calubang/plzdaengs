@@ -5,7 +5,7 @@
 	String title = request.getParameter("title");
 	String description = request.getParameter("description");
 	UserDto user = (UserDto)request.getSession().getAttribute("userInfo");
-	if(user == null){
+	if(user == null){ // 로그인 안하면 튕겨져 나감
 	%><script>document.location.href = "/plzdaengs/index.jsp";</script><%
 	}
 %>
@@ -27,7 +27,8 @@
 	}
 	
 	#car_image {
-		padding-left: 500px}
+		padding-left: 500px
+	}
 	
 	#itemp {
 		margin-left : 1300px;	
@@ -72,7 +73,7 @@
 		2. 달력 칸칸별 넓혀놓고 > border: thin solid black; 지워놓기
 	*/
 	    margin-left: 500px; 
-	    margin-top : 60px;
+	    margin-top : 30px;
 	    display: inline-table;
 	    text-align: left;
 	}
@@ -221,6 +222,7 @@
         }
         
         initData();
+        initImg();
     }
  
     //calendar 월 이동
@@ -298,6 +300,33 @@
         }); 
 	}
     
+    function initImg() {
+        var date = year + "/" + month;
+    	$.ajax({
+        	url : "/plzdaengs/imageinit", 
+        	data : {date : date},
+        	success : function(result) {
+				//초기화
+				$(".cal-schedule").html("");
+				/*
+				var resultJSON = JSON.parse(result);
+				if(resultJSON.length == 0){
+					return;
+				}
+				for(var i=0 ; i<resultJSON.length ; i++){
+					var diaryDate = new Date(resultJSON[i].diary_date);	
+					var diaryDay = diaryDate.getDate();
+					var diaryNumber = resultJSON[i].diary_number;
+					var diarySubject = resultJSON[i].diary_subject;
+					var diaryContents = resultJSON[i].diary_contents;
+					var diaryImg = resultJSON[i].diary_img;	
+					makeSchedule(diaryDay, diaryNumber, diarySubject, diaryContents, diaryImg);
+				}
+				*/
+			}
+        }); 
+	}
+    
     function makeSchedule(diaryDay, diaryNumber, diarySubject, diaryContents, diaryImg) {
     	var dayDivs = $(".cal-day");
     	var dayDiv;
@@ -335,16 +364,16 @@
     	var date = year + "/" + month+ "/18";
         $.ajax({
             type:"POST",
-            url:"/plzdaengs/enrollimage",
+            url:"/plzdaengs/imageinit",
             data: {
             	image : image,
             	date : date	
             },
             success: function(data) {
-              alert("SERVLET O : " + data.result);			
+              alert("이모티콘이 적용되었습니다!");			
             },
             error: function(e) {
-              alert("SERVLET X : 에러가 발생하였습니다.");
+              alert("이모티콘이 적용 실패!");
             }			
           }); 
     	
@@ -382,6 +411,8 @@
 			alert("이모티콘 클릭해또");
 		});
 		ev.target.appendChild(dataTemp); // 이모티콘 붙일 때 없어지지 않고 남아있기
+		var target = $(ev.target);
+		console.log(target.text());
 		initImg(data);
 	}
 	
@@ -400,7 +431,7 @@
 <div class="d-flex align-items-stretch" id ="document">
 <%@ include file="/template/sidebar.jsp" %>
 <section>
-    <div class="cal_top" style="margin-top: 100px;">
+    <div class="cal_top" style="margin-top: 30px;">
     	<!-- 모달모달 -->
     	<%@ include file="modal.jsp"%>
     	<div id = "boss">
@@ -422,7 +453,7 @@
 			<img id="drag7" src="img/pet-house.png" draggable="true" ondragstart="drag(event)" width="50px" height="50px">
 			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 			<img id="bin" src="img/bin.png" width="50px" height="50px" ondrop="bin(event)" ondragover="allowDrop(event)">
-			<div id="temp">모밀</div>
+			<div id="temp"></div>
 		</div>
     </div>
 </section>
