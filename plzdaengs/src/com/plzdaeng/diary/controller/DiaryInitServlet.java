@@ -44,7 +44,7 @@ public class DiaryInitServlet extends HttpServlet {
 		System.out.println(listJSON);
 		request.setAttribute("result", listJSON);
 		
-		//System.out.println(list);
+		System.out.println(list);
 		path = "/diary/initdataresult.jsp";
 		MoveUrl.forward(request, response, path);
 		

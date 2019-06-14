@@ -36,6 +36,15 @@
 		document.getElementById("detail").submit();
   	}
   	
+  	function goMovePage(page){
+  		var searchGubun = $("#searchGubun2").val();
+  		var searchValue = $("#searchValue2").val();
+  		//console.log("searchGubun : " +searchGubun);
+  		//console.log("searchValue : " +searchValue);
+  		document.location.href = "/plzdaengs/plzBoard?cmd=boardList&curPage="
+  				+page + "&searchGubun="+searchGubun + "&searchValue="+searchValue;
+  	}
+  	
   
   </script>
 <body>

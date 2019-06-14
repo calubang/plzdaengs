@@ -37,26 +37,25 @@ public class ImageServlet extends HttpServlet {
 		System.out.println("------------------------------> 이모티콘 저장 SERVLET 이동 OK");
 		
 		String date = request.getParameter("date");
-		String img = request.getParameter("image");
+		String category = request.getParameter("category");
 		
-		System.out.println("> 전송된 DATA : [날짜 : " + date + ", 이미지 : " + img + "]");
+		System.out.println("> 전송된 DATA : [날짜 : " + date + ", category : " + category + "]");
 		
 		// DTO에다 받아온 정보들 저장
-		DiaryImgDto dto = new DiaryImgDto();
-		dto.setImage_name(img);
-		Date diaryDate = null;
+		DiaryDto dto = new DiaryDto();
+		dto.setUser_id(user.getUser_id());
+		dto.setCategory_id(category);
+
 		try {
-			diaryDate = new SimpleDateFormat("yyyy/MM/dd").parse(date);
+			dto.setDiary_date(new SimpleDateFormat("yyyy/MM/dd").parse(date));
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
-		//dto.setUser_id(user_id);
-		dto.setDiary_date(diaryDate);
-		
+				
 		System.out.println("> DTO결과 불러오기 : " + dto);
 		System.out.println("> DB에 넣는 시도 ing...");
 		
-		int result = service.enrollImg(user, dto);
+		int result = service.enrollDiary(user, dto);
 		//int result = service.putImg(user, dto); // in DB
 		System.out.println("------------------------------> SERVLET BYE");
 		System.out.println();

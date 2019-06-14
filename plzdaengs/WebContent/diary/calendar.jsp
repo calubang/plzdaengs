@@ -222,7 +222,7 @@
         }
         
         initData();
-        initImgData();
+        //initImgData();
     }
  
     //calendar 월 이동
@@ -293,15 +293,51 @@
 					var diaryNumber = resultJSON[i].diary_number;
 					var diarySubject = resultJSON[i].diary_subject;
 					var diaryContents = resultJSON[i].diary_contents;
-					var diaryImg = resultJSON[i].diary_img;	
-					makeSchedule(diaryDay, diaryNumber, diarySubject, diaryContents, diaryImg);
+					var diaryImg = resultJSON[i].diary_img;
+					var diaryCategory = resultJSON[i].category_id;
+					var diaryCategoryName = resultJSON[i].category_name;
+					if(diaryCategory != null){
+						//alert(diaryCategory);
+						var categoryImgs = $(".categoryImg");
+						//console.log(diaryDay);
+				    	//console.log(diaryNumber);
+				    	//console.log(categoryImgs[parseInt(diaryCategory)-1]);
+				    	makeImgSchedule(diaryDay, diaryNumber, categoryImgs[parseInt(diaryCategory)-1]);
+						
+					}else{
+						makeSchedule(diaryDay, diaryNumber, diarySubject, diaryContents, diaryImg);
+					}
+					
 				}
 			}
         }); 
 	}
     
+    function makeImgSchedule(diaryDay, diaryNumber, categoryImg){
+    	console.log(diaryDay);
+    	console.log(diaryNumber);
+    	console.log(categoryImg);
+    	
+    	//붙여야할 날짜부분 찾기
+    	var dayDivs = $(".cal-day");
+    	var dayDiv;
+    	for(var i=0 ; i<dayDivs.length ; i++){
+    		var text = $(dayDivs[i]).text();
+    		if(text.trim() == diaryDay){
+    			dayDiv = $(dayDivs[i]);
+    			break;
+    		}
+    	}
+    	
+		var temp = $(categoryImg).clone();
+		temp.attr("role", diaryNumber);
+		dayDiv.append(temp);
+		
+    }
+    
+    
     function initImgData() { // img db불러오기
-        var date = year + "/" + month;
+        /* var date = year + "/" + month;
     	$.ajax({
         	url : "/plzdaengs/imageinit", 
         	data : {date : date},
@@ -321,12 +357,8 @@
 					var diaryImg = resultJSON[i].diary_img;	
 					
 					makeImgSchedule(diaryDay, diaryImg);
-		}}}); 
+		}}});  */
 	}
-    
-    function makeImgSchedule(diaryDay, diaryImg) {
-    	
-    }
     
     function makeSchedule(diaryDay, diaryNumber, diarySubject, diaryContents, diaryImg) {
     	var dayDivs = $(".cal-day");
@@ -356,20 +388,25 @@
     	
 	}
     
-    function initImg(image, target) { // img DB에 저장
+    function initImg(image, date, target) { // img DB에 저장
     	//var date = $('table tbody td div.cal-day').text().trim();
     	//alert('initImg 들어옴 : ' + image + ', ' + date);
     	
     	//var str = $("#temp").serialize();
     	//alert('>>>' + str);
-    	alert('initImg으로 넘어옴')
-    	var date = year + "/" + month + "/" + target;
+    	//alert('initImg으로 넘어옴');
+    	//console.log(target);
+    	//console.log(target.attr("role"));
+    	//console.log(date);
+    	
+    	var category = target.attr("role");
+    	//var date = year + "/" + month + "/" + target;
         $.ajax({
-            type:"POST",
+            type:"get",
             url:"/plzdaengs/enrollimage",
             data: {
-            	image : image,
-            	date : date	
+            	category : category
+            	, date : date	
             },
             success: function(data) {
               alert("이모티콘이 적용되었습니다!");			
@@ -398,71 +435,72 @@
 	
 	function drop(ev) {
 		var a = $('#attr').text();
-		console.log('1!!!' + a);
+		//console.log('1!!!' + a);
 		
 		ev.preventDefault();
 		var data = ev.dataTransfer.getData("text"); // img의 id
-		console.log(data);
+		//console.log(data);
 		
 		var dataTemp = document.getElementById(data).cloneNode();
 		console.log(dataTemp);
 		$(dataTemp).css("width", "40px");
 		$(dataTemp).css("height", "40px");
 		$(dataTemp).css("font-size", "small");
+		$(dataTemp).attr("class", "");
 		$(dataTemp).click(function(e) {
 			alert("이모티콘 클릭해또");
 		});
 		ev.target.appendChild(dataTemp); // 이모티콘 붙일 때 없어지지 않고 남아있기
-		var target = $(ev.target).text();
-		//console.log(target.text());
-		
-		initImg(data, target); // img DB에 저장하는거 완료
+		var text = $(ev.target).text();
+		console.log(text);
+		var date = year + "/" + month + "/" + text;
+		initImg(data, date, $(dataTemp)); // img DB에 저장하는거 완료
 	}
 	
-	function bin(ev) { // 쓰레기통 오예
+	function bin(ev) { 
+		// 쓰레기통 오예
 		ev.preventDefault();
 		var data = ev.dataTransfer.getData("text");
 		ev.target.appendChild(document.getElementById(data));
+		
+		//DB에서도 삭제시킴
 	}
-	
 
 </script>
 
 </head>
 
 <body>
-<div class="d-flex align-items-stretch" id ="document">
-<%@ include file="/template/sidebar.jsp" %>
-<section>
-    <div class="cal_top" style="margin-top: 30px;">
-    	<!-- 모달모달 -->
-    	<%@ include file="modal.jsp"%>
-    	<div id = "boss">
-	        <a href="#" id="movePrevMonth"><span id="prevMonth" class="cal_tit">&lt;</span></a>
-	        <span id="cal_top_year"></span>
-	        <span id="cal_top_month"></span>
-	        <a href="#" id="moveNextMonth">
-        	<span id="nextMonth" class="cal_tit">&gt;</span>
-	        </a>
-        </div>
-		<div id="cal_tab" class="cal" ></div>
-		<div id="cal_image" style="margin-left: 200px;" >
-			<img id="drag1" src="img/hospital.png" draggable="true" ondragstart="drag(event)" width="50px" height="50px"> &nbsp;&nbsp;&nbsp;&nbsp;
-			<img id="drag2" src="img/bones.png" draggable="true" ondragstart="drag(event)" width="50px" height="50px"> &nbsp;&nbsp;&nbsp;&nbsp;
-			<img id="drag3" src="img/dog.png" draggable="true" ondragstart="drag(event)" width="50px" height="50px"> &nbsp;&nbsp;&nbsp;&nbsp;
-			<img id="drag4" src="img/bath.png" draggable="true" ondragstart="drag(event)" width="50px" height="50px"> &nbsp;&nbsp;&nbsp;&nbsp;
-			<img id="drag5" src="img/facial-treatment.png" draggable="true" ondragstart="drag(event)" width="50px" height="50px"> &nbsp;&nbsp;&nbsp;&nbsp;
-			<img id="drag6" src="img/school.png" draggable="true" ondragstart="drag(event)" width="50px" height="50px"> &nbsp;&nbsp;&nbsp;&nbsp;
-			<img id="drag7" src="img/pet-house.png" draggable="true" ondragstart="drag(event)" width="50px" height="50px">
-			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-			<img id="bin" src="img/bin.png" width="50px" height="50px" ondrop="bin(event)" ondragover="allowDrop(event)">
-			<div id="temp"></div>
-		</div>
-    </div>
-</section>
-<div></div>
- </div>
-
- 
+	<%@ include file="/template/header.jsp" %>
+	<div class="d-flex align-items-stretch" id ="document">
+	<%@ include file="/template/sidebar.jsp" %>
+	<section>
+	    <div class="cal_top" style="margin-top: 30px;">
+	    	<!-- 모달모달 -->
+	    	<%@ include file="modal.jsp"%>
+	    	<div id = "boss">
+		        <a href="#" id="movePrevMonth"><span id="prevMonth" class="cal_tit">&lt;</span></a>
+		        <span id="cal_top_year"></span>
+		        <span id="cal_top_month"></span>
+		        <a href="#" id="moveNextMonth">
+	        	<span id="nextMonth" class="cal_tit">&gt;</span>
+		        </a>
+	        </div>
+			<div id="cal_tab" class="cal" ></div>
+			<div id="cal_image" style="margin-left: 200px;" >
+				<img class="categoryImg" id="drag1" src="img/hospital.png" draggable="true" ondragstart="drag(event)" role="1" width="50px" height="50px"> &nbsp;&nbsp;&nbsp;&nbsp;
+				<img class="categoryImg" id="drag2" src="img/bones.png" draggable="true" ondragstart="drag(event)" role="2" width="50px" height="50px"> &nbsp;&nbsp;&nbsp;&nbsp;
+				<img class="categoryImg" id="drag3" src="img/dog.png" draggable="true" ondragstart="drag(event)" role="3" width="50px" height="50px"> &nbsp;&nbsp;&nbsp;&nbsp;
+				<img class="categoryImg" id="drag4" src="img/bath.png" draggable="true" ondragstart="drag(event)" role="4" width="50px" height="50px"> &nbsp;&nbsp;&nbsp;&nbsp;
+				<img class="categoryImg" id="drag5" src="img/facial-treatment.png" draggable="true" ondragstart="drag(event)" role="5" width="50px" height="50px"> &nbsp;&nbsp;&nbsp;&nbsp;
+				<img class="categoryImg" id="drag6" src="img/school.png" draggable="true" ondragstart="drag(event)" role="6" width="50px" height="50px"> &nbsp;&nbsp;&nbsp;&nbsp;
+				<img class="categoryImg" id="drag7" src="img/pet-house.png" draggable="true" ondragstart="drag(event)" role="7" width="50px" height="50px">
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				<img id="bin" src="img/bin.png" width="50px" height="50px" ondrop="bin(event)" ondragover="allowDrop(event)">
+				<div id="temp"></div>
+			</div>
+	    </div>
+	</section>
+	</div>
 </body>
 </html>
