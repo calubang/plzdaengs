@@ -21,7 +21,16 @@
 
 <style type="text/css">
 
-	#imgdata {
+
+	#boss {
+	margin-left: 400px;
+	}
+	
+	#car_image {
+		padding-left: 500px}
+	
+	#itemp {
+		margin-left : 1300px;	
 		inline-size: 750px;
 		inline-height: 51px;
 		font-size: small;
@@ -45,7 +54,7 @@
 	    font-size: 30px;
 	}
 	
-	.cal{
+	.cal {
 	    text-align: center;    
 	}
 	
@@ -63,7 +72,7 @@
 		2. 달력 칸칸별 넓혀놓고 > border: thin solid black; 지워놓기
 	*/
 	    margin-left: 500px; 
-	    margin-top: 100px;
+	    margin-top : 60px;
 	    display: inline-table;
 	    text-align: left;
 	}
@@ -71,7 +80,12 @@
 	table.calendar td{
 	    vertical-align: top;
 	    height : 50px;
+	    
 	    width: 150px;
+	}
+	
+	div.schedule {
+		background-color : yellow;
 	}
 	
 	.schedule:hover{
@@ -335,6 +349,7 @@
           }); 
     	
 	}
+    
 </script>
 
 <!-- DRAG & DROP -->
@@ -385,15 +400,17 @@
 <div class="d-flex align-items-stretch" id ="document">
 <%@ include file="/template/sidebar.jsp" %>
 <section>
-    <div class="cal_top">
+    <div class="cal_top" style="margin-top: 100px;">
     	<!-- 모달모달 -->
     	<%@ include file="modal.jsp"%>
-        <a href="#" id="movePrevMonth"><span id="prevMonth" class="cal_tit">&lt;</span></a>
-        <span id="cal_top_year"></span>
-        <span id="cal_top_month"></span>
-        <a href="#" id="moveNextMonth">
-        <span id="nextMonth" class="cal_tit">&gt;</span>
-        </a>
+    	<div id = "boss">
+	        <a href="#" id="movePrevMonth"><span id="prevMonth" class="cal_tit">&lt;</span></a>
+	        <span id="cal_top_year"></span>
+	        <span id="cal_top_month"></span>
+	        <a href="#" id="moveNextMonth">
+        	<span id="nextMonth" class="cal_tit">&gt;</span>
+	        </a>
+        </div>
 		<div id="cal_tab" class="cal" ></div>
 		<div id="cal_image" style="margin-left: 200px;" >
 			<img id="drag1" src="img/hospital.png" draggable="true" ondragstart="drag(event)" width="50px" height="50px"> &nbsp;&nbsp;&nbsp;&nbsp;
@@ -405,10 +422,11 @@
 			<img id="drag7" src="img/pet-house.png" draggable="true" ondragstart="drag(event)" width="50px" height="50px">
 			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 			<img id="bin" src="img/bin.png" width="50px" height="50px" ondrop="bin(event)" ondragover="allowDrop(event)">
-			<div id="temp"></div>
+			<div id="temp">모밀</div>
 		</div>
     </div>
 </section>
+<div></div>
  </div>
 
  
