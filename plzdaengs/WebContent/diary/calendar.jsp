@@ -222,7 +222,7 @@
         }
         
         initData();
-        initImg();
+        initImgData();
     }
  
     //calendar 월 이동
@@ -300,7 +300,7 @@
         }); 
 	}
     
-    function initImg() {
+    function initImgData() { // img db불러오기
         var date = year + "/" + month;
     	$.ajax({
         	url : "/plzdaengs/imageinit", 
@@ -308,24 +308,25 @@
         	success : function(result) {
 				//초기화
 				$(".cal-schedule").html("");
-				/*
+				
 				var resultJSON = JSON.parse(result);
 				if(resultJSON.length == 0){
 					return;
 				}
 				for(var i=0 ; i<resultJSON.length ; i++){
-					var diaryDate = new Date(resultJSON[i].diary_date);	
+					// userid는 안받아와도 되지롱
+					var diaryDate = new Date(resultJSON[i].diary_date);
+					
 					var diaryDay = diaryDate.getDate();
-					var diaryNumber = resultJSON[i].diary_number;
-					var diarySubject = resultJSON[i].diary_subject;
-					var diaryContents = resultJSON[i].diary_contents;
 					var diaryImg = resultJSON[i].diary_img;	
-					makeSchedule(diaryDay, diaryNumber, diarySubject, diaryContents, diaryImg);
-				}
-				*/
-			}
-        }); 
+					
+					makeImgSchedule(diaryDay, diaryImg);
+		}}}); 
 	}
+    
+    function makeImgSchedule(diaryDay, diaryImg) {
+    	
+    }
     
     function makeSchedule(diaryDay, diaryNumber, diarySubject, diaryContents, diaryImg) {
     	var dayDivs = $(".cal-day");
@@ -355,16 +356,17 @@
     	
 	}
     
-    function initImg(image) {
+    function initImg(image, target) { // img DB에 저장
     	//var date = $('table tbody td div.cal-day').text().trim();
     	//alert('initImg 들어옴 : ' + image + ', ' + date);
     	
     	//var str = $("#temp").serialize();
     	//alert('>>>' + str);
-    	var date = year + "/" + month+ "/18";
+    	alert('initImg으로 넘어옴')
+    	var date = year + "/" + month + "/" + target;
         $.ajax({
             type:"POST",
-            url:"/plzdaengs/imageinit",
+            url:"/plzdaengs/enrollimage",
             data: {
             	image : image,
             	date : date	
@@ -411,9 +413,10 @@
 			alert("이모티콘 클릭해또");
 		});
 		ev.target.appendChild(dataTemp); // 이모티콘 붙일 때 없어지지 않고 남아있기
-		var target = $(ev.target);
-		console.log(target.text());
-		initImg(data);
+		var target = $(ev.target).text();
+		//console.log(target.text());
+		
+		initImg(data, target); // img DB에 저장하는거 완료
 	}
 	
 	function bin(ev) { // 쓰레기통 오예
