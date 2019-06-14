@@ -29,7 +29,7 @@ int x = 1;
                           <td><%=member.getGroup_joindate() %></td>
                           <td class="button-group">
                           <%if(member.getMember_status().equals("M")){
-                        	  %><button class="btn btn-danger" type="button"> </button>추방<%
+                        	  %><button class="btn btn-danger" type="button">추방</button><%
                           }else if(member.getMember_status().equals("L")){
                         	  %><button class="btn btn-success" type="button">모임장위임 </button><%
                           }else if(member.getMember_status().equals("A")){

@@ -29,13 +29,11 @@ $(function(){
 	 
 	
  function btnClick(){
-		 alert('button clicked');
+		 alert('처리되었습니다.');
 		  var rowOfBtn = $(this);
 		  var tr = rowOfBtn.parent().parent();
 		  var memberId = tr.children('.member_id').text();
 		 
-		 
-		 alert(memberId);
 		$.ajax({
 		 url: '/plzdaengs/groupfront',
 		 method:'POST',

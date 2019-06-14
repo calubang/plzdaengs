@@ -71,7 +71,7 @@ function moveManagegroupinfo(){
 					
 				</div>
 				<div class="modal-footer">
-					<input name="joingroup" type="submit" value="탈퇴"
+					<input name="deletegroup" type="submit" value="탈퇴"
 						class="btn btn-primary"> <input name="modalcancel"
 						type="button" data-dismiss="modal" value="취소"
 						class="btn btn-primary">

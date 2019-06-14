@@ -623,6 +623,42 @@ public class GroupDaoImpl implements GroupDao {
 	}
 
 
+	@Override
+	public int goOutGroup(int group_id, String id) {
+		int result = -1;
+
+		System.out.println("Dao메소드입장");
+		
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+
+		String deletememberSQL = "update plz_group_member\r\n" + 
+				"set member_status = 'X'\r\n" + 
+				"where group_id = ? and user_id = ?";
+		
+				
+		try {
+			conn = DBConnection.makeConnectplzdb();
+			pstmt = conn.prepareStatement(deletememberSQL);
+			
+			pstmt.setInt(1, group_id);
+			pstmt.setString(2, id);
+			int r = pstmt.executeUpdate();
+			if(r > 0) {
+				result = 1;
+			}
+			
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} finally {
+			DBClose.close(conn, pstmt);
+			}
+
+		return result;
+
+	}
+	
 
 	public List<GroupMember> memberlist(int group_id) {
 		

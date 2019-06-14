@@ -156,7 +156,11 @@ if(user == null){
 				contentType : false,
 				data : formData,
 				success : function(result) {
-
+					alert(result);
+					if(result == 1){
+					alert("소모임이 생성되었습니다.")
+					$("#myModal").modal("hide");
+					}
 				}
 			});
 			return false;
@@ -271,8 +275,7 @@ if(user == null){
 	function fileUploadChange() {
 		var filename = this.files[0].name;
 		var imgtag = $(this).siblings("img");
-		imgtag
-				.prop(
+		imgtag.prop(
 						"src",
 						"${pageContext.request.contextPath}/plzdaengs/template/img/basic_user_profile.png");
 
@@ -297,8 +300,7 @@ if(user == null){
 		//var groupn = $(this).children()[0];
 		//var groupname = $(groupn).attr("id");
 
-		document.location.href = "/plzdaengs/groupfront?act=enter&group_id="
-				+ groupid;//+"&group_name="+groupname
+		document.location.href = "/plzdaengs/groupfront?act=enter&group_id=" + groupid;//+"&group_name="+groupname
 
 		/* $.ajax({
 			url: '/plzdaengs/groupfront',
