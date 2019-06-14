@@ -105,7 +105,6 @@ if(user == null){
 			if ($(this).attr("id") == "mygroup") {
 				$('#mygroup').attr("class", "nav-link active");
 				$('#recommendgroup').removeClass("active");
-				alert("good");
 				$.ajax({
 					url : '/plzdaengs/groupfront',
 					method : 'GET',
