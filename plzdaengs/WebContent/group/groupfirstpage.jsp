@@ -12,6 +12,7 @@
 	String level = (String) request.getAttribute("authority");
 	int groupId = (int)request.getSession().getAttribute("group_id");
 	GroupDto group = (GroupDto)request.getAttribute("group");
+	//int result = (int)request.getAttribute("joinrequestresult");
 	//System.out.println("에러 잡는중 level: " + level);
 	//System.out.println("에러 잡는중 groupId: " + groupId);
 	//System.out.println("에러 잡는중 group: " + group);
@@ -33,7 +34,7 @@
 <script>
 
 $(function() {
-		groupfirstpageLoding();
+		//groupfirstpageLoding();
 		var authority = $("#groupoptbtn").text();
 		var Obtn = $("#groupoptbtn");
 		
@@ -47,7 +48,7 @@ $(function() {
 				var join = $('input[name=joingroup]');
 				$(join).click(groupJoinProcess);
 			}else if('<%=level%>' == 'M'){
-				alert("탈퇴할꺼야?");
+				alert("탈퇴되었습다.");
 				$("#leavegroupmodal").modal('show');
 			} else {
 				$.ajax({
@@ -73,18 +74,21 @@ function groupJoinProcess(){
 		data : {group_id : '<%=groupId%>',
 				act : 'joingroup'},
 		success : function(result) {
-			//var resultB = request.getAttribute('result');
-			if(result == 1){
-				alert("succeed to request join");
+			//var resultB = request.getAttribute('joinrequestresult');
+			//alert(result);
+/* 			if(resultB == 1){
+		$("section").html();
+			}else{
+				alert("이미 소모임 가입요청을 하였습니다.");
+				$("#joingroupmodal").modal('hide');
+				$("section").html();
+			} 
+	*/
+				alert("소모임 가입을 신청하였습니다.");
 				$("#joingroupmodal").modal('hide');
 				var join = $('input[name=joingroup]');
-
-				//$("section").html();
-				authority = "가입요청중"
-			}else{
-				alert("fail to join group")
-				$("section").html();
-			}
+			
+			
 		}
 	});	
 	return false;
@@ -97,7 +101,7 @@ function groupfirstpageLoding(){
 		data : {group_id : '<%=groupId%>',
 				act : 'firstPageLoding'},
 		success : function(result) {
-		
+			
 		}
 	});	
 	return false;

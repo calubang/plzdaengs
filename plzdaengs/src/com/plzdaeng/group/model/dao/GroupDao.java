@@ -32,6 +32,8 @@ public interface GroupDao {
 	
 	int joinGroup(int group_id, String id);
 	
+	int goOutGroup(int group_id, String id);
+	
 	List<GroupMember> memberlist(int group_id);
 	
 	int kickMember(GroupMember member);

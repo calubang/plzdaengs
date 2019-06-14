@@ -113,7 +113,6 @@ public class GroupController {
 		
 		path = "/group/groupmain.jsp";
 		String id = user.getUser_id();
-		//user.setUser_id("qwer");
 		//지역무관
 		System.out.println(name + keyword + desc + "location : " + groupdontselect);
 		
@@ -197,14 +196,30 @@ public class GroupController {
 		//GroupDaoImpl.getGroupDaoImpl().boardLoading(group_id);
 		path = "/group/groupfirstpage.jsp";
 
-		
-		
-		
-		
-		
 		return path;
 	}
 
+	public String joinGroup(HttpServletRequest request, HttpServletResponse response, UserDto user) {
+		int group_id = Integer.parseInt(request.getParameter("group_id"));
+		String id = user.getUser_id();
+		
+		int joinrequestresult = GroupDaoImpl.getGroupDaoImpl().joinGroup(group_id, id);
+		path = enterorsingup(request, response, user);
+		System.out.println("result : "+ joinrequestresult);
+		request.setAttribute("joinrequestresult", joinrequestresult);
+		return path;
+	}
+	
+	public String goOutGroup(HttpServletRequest request, HttpServletResponse response, UserDto user) {
+		int group_id = Integer.parseInt(request.getParameter("group_id"));
+		String id = user.getUser_id();
+		
+		int joinrequestresult = GroupDaoImpl.getGroupDaoImpl().goOutGroup(group_id, id);
+		path = enterorsingup(request, response, user);
+		System.out.println("result : "+ joinrequestresult);
+		request.setAttribute("joinrequestresult", joinrequestresult);
+		return path;
+	}
 
 
 
@@ -262,16 +277,6 @@ public class GroupController {
 		return path;
 	}
 
-	public String joinGroup(HttpServletRequest request, HttpServletResponse response, UserDto user) {
-		path = "/group/groupfirstpage.jsp";
-		int group_id = Integer.parseInt(request.getParameter("group_id"));
-		String id = user.getUser_id();
-		
-		int result = GroupDaoImpl.getGroupDaoImpl().joinGroup(group_id, id);
-		enterorsingup(request, response, user);
-		request.setAttribute("result", result);
-		return path;
-	}
 
 	public String memberlist(HttpServletRequest request, HttpServletResponse response) {
 		path = "/group/result/memberlistresult.jsp";

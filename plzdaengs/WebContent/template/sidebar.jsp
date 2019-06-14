@@ -130,10 +130,10 @@
 					class="sidebar-menu list-unstyled border-left border-primary border-thick">
 					<li class="sidebar-list-item"><a href="/plzdaengs/group/groupmain.jsp"
 						class="sidebar-link pl-lg-5">소모임메인</a></li>
-					<li class="sidebar-list-item"><a href="#"
+					<li class="sidebar-list-item"><a href="/plzdaengs/group/managemeeting.jsp"
 						class="sidebar-link pl-lg-5">소모임일정</a></li>
-					<li class="sidebar-list-item"><a href="#"
-						class="sidebar-link pl-lg-5">공지?게시판?</a></li>
+					<li class="sidebar-list-item"><a href="/plzdaengs/plzBoard?cmd=boardList&curPage=1"
+						class="sidebar-link pl-lg-5">게시판</a></li>
 				</ul>
 			</div></li>
 		<li class="sidebar-list-item"><a href="/plzdaengs/board/yugi.jsp"

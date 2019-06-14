@@ -366,7 +366,7 @@ table.calendar td {
 							drawDays();
 						}
 					</script>
-					<button type="button" data-toggle="modal" data-target="#gmmeetingModal" class="btn btn-primary">Form in a simple modal </button>
+					<!-- <button type="button" data-toggle="modal" data-target="#gmmeetingModal" class="btn btn-primary">Form in a simple modal </button> -->
 				</section>
 			</div>
 			<div id="gmmeetingModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" class="modal fade text-left">
