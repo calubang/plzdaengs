@@ -27,16 +27,20 @@ public class ImageInitServlet extends HttpServlet {
     }
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		System.out.println();
+		System.out.println("------------------------------> ImageInitServlet 이동 OK");
+		
 		String date = request.getParameter("date");
 		String path = "/index.jsp";
-		System.out.println("diaryinit : " + date);
+		
+		System.out.println("> 받아와야 하는 月 : " + date);
 		UserDto user = (UserDto)request.getSession().getAttribute("userInfo");
 		if(user == null) {
 			user = new UserDto();
 			user.setUser_id("mnmm97");
 		}
 		
-		
+		/*
 		List<DiaryImgDto> list = service.initDataByMonth2(date, user);
 		
 		
@@ -48,8 +52,9 @@ public class ImageInitServlet extends HttpServlet {
 		//System.out.println(list);
 		path = "/diary/initdataresult.jsp";
 		MoveUrl.forward(request, response, path);
-		
-		
+		System.out.println("------------------------------> SERVLET BYE");
+		System.out.println();
+		*/
 	}
 
 
