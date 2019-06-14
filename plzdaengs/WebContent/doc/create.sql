@@ -1073,3 +1073,5 @@ IMAGE_NAME VARCHAR2(30)
 );
 
 commit;
+
+

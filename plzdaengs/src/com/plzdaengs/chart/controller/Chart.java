@@ -22,10 +22,12 @@ public class Chart extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String data = request.getParameter("data");
+		String path = "/chart/chart.jsp";
 		if(data == null) {
+			MoveUrl.forward(request, response, path);
 			return;
 		}
-		String path = "/index.jsp";
+		//String path = "/index.jsp";
 		String dataJSON = "";
 		System.out.println("chart : " + data);
 		
@@ -42,14 +44,14 @@ public class Chart extends HttpServlet {
 			String breedName = request.getParameter("breedname");
 			dataJSON = service.genderAvgAgeForBreed(breedName);
 			request.setAttribute("result", dataJSON);
-			System.out.println(dataJSON);
+			//System.out.println(dataJSON);
 			path = "/chart/chartresult.jsp";
 			break;
 			
 		default:
 			break;
 		}
-		
+		System.out.println("data : " + dataJSON);
 		MoveUrl.forward(request, response, path);
 		
 	}

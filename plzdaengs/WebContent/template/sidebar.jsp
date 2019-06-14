@@ -20,59 +20,18 @@
 		</c:otherwise>
 	</c:choose>
 	<ul class="sidebar-menu list-unstyled">
-		<li class="nav-item dropdown mr-3"><a id="notifications"
+		<li class="nav-item dropdown ml-auto">
+		
+			<%-- <c:if test="${!empty user}">
+			<a id="userInfo"
 			href="http://example.com" data-toggle="dropdown" aria-haspopup="true"
-			aria-expanded="false"
-			class="nav-link dropdown-toggle text-gray-400 px-1"><i
-				class="fa fa-bell"></i><span class="notification-icon"></span></a>
-			<div aria-labelledby="notifications" class="dropdown-menu">
-				<a href="#" class="dropdown-item">
-					<div class="d-flex align-items-center">
-						<div class="icon icon-sm bg-violet text-white">
-							<i class="fab fa-twitter"></i>
-						</div>
-						<div class="text ml-2">
-							<p class="mb-0">You have 2 followers</p>
-						</div>
-					</div>
-				</a><a href="#" class="dropdown-item">
-					<div class="d-flex align-items-center">
-						<div class="icon icon-sm bg-green text-white">
-							<i class="fas fa-envelope"></i>
-						</div>
-						<div class="text ml-2">
-							<p class="mb-0">You have 6 new messages</p>
-						</div>
-					</div>
-				</a><a href="#" class="dropdown-item">
-					<div class="d-flex align-items-center">
-						<div class="icon icon-sm bg-blue text-white">
-							<i class="fas fa-upload"></i>
-						</div>
-						<div class="text ml-2">
-							<p class="mb-0">Server rebooted</p>
-						</div>
-					</div>
-				</a><a href="#" class="dropdown-item">
-					<div class="d-flex align-items-center">
-						<div class="icon icon-sm bg-violet text-white">
-							<i class="fab fa-twitter"></i>
-						</div>
-						<div class="text ml-2">
-							<p class="mb-0">You have 2 followers</p>
-						</div>
-					</div>
-				</a>
-				<div class="dropdown-divider"></div>
-				<a href="#" class="dropdown-item text-center"><small
-					class="font-weight-bold headings-font-family text-uppercase">View
-						all notifications</small></a>
-			</div></li>
-		<li class="nav-item dropdown ml-auto"><a id="userInfo"
-			href="http://example.com" data-toggle="dropdown" aria-haspopup="true"
-			aria-expanded="false" class="nav-link dropdown-toggle"><img
+			aria-expanded="false" class="nav-link dropdown-toggle">
+			<img
 				src="/plzdaengs/template/img/avatar-6.jpg" alt="Jason Doe"
-				style="max-width: 2.5rem;" class="img-fluid rounded-circle shadow"></a>
+				style="max-width: 2.5rem;" class="img-fluid rounded-circle shadow">
+			</c:if>
+			</a> --%>
+			
 			<div aria-labelledby="userInfo" class="dropdown-menu">
 				<a href="#" class="dropdown-item"><strong
 					class="d-block text-uppercase headings-font-family">이름</strong> <small>반려견
@@ -142,6 +101,9 @@
 		<li class="sidebar-list-item"><a href="/plzdaengs/plzBoard?cmd=boardList&curPage=1"
 			class="sidebar-link text-muted"><i
 		class="far fa-comment-dots mr-3 text-gray"></i><span>게시판</span></a></li>
+		<li class="sidebar-list-item">
+			<a href="/plzdaengs/menu?act=chart" class="sidebar-link text-muted active">
+			<i class="o-sales-up-1 mr-3 text-gray"></i><span>통계</span></a></li>
 	
 		<c:if test="${!empty user}">
 		<li class="sidebar-list-item"><a
