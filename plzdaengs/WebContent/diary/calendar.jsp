@@ -113,7 +113,7 @@
         drawDays();
         
         var a = $("#attr").html();
-    	console.log(a);
+    	//console.log(a);
     	
         $("#movePrevMonth").on("click", function(){movePrevMonth();});
         $("#moveNextMonth").on("click", function(){moveNextMonth();});
@@ -314,9 +314,9 @@
 	}
     
     function makeImgSchedule(diaryDay, diaryNumber, categoryImg){
-    	console.log(diaryDay);
-    	console.log(diaryNumber);
-    	console.log(categoryImg);
+    	//console.log(diaryDay);
+    	//console.log(diaryNumber);
+    	//console.log(categoryImg);
     	
     	//붙여야할 날짜부분 찾기
     	var dayDivs = $(".cal-day");
@@ -452,7 +452,7 @@
 		});
 		ev.target.appendChild(dataTemp); // 이모티콘 붙일 때 없어지지 않고 남아있기
 		var text = $(ev.target).text();
-		console.log(text);
+		//console.log(text);
 		var date = year + "/" + month + "/" + text;
 		initImg(data, date, $(dataTemp)); // img DB에 저장하는거 완료
 	}
@@ -460,10 +460,20 @@
 	function bin(ev) { 
 		// 쓰레기통 오예
 		ev.preventDefault();
+		//ev.dataTransfer.getData(type);
+		console.log(ev);
 		var data = ev.dataTransfer.getData("text");
+		console.log(data);
+		//DB에서도 삭제시킴
+		deleteImgSchdule($(data).attr("role"));
+		
 		ev.target.appendChild(document.getElementById(data));
 		
-		//DB에서도 삭제시킴
+		
+	}
+	
+	function deleteImgSchdule(diaryNumber){
+		console.log(diaryNumber);
 	}
 
 </script>

@@ -107,6 +107,8 @@ function chatInit() {
 function msgInputKeyUp(e){
 	if(e.keyCode == 13){
 		$("#chat .sendBtn").trigger("click");
+		var msgInput = $("#chat .msgInput");
+		msgInput.val("");
 	}
 }
 function chatToggle(){
@@ -144,7 +146,7 @@ function webSocketMessage(message) {
 	if(msgJSON == null){
 		return;
 	}
-	console.log(length);
+	//console.log(length);
 	if(length == null || length == 0){
 		appendMsg(msgJSON);
 		return;
@@ -155,9 +157,6 @@ function webSocketMessage(message) {
 	
 }
 function appendMsg(msgJSON){
-	if(msgJSON){
-		
-	}
 	var userid = msgJSON.user_id;
 	var groupid = msgJSON.group_id;
 	var nickname = msgJSON.nickname;
@@ -169,8 +168,6 @@ function appendMsg(msgJSON){
 	var chatTextArea = $("#chat .chatMsgArea");
 	chatTextArea.append(result);
 	chatTextArea.scrollTop(chatTextArea.prop("scrollHeight"));
-	var msgInput = $("#chat .msgInput");
-	msgInput.val("");
 	
 }
 
@@ -190,6 +187,8 @@ function msgSend(){
 	var msg = makeMsg(type, userid, nickname, groupid, input);
 	
 	websocket.send(JSON.stringify(msg));
+	var msgInput = $("#chat .msgInput");
+	msgInput.val("");
 }
 
 function makeMsg(type, userid, nickname, groupid, text) {
