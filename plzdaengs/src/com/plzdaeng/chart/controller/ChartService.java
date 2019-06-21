@@ -1,4 +1,4 @@
-package com.plzdaengs.chart.controller;
+package com.plzdaeng.chart.controller;
 
 import java.util.List;
 

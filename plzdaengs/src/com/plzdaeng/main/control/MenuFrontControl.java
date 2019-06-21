@@ -1,4 +1,4 @@
-package com.plzdaengs.main.control;
+package com.plzdaeng.main.control;
 
 import java.io.IOException;
 import javax.servlet.ServletException;

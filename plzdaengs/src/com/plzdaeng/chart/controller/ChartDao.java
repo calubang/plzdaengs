@@ -1,4 +1,4 @@
-package com.plzdaengs.chart.controller;
+package com.plzdaeng.chart.controller;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
