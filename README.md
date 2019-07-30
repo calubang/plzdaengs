@@ -2,8 +2,6 @@
 
 * 프로젝트명 : 우리 혼자 산다
 
-* 프로젝트 인원 : 노정탁 김우진 안병욱 조윤영 
-
 * 프로젝트 기간 : 2019.05 - 2019.06(4주)
 
 * 프로젝트 간단설명
@@ -35,17 +33,21 @@
 
 ![img](https://lh6.googleusercontent.com/W3oorlsLj5Rf9RqKHUUKhPKBlGcp_VhA6CLXcM4-YGNZi-2cwFNl-Nsjh5u0QFNh7gjMNtqoxW7wMmJ_k7VCPfeXVMWYtXIVJSOMGW1mgLj-FZnuwz3gbx9BJD0aliy0Wmjl9F4)
 
+
 * 반려동물 관리
 
 ![img](https://lh3.googleusercontent.com/FS62Lqz5XsfK7jOn_ixp5hli7mDwQdvK_2Tk-xqOu0VZF_l5q5h817QqUUAKJwN72NlvOVOITW0nKGesYyOlu88YdNMohcBWqPTQ6weIARJfo71uShEOyZp9v1kiGdVgazXe9Tg)![img](https://lh4.googleusercontent.com/NaYKaL_BinOGSbn0CpAzQxvyYbuHgSA_Tsf6qEBKFmM_iwYOmpn6rtNxGC9BrzhCnIqFxbmdEWgVHcSDq6B1cQFYnDT6J1tu_teEs8nI5y-FGiCes4HDuOynesKduvBfM6pdcPY)
+
 
 * 다이어리 
 
 ![img](https://lh6.googleusercontent.com/qDR-M9ku7Q2AMLGTUrrh31RqmzG8riSJEIO5I3bKX4pxe74DM4PW-h2hH8avwAz91ogimHG7hWGxVA7Jrml5kfyg1gzEf_0_yuTpEFkyMYg-7pnkR79fZj7DGnkcZ568HKwB4yw)
 
+
 * 유기견 조회
 
 ![img](https://lh5.googleusercontent.com/gvV60jJwzgUv9DTd4v7gqm5xsQjNy6mXmWr-w6yEFV_a-Ti7tk0mNsLWXYRrSCCV6pSSOAm-o-edwJxvTqrhVl-a8amfYxcWz-RL1ujLlv6XdE22jy-RjF-FWQo6NATqLe04omQ)
+
 
 * 통계
 
